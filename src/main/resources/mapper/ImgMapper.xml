@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.goott.trip.common.mapper.ImageMapper">
+    <insert id="insertImage" parameterType="Image">
+        INSERT INTO trip.image (img_key, created_at, url) VALUES (#{imgKey}, #{createdAt}, #{url})
+    </insert>
+
+    <update id="updateImage" parameterType="Image">
+        UPDATE trip.image
+        SET created_at = #{createdAt},
+            url = #{url}
+        WHERE img_key = #{imgKey}
+    </update>
+
+    <delete id="deleteImage" parameterType="String">
+        DELETE FROM trip.image
+        WHERE img_key = #{imgKey}
+    </delete>
+
+    <select id="selectImage" parameterType="String" resultType="Image">
+        SELECT * FROM trip.image
+        ORDER BY img_key = #{imgKey}
+    </select>
+</mapper>
