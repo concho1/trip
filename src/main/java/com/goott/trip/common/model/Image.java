@@ -1,4 +1,4 @@
-package com.goott.trip.Common.model;
+package com.goott.trip.common.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +9,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class Image {
     private String imgKey;
-    private String Url;
-    private Timestamp CreateAt;
+    private String url;
+    private Timestamp createdAt;
 }

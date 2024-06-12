@@ -1,4 +1,4 @@
-package com.goott.trip.Common.model;
+package com.goott.trip.common.model;
 
 import lombok.Data;
 import org.springframework.ui.Model;
