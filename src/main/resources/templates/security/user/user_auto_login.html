@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>자동 로그인</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+<h2>자동 로그인 중...</h2>
+<div hidden="hidden">
+    <form id="loginForm" th:action="@{/user/con/log-in}" method="post">
+        <input type="hidden" id="id" name="id" th:value="${id}">
+        <input type="hidden" id="pw" name="pw" th:value="${pw}">
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#loginForm').submit();
+    });
+</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
-package com.goott.trip.Common.service;
+package com.goott.trip.common.service;
 
-import com.goott.trip.Common.mapper.ImageMapper;
-import com.goott.trip.Common.model.Image;
+import com.goott.trip.common.mapper.ImageMapper;
+import com.goott.trip.common.model.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -117,13 +117,13 @@ public class ImageService {
         }
         try {
             Image image = imageMapper.selectImage(key);
-            LocalDateTime createdAt = image.getCreateAt().toLocalDateTime();
+            LocalDateTime createdAt = image.getCreatedAt().toLocalDateTime();
             LocalDateTime now = LocalDateTime.now();
 
             // 초단위 차의 절대값이 3000초 초과면 url 새로 발급
             if (Math.abs(Duration.between(createdAt, now).getSeconds()) > 3000) {
                 String newUrl = awsS3Service.getUrl(key);
-                image.setCreateAt(Timestamp.valueOf(LocalDateTime.now()));
+                image.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
                 image.setUrl(newUrl);
                 // db 갱신
                 imageMapper.updateImage(image);

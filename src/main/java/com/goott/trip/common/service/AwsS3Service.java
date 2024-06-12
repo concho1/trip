@@ -1,4 +1,4 @@
-package com.goott.trip.Common.service;
+package com.goott.trip.common.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
