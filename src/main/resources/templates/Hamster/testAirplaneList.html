@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div align="center">
+        <table width="750" border="1" cellspacing="0">
+            <tr>
+               <th>항공사명</th>
+               <th>출발 지역</th>
+               <th>도착 지역</th>
+               <th>여객기 출발시간</th>
+               <th>여객기 도착시간</th>
+               <th>항공권 가격</th>
+            </tr>
+
+            <th:block th:if="${list != null}">
+            <tr th:each="dto : ${list}">
+                <td th:text="${dto.getAirplaneName()}"></td>
+                <td th:text="${dto.getAirplaneDepart()}"></td>
+                <td th:text="${dto.getAirplaneArrive()}"></td>
+                <td th:text="${dto.getAirplaneDepartTime()}"></td>
+                <td th:text="${dto.getAirplaneArriveTime()}"></td>
+                <td th:text="${dto.getAirplanePrice()}"></td>
+            </tr>
+            </th:block>
+        </table>
+    </div>
+</body>
+</html>
