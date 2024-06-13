@@ -9,4 +9,6 @@ import java.util.List;
 public interface AirplaneMapper {
 
     public List<Testproduct> airplaneList();
+
+    public Testproduct airplaneCont(String key);
 }
