@@ -1,4 +1,4 @@
-package com.goott.trip.common.testController;
+package com.goott.trip.common.mingController;
 
 import com.goott.trip.common.model.Alarm;
 import com.goott.trip.common.model.Image;
