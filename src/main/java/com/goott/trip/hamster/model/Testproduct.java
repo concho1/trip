@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 
 @Data
 public class Testproduct {
+    private String airplaneKey;
     private String airplaneName;
     private String airplaneDepart;
     private String airplaneArrive;

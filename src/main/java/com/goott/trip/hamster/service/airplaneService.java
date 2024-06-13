@@ -14,4 +14,6 @@ public class airplaneService {
     private AirplaneMapper mapper;
 
     public List<Testproduct> airplaneList(){return this.mapper.airplaneList(); };
+
+    public Testproduct airplaneCont(String key){return this.mapper.airplaneCont(key); };
 }

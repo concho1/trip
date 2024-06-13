@@ -8,4 +8,7 @@
         SELECT * FROM testproduct
     </select>
 
+    <select id="airplaneCont" parameterType="String" resultType="Testproduct">
+        SELECT * FROM testproduct where airplane_key = #{key}
+    </select>
 </mapper>
