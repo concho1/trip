@@ -18,7 +18,7 @@ $(document).ready(function (){
         let formData = new FormData();
         formData.append('file', $file[0].files[0]);
         formData.append('nickname', $nickname.val());
-        
+
         let response = ajaxFunction(goUrl, formData);   //ajax 보내고 응답 받기
 
         if(response.isOk === 'ok'){
