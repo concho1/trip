@@ -9,6 +9,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class Image {
     private String imgKey;
-    private String Url;
-    private Timestamp CreateAt;
+    private String url;
+    private Timestamp createdAt;
 }

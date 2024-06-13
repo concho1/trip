@@ -3,21 +3,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.goott.trip.common.mapper.ImageMapper">
-    <insert id="insertImage" parameterType="String">
-        INSERT INTO image (img_key, created_at, url) VALUES #{imgKey}, #{createAt}, #{url}
+    <insert id="insertImage" parameterType="Image">
+        INSERT INTO trip.image (img_key, created_at, url) VALUES (#{imgKey}, #{createdAt}, #{url})
     </insert>
 
     <update id="updateImage" parameterType="Image">
-        UPDATE image SET create_at = #{createAT}, url = #{url} WHERE img_key = #{imgKey}
+        UPDATE trip.image
+        SET created_at = #{createdAt},
+            url = #{url}
+        WHERE img_key = #{imgKey}
     </update>
 
     <delete id="deleteImage" parameterType="String">
-        DELETE FROM image
+        DELETE FROM trip.image
         WHERE img_key = #{imgKey}
     </delete>
 
     <select id="selectImage" parameterType="String" resultType="Image">
-        SELECT * FROM image
+        SELECT * FROM trip.image
         ORDER BY img_key = #{imgKey}
     </select>
 </mapper>
