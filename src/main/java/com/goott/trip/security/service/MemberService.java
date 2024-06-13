@@ -22,4 +22,5 @@ public class MemberService {
     public Member getMemberById(String id){
         return memberMapper.findById(id);
     }
+
 }
