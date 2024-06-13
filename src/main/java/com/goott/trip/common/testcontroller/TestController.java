@@ -1,4 +1,4 @@
-package com.goott.trip.common.testcontroller;
+package com.goott.trip.common.testController;
 
 import com.goott.trip.common.model.Image;
 import com.goott.trip.common.model.Alarm;
@@ -24,9 +24,7 @@ public class TestController {
     }
 
     @GetMapping("/image")
-    public String sendImagePage(){
-        return "common/imageTest";
-    }
+    public String sendImagePage(){ return "common/imageTest"; }
     @PostMapping("/image")
     public String imageUpload(
             @RequestPart("file") MultipartFile file,
@@ -45,6 +43,4 @@ public class TestController {
         alarm.setMessageAndRedirect("이미지가 업로드 되었습니다.", "image");
         return alarm.getMessagePage();
     }
-
-
 }
