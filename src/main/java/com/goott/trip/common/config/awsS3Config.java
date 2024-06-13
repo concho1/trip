@@ -1,4 +1,4 @@
-package com.goott.trip.Common.config;
+package com.goott.trip.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

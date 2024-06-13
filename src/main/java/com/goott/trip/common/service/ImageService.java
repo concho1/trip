@@ -1,7 +1,7 @@
-package com.goott.trip.Common.service;
+package com.goott.trip.common.service;
 
-import com.goott.trip.Common.mapper.ImageMapper;
-import com.goott.trip.Common.model.Image;
+import com.goott.trip.common.mapper.ImageMapper;
+import com.goott.trip.common.model.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

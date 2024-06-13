@@ -1,4 +1,4 @@
-package com.goott.trip.Common.model;
+package com.goott.trip.common.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

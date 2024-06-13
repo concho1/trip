@@ -1,6 +1,6 @@
-package com.goott.trip.Common.mapper;
+package com.goott.trip.common.mapper;
 
-import com.goott.trip.Common.model.Image;
+import com.goott.trip.common.model.Image;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
