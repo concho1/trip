@@ -3,10 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.goott.trip.security.mapper.MemberMapper">
+
     <select id="findById" parameterType="String" resultType="Member">
         SELECT * FROM trip.member WHERE id = #{id}
     </select>
+
     <insert id="save">
-        INSERT INTO trip.member(id, pw, role) VALUES (#{id},#{pw},#{role})
+        INSERT INTO trip.member(id, pw, role, name, phone, member.rank, img_key, created_at)
+        VALUES (#{id},#{pw},#{role},#{name},#{phone},null,#{imgKey},now())
     </insert>
+
 </mapper>
