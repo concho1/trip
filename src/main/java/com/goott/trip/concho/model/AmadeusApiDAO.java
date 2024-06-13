@@ -39,7 +39,7 @@ public class AmadeusApiDAO {
         }catch (ClientException e){
             System.out.println(e.getMessage());
         } catch (ResponseException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return hotelList;
     }
