@@ -34,7 +34,8 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation 'io.awspring.cloud:spring-cloud-aws-s3:3.0.2'
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.11.0'
+    implementation "com.amadeus:amadeus-java:9.0.0"
+    implementation 'com.google.code.gson:gson:2.11.0'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
