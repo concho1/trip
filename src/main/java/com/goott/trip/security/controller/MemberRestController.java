@@ -20,5 +20,4 @@ public class MemberRestController {
         modelAndView.addObject("memberId",memberId);
         return modelAndView;
     }
-
 }
