@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form id="tokenForm" method="post" action="/test">
+        <input type="hidden" id="token" name="token">
+        <input type="button" onclick="mkToken()" value="go">
+    </form>
+
+<script>
+    function mkToken() {
+        fetch("https://test.api.amadeus.com/v1/security/oauth2/token", {
+            body: "grant_type=client_credentials&client_id=f57TPq4g6SatIJyEzDj0wnYjzh3m4R85&client_secret=BRYBhFTlAcMlFUNo",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            method: "POST"
+        })
+            .then(res => res.json())
+            .then(data => {
+                let token = data.access_token;
+                console.log(token);
+                document.querySelector("#token").value = token;
+                document.getElementById("tokenForm").submit();
+            })
+
+    }
+</script>
+</body>
+</html>
