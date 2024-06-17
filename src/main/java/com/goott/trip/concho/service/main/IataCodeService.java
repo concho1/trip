@@ -21,11 +21,12 @@ public class IataCodeService {
             reader.readLine(); // Skip header
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",");
-                if (data.length == 3) {
+                if (data.length == 4) {
                     String city = data[0].trim();
                     String country = data[1].trim();
                     String iataCode = data[2].trim();
-                    iataCodeMapper.insertIataCode(iataCode, city, country);
+                    String countryKo = data[3].trim();
+                    iataCodeMapper.insertIataCode(iataCode, city, country, countryKo);
                 }
             }
             result = true;
