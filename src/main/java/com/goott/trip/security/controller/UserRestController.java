@@ -34,15 +34,17 @@ public class UserRestController {
         return new ModelAndView("security/user/user_page");
     }
 
+    // 회원가입
     @GetMapping("sign-in")
     public ModelAndView getSignInPage(){
         ModelAndView modelAndView = new ModelAndView("security/user/user_signIn_page");
 
-        String baseImgKey = "trip/2890e995-803d-4feb-91f3-046b49a883c6";
+        String baseImgKey = "trip/4708729d-fd41-4966-bf67-8ece2b20f6bb";
         Optional<Image> imageOp = imageService.findImageByKey(baseImgKey);
 
         if(imageOp.isPresent()){
             modelAndView.addObject("baseImgUrl", imageOp.get().getUrl());
+            System.out.println(imageOp.get().getUrl());
         }
         return modelAndView;
     }
@@ -51,7 +53,7 @@ public class UserRestController {
 
         Optional<Image> imageOp = imageService.insertFile(file);
         if (imageOp.isEmpty()) {
-            String baseImgKey = "trip/2890e995-803d-4feb-91f3-046b49a883c6";
+            String baseImgKey = "trip/4708729d-fd41-4966-bf67-8ece2b20f6bb";
             member.setImgKey(baseImgKey);
         } else {
             member.setImgKey(imageOp.get().getImgKey());
@@ -67,6 +69,7 @@ public class UserRestController {
         return modelAndView;
     }
 
+    // 이메일 인증
     @PostMapping("sendEmail")
     public Map<String, String> sendEmail(@RequestParam("email") String email, HttpServletRequest httpServletRequest) throws MessagingException {
         HttpSession session = httpServletRequest.getSession();
@@ -74,7 +77,7 @@ public class UserRestController {
         emailService.sendEmail(email, session);
         return new HashMap<>(Map.of("message", "이메일 전송 성공"));
     }
-
+    // 코드 확인
     @PostMapping("codeCatch")
     public Map<String, String> codeCatcher(@RequestParam("code") String inCode, HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
@@ -85,13 +88,15 @@ public class UserRestController {
         } else {
             return new HashMap<>(Map.of("fail", "인증코드가 일치하지않습니다."));
         }
-
     }
 
+    // 로그인
     @GetMapping("log-in")
     public ModelAndView getLogIn(){
         return new ModelAndView("security/user/user_login_page");
     }
+
+    // 로그아웃
     @GetMapping("log-out")
     public ModelAndView logOut(){
         return new ModelAndView("security/user/user_login_page");

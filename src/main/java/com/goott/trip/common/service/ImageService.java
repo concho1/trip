@@ -38,7 +38,7 @@ public class ImageService {
         try {
             String url = awsS3Service.uploadMultipartFile(multipartFile,randomKey);
             Timestamp now = Timestamp.valueOf(LocalDateTime.now()); // 현재시간
-            Image image = new Image(randomKey,url,now);
+            Image image = new Image(randomKey,now,url);
             int dbresult = imageMapper.insertImage(image);
 
             if(dbresult>0) {
@@ -76,7 +76,7 @@ public class ImageService {
         }
         try{
             String url = awsS3Service.getUrl(key);
-            Image image = new Image(key,url,Timestamp.valueOf(LocalDateTime.now()));
+            Image image = new Image(key,Timestamp.valueOf(LocalDateTime.now()),url);
             imageMapper.updateImage(image);
             resultImage = Optional.of(image);
         }catch (Exception e){
