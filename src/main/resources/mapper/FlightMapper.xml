@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.goott.trip.jhm.model.FlightMapper">
+
+    <insert id="uploadAirport">
+        insert into trip.airport(eng_name, kor_name, iata, icao, region, eng_country, kor_country, eng_city) values
+        <foreach collection="list" item="airport" separator=",">
+            (
+             #{airport.engName},
+             #{airport.korName},
+             #{airport.iata},
+             #{airport.icao},
+             #{airport.region},
+             #{airport.engCountry},
+             #{airport.korCountry},
+             #{airport.engCity}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="uploadAirline">
+        insert into trip.airline(eng_name, kor_name, iata, icao, status, model, country, region) values
+        <foreach collection="list" item="airline" separator=",">
+            (
+             #{airline.engName},
+             #{airline.korName},
+             #{airline.iata},
+             #{airline.icao},
+             #{airline.status},
+             #{airline.model},
+             #{airline.country},
+             #{airline.region}
+            )
+        </foreach>
+    </insert>
+
+    <select id="findAirportByIATA" parameterType="String" resultType="String">
+        select kor_name from trip.airport where iata = #{iata}
+    </select>
+
+</mapper>

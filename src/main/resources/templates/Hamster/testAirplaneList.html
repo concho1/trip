@@ -28,7 +28,7 @@
                 <td th:text="${dto.getAirplaneArriveTime().toString().substring(0,16)}"></td>
                 <td th:text="${#numbers.formatInteger(dto.getAirplanePrice(),3,'COMMA')+ '원'}"></td>
                 <td>
-                    <button th:onclick="|location.href='@{/airplane/ticketing(key=${dto.getAirplaneKey()})}'|" style="background-color: beige">예매하기</button>
+                    <button th:onclick="|location.href='@{/member/hamster/airplane/ticketing(key=${dto.getAirplaneKey()})}'|" style="background-color: beige">예매하기</button>
                 </td>
             </tr>
             </th:block>
