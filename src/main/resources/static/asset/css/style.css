@@ -75,8 +75,8 @@
 }
 
 /* tedu-N45 [WmLXi9pyUS] */
-.tedu-N45 { max-width: 128rem; height: 46.5rem; position: fixed; top: 0; left: 0; right: 0; margin: auto; z-index: 99; }
-.tedu-N45 .sidebar { width: 44rem; padding: 4rem; border-radius: 2rem; overflow: hidden; background: #f7f7fb; position: absolute; top: 0; right: 0; }
+.tedu-N45 {position: fixed; top: 0; left: 0; right: 0; margin: auto; z-index: 99; }
+.tedu-N45 .sidebar {width: 44rem; padding: 4rem; border-radius: 2rem; overflow: hidden; background: #f7f7fb; position: absolute; top: 0; right: 0; }
 .tedu-N45 .sidebar .title-wrap { margin-bottom: 2rem; }
 .tedu-N45 .sidebar .title-wrap .title { font-size: 2.4rem; line-height: 3.6rem; font-weight: 500; color: #111; }
 .tedu-N45 .pay-info-warp { display: flex; justify-content: space-between; align-items: center; }
