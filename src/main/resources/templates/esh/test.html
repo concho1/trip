@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Exchange Rates</title>
+</head>
+<body>
+<h1>Exchange Rates</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Currency Unit</th>
+        <th>Buying TT Rate</th>
+        <th>Selling TT Rate</th>
+        <th>Currency Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="rate : ${exchangeRates}">
+        <td th:text="${rate['cur_unit']}"></td>
+        <td th:text="${rate['ttb']}"></td>
+        <td th:text="${rate['tts']}"></td>
+        <td th:text="${rate['cur_nm']}"></td>
+    </tr>
+
+    </tbody>
+</table>
+<h2>Exchange Currency</h2>
+<form action="doExchange" method="get">
+    <label for="fromCurrency">From Currency:</label>
+    <input type="text" id="fromCurrency" name="fromCurrency"><br><br>
+    <label for="toCurrency">To Currency:</label>
+    <input type="text" id="toCurrency" name="toCurrency"><br><br>
+    <label for="amount">Amount:</label>
+    <input type="text" id="amount" name="amount"><br><br>
+    <input type="submit" value="Convert">
+</form>
+</body>
+</html>

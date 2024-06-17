@@ -14,16 +14,13 @@
 </style>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Title</title>
 </head>
 <body>
 <input type="hidden" th:value="${cont.getAirplanePrice()}" id="airPrice">
 <input type="hidden" th:value="${cont.getAirplaneName()}+' '+${cont.getAirplaneDepart()}+'->'+${cont.getAirplaneArrive()}+'행 항공권'" id="airname">
 
-<div>
-    <input type="checkbox" id="coupon-box" />
-    <label for="coupon-box"> 5,000원 쿠폰 적용 </label>
-</div>
 <!-- 결제 UI, 이용약관 UI 영역 -->
 <div id="payment-method"></div>
 <div id="agreement"></div>
@@ -77,6 +74,23 @@
     </table>
 </div>
 
+<div align="center">
+    <table width="500">
+        <tr>
+            <th>탑승객 정보</th>
+        </tr>
+
+        <tr>
+            <td>몆명이 탑승하나요?</td>
+            <td>
+                <input type="number" min="1" onchange="customer_cnt()">
+            </td>
+        </tr>
+
+
+    </table>
+</div>
+
 <div class="aa" align="center">
     <h3>항공권 정보</h3>
     <table width="400" border="1" cellspacing="0">
@@ -94,10 +108,8 @@
     </table>
 </div>
 
-
 <script>
 
-    const coupon = document.getElementById("coupon-box");
     const button = document.getElementById("payment-button");
     const airPrice = document.getElementById("airPrice");
     const airName = document.getElementById("airname");
@@ -121,27 +133,21 @@
         { variantKey: "AGREEMENT" }
     );
 
-    coupon.addEventListener("change", function () {
-        if (coupon.checked) {
-            paymentMethodWidget.updateAmount(amount - 5000);
-        } else {
-            paymentMethodWidget.updateAmount(amount);
-        }
-    });
 
     button.addEventListener("click", function () {
         // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
         // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
         paymentWidget.requestPayment({
-            orderId: "aaa123",
+            orderId: "hamhamham123",
             orderName: airName.value,
-            successUrl: window.location.origin + "/success",
-            failUrl: window.location.origin + "/fail",
+            successUrl:window.location.origin +"/member/hamster/success",
+            failUrl: window.location.origin +"/member/hamster/fail",
             customerEmail: "customer123@gmail.com",
             customerName: "김토스",
             customerMobilePhone: "01012341234",
         });
     });
 </script>
+<script type="text/javascript" th:src="@{/ham.js/CustomerCnt.js}"></script>
 </body>
 </html>
