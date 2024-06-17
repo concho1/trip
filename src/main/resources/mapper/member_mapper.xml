@@ -9,8 +9,8 @@
     </select>
 
     <insert id="save">
-        INSERT INTO trip.member(id, pw, role, name, phone, member.rank, img_key, created_at)
-        VALUES (#{id},#{pw},#{role},#{name},#{phone},null,#{imgKey},now())
+        INSERT INTO trip.member(id, pw, role, name, member.rank, img_key, created_at)
+        VALUES (#{id},#{pw},#{role},#{name},null,#{imgKey},now())
     </insert>
 
 

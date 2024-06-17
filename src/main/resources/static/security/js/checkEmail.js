@@ -2,20 +2,23 @@
 let eflag = false;
 let flag = false;
 let emailchk = false;
-let email_regex = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
 
+$('#id').on('keyup',function (){
+    const id = $("#id").val();
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
-$('#sendEmail').on('click', function(){
-    var data = {
-        email : $('#id').val()
-    };
-
-    if(eflag){
-        alert('이메일을 보내는 중...');
-        return;
+    if(!emailPattern.test(id)){
+        $('#idError').hide();
     }else{
-        eflag = true;
+        $('#idError').show();
+        $('#sendEmail').prop('disabled', true);
     }
+});
+
+$('#sendEmail').on('click', function() {
+    var data = {
+        email: $('#id').val()
+    };
 
     console.log(data);
     $.ajax({
@@ -23,37 +26,39 @@ $('#sendEmail').on('click', function(){
         type: 'post',
         data: data,
         dataType: "json",
-        success: [function(map){
+        success: [function (map) {
             alert(map.message);
             console.log(map.message);
             eflag = false;
         }],
-        error: function(resp){
+        error: function (resp) {
             console.log(resp);
             eflag = false;
         }
     })
 
-    if(flag){
+    if (flag) {
         return;
-    }else{
+    } else {
         flag = true;
     }
 
     let input = "";
-    input += "<div class='col-12'>";
-    input += "<label class='form-label'>인증번호 확인</label>"
-    input += "<div class='input-group'>";
-    input += "<input type='text' name='checkCode' class='form-control' id='checkCode'><br>";
-    input += "<input type='button' value='인증번호 확인' class='btn btn-primary' onclick='al()' id='checkCodeButton' >";
+    input += "<fieldset class='fieldset'>";
+    input += "<legend class='legend'>인증번호 확인</legend>"
+    input += "<div class='input-group flex-style'>";
+    input += "<div class='tedu-inputset input-group'>";
+    input += "<input type='text' name='checkCode' class='tedu-input lightmode' id='checkCode'><br>";
+    input += "<button class='tedu-btn tedu-btn-dark btn-link btn-chk' id='checkCodeButton' type='button' onclick='al()'>인증번호 확인</button>";
     input += "</div>";
     input += "</div>";
+    input += "</fieldset>";
 
 
     $('#sendEmail').after(input);
 });
 
-function al(){
+function al() {
 
     var code = ($('#checkCode').val());
 

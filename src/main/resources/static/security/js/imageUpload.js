@@ -3,7 +3,6 @@ $(document).ready(function (){
     let $button = $ajax1.find('#fileButtonAjax');
     let $file = $ajax1.find('#fileAjax');
     let $img = $ajax1.find('#imgAjax');
-    let $nickname = $ajax1.find('#nicknameAjax');
     let goUrl = '/test-api/image';
 
     $button.click(function (){
@@ -11,13 +10,9 @@ $(document).ready(function (){
             alert('파일이 비었습니다.');
             return;
         }
-        if($nickname.val() === ''){
-            alert('닉네임이 비었습니다.');
-            return;
-        }
+
         let formData = new FormData();
         formData.append('file', $file[0].files[0]);
-        formData.append('nickname', $nickname.val());
 
         let response = ajaxFunction(goUrl, formData);   //ajax 보내고 응답 받기
 
