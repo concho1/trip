@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.goott.trip.concho.mapper.HotelMapper">
+    <insert id="insertHotelList">
+        INSERT INTO trip.hotels (
+        id_key, iata_code, name,
+        hotel_id, latitude, longitude, country_code,
+        distance_value, search_num
+        ) VALUES
+        <foreach collection="hotelList" item="ConchoHotel" separator=",">
+            (#{ConchoHotel.idKey}, #{ConchoHotel.iataCode}, #{ConchoHotel.name}, #{ConchoHotel.hotelId},
+            #{ConchoHotel.latitude}, #{ConchoHotel.longitude}, #{ConchoHotel.countryCode},
+            #{ConchoHotel.distanceValue},
+            #{ConchoHotel.searchNum})
+        </foreach>
+    </insert>
+    <select id="findHotelListBySearchNum" parameterType="Integer" resultType="ConchoHotel">
+        SELECT * FROM hotels WHERE search_num = #{searchNum}
+    </select>
+
+
+
+    <insert id="insertHotelsSearch" parameterType="HotelSearch">
+        INSERT INTO trip.hotels_search (
+            search_num, search_category, search_iata_code,
+            search_latitude, search_longitude, search_at
+        ) VALUES (
+            #{searchNum}, #{searchCategory}, #{searchIataCode},
+            #{searchLatitude}, #{searchLongitude}, now()
+        )
+    </insert>
+    <select id="getMaxNum" resultType="Integer">
+        SELECT IFNULL(MAX(search_num), 0) FROM trip.hotels_search
+    </select>
+    <select id="findSearchNumByIataCode" parameterType="String" resultType="Integer">
+        SELECT search_num FROM hotels_search
+        WHERE
+            search_iata_code = #{searchIataCode}
+            AND search_at BETWEEN now() - interval 2 HOUR AND now()
+        ORDER BY search_at DESC
+        LIMIT 1
+    </select>
+    <select id="findSearchNumByLatitudeAndLongitude" parameterType="map" resultType="Integer">
+        SELECT search_num FROM hotels_search
+        WHERE
+            (search_latitude = #{searchLatitude} AND search_longitude = #{searchLongitude})
+          AND search_at BETWEEN now() - interval 2 HOUR AND now()
+        ORDER BY search_at DESC
+        LIMIT 1
+    </select>
+</mapper>

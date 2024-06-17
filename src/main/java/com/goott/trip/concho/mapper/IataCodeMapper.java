@@ -7,5 +7,6 @@ import org.apache.ibatis.annotations.Param;
 public interface IataCodeMapper {
     void insertIataCode(@Param("iataCode") String iataCode,
                         @Param("city") String city,
-                        @Param("country") String country);
+                        @Param("country") String country,
+                        @Param("countryKo") String countryKo);
 }
