@@ -4,33 +4,48 @@ import com.goott.trip.hamster.model.Testproduct;
 import com.goott.trip.hamster.service.TossPayService;
 import com.goott.trip.hamster.service.airplaneService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("member/hamster")
 @RestController
 public class Hamcontroller {
 
     @Autowired
-    private airplaneService service;
+    private airplaneService airservice;
     @Autowired
     private TossPayService tossService;
 
     @GetMapping("airplane/list")
     public ModelAndView list() {
 
-        List<Testproduct> list =  this.service.airplaneList();
+        List<Testproduct> list =  this.airservice.airplaneList();
 
         return new ModelAndView("Hamster/testAirplaneList").addObject("list",list);
     }
 
     @GetMapping("airplane/ticketing")
     public ModelAndView airticketing(@RequestParam("key")String key){
-        Testproduct cont = this.service.airplaneCont(key);
-        return new ModelAndView("Hamster/testAirplaneTicket").addObject("cont",cont);
+        List<String> country = this.airservice.getCountry();
+        Testproduct cont = this.airservice.airplaneCont(key);
+        return new ModelAndView("Hamster/PlaneReservation").addObject("cont",cont).
+                addObject("country",country);
+    }
+
+    @PostMapping("airplane/payment")
+    public ModelAndView airplanePayment(@RequestParam("key")String key,@RequestParam("callFname")String callFname,
+                                        @RequestParam("callLname")String callLname,@RequestParam("country")String country,
+                                        @RequestParam("phone")String phone,@RequestParam("email")String email){
+        Testproduct cont = this.airservice.airplaneCont(key);
+
+        UUID uuid = UUID.randomUUID();
+
+        return new ModelAndView("Hamster/airplanePayment").addObject("cont",cont)
+                .addObject("callFname",callFname).addObject("callLname",callLname)
+                .addObject("country",country).addObject("phone",phone)
+                .addObject("email",email).addObject("UUID",uuid);
     }
 
     @GetMapping("success")

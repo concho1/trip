@@ -1,0 +1,181 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://js.tosspayments.com/v1/payment-widget"></script>
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<body>
+<div th:replace="~{common/head :: head-fragment}"></div>
+
+<!-- [E]tedu-N3 -->
+<main class="th-layout-main ">
+  <input type="hidden" th:value="${cont.getAirplanePrice()}" id="airPrice">
+  <input type="hidden" th:value="${UUID}" id="UUID">
+  <input type="hidden" th:value="${cont.getAirplaneName()}+' '+${cont.getAirplaneDepart()}+'->'+${cont.getAirplaneArrive()}+'행 항공권'" id="airname">
+  <!-- [S]tedu-N44 -->
+  <div class="tedu-N44" data-bid="GALxi9PyR7">
+    <div class="content-inner">
+      <div class="content-container">
+        <section class="">
+          <div class="title-wrap">
+            <h3 class="cont-title">결제하기</h3>
+          </div>
+          <div class="payment-wrap">
+            <div class="payment-area">
+              <div class="title">주문자 정보</div>
+              <div class="payment-cont payment-cont-type2">
+                <fieldset class="fieldset">
+                  <p class="stitle">이름</p>
+                  <div class="input-group">
+                    <div class="tedu-inputset">
+                      <legend class="legend" th:text="${callFname} + ' '+${callLname}"></legend>
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset class="fieldset">
+                  <p class="stitle">휴대전화</p>
+                  <div class="input-group">
+                    <div class="tedu-inputset">
+                      <legend class="legend" th:text="${country} + ' '+${phone}"></legend>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="payment-cont">
+                <fieldset class="fieldset">
+                  <p class="stitle">이메일</p>
+                  <div class="input-group">
+                    <div class="tedu-inputset">
+                      <legend class="legend" th:text="${email}"></legend>
+                    </div>
+                  </div>
+                  <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                </fieldset>
+              </div>
+            </div>
+            <div class="payment-area">
+              <div class="title">쿠폰 선택</div>
+              <div class="payment-cont">
+                <div class="selectset tedu-selectset lightmode">
+                  <button class="selectset-toggle" type="button">
+                    <span>쿠폰 선택안함</span>
+                  </button>
+                  <ul class="selectset-list">
+                    <li class="selectset-item">
+                      <button class="selectset-link" type="button" data-value="템플릿1">
+                        <span>쿠폰 선택안함</span>
+                      </button>
+                    </li>
+                    <li class="selectset-item">
+                      <button class="selectset-link" type="button" data-value="템플릿2">
+                        <span>쿠폰 선택1</span>
+                      </button>
+                    </li>
+                    <li class="selectset-item">
+                      <button class="selectset-link" type="button" data-value="템플릿3">
+                        <span>쿠폰 선택2</span>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="payment-area">
+              <div class="title">결제수단선택</div>
+              <!-- 결제 UI, 이용약관 UI 영역 -->
+              <div id="payment-method"></div>
+              <div id="agreement"></div>
+              <button type="button" class="tedu-btn tedu-btn-light add-cart" id="payment-button">결제하기</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <!-- [E]tedu-N44 -->
+  <!-- [S]tedu-N45 -->
+  <div class="tedu-N45" data-bid="WmLXi9pyUS">
+    <div class="content-container">
+      <div class="sidebar">
+        <div class="title-wrap">
+          <h3 class="title">결제 상품 정보</h3>
+        </div>
+        <div class="pay-info-warp">
+          <div class="img-area">
+            <img class="card-img card-img-mo" src="../resources/images/img_edu_01.png" alt="이미지">
+          </div>
+          <div class="text-area">
+            <div class="title" th:text="${cont.getAirplaneDepart() + ' -> ' + cont.getAirplaneArrive()}"></div>
+            <p class="text" th:text="${cont.getAirplaneDepartTime().toString().substring(5,16) + ' ~ ' + cont.getAirplaneArriveTime().toString().substring(5,16)}"></p>
+            <p class="text" th:text="${cont.getAirplaneName()}"></p>
+          </div>
+        </div>
+        <div class="price-info-wrap">
+          <div class="price-area">
+            <span>정가</span>
+            <strong>1,200,000원</strong>
+          </div>
+          <div class="price-area">
+            <span>쿠폰사용</span>
+            <strong>-</strong>
+          </div>
+          <div class="price-area">
+            <span>할인</span>
+            <strong>- 840,000원</strong>
+          </div>
+          <div class="price-area price-total">
+            <span>결제 금액</span>
+            <strong>360,000원</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [E]tedu-N45 -->
+</main>
+<script>
+
+  const button = document.getElementById("payment-button");
+  const airPrice = document.getElementById("airPrice");
+  const airName = document.getElementById("airname");
+  const UUID = document.getElementById("UUID");
+  const amount = parseFloat(airPrice.value);
+
+  // 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요.
+  // 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
+  const widgetClientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+  const customerKey = "5JSIE9Ck2bINa_In__32e";
+  const paymentWidget = PaymentWidget(widgetClientKey, customerKey); // 회원 결제
+  // const paymentWidget = PaymentWidget(widgetClientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
+
+  const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+          "#payment-method",
+          { value: amount },
+          { variantKey: "DEFAULT" }
+  );
+
+  paymentWidget.renderAgreement(
+          "#agreement",
+          { variantKey: "AGREEMENT" }
+  );
+
+
+  button.addEventListener("click", function () {
+    // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
+    // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
+    paymentWidget.requestPayment({
+      orderId: UUID.value,
+      orderName: airName.value,
+      successUrl:window.location.origin +"/member/hamster/success",
+      failUrl: window.location.origin +"/member/hamster/fail",
+      customerEmail: "customer123@gmail.com",
+      customerName: "김토스",
+      customerMobilePhone: "01012341234",
+    });
+  });
+</script>
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+  <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+</body>
