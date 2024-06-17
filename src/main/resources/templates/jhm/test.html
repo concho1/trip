@@ -7,28 +7,95 @@
 <body>
 
     <form id="tokenForm" method="post" action="/test">
-        <input type="hidden" id="token" name="token">
-        <input type="button" onclick="mkToken()" value="go">
+        <input type="radio" name="wangbok" value="false" id="oneWay" checked>편도
+        <input type="radio" name="wangbok" value="true" id="round">왕복
+        <input type="checkbox" name="nonStop" value="true">직항만 보기
+        <br>
+        <input type="text" name="origin" id="origin" placeholder="출발지">
+        <input type="button" id="change" onclick="changeTo()" value="바꿔">
+        <input type="text" name="destination" id="destination" placeholder="도착지">
+        <br>
+        <input value="가는날">
+        <input type="date" name="departure">
+        <br>
+        <input value="오는날">
+        <input type="date" name="comeback">
+        <br>
+        <input value="인원">
+        <br>
+        <input value="성인">
+        <select name="adults">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+        </select>
+        <input value="아동">
+        <select name="children">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+        </select>
+        <input value="영아">
+        <select name="infants">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+        </select>
+        <br>
+        <input value="좌석">
+        <select name="airplaneClass">
+            <option value="">--</option>
+            <option value="ECONOMY">이코노미</option>
+            <option value="PREMIUM_ECONOMY">프리미엄 이코노미</option>
+            <option value="BUSINESS">비즈니스</option>
+            <option value="FIRST">퍼스트</option>
+        </select>
+
+        <input value="화폐">
+        <select name="currency">
+            <option value="KRW">한국 원</option>
+            <option value="USD">미국 달러</option>
+            <option value="JPY">일본 엔</option>
+            <option value="CNY">중국 위안</option>
+        </select>
+
+        <input type="submit" value="검색">
+    </form>
+    <br> <br> <br>
+
+    <form method="post" action="/upload_airport" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <input type="submit" value="공항 업로드">
+    </form>
+
+    <br>
+
+    <form method="post" action="/upload_airline" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <input type="submit" value="항공사 업로드">
     </form>
 
 <script>
-    function mkToken() {
-        fetch("https://test.api.amadeus.com/v1/security/oauth2/token", {
-            body: "grant_type=client_credentials&client_id=f57TPq4g6SatIJyEzDj0wnYjzh3m4R85&client_secret=BRYBhFTlAcMlFUNo",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            method: "POST"
-        })
-            .then(res => res.json())
-            .then(data => {
-                let token = data.access_token;
-                console.log(token);
-                document.querySelector("#token").value = token;
-                document.getElementById("tokenForm").submit();
-            })
+    function changeTo() {
+        let temp;
+        let origin = document.getElementById("origin").value;
+        let destination = document.getElementById("destination").value;
 
+        document.getElementById("origin").value = destination;
+        document.getElementById("destination").value = origin;
     }
 </script>
+
 </body>
 </html>
