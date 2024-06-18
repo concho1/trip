@@ -1,5 +1,6 @@
 package com.goott.trip.security.service;
 
+import com.goott.trip.hamster.model.Testproduct;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -60,6 +61,40 @@ public class EmailService {
         msgg+= code + "</strong><div><br/> ";
         msgg+= "</div>";
         session.setAttribute("sCode", code);
+        message.setText(msgg,"UTF-8","HTML");
+        javaMailSender.send(message);
+
+        return msgg;
+    }
+
+    public String sendAirplaneEmail(String email, HttpSession session,String UUID,Testproduct cont) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        message.addRecipients(Message.RecipientType.TO,email);
+        message.setSubject("[tripHamsic]"+email+"고객님 전자 영수증입니다.");
+
+        String msgg = "";
+        msgg+= "<p>안녕하세요. tripHamsic입니다.</p>";
+        msgg+= "<p>"+email+"고객님께서 결제하신 주문의 전자 영수증입니다.</p>";
+        msgg+= "<br>";
+        msgg+= "<br>";
+        msgg += "<table border='1' width='700' cellspacing='0'>";
+        msgg += "<tr>";
+        msgg += "<th>출발지</th>";
+        msgg += "<th>목적지</th>";
+        msgg += "<th>비행시간</th>";
+        msgg += "<th>항공사</th>";
+        msgg += "<th>결제금액</th>";
+        msgg += "</tr>";
+
+        msgg += "<tr>";
+        msgg += "<td>"+cont.getAirplaneDepart()+"</td>";
+        msgg += "<td>"+cont.getAirplaneArrive()+"</td>";
+        msgg += "<td>"+cont.getAirplaneDepartTime().toString().substring(5,16) + " ~ " + cont.getAirplaneArriveTime().toString().substring(5,16)+"</td>";
+        msgg += "<td>"+cont.getAirplaneName()+"</td>";
+        msgg += "<td>"+cont.getAirplanePrice()+"</td>";
+        msgg += "</tr>";
+        msgg += "</table>";
+
         message.setText(msgg,"UTF-8","HTML");
         javaMailSender.send(message);
 

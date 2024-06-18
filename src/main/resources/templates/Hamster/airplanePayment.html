@@ -9,9 +9,11 @@
 
 <!-- [E]tedu-N3 -->
 <main class="th-layout-main ">
-  <input type="hidden" th:value="${cont.getAirplanePrice()}" id="airPrice">
+  <input type="hidden" th:value="${email}" id="email">
   <input type="hidden" th:value="${UUID}" id="UUID">
-  <input type="hidden" th:value="${cont.getAirplaneName()}+' '+${cont.getAirplaneDepart()}+'->'+${cont.getAirplaneArrive()}+'행 항공권'" id="airname">
+  <input type="hidden" th:value="${cont.getAirplanePrice()}" id="airPrice">
+  <input type="hidden" th:value="${cont.getAirplaneName()}+' '+${cont.getAirplaneDepart()}+'->'+${cont.getAirplaneArrive()}+'행 항공권'" id="airName">
+  <input type="hidden" th:value="${cont.getAirplaneKey()}" id="airKey"></input>
   <!-- [S]tedu-N44 -->
   <div class="tedu-N44" data-bid="GALxi9PyR7">
     <div class="content-inner">
@@ -106,7 +108,7 @@
           </div>
           <div class="text-area">
             <div class="title" th:text="${cont.getAirplaneDepart() + ' -> ' + cont.getAirplaneArrive()}"></div>
-            <p class="text" th:text="${cont.getAirplaneDepartTime().toString().substring(5,16) + ' ~ ' + cont.getAirplaneArriveTime().toString().substring(5,16)}"></p>
+            <p class="text" id="airTime" th:text="${cont.getAirplaneDepartTime().toString().substring(5,16) + ' ~ ' + cont.getAirplaneArriveTime().toString().substring(5,16)}"></p>
             <p class="text" th:text="${cont.getAirplaneName()}"></p>
           </div>
         </div>
@@ -137,9 +139,12 @@
 
   const button = document.getElementById("payment-button");
   const airPrice = document.getElementById("airPrice");
-  const airName = document.getElementById("airname");
+  const airName = document.getElementById("airName");
+  const airTime = document.getElementById("airTime").value;
   const UUID = document.getElementById("UUID");
   const amount = parseFloat(airPrice.value);
+  const airKey = document.getElementById("airKey").value;
+  const email = document.getElementById("email").value;
 
   // 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요.
   // 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
@@ -166,7 +171,7 @@
     paymentWidget.requestPayment({
       orderId: UUID.value,
       orderName: airName.value,
-      successUrl:window.location.origin +"/member/hamster/success",
+      successUrl:window.location.origin +"/member/hamster/success?"+"airKey={"+airKey+"}&email={"+email+"}&UUID={"+UUID.value+"}&",
       failUrl: window.location.origin +"/member/hamster/fail",
       customerEmail: "customer123@gmail.com",
       customerName: "김토스",
