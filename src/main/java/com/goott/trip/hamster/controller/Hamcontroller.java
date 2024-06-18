@@ -3,6 +3,11 @@ package com.goott.trip.hamster.controller;
 import com.goott.trip.hamster.model.Testproduct;
 import com.goott.trip.hamster.service.TossPayService;
 import com.goott.trip.hamster.service.airplaneService;
+import com.goott.trip.security.service.EmailService;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,7 +21,7 @@ public class Hamcontroller {
     @Autowired
     private airplaneService airservice;
     @Autowired
-    private TossPayService tossService;
+    private EmailService emailService;
 
     @GetMapping("airplane/list")
     public ModelAndView list() {
@@ -48,18 +53,30 @@ public class Hamcontroller {
                 .addObject("email",email).addObject("UUID",uuid);
     }
 
-    @GetMapping("success")
+    @GetMapping("/success")
     public ModelAndView PaymentSuccess(
+            @RequestParam String airKey,
+            @RequestParam String email,
+            @RequestParam String UUID,
             @RequestParam String paymentType,
             @RequestParam String orderId,
             @RequestParam String paymentKey,
-            @RequestParam int amount) {
+            HttpServletRequest request) throws MessagingException {
 
-        String response = tossService.confirmPayment(paymentKey, orderId, amount);
+        HttpSession session = request.getSession();
+        String newAirKey = airKey.replaceAll("[{}]","");
+        String newEmail = email.replaceAll("[{}]","");
 
-        ModelAndView mav = new ModelAndView("Hamster/paymentSuccess");
-        mav.addObject("response", response);
-        return mav;
+        Testproduct cont = this.airservice.airplaneCont(newAirKey);
+        this.emailService.sendAirplaneEmail(newEmail,session,UUID,cont);
+
+        ModelAndView modelAndView = new ModelAndView("Hamster/airplanePaymentSuccess");
+        modelAndView.addObject("paymentKey", paymentKey)
+                .addObject("orderId", orderId)
+                .addObject("email", newEmail)
+                .addObject("amount", cont.getAirplanePrice()).addObject("cont",cont);
+
+        return modelAndView;
     }
 
     @GetMapping("/hotel/{id_key}")
