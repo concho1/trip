@@ -22,30 +22,10 @@ public class EshMainController {
     private GlobeService globeService;
 
     @GetMapping("/exchangeRate")
-    public String getExchangeRates(Model model) {
-        List<Map<String, Object>> exchangeRates = exchangeService.getExchangeRates();
+    public String exchangeData(Model model) {
+        List<Map<String, Object>> exchangeRates = exchangeService.getExchangeData();
         model.addAttribute("exchangeRates", exchangeRates);
         return "esh/test";
-    }
-
-    @GetMapping("/doExchange")
-    public String Exchange(
-            @RequestParam("fromCurrency") String fromCurrency,
-            @RequestParam("toCurrency") String toCurrency,
-            @RequestParam("amount") double amount,
-            Model model) {
-
-        try {
-            double result = exchangeService.convertCurrency(fromCurrency, toCurrency, amount);
-            model.addAttribute("result", result);
-            model.addAttribute("fromCurrency", fromCurrency);
-            model.addAttribute("toCurrency", toCurrency);
-            model.addAttribute("amount", amount);
-        } catch(Exception e) {
-            model.addAttribute("error", e.getMessage());
-        }
-
-        return "esh/tester";
     }
 
 }

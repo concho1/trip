@@ -11,8 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class Exchange {
     private String countryName;
-    private String countryCode;
+    private String currencyCode;
     private Timestamp exchangeDate;
-    private double exchangeRate;
-    private String memberId;
+    private double buyingTtRate;
 }

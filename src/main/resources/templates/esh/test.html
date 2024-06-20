@@ -10,7 +10,6 @@
     <tr>
         <th>Currency Unit</th>
         <th>Buying TT Rate</th>
-        <th>Selling TT Rate</th>
         <th>Currency Name</th>
     </tr>
     </thead>
@@ -18,21 +17,42 @@
     <tr th:each="rate : ${exchangeRates}">
         <td th:text="${rate['cur_unit']}"></td>
         <td th:text="${rate['ttb']}"></td>
-        <td th:text="${rate['tts']}"></td>
         <td th:text="${rate['cur_nm']}"></td>
     </tr>
 
     </tbody>
 </table>
 <h2>Exchange Currency</h2>
-<form action="doExchange" method="get">
-    <label for="fromCurrency">From Currency:</label>
-    <input type="text" id="fromCurrency" name="fromCurrency"><br><br>
-    <label for="toCurrency">To Currency:</label>
-    <input type="text" id="toCurrency" name="toCurrency"><br><br>
-    <label for="amount">Amount:</label>
-    <input type="text" id="amount" name="amount"><br><br>
+<form action="user/esh/doConvert" method="get">
+    <label>From Currency:</label>
+    <input type="text" name="fromCurrency"><br>
+    <label>To Currency:</label>
+    <input type="text" name="toCurrency"><br>
+    <label>Amount:</label>
+    <input type="text" name="amount"><br>
+
     <input type="submit" value="Convert">
 </form>
+
+<!-- 환전 결과를 표시할 부분 -->
+<h3>Converted Amount:</h3>
+<p id="convertedAmount"></p>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); // 폼 제출 기본 동작을 막음
+
+        const fromCurrency = document.querySelector('input[name="fromCurrency"]').value;
+        const toCurrency = document.querySelector('input[name="toCurrency"]').value;
+        const amount = document.querySelector('input[name="amount"]').value;
+
+        fetch(`/user/esh/doConvert?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&amount=${amount}`)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('convertedAmount').innerText = data;
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
 </body>
 </html>
