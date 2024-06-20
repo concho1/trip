@@ -2,7 +2,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<head th:replace="~{common/head-top :: head-top-fragment}">
+    <title>감자팀</title>
+    <style>
+
+    </style>
+</head>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
 
@@ -49,7 +54,7 @@
                                 </fieldset>
 
                                 <fieldset class="fieldset">
-                                    <legend class="legend">영문 이름(FirstName)</legend>
+                                    <legend class="legend">영문 이름(First Name)</legend>
                                     <div class="input-group">
                                         <div class="tedu-inputset">
                                             <input type="text" class="tedu-input lightmode" id="firstName" placeholder="이름을 입력해주세요." aria-label="이름" required>
@@ -58,7 +63,7 @@
                                     </div>
                                 </fieldset>
                                 <fieldset class="fieldset">
-                                    <legend class="legend">영문 성(LastName)</legend>
+                                    <legend class="legend">영문 성(Last Name)</legend>
                                     <div class="input-group">
                                         <div class="tedu-inputset">
                                             <input type="text" class="tedu-input lightmode" id="lastName" placeholder="성을 입력해주세요." aria-label="성" required>
@@ -72,10 +77,11 @@
                                     <div class="input-group flex-style">
                                         <div class="tedu-inputset input-group">
                                             <input type="text" class="tedu-input lightmode" id="id" name="id" placeholder="email@google.com" aria-label="이메일 형식으로 입력해주세요." required>
-                                            <button class="tedu-btn tedu-btn-dark btn-link btn-chk" id="sendEmail" type="button">이메일 인증</button>
+                                            <button class="tedu-btn tedu-btn-dark btn-link btn-chk" id="sendEmail" type="button" disabled="true">이메일 인증</button>
                                         </div>
                                     </div>
                                     <div id="idError" style="color: red; display: none;">이메일 형식으로 입력해주세요.</div>
+                                    <div id="idDupError" style="color: red; display: none;">이미 사용중인 이메일입니다.</div>
                                 </fieldset>
 
                                 <fieldset class="fieldset">
@@ -99,8 +105,8 @@
                                 </fieldset>
 
                                 <div class="form-footer btn-box">
-                                    <button class="tedu-btn tedu-btn-light btn-mono" type="reset">취소</button>
-                                    <button class="tedu-btn tedu-btn-light btn-link" type="submit" onclick="joinCheck()">확인</button>
+                                    <button class="tedu-btn tedu-btn-light btn-mono" type="button" th:onclick="'window.location.href=\'/user/con/check\''">취소</button>
+                                    <button class="tedu-btn tedu-btn-light btn-link" type="submit" style="margin-left: 5px;" onclick="return joinCheck()">확인</button>
                                 </div>
                             </div>
                         </form>
@@ -120,4 +126,3 @@
 </div>
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
 </body>
-</html>

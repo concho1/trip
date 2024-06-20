@@ -1,22 +1,77 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head>
-    <title>로그인</title>
-</head>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <body>
-<h2>로그인</h2>
-<form th:action="@{/user/con/log-in}" method="post">
-    <div>
-        <label for="id">아이디:</label>
-        <input type="text" id="id" name="id" required>
+<div th:replace="~{common/head :: head-fragment}"></div>
+
+<main class="th-layout-main ">
+    <!-- [S]tedu-N33 -->
+    <div class="tedu-N33" data-bid="ocLXijzT1q">
+        <div class="content-inner">
+            <div class="content-container">
+                <div class="form-wrap">
+                    <div class="form-header">
+                        <h3 class="form-tit">LOGIN</h3>
+                    </div>
+                    <div class="form-body">
+                        <form th:action="@{/user/con/log-in}" method="post">
+                            <div class="tedu-inputset">
+                                <input type="text" class="tedu-input lightmode" placeholder="아이디(이메일)" aria-label="ID" id="id" name="id" required>
+                            </div>
+                            <div class="tedu-inputset">
+                                <input type="password" class="tedu-input lightmode" placeholder="비밀번호" aria-label="Password" id="pw" name="pw" required>
+                            </div>
+                            <div class="contents-checkset d-flex justify-content-start">
+                                <div class="checkset">
+                                    <input id="checkset-c-3-1" class="checkset-input input-round" type="checkbox" value="" checked="">
+                                    <label class="checkset-label" for="checkset-c-3-1"></label>
+                                    <span class="checkset-text">자동 로그인</span>
+                                </div>
+                                <div class="checkset">
+                                    <input id="checkset-c-3-2" class="checkset-input input-round" type="checkbox" value="">
+                                    <label class="checkset-label" for="checkset-c-3-2"></label>
+                                    <span class="checkset-text">아이디 저장</span>
+                                </div>
+                            </div>
+                            <ul class="contents-list d-flex justify-content-center">
+                                <li class="contents-item">
+                                    <a th:href="@{user/con/check}" class="contents-link">회원가입</a>
+                                </li>
+                                <li class="contents-item">
+                                    <a href="javascript:void(0)" class="contents-link">비밀번호 찾기</a>
+                                </li>
+                            </ul>
+                            <div class="btn-box">
+                                <button class="tedu-btn tedu-btn-light btn-link" type="submit">로그인</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-footer">
+                        <div class="form-footer-tit">
+                            <span>SNS 계정으로 로그인</span>
+                        </div>
+                        <a class="contents-start-kakao" th:href="@{kakao}">
+                            <img class="btn-icon" src="../../../static/resources/icons/ico_kakao.svg" alt="카카오로그인">
+                        </a>
+                        <a class="contents-start-naver" href="javascript:void(0)">
+                            <img class="btn-icon" src="../../../static/resources/icons/ico_naver.svg" alt="네이버로그인">
+                        </a>
+                        <a class="contents-start-naver" href="javascript:void(0)">
+                            <img class="btn-icon" src="../../../static/resources/icons/ico_apple.svg" alt="애플로그인">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label for="pw">비밀번호:</label>
-        <input type="password" id="pw" name="pw" required>
-    </div>
-    <div>
-        <button type="submit">로그인</button>
-    </div>
-</form>
+</main>
+
+
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
 </body>
-</html>
