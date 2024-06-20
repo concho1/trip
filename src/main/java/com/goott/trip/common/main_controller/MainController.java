@@ -10,4 +10,8 @@ public class MainController {
     public ModelAndView getHome(){
         return new ModelAndView("common/home");
     }
+    @GetMapping("/sample")
+    public ModelAndView getSample(){
+        return new ModelAndView("common/sample");
+    }
 }

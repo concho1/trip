@@ -1,4 +1,3 @@
-/*
 package com.goott.trip.security.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
+/*
 @Service
 @Data
 public class KakaoApi {
