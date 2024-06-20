@@ -2,6 +2,7 @@ package com.goott.trip.hamster.controller;
 
 import com.goott.trip.common.model.Alarm;
 import com.goott.trip.hamster.model.Testproduct;
+import com.goott.trip.hamster.model.airplaneInfo;
 import com.goott.trip.hamster.service.airplaneService;
 import com.goott.trip.hamster.service.shoppingCartService;
 import com.goott.trip.security.service.EmailService;
@@ -32,6 +33,14 @@ public class Hamcontroller {
         List<Testproduct> list =  this.airservice.airplaneList();
 
         return new ModelAndView("Hamster/testAirplaneList").addObject("list",list);
+    }
+
+    @GetMapping("airplane/airplaneInfoList")
+    public ModelAndView airplaneInfoList(){
+
+        List<airplaneInfo> list = this.airservice.airplaneInfoList();
+
+        return new ModelAndView("Hamster/airplaneInfoList").addObject("list",list);
     }
 
     @GetMapping("airplane/ticketing")
