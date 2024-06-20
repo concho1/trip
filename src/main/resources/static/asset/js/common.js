@@ -334,3 +334,52 @@
     });
   });
 })();
+// tedu-N20 [hNLXLKsn6F]
+(function() {
+  $(function() {
+    $(".tedu-N20").each(function() {
+      const $block = $(this);
+      const $header = $(".header-container");
+      const $headerHeight = $header.height();
+      // HeaderHeight
+      $(document).ready(function() {
+        $block.css({
+          "top": $headerHeight + 50 + "px"
+        })
+      })
+      //Bookmark
+      $block.find(".ico-bookmark").on("click", function() {
+        const $this = $(this);
+        $this.parents(".sidebar").toggleClass("badge");
+      });
+      // Scroll
+      $(window).on("load scroll", function() {
+        const $thisTop = $(this).scrollTop();
+        if ($thisTop > 0) {
+          $block.addClass("sticky");
+          var fromBottom = $(document).height() - $thisTop - $(window).height();
+          var maxDistance = 200;
+          if (fromBottom > maxDistance) {
+            $block.css('bottom', '280px');
+          }
+          if (window.innerWidth <= 980) {
+            $block.removeClass("sticky");
+            $block.addClass("default");
+          }
+        } else {
+          $block.removeClass("sticky");
+          $block.css('bottom', 'auto');
+        }
+      });
+      // Mobile Area
+      $(window).on('resize', function() {
+        if (window.innerWidth >= 980) {
+          $block.removeClass("default");
+        } else if (window.innerWidth <= 980) {
+          $block.removeClass("sticky");
+          $block.addClass("default");
+        }
+      });
+    });
+  });
+})();

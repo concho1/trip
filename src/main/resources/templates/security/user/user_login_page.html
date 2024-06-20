@@ -53,14 +53,14 @@
                         <div class="form-footer-tit">
                             <span>SNS 계정으로 로그인</span>
                         </div>
-                        <a class="contents-start-kakao" th:href="@{kakao}">
-                            <img class="btn-icon" src="../../../static/resources/icons/ico_kakao.svg" alt="카카오로그인">
+                        <a class="contents-start-kakao" th:href="@{/oauth2/authorize/kakao}">
+                            <img class="btn-icon" th:src="@{/asset/icons/ico_kakao.svg}" alt="카카오로그인">
                         </a>
                         <a class="contents-start-naver" href="javascript:void(0)">
-                            <img class="btn-icon" src="../../../static/resources/icons/ico_naver.svg" alt="네이버로그인">
+                            <img class="btn-icon" th:src="@{/asset/icons/ico_naver.svg}" alt="네이버로그인">
                         </a>
                         <a class="contents-start-naver" href="javascript:void(0)">
-                            <img class="btn-icon" src="../../../static/resources/icons/ico_apple.svg" alt="애플로그인">
+                            <img class="btn-icon" th:src="@{/asset/icons/ico_apple.svg}" alt="애플로그인">
                         </a>
                     </div>
                 </div>

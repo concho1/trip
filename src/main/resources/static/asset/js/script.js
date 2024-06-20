@@ -98,3 +98,115 @@
     });
   });
 })();
+// tedu-N18 [JsLXmnn4Nl]
+(function() {
+  $(function() {
+    $(".tedu-N18").each(function() {
+      const $block = $(this);
+      const $header = $(".header-container");
+      // Background Color
+      if ($header.hasClass("darkmode")) {
+        $block.addClass("darkmode");
+        $block.removeClass("lightmode");
+      } else if ($header.hasClass("lightmode")) {
+        $block.addClass("lightmode");
+        $block.removeClass("darkmode");
+      }
+    });
+  });
+})();
+// tedu-N22 [gClXmnN54I]
+(function() {
+  $(function() {
+    $(".tedu-N22").each(function() {
+      const $block = $(this);
+      // Tab Menu 
+      $block.find(".tab-menu").on("click", function() {
+        const $this = $(this);
+        $this.addClass("active");
+        $this.siblings().removeClass("active");
+      })
+    });
+  });
+})();
+// tedu-N23 [tolxmNN5c7]
+(function() {
+  $(function() {
+    $(".tedu-N23").each(function() {
+      const $block = $(this);
+      const $header = $(".header-container");
+      // Background Color
+      if ($header.hasClass("darkmode")) {
+        $block.addClass("darkmode");
+        $block.removeClass("lightmode");
+      } else if ($header.hasClass("lightmode")) {
+        $block.addClass("lightmode");
+        $block.removeClass("darkmode");
+      }
+    });
+  });
+})();
+// tedu-N27 [JKlXMNn5oI]
+(function() {
+  $(".tedu-N27").each(function() {
+    const $block = $(this);
+    $(function() {
+      var contSwiper = new Swiper(".tedu-N27 .review-swiper", {
+        slidesPerView: 1,
+        spaceBetween: 12,
+        loop: false,
+        centeredSlides: false,
+        speed: 500,
+        navigation: {
+          nextEl: ".review-swiper .swiper-button-next",
+          prevEl: ".review-swiper .swiper-button-prev",
+        },
+        breakpoints: {
+          768: {
+            slidesPerView: 1.5,
+            spaceBetween: 12,
+          },
+          980: {
+            slidesPerView: 1,
+            spaceBetween: 12,
+          },
+          996: {
+            slidesPerView: 1,
+            spaceBetween: 12,
+          },
+          1024: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+          },
+        },
+      });
+    });
+  });
+})();
+// tedu-N29 [UnLxmNn5uh]
+(function() {
+  $(function() {
+    $(".tedu-N29").each(function() {
+      const $block = $(this);
+      // accordion
+      $block.find(".acc-btn").on("click", function() {
+        const $this = $(this);
+        $this.parents(".acc-item").addClass("active");
+        $this.parents(".acc-item").siblings().removeClass("active");
+      })
+    });
+  });
+})();
+// tedu-N31 [BGlxMNn5ZF]
+(function() {
+  $(function() {
+    $(".tedu-N31").each(function() {
+      const $block = $(this);
+      //Bookmark
+      $block.find(".ico-heart").on("click", function() {
+        const $this = $(this);
+        $this.parents(".card-wrap").toggleClass("badge");
+      });
+    });
+  });
+})();
