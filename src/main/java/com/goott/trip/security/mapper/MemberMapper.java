@@ -9,5 +9,4 @@ public interface MemberMapper {
     void save(Member member);
     void kakao(Member member);
     Boolean checkDupId(String id);
-
 }

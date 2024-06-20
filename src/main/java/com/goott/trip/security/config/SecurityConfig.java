@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig{
     private final VisitorCountFilter visitorCountFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSc) throws Exception {
         // sessionManagement => 세션 정책 : 기본이 IF_REQUIRED
