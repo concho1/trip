@@ -3,6 +3,7 @@ package com.goott.trip.hamster.controller;
 import com.goott.trip.common.model.Alarm;
 import com.goott.trip.hamster.model.Testproduct;
 import com.goott.trip.hamster.model.airplaneInfo;
+import com.goott.trip.hamster.model.shoppingCart;
 import com.goott.trip.hamster.service.airplaneService;
 import com.goott.trip.hamster.service.shoppingCartService;
 import com.goott.trip.security.service.EmailService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,34 +57,30 @@ public class Hamcontroller {
     public ModelAndView airShoppingCart(@RequestParam("key")String key, Principal principal, Model model){
 
         Alarm alarm = new Alarm(model);
-
         String memberId = principal.getName();
-        Testproduct cont = this.airservice.airplaneCont(key);
-        List<Testproduct> dbKey = this.shoppingCartService.checkDup(memberId);
+        List<shoppingCart> dbKey = this.shoppingCartService.checkDup(memberId);
+        List<Testproduct> plist = new ArrayList<>();
 
-        for(int i = 0 ; i < dbKey.size() ; i++){
+        System.out.println(key);
 
-            System.out.println(dbKey.get(i));
-        }
-        if(key.equals(dbKey)){
+        boolean isAlreadyInCart = dbKey.stream().anyMatch(cartItem -> cartItem.getAirKey().equals(key));
 
-            String[] item = this.shoppingCartService.giveShoppingItem(memberId);
-            System.out.println(item[0]);
-
-            return new ModelAndView("Hamster/shoppingCart").addObject("cont",cont).
-                    addObject("memberId",memberId);
-        }else{
-
-            int check = this.shoppingCartService.insertCart(memberId,key);
-            if(check > 0){
-                return new ModelAndView("Hamster/shoppingCart").addObject("cont",cont).
-                        addObject("memberId",memberId);
-            }else{
-                alarm.setMessageAndRedirect("장바구니 넣기 중 오류가 발생했습니다.","");
+        if (!isAlreadyInCart) {
+            int check = this.shoppingCartService.insertCart(memberId, key);
+            if (check > 0) {
+                plist.add(this.airservice.airplaneCont(key));
+            } else {
+                alarm.setMessageAndRedirect("장바구니 넣기 중 오류가 발생했습니다.", "");
                 return new ModelAndView(alarm.getMessagePage());
             }
         }
 
+        // DB에 있는 모든 항목을 추가
+        for (shoppingCart cartItem : dbKey) {
+            plist.add(this.airservice.airplaneCont(cartItem.getAirKey()));
+        }
+
+        return new ModelAndView("Hamster/shoppingCart").addObject("plist", plist);
     }
 
     @PostMapping("airplane/payment")
