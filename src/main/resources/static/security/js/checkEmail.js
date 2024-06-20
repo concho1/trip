@@ -7,16 +7,39 @@ $('#id').on('keyup',function (){
     const id = $("#id").val();
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
-    if(!emailPattern.test(id)){
+    if(emailPattern.test(id)){
         $('#idError').hide();
+        $('#sendEmail').prop('disabled', false);
     }else{
         $('#idError').show();
         $('#sendEmail').prop('disabled', true);
     }
+
+    $.ajax({
+        url: 'checkDupId',
+        type: 'post',
+        data: {id: id},
+        dataType: "json",
+        success: function(result){
+            console.log("받아온 값 : "+result)
+            if(result){
+                $('#idDupError').show();
+                $('#sendEmail').prop('disabled', true);
+            }else {
+                $('#idDupError').hide();
+                $('#sendEmail').prop('disabled', false);
+            }
+        },
+        error: function(result){
+            console.log(result);
+            $('#sendEmail').prop('disabled', true);
+            eflag = false;
+        }
+    });
 });
 
 $('#sendEmail').on('click', function() {
-    var data = {
+    const data = {
         email: $('#id').val()
     };
 
@@ -54,15 +77,14 @@ $('#sendEmail').on('click', function() {
     input += "</div>";
     input += "</fieldset>";
 
-
-    $('#sendEmail').after(input);
+    $('#sendEmail').parent().parent().parent().after(input);
 });
 
 function al() {
 
-    var code = ($('#checkCode').val());
+    const code = ($('#checkCode').val());
 
-    var data = {
+    const data = {
         code: code
     };
 
@@ -80,7 +102,7 @@ function al() {
                 alert(map.good);
                 $('#checkCode').prop('readonly', true).css('background-color', 'lightgray');
                 $('#checkCodeButton').prop('disabled', true).css('background-color', 'lightgray');
-                $('#email').prop('readonly', true).css('background-color', 'lightgray !important');
+                $('#id').prop('readonly', true).css('background-color', 'lightgray !important');
                 $('#sendEmail').prop('disabled', true).css('background-color', 'lightgray');
                 eflag = false;
                 emailchk = true;

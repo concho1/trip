@@ -363,9 +363,6 @@
 /* tedu-N17 [JplxI9PYz2] : 편집됨 */
 .tedu-N17[data-bid=JplxI9PYz2] .site-wrap .current::after { background: url("../../resources/icons/ico_arrow_down.svg") no-repeat center; }
 
-/* tedu-N17 [GolXic1e86] : 편집됨 */
-.tedu-N17[data-bid=GolXic1e86] .site-wrap .current::after { background: url("../../resources/icons/ico_arrow_down.svg") no-repeat center; }
-
 /* tedu-N17 [AuLXiC4h21] : 편집됨 */
 .tedu-N17[data-bid=AuLXiC4h21] .site-wrap .current::after { background: url("../../resources/icons/ico_arrow_down.svg") no-repeat center; }
 
@@ -481,10 +478,6 @@
 /* tedu-N3 [JeLxI9pyLl] : 편집됨 */
 .tedu-N3[data-bid=JeLxI9pyLl] .header-search-form .icon-search { background: url("../../resources/icons/ico_search.svg") no-repeat center; }
 .tedu-N3[data-bid=JeLxI9pyLl] .mhd-menu-wrap .mhd-menu-box .mhd-menu-title a::after { background: url("../../resources/icons/ico_arrow_down.svg") no-repeat center; }
-
-/* tedu-N3 [kQLxiC1dMh] : 편집됨 */
-.tedu-N3[data-bid=kQLxiC1dMh] .header-search-form .icon-search { background: url("../../resources/icons/ico_search.svg") no-repeat center; }
-.tedu-N3[data-bid=kQLxiC1dMh] .mhd-menu-wrap .mhd-menu-box .mhd-menu-title a::after { background: url("../../resources/icons/ico_arrow_down.svg") no-repeat center; }
 
 /* tedu-N3 [hhlxic4GSD] : 편집됨 */
 .tedu-N3[data-bid=hhlxic4GSD] .header-search-form .icon-search { background: url("../../resources/icons/ico_search.svg") no-repeat center; }
