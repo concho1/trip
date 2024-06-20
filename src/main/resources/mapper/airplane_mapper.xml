@@ -11,4 +11,8 @@
     <select id="airplaneCont" parameterType="String" resultType="Testproduct">
         SELECT * FROM testproduct where airplane_key = #{key}
     </select>
+
+    <select id="airplaneInfoList" resultType="airplaneInfo">
+        select * from airplaneInfo order by air_num desc
+    </select>
 </mapper>

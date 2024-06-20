@@ -21,6 +21,6 @@
 
     <select id="selectImage" parameterType="String" resultType="Image">
         SELECT * FROM trip.image
-        ORDER BY img_key = #{imgKey}
+        WHERE img_key = #{imgKey}
     </select>
 </mapper>

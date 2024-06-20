@@ -8,6 +8,7 @@
 </head>
 <body>
     <div align="center">
+        <a th:href="@{/member/hamster/shoppingCart}">장바구니</a>
         <table width="900" border="1" cellspacing="0">
             <tr>
                <th>항공사명</th>
@@ -17,6 +18,7 @@
                <th>여객기 도착시간</th>
                <th>항공권 가격</th>
                <th>예매하기</th>
+               <th>장바구니</th>
             </tr>
 
             <th:block th:if="${list != null}">
@@ -30,9 +32,13 @@
                 <td>
                     <button th:onclick="|location.href='@{/member/hamster/airplane/ticketing(key=${dto.getAirplaneKey()})}'|" style="background-color: beige">예매하기</button>
                 </td>
+                <td>
+                    <button th:onclick="|location.href='@{/member/hamster/airplane/shoppingCart(key=${dto.getAirplaneKey()})}'|" style="background-color: beige">장바구니</button>
+                </td>
             </tr>
             </th:block>
         </table>
+        <button th:onclick="|location.href='@{/member/hamster/airplane/airplaneInfoList}'|" style="background-color: beige">항공사 리스트</button>
     </div>
 </body>
 </html>
