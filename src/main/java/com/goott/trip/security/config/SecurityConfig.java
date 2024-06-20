@@ -55,7 +55,6 @@ public class SecurityConfig {
                 )
                 .addFilterBefore(visitorCountFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(oAuth2LoginConfigurer ->
                         oAuth2LoginConfigurer
                                 .authorizationEndpoint(authorizationEndpointConfig ->
