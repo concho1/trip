@@ -2,6 +2,7 @@ package com.goott.trip.concho.controller;
 
 import com.goott.trip.common.model.Alarm;
 import com.goott.trip.concho.model.ConchoHotel;
+import com.goott.trip.concho.model.ConchoHotelOffer;
 import com.goott.trip.concho.service.main.HotelSearchService;
 import com.goott.trip.concho.service.main.IataCodeService;
 import lombok.RequiredArgsConstructor;
@@ -87,10 +88,11 @@ public class ConchoRestController {
                 String startDate = paramMap.get("startDate");
                 String endDate = paramMap.get("endDate");
                 Integer personCnt = Integer.valueOf(paramMap.get("personCnt"));
-                hotelSearchService.getHotelRoomsById(hotelId,personCnt,startDate,endDate, memberId);
+                List<ConchoHotelOffer> conchoHotelOffers
+                        = hotelSearchService.getHotelRoomsById(hotelId,personCnt,startDate,endDate, memberId);
 
-                alarm.setMessageAndRedirect("호텔 아이디 : "+ hotelId, "");
-                mv.setViewName(alarm.getMessagePage());
+                mv.addObject("hotelOfferList",conchoHotelOffers);
+                mv.setViewName("concho/user/hotel_offer_list");
             }
             default -> {
                 alarm.setMessageAndRedirect("서비스 오류", "");
