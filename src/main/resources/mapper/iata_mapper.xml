@@ -10,4 +10,18 @@
         INSERT IGNORE INTO iata_code (iata_key, iata_code, city, country, country_ko)
         VALUES (#{iata_key}, #{iataCode}, #{city}, #{country}, #{countryKo})
     </insert>
+    <select id="findCityByIataCode" parameterType="String" resultType="IataCode">
+        SELECT * FROM iata_code WHERE iata_code = #{iataCode}
+        LIMIT 1
+    </select>
+
+    <insert id="insertAirplaneInfo" parameterType="map">
+        <selectKey resultType="int" keyProperty="air_key" order="BEFORE">
+            select NVL(max(air_num), 0) + 1 from airplaneInfo
+        </selectKey>
+        INSERT IGNORE INTO airplaneInfo (air_num, country, airplane_name, iata_code, icao_code, hub_airport,
+        airplane, destination, airline_alliance, logo)
+        VALUES (#{air_key},#{country}, #{airplaneName}, #{iataCode}, #{icaoCode}, #{hubAirport},
+        #{airplane}, #{destination}, #{airlineAlliance}, #{logo})
+    </insert>
 </mapper>

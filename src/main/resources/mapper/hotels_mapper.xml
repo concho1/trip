@@ -3,6 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.goott.trip.concho.mapper.HotelMapper">
+    <!-- 호텔별 search 결과 -->
     <insert id="insertHotelList">
         INSERT INTO trip.hotels (
         id_key, iata_code, name,
@@ -19,17 +20,15 @@
     <select id="findHotelListBySearchNum" parameterType="Integer" resultType="ConchoHotel">
         SELECT * FROM hotels WHERE search_num = #{searchNum}
     </select>
-
-
-
+    <!-- 호텔별 search 정보 -->
     <insert id="insertHotelsSearch" parameterType="HotelSearch">
         INSERT INTO trip.hotels_search (
             search_num, search_category, search_iata_code,
-            search_latitude, search_longitude, search_at
+            search_latitude, search_longitude, search_at, member_id
         ) VALUES (
-            #{searchNum}, #{searchCategory}, #{searchIataCode},
-            #{searchLatitude}, #{searchLongitude}, now()
-        )
+                     #{searchNum}, #{searchCategory}, #{searchIataCode},
+                     #{searchLatitude}, #{searchLongitude}, now(), #{memberId}
+                 )
     </insert>
     <select id="getMaxNum" resultType="Integer">
         SELECT IFNULL(MAX(search_num), 0) FROM trip.hotels_search
@@ -38,7 +37,7 @@
         SELECT search_num FROM hotels_search
         WHERE
             search_iata_code = #{searchIataCode}
-            AND search_at BETWEEN now() - interval 2 HOUR AND now()
+          AND search_at BETWEEN now() - interval 2 HOUR AND now()
         ORDER BY search_at DESC
         LIMIT 1
     </select>
@@ -50,4 +49,72 @@
         ORDER BY search_at DESC
         LIMIT 1
     </select>
+
+    <!-- 호텔별 offer search -->
+    <insert id="insertHotelOfferSearch" parameterType="HotelSearch">
+        INSERT INTO trip.hotel_offer_search (
+            search_num, hotel_id, offer_id, start_date, end_date, person_cnt, search_at, member_id
+        ) VALUES (
+                     #{searchNum}, #{hotelId}, #{offerId},
+                     #{startDate}, #{endDate}, #{personCnt}, now(), #{memberId}
+                 )
+    </insert>
+    <select id="getOfferSearchMaxNum" resultType="Integer">
+        SELECT IFNULL(MAX(search_num), 0) FROM trip.hotel_offer_search
+    </select>
+    <select id="findOfferSearchNumByHotelIdAndStartDateAndEndDateAndPersonCnt" parameterType="map" resultType="Integer">
+        SELECT search_num FROM hotel_offer_search
+        WHERE
+            (hotel_id = #{hotelId} AND start_date = #{startDate}
+            AND end_date = #{endDate}  AND person_cnt = #{personCnt})
+          AND search_at BETWEEN now() - interval 2 HOUR AND now()
+        ORDER BY search_at DESC
+        LIMIT 1
+    </select>
+    <select id="findOfferSearchNumByOfferId" parameterType="String" resultType="Integer">
+        SELECT search_num FROM hotel_offer_search
+        WHERE
+            offer_id = #{offerId}
+          AND search_at BETWEEN now() - interval 2 HOUR AND now()
+        ORDER BY search_at DESC
+        LIMIT 1
+    </select>
+    <!-- 호텔별 offer -->
+    <insert id="insertHotelOfferList">
+        INSERT INTO hotel_offer (
+            id_key, start_date, end_date, rate_code, room_type,
+            description, person_cnt, currency, base_price, total_price,
+            deadline, cancel_pay, payment_type, search_num, category,
+            bed_cnt,bed_type , available)
+        VALUES
+        <foreach collection="hotelOfferList" item="conchoHotelOffer" separator=",">
+            (#{conchoHotelOffer.idKey}, #{conchoHotelOffer.startDate}, #{conchoHotelOffer.endDate}, #{conchoHotelOffer.rateCode},
+            #{conchoHotelOffer.roomType}, #{conchoHotelOffer.description}, #{conchoHotelOffer.personCnt}, #{conchoHotelOffer.currency},
+            #{conchoHotelOffer.basePrice}, #{conchoHotelOffer.totalPrice}, #{conchoHotelOffer.deadline}, #{conchoHotelOffer.cancelPay},
+            #{conchoHotelOffer.paymentType}, #{conchoHotelOffer.searchNum}, #{conchoHotelOffer.category},
+            #{conchoHotelOffer.bedCnt}, #{conchoHotelOffer.bedType}, #{conchoHotelOffer.available})
+        </foreach>
+    </insert>
+    <select id="findHotelOfferListBySearchNum" parameterType="Integer" resultType="ConchoHotelOffer">
+        SELECT * FROM hotel_offer WHERE search_num = #{searchNum}
+    </select>
+
+
+    <!-- api 서비스 관련 -->
+    <insert id="insertHotelApiUsageByCate" parameterType="map">
+        INSERT INTO trip.hotel_api_usage (
+            usage_cate, usage_cnt,usage_limit ,use_at
+        ) VALUES(
+            #{usageCate},1, #{usageLimit} , now()
+        )
+    </insert>
+    <select id="getUsageCntByCate" parameterType="String" resultType="Integer">
+        SELECT usage_cnt FROM hotel_api_usage WHERE usage_cate = #{usageCate}
+    </select>
+    <select id="getUsageLimitByCate" parameterType="String" resultType="Integer">
+        SELECT usage_limit FROM hotel_api_usage WHERE usage_cate = #{usageCate}
+    </select>
+    <update id="usageUpByCate" parameterType="String">
+        UPDATE hotel_api_usage SET usage_cnt = usage_cnt + 1,use_at = now()  WHERE usage_cate = #{usageCate}
+    </update>
 </mapper>
