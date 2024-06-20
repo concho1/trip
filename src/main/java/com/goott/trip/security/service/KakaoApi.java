@@ -1,3 +1,4 @@
+/*
 package com.goott.trip.security.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -76,3 +77,4 @@ public class KakaoApi {
         return new Member(id, img_key);
     }
 }
+*/

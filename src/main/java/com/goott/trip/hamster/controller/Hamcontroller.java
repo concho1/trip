@@ -58,14 +58,22 @@ public class Hamcontroller {
 
         String memberId = principal.getName();
         Testproduct cont = this.airservice.airplaneCont(key);
-        String dbKey = this.shoppingCartService.checkDup(memberId);
+        List<Testproduct> dbKey = this.shoppingCartService.checkDup(memberId);
 
+        for(int i = 0 ; i < dbKey.size() ; i++){
+
+            System.out.println(dbKey.get(i));
+        }
         if(key.equals(dbKey)){
+
+            String[] item = this.shoppingCartService.giveShoppingItem(memberId);
+            System.out.println(item[0]);
+
             return new ModelAndView("Hamster/shoppingCart").addObject("cont",cont).
                     addObject("memberId",memberId);
         }else{
-            int check = this.shoppingCartService.insertCart(memberId,key);
 
+            int check = this.shoppingCartService.insertCart(memberId,key);
             if(check > 0){
                 return new ModelAndView("Hamster/shoppingCart").addObject("cont",cont).
                         addObject("memberId",memberId);
