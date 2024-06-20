@@ -5,7 +5,6 @@ import com.goott.trip.common.model.Alarm;
 import com.goott.trip.common.model.Image;
 import com.goott.trip.common.service.ImageService;
 import com.goott.trip.security.service.EmailService;
-//import com.goott.trip.security.service.KakaoApi;
 import com.goott.trip.security.service.MemberService;
 import com.goott.trip.security.model.Member;
 import jakarta.mail.MessagingException;
@@ -39,7 +38,6 @@ public class UserRestController {
     private final MemberService memberService;
     private final ImageService imageService;
     private final EmailService emailService;
-    //private final KakaoApi kakaoApi;
 
     @GetMapping("test")
     public ModelAndView getTest(){
@@ -113,8 +111,8 @@ public class UserRestController {
             return new HashMap<>(Map.of("fail", "인증코드가 일치하지않습니다."));
         }
     }
-/*
-    @GetMapping("kakao")
+
+    /*@GetMapping("kakao")
     public RedirectView kakao(HttpServletRequest request){
         String fullURL = request.getRequestURL().toString();
         String extractedURL = fullURL.substring(0, fullURL.indexOf("/login"));
@@ -128,7 +126,6 @@ public class UserRestController {
         redirectView.setUrl(authUrl);
         return redirectView;
     }
-
     @RequestMapping("oauth2/kakao")
     public ModelAndView KaKaoLogin(@RequestParam(value = "code", required = false) String code, Principal principal,
                                    HttpServletRequest request, Model model) throws JsonProcessingException, MalformedURLException {
@@ -161,7 +158,7 @@ public class UserRestController {
             model.addAttribute("memberId", memberInstance.getId());
             model.addAttribute("memberImgKey", memberInstance.getImgKey());
             model.addAttribute("memberImgUrl", imageService.findImageByKey(memberInstance.getImgKey()).get().getUrl());
-            //this.memberService.loginCnt();
+            *//*this.memberService.loginCnt();*//*
             alarm.setMessageAndRedirect("","security/memeber/con/test");
             return new ModelAndView(alarm.getMessagePage());
         }
@@ -193,11 +190,11 @@ public class UserRestController {
         model.addAttribute("memberImgKey", dto.getImgKey());
         model.addAttribute("memberImgUrl", imageService.findImageByKey(dto.getImgKey()).get().getUrl());
 
-        //this.memberService.joinCnt();
+        *//*this.memberService.joinCnt();*//*
         alarm.setMessageAndRedirect("","security/memeber/con/test");
         return new ModelAndView(alarm.getMessagePage());
-    }
-*/
+    }*/
+
     // 로그인
     @GetMapping("log-in")
     public ModelAndView getLogIn(){
