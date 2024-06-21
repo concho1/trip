@@ -38,7 +38,7 @@
                             </div>
                             <ul class="contents-list d-flex justify-content-center">
                                 <li class="contents-item">
-                                    <a th:href="@{user/con/check}" class="contents-link">회원가입</a>
+                                    <a th:href="@{check}" class="contents-link">회원가입</a>
                                 </li>
                                 <li class="contents-item">
                                     <a href="javascript:void(0)" class="contents-link">비밀번호 찾기</a>
@@ -59,8 +59,8 @@
                         <a class="contents-start-naver" href="javascript:void(0)">
                             <img class="btn-icon" th:src="@{/asset/icons/ico_naver.svg}" alt="네이버로그인">
                         </a>
-                        <a class="contents-start-naver" href="javascript:void(0)">
-                            <img class="btn-icon" th:src="@{/asset/icons/ico_apple.svg}" alt="애플로그인">
+                        <a class="contents-start-naver" th:href="@{/oauth2/authorize/google}">
+                            <img class="btn-icon" th:src="@{/asset/icons/btn_google.svg}" alt="애플로그인">
                         </a>
                     </div>
                 </div>
