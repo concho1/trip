@@ -24,7 +24,6 @@ public class UserRestController {
     private final MemberService memberService;
     private final ImageService imageService;
     private final EmailService emailService;
-    //private final KakaoApi kakaoApi;
 
     @GetMapping("test")
     public ModelAndView getTest(){

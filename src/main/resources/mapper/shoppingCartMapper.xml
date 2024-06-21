@@ -4,11 +4,15 @@
 
 <mapper namespace="com.goott.trip.hamster.mapper.shoppingCartMapper">
 
-    <select id="checkDup" parameterType="String" resultType="String">
+    <select id="checkDup" parameterType="String" resultType="shoppingCart">
         select air_key from shoppingCart where member_Id = #{memId}
     </select>
 
     <insert id="insertCart" parameterType="String">
         insert into shoppingCart values (#{memId},#{key},"d")
     </insert>
+
+    <select id="giveShoppingItem" resultType="String">
+        select air_key,hotel_key from shoppingCart where member_id = #{memberId}
+    </select>
 </mapper>
