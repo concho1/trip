@@ -25,6 +25,4 @@ public class MemberService {
 
     public boolean checkDupId(String id){return memberMapper.checkDupId(id);}
 
-    public void kakao(Member member){memberMapper.kakao(member);}
-
 }

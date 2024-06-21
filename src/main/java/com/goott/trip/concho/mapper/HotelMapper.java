@@ -12,6 +12,7 @@ public interface HotelMapper {
     // 호텔 검색 결과 데이터
     public int insertHotelList(List<ConchoHotel> hotelList);
     public List<ConchoHotel> findHotelListBySearchNum(int searchNum);
+    public ConchoHotel findHotelById(String hotelIdKey);
 
     // 호텔 검색 데이터
     public int insertHotelsSearch(HotelSearch hotelSearch);
