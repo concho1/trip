@@ -11,5 +11,6 @@ public interface shoppingCartMapper {
 
     public List<shoppingCart> checkDup(String memId);
     public int insertCart(String memId,String key);
+    public int deleteHotel(String hotelKey,String memId);
     public String[] giveShoppingItem(String memId);
 }

@@ -8,4 +8,5 @@ public class shoppingCart {
     private String memberId;
     private String airKey;
     private String hotelKey;
+    private String hotelContKey;
 }

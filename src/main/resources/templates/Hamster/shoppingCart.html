@@ -2,13 +2,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<style>
+    .top-right-image {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 10px;
+        cursor: pointer;
+    }
+</style>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
-
 <!-- [E]tedu-N3 -->
 <main class="th-layout-main ">
     <!-- [S]tedu-N47 -->
-    <form method="post" action="/member/hamster/airplane/wishList">
+    <form method="post" action="/member/hamster/airplane/ticketing">
     <div class="tedu-N47" data-bid="RSlXeE3jI3" id="">
         <div class="content-inner">
             <div class="content-container">
@@ -17,59 +25,86 @@
                         <h3 class="cont-title">장바구니​<br></h3>
                     </div>
                     <div class="tab-menu-wrap">
-                        <div class="tab-menu active">
+                        <div class="tab-menu active" id="all-btn">
                             <a href="javascript:void(0)">
                                 <span>전체 목록</span>
                             </a>
                         </div>
-                        <div class="tab-menu">
+                        <div class="tab-menu" id="air-btn">
                             <a href="javascript:void(0)">
                                 <span>항공권</span>
                             </a>
                         </div>
-                        <div class="tab-menu">
+                        <div class="tab-menu" id="hotel-btn">
                             <a href="javascript:void(0)">
                                 <span>숙소</span>
                             </a>
                         </div>
-                        <div class="tab-menu">
+                        <div class="tab-menu" id="act-btn">
                             <a href="javascript:void(0)">
                                 <span>액티비티<br></span>
                             </a>
                         </div>
                     </div>
-                    <div class="myedu-cont-wrap">
-                        <div class="myedu-area">
-                            <div class="myedu-cont">
-                                    <img th:src="@{/common/images/test.webp}" alt="이미지">
-                                <th:block th:each="cont : ${plist}">
-                                    <div class="text-area">
-                                        <legend class="legend" th:text="${cont.getAirplaneDepart() + ' -> ' + cont.getAirplaneArrive()}"></legend>
-                                        <legend class="legend" th:text="${cont.getAirplaneDepartTime().toString().substring(0,16) + ' - ' + cont.getAirplaneArriveTime().toString().substring(0,16)}"></legend>
-                                        <legend class="legend" th:text="${cont.getAirplaneName()}"></legend>
-                                    </div>
-                                </th:block>
-                                <th:block th:each="aa : ${shopDB}">
-                                    <legend class="legend" th:text="${aa.getAirKey()}"></legend>
-                                </th:block>
 
+                    <div class="myedu-cont-wrap" id="hotelList">
+                    <th:block th:if="${dbVal != null}" th:each="dto, iterStat : ${dbVal}">
+                        <div class="myedu-area" style="position: relative;">
+                            <div class="myedu-cont">
+                                <img th:src="@{/common/images/test.webp}" alt="이미지">
+                                <div class="text-area">
+                                    <legend class="legend hotelKey" th:id="'hotelKey'+${iterStat.index}"
+                                            th:value="${dto.getHotelKey()}" th:text="${dto.getHotelKey()}"></legend>
+                                </div>
                             </div>
                             <div class="contents-checkset d-flex justify-content-start">
                                 <picture>
                                     <source srcset="/common/images/test.webp" type="image/webp">
-                                    <img src="/common/images/test.webp" alt="Example Image">
                                 </picture>
                                 <div class="checkset">
-                                    <input id="air-check-1" name="check" class="checkset-input input-fill" type="checkbox" value="">
-                                    <label class="checkset-label" for="air-check-1"></label>
+                                    <input id="hotel-check" name="check" class="checkset-input input-fill" type="checkbox" value="">
+                                    <label class="checkset-label" for="hotel-check"></label>
                                     <span class="checkset-text" name="check">결제하기</span>
                                 </div>
                             </div>
+                                <img th:src="@{/common/images/xButton.png}" id="delBtn[[${iterStat.index}]]" class="top-right-image" style="height: 40px; width: 40px;"
+                                     th:onclick="'deleteItem(' + ${iterStat.index} + ')'">
                         </div>
+                    </th:block>
+                    </div>
+
+                    <div class="myedu-cont-wrap" id="airList">
+                        <th:block th:if="${plist }" th:each="cont, iterStat : ${plist}">
+                        <div class="myedu-area">
+                            <div class="myedu-cont">
+                                    <img th:src="@{/common/images/hamsic.jpg}" alt="이미지" style="height: 65px;">
+                                    <div class="text-area">
+                                        <legend class="legend" th:text="${cont.getAirplaneDepart() + ' -> ' + cont.getAirplaneArrive()}"></legend>
+                                        <legend class="legend" th:text="${cont.getAirplaneDepartTime().toString().substring(0,16) + ' - ' + cont.getAirplaneArriveTime().toString().substring(0,16)}"></legend>
+                                        <legend class="legend" th:text="${cont.getAirplaneName()}"></legend>
+                                        <legend class="legend" th:text="${#numbers.formatInteger(cont.getAirplanePrice(),3,'COMMA')+ '원'}"></legend>
+                                    </div>
+                            </div>
+                            <div class="contents-checkset d-flex justify-content-start">
+                                <picture>
+                                    <source srcset="/common/images/test.webp" type="image/webp">
+                                </picture>
+                                <div class="checkset">
+                                    <input id="air-check-[[${iterStat.index}]]" name="key" class="checkset-input input-fill" type="checkbox" th:value="${cont.getAirplaneKey()}">
+                                    <label class="checkset-label" for="air-check-[[${iterStat.index}]]"></label>
+                                    <span class="checkset-text" name="check">결제하기</span>
+                                </div>
+                                <div class="checkset">
+                                    <input id="delete" class="checkset-input input-fill" type="button" th:value="${cont.getAirplaneKey()}">
+                                </div>
+                            </div>
+                        </div>
+                        </th:block>
+
                     </div>
                 </section>
                 <div class="form-footer btn-box">
-                    <input type="submit" class="tedu-btn tedu-btn-light" onclick="return CheckShoppingCart()" value="결제하기">
+                    <input type="submit" class="tedu-btn tedu-btn-light" value="결제하기">
                     <a class="tedu-btn tedu-btn-light btn-mono" href="javascript:void(0)">취소</a>
                 </div>
             </div>
@@ -78,9 +113,53 @@
     <!-- [E]tedu-N47 -->
     </form>
 </main>
-<script type="text/javascript" th:src="@{/ham.js/CheckShoppingCart.js}"></script>
+<script type="text/javascript" th:src="@{/ham.js/DeleteButton.js}"></script>
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
 </div>
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+<script>
+    $(document).ready(function () {
+        let $hotelList = $('#hotelList');
+        let $airList = $('#airList');
+
+        function hideAllSections(callback) {
+            $airList.fadeOut('slow');
+            $hotelList.fadeOut('slow', callback);
+        }
+
+        function showAllList() {
+            hideAllSections(function() {
+                $hotelList.fadeIn('slow');
+                $airList.fadeIn('slow');
+            });
+        }
+
+        function showAirList() {
+            hideAllSections(function() {
+                $airList.fadeIn('slow');
+            });
+        }
+
+        function showHotelList() {
+            hideAllSections(function() {
+                $hotelList.fadeIn('slow');
+            });
+        }
+
+
+        $('#all-btn').click(function () {
+            showAllList();
+        });
+
+        $('#air-btn').click(function () {
+            showAirList();
+        });
+
+        $('#hotel-btn').click(function () {
+            showHotelList();
+        });
+
+    });
+</script>
 </body>

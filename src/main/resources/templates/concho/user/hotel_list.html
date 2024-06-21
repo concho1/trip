@@ -46,8 +46,8 @@
                         </div>
                     </div>
                     <div class="myedu-cont-wrap">
-                        <th:block th:if="${hotelList != null && !hotelList.isEmpty()}">
-                            <div class="myedu-area" th:each="hotel : ${hotelList}">
+                        <th:block th:each="hotel : ${hotelList}">
+                            <div class="myedu-area">
                                 <div class="myedu-cont">
                                     <div class="img-area">
                                         <img th:src="@{/common/images/hotel.png}" alt="이미지">
