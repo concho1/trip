@@ -42,16 +42,22 @@
                         <div class="myedu-area">
                             <div class="myedu-cont">
                                     <img th:src="@{/common/images/test.webp}" alt="이미지">
-                                <div class="text-area">
-                                    <legend class="legend" th:text="${cont.getAirplaneDepart() + ' -> ' + cont.getAirplaneArrive()}"></legend>
-                                    <legend class="legend" th:text="${cont.getAirplaneDepartTime().toString().substring(0,16) + ' - ' + cont.getAirplaneArriveTime().toString().substring(0,16)}"></legend>
-                                    <legend class="legend" th:text="${cont.getAirplaneName()}"></legend>
-                                </div>
+                                <th:block th:each="cont : ${plist}">
+                                    <div class="text-area">
+                                        <legend class="legend" th:text="${cont.getAirplaneDepart() + ' -> ' + cont.getAirplaneArrive()}"></legend>
+                                        <legend class="legend" th:text="${cont.getAirplaneDepartTime().toString().substring(0,16) + ' - ' + cont.getAirplaneArriveTime().toString().substring(0,16)}"></legend>
+                                        <legend class="legend" th:text="${cont.getAirplaneName()}"></legend>
+                                    </div>
+                                </th:block>
+                                <th:block th:each="aa : ${shopDB}">
+                                    <legend class="legend" th:text="${aa.getAirKey()}"></legend>
+                                </th:block>
+
                             </div>
                             <div class="contents-checkset d-flex justify-content-start">
                                 <picture>
-                                    <source srcset="../../static/common/images/test.webp" type="image/webp">
-                                    <img src="../../static/common/images/test.webp" alt="Example Image">
+                                    <source srcset="/common/images/test.webp" type="image/webp">
+                                    <img src="/common/images/test.webp" alt="Example Image">
                                 </picture>
                                 <div class="checkset">
                                     <input id="air-check-1" name="check" class="checkset-input input-fill" type="checkbox" value="">

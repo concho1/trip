@@ -20,9 +20,4 @@ public class Member {
     private String imgKey;
     private Timestamp createdAt;
 
-    public Member(String email, String img_key){
-        this.id = email;
-        this.imgKey = img_key;
-    }
-
 }

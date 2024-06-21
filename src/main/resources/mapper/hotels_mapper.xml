@@ -20,6 +20,10 @@
     <select id="findHotelListBySearchNum" parameterType="Integer" resultType="ConchoHotel">
         SELECT * FROM hotels WHERE search_num = #{searchNum}
     </select>
+    <select id="findHotelById" resultType="ConchoHotel" parameterType="String">
+        SELECT * FROM hotels WHERE id_key = #{hotelIdKey}
+    </select>
+
     <!-- 호텔별 search 정보 -->
     <insert id="insertHotelsSearch" parameterType="HotelSearch">
         INSERT INTO trip.hotels_search (

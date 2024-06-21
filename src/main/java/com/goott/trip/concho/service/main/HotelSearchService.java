@@ -43,6 +43,10 @@ public class HotelSearchService {
         return result;
     }
 
+    public ConchoHotel findHotelByIdKey(String hotelIdKey){
+        return hotelMapper.findHotelById(hotelIdKey);
+    }
+
     @Transactional
     public List<ConchoHotel> getHotelListByIataCode(String iataCode, String memberId){
         String usageCate = "iataCode";
@@ -139,7 +143,7 @@ public class HotelSearchService {
         }
         // 기존 검색 결과가 없을경우 api 에 요청
         int searchNum = hotelMapper.getOfferSearchMaxNum() + 1;
-
+        System.out.println("=======================" + searchNum);
         try{
             // key 사용량 초과시 null 리턴
             if(!checkAndUpdateUsage(usageCate,2000)){
