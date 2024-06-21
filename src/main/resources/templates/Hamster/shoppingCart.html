@@ -1,6 +1,7 @@
 <!-- 이 코드를 복붙해서 사용해주세요 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
@@ -8,7 +9,7 @@
 <!-- [E]tedu-N3 -->
 <main class="th-layout-main ">
     <!-- [S]tedu-N47 -->
-    <form method="post" action="/member/hamster/airplane/wishList">
+    <form method="post" action="/member/hamster/airplane/ticketing">
     <div class="tedu-N47" data-bid="RSlXeE3jI3" id="">
         <div class="content-inner">
             <div class="content-container">
@@ -17,48 +18,44 @@
                         <h3 class="cont-title">장바구니​<br></h3>
                     </div>
                     <div class="tab-menu-wrap">
-                        <div class="tab-menu active">
+                        <div class="tab-menu active" data-category="all">
                             <a href="javascript:void(0)">
                                 <span>전체 목록</span>
                             </a>
                         </div>
-                        <div class="tab-menu">
+                        <div class="tab-menu" data-category="airKey">
                             <a href="javascript:void(0)">
                                 <span>항공권</span>
                             </a>
                         </div>
-                        <div class="tab-menu">
+                        <div class="tab-menu" data-category="hotelKey">
                             <a href="javascript:void(0)">
                                 <span>숙소</span>
                             </a>
                         </div>
-                        <div class="tab-menu">
+                        <div class="tab-menu" data-category="">
                             <a href="javascript:void(0)">
                                 <span>액티비티<br></span>
                             </a>
                         </div>
                     </div>
                     <div class="myedu-cont-wrap">
+                        <th:block th:if="${plist == null}">
+
+                        </th:block>
+
+                        <th:block th:each="cont : ${plist}">
                         <div class="myedu-area">
                             <div class="myedu-cont">
                                     <img th:src="@{/common/images/test.webp}" alt="이미지">
-                                <th:block th:each="cont : ${plist}">
                                     <div class="text-area">
                                         <legend class="legend" th:text="${cont.getAirplaneDepart() + ' -> ' + cont.getAirplaneArrive()}"></legend>
                                         <legend class="legend" th:text="${cont.getAirplaneDepartTime().toString().substring(0,16) + ' - ' + cont.getAirplaneArriveTime().toString().substring(0,16)}"></legend>
                                         <legend class="legend" th:text="${cont.getAirplaneName()}"></legend>
+                                        <legend class="legend" th:text="${#numbers.formatInteger(cont.getAirplanePrice(),3,'COMMA')+ '원'}"></legend>
                                     </div>
-                                </th:block>
-                                <th:block th:each="aa : ${shopDB}">
-                                    <legend class="legend" th:text="${aa.getAirKey()}"></legend>
-                                </th:block>
-
                             </div>
                             <div class="contents-checkset d-flex justify-content-start">
-                                <picture>
-                                    <source srcset="../../static/common/images/test.webp" type="image/webp">
-                                    <img src="../../static/common/images/test.webp" alt="Example Image">
-                                </picture>
                                 <div class="checkset">
                                     <input id="air-check-1" name="check" class="checkset-input input-fill" type="checkbox" value="">
                                     <label class="checkset-label" for="air-check-1"></label>
@@ -66,10 +63,11 @@
                                 </div>
                             </div>
                         </div>
+                        </th:block>
                     </div>
                 </section>
                 <div class="form-footer btn-box">
-                    <input type="submit" class="tedu-btn tedu-btn-light" onclick="return CheckShoppingCart()" value="결제하기">
+                    <input type="submit" class="tedu-btn tedu-btn-light" value="결제하기">
                     <a class="tedu-btn tedu-btn-light btn-mono" href="javascript:void(0)">취소</a>
                 </div>
             </div>
@@ -78,7 +76,7 @@
     <!-- [E]tedu-N47 -->
     </form>
 </main>
-<script type="text/javascript" th:src="@{/ham.js/CheckShoppingCart.js}"></script>
+<script type="text/javascript" th:src="@{/ham.js/ShoppingCategory.js}"></script>
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
 </div>

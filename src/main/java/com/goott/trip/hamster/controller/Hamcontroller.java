@@ -83,6 +83,12 @@ public class Hamcontroller {
         return new ModelAndView("Hamster/shoppingCart").addObject("plist", plist);
     }
 
+    @PostMapping("airplane/categoryUpdate")
+    public ModelAndView categoryUpdate(@RequestParam("category")String category){
+
+        return null;
+    }
+
     @PostMapping("airplane/payment")
     public ModelAndView airplanePayment(@RequestParam("key")String key,@RequestParam("callFname")String callFname,
                                         @RequestParam("callLname")String callLname,@RequestParam("country")String country,
