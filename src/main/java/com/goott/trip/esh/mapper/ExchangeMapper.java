@@ -1,16 +1,13 @@
-package com.goott.trip.esh.exchangeMapper;
+package com.goott.trip.esh.mapper;
 
-import com.goott.trip.esh.exchangeModel.Exchange;
+import com.goott.trip.esh.model.Exchange;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 @Mapper
 public interface ExchangeMapper {
     void insertExchangeData(Exchange exchange);
     Exchange selectExchangeDataByCurrencyCode(@Param("currencyCode") String currencyCode);
-
     void updateExchangeData(Exchange exchange);
 
 }
