@@ -20,9 +20,12 @@
             <legend class="legend"><h2>예약하시는 항공권의 정보를 다시한번 확인해주세요!</h2></legend>
             <div class="input-group">
               <div class="tedu-inputset">
+                <th:block th:each="dto, iterStat : ${cont}">
+                <legend class="legend" th:text="'여정'+(iterStat.index + 1)"></legend>
                 <legend class="legend" th:text="${cont.getAirplaneDepart() + ' -> ' + cont.getAirplaneArrive()}"></legend>
                 <legend class="legend" th:text="${cont.getAirplaneDepartTime().toString().substring(0,16) + ' - ' + cont.getAirplaneArriveTime().toString().substring(0,16)}"></legend>
                 <legend class="legend" th:text="${cont.getAirplaneName()}"></legend>
+                </th:block>
               </div>
             </div>
             </form>
