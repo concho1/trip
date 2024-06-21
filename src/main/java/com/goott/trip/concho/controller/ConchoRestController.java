@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 @RestController
@@ -84,14 +85,24 @@ public class ConchoRestController {
 
             }
             case "hotel-info" ->{
+                String hotelIdKey = paramMap.get("hotelIdKey");
                 String hotelId = paramMap.get("hotelId");
                 String startDate = paramMap.get("startDate");
                 String endDate = paramMap.get("endDate");
                 Integer personCnt = Integer.valueOf(paramMap.get("personCnt"));
+
+                ConchoHotel conchoHotel = hotelSearchService.findHotelByIdKey(hotelIdKey);
+                mv.addObject("hotel", conchoHotel);
+
                 List<ConchoHotelOffer> conchoHotelOffers
                         = hotelSearchService.getHotelRoomsById(hotelId,personCnt,startDate,endDate, memberId);
+                if(!conchoHotelOffers.isEmpty()){
+                    conchoHotelOffers.sort(Comparator.comparingDouble(o -> Double.parseDouble(o.getTotalPrice())));
+                    mv.addObject("hotelOfferList",conchoHotelOffers);
+                    mv.addObject("fakePrice",
+                            Double.valueOf(conchoHotelOffers.get(0).getTotalPrice()) * 1.43);
+                }
 
-                mv.addObject("hotelOfferList",conchoHotelOffers);
                 mv.setViewName("concho/user/hotel_offer_list");
             }
             default -> {
