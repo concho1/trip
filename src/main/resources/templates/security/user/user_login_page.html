@@ -20,6 +20,7 @@
                         <form th:action="@{/user/con/log-in}" method="post">
                             <div class="tedu-inputset">
                                 <input type="text" class="tedu-input lightmode" placeholder="아이디(이메일)" aria-label="ID" id="id" name="id" required>
+                                <!--<div id="idError" style="color: red; display: none;">이메일 형식으로 입력해주세요.</div>-->
                             </div>
                             <div class="tedu-inputset">
                                 <input type="password" class="tedu-input lightmode" placeholder="비밀번호" aria-label="Password" id="pw" name="pw" required>
@@ -60,7 +61,7 @@
                             <img class="btn-icon" th:src="@{/asset/icons/ico_naver.svg}" alt="네이버로그인">
                         </a>
                         <a class="contents-start-naver" th:href="@{/oauth2/authorize/google}">
-                            <img class="btn-icon" th:src="@{/asset/icons/btn_google.svg}" alt="애플로그인">
+                            <img class="btn-icon" th:src="@{/asset/icons/btn_google.svg}" alt="구글로그인">
                         </a>
                     </div>
                 </div>
@@ -69,6 +70,7 @@
     </div>
 </main>
 
+<script type="text/javascript" th:src="@{/security/js/login.js}"></script>
 
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
