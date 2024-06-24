@@ -40,4 +40,77 @@
         select kor_name from trip.airport where iata = #{iata}
     </select>
 
+    <select id="findAirportByKor" parameterType="String" resultType="Airport">
+        select * from trip.airport where kor_name like concat('%', #{kor}, '%') or kor_country like concat('%', #{kor}, '%')
+    </select>
+
+    <insert id="insertFlightCode" parameterType="String">
+        insert into trip.APIFlight values(#{str}, now())
+    </insert>
+
+    <select id="findAPIFlight" parameterType="String" resultType="APIFlight">
+        select * from trip.APIFlight where code = #{str}
+    </select>
+
+    <insert id="insertAPIItinerary" parameterType="APIItinerary">
+        insert into trip.APIItinerary values(#{id}, #{flightCode}, #{totalBase}, #{totalPrice})
+    </insert>
+
+    <insert id="insertAPIPricing" parameterType="APIPricing">
+        insert into trip.APIPricing(id, itinerary_code, flight_code, type, base, total) values(#{id}, #{itineraryCode}, #{flightCode}, #{type}, #{base}, #{total})
+    </insert>
+
+    <insert id="insertAPISegment" parameterType="APISegment">
+        insert into trip.APISegment(id, itinerary_code, flight_code, departure_iata, departure_at, arrival_iata, arrival_at, duration, carrier_code, carrier_num)
+            values(#{id}, #{itineraryCode}, #{flightCode}, #{departureIata}, #{departureAt}, #{arrivalIata}, #{arrivalAt}, #{duration}, #{carrierCode}, #{carrierNum})
+    </insert>
+
+    <insert id="insertAPIDuration" parameterType="APIDuration">
+        insert into trip.APIDuration(id, itinerary_code, flight_code, depOrComb, duration, airline, airline_img)
+            values(#{id}, #{itineraryCode}, #{flightCode}, #{depOrComb}, #{duration}, #{airline}, #{airlineImg})
+    </insert>
+
+    <select id="findItineraryForView" parameterType="String" resultType="APIItinerary">
+        select * from trip.APIItinerary where flight_code = #{str}
+    </select>
+
+    <select id="findPricingForView" parameterType="String" resultType="APIPricing">
+        select * from trip.APIPricing where itinerary_code = #{str}
+    </select>
+
+    <select id="findSegmentForView" parameterType="String" resultType="APISegment">
+        select * from trip.APISegment where itinerary_code = #{str}
+    </select>
+
+    <select id="findDurationForView" parameterType="String" resultType="APIDuration">
+        select * from trip.APIDuration where itinerary_code = #{str}
+    </select>
+
+    <delete id="deleteAPIFlight" parameterType="String">
+        delete from trip.APIFlight where code = #{str}
+    </delete>
+
+    <delete id="deleteAPIItinerary" parameterType="String">
+        delete from trip.APIItinerary where flight_code = #{str}
+    </delete>
+
+    <delete id="deleteAPIPricing" parameterType="String">
+        delete from trip.APIPricing where flight_code = #{str}
+    </delete>
+
+    <delete id="deleteAPISegment" parameterType="String">
+        delete from trip.APISegment where flight_code = #{str}
+    </delete>
+
+    <delete id="deleteAPIDuration" parameterType="String">
+        delete from trip.APIDuration where flight_code = #{str}
+    </delete>
+
+    <select id="findIcaoByIata" parameterType="String" resultType="String">
+        select icao from trip.airline where iata like concat('%', #{str}, '%') and model not like '%Cargo%' limit 1
+    </select>
+
+    <select id="findImgByIcao" parameterType="String" resultType="String">
+        select logo from trip.airplaneInfo where icao_code like concat('%', #{str}, '%')
+    </select>
 </mapper>

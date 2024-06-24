@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Main</title>
+  <style type="text/css">
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    button {
+      border: none;
+      outline: none;
+      background-color: transparent;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    body {
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin-left: 30px;
+    }
+
+    #wrapper {
+      background: #fff;
+      width: 450px;
+      border-radius: 10px;
+      padding: 25px;
+      border: 1px solid black;
+    }
+
+    #wrapper #nav {
+      display:flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+
+    #wrapper #nav #currentDate {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    #wrapper #nav button {
+      width: 38px;
+      height: 38px;
+      font-size: 30px;
+      color: #878787
+    }
+
+    #calendar ul {
+      display: flex;
+      list-style: none;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+
+    #calendar #weeks li {
+      font-weight: 500;
+    }
+
+    #calendar #days {
+      margin-bottom: 20px;
+    }
+
+    #calendar ul li {
+      width: calc(100% / 7);
+      position: relative;
+    }
+
+    #calendar #days li {
+      z-index: 1;
+      margin-top: 30px;
+      cursor: pointer;
+    }
+
+    .inactive {
+      color: #aaa;
+    }
+
+    #active {
+      background: skyblue;
+      color: white;
+      font-weight: 600;
+      border-radius: 40%;
+    }
+
+    #calendar #days li::before {
+      position: absolute;
+      content: '';
+      height: 40px;
+      width: 40px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: -1;
+    }
+
+  </style>
+</head>
+<body id="cal_body">
+
+<div>
+  <div id="wrapper">
+    <header>
+      <div id="nav">
+        <button id="shang">◀</button>
+        <p id="currentDate"></p>
+        <button id="xia">▶</button>
+      </div>
+    </header>
+    <div id="calendar">
+      <ul id="weeks">
+        <li>Sun</li>
+        <li>Mon</li>
+        <li>Tue</li>
+        <li>Wed</li>
+        <li>Thu</li>
+        <li>Fri</li>
+        <li>Sat</li>
+      </ul>
+      <ul id="days">
+
+      </ul>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+
+  const date = new Date();
+  let currYear = date.getFullYear();
+  let currMonth = date.getMonth();
+  const months = ['Jenuary', 'February', 'March',
+    'April', 'May', 'June',
+    'July', 'August', 'September',
+    'October', 'November', 'December'];
+
+  const renderCalendar = () => {
+    document.querySelector("#currentDate").innerHTML = `${months[currMonth]} ${currYear}`;
+    let lastDay = new Date(currYear, currMonth+1, 0).getDate();
+    let first_yoil = new Date(currYear, currMonth, 1).getDay();
+    let last_yoil = new Date(currYear, currMonth, lastDay).getDay();
+    let lastDayofLastMonth = new Date(currYear, currMonth, 0).getDate();
+    let dayTag = "";
+
+    for(let i=first_yoil; i>0; i--) {
+      dayTag += `<li class="inactive">${lastDayofLastMonth - i + 1}</li>`;
+    }
+
+    for(let i=1; i<= lastDay; i++) {
+
+      let isToday = i === date.getDate() &&
+      currMonth === new Date().getMonth() &&
+      currYear === new Date().getFullYear()
+              ? 'active' : '';
+      dayTag += `<li id="${isToday}">${i}</li>`
+    }
+
+    for(let i=last_yoil; i<6; i++) {
+      dayTag += `<li class="inactive">${i - last_yoil + 1}</li>`;
+    }
+
+    document.querySelector("#days").innerHTML = dayTag;
+
+    document.querySelectorAll("#days li").forEach(day => {
+      day.addEventListener("click", (e) => {
+        document.querySelectorAll("#days li").forEach(d => d.removeAttribute("id"));
+        e.target.id = "active";
+      });
+    });
+
+  };
+
+  document.querySelector("#shang").addEventListener('click', () => {
+    if(currMonth == 0) {
+      currMonth = 11;
+      currYear = currYear - 1;
+    }else {
+      currMonth = currMonth - 1;
+    }
+    renderCalendar();
+  });
+
+  document.querySelector("#xia").addEventListener('click', () => {
+    if(currMonth == 11) {
+      currMonth = 0;
+      currYear = currYear + 1;
+    }else {
+      currMonth = currMonth + 1;
+    }
+    renderCalendar();
+  });
+
+  renderCalendar();
+
+</script>
+</body>
+</html>
