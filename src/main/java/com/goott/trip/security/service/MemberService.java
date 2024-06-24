@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -24,5 +26,10 @@ public class MemberService {
     }
 
     public boolean checkDupId(String id){return memberMapper.checkDupId(id);}
+
+    public Boolean checkDupPwd(String pwd){return this.memberMapper.checkDupPwd(pwd);}
+
+    public int changePwd(HashMap<String,String> map){return this.memberMapper.changePwd(map);};
+
 
 }
