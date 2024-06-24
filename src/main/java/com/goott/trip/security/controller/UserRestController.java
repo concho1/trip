@@ -1,5 +1,6 @@
 package com.goott.trip.security.controller;
 
+import com.goott.trip.common.model.Alarm;
 import com.goott.trip.common.model.Image;
 import com.goott.trip.common.service.ImageService;
 import com.goott.trip.security.service.EmailService;
@@ -9,9 +10,14 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -76,6 +82,12 @@ public class UserRestController {
         Boolean result = this.memberService.checkDupId(id);
         return result;
     }
+    // 비밀번호 중복 체크
+    @PostMapping("pwdDupPwd")
+    public Boolean checkDupPwd(@RequestParam("pw") String pw) {
+        Boolean result = this.memberService.checkDupPwd(pw);
+        return result;
+    }
 
     // 이메일 인증
     @PostMapping("sendEmail")
@@ -100,14 +112,69 @@ public class UserRestController {
 
     // 로그인
     @GetMapping("log-in")
-    public ModelAndView getLogIn(){
-        return new ModelAndView("security/user/user_login_page");
+    public ModelAndView getLogIn(){return new ModelAndView("security/user/user_login_page");}
+
+    // 비밀번호 찾기
+    @GetMapping("searchPw")
+    public ModelAndView searchPw(){return new ModelAndView("security/user/user_searchPwd"); }
+    @PostMapping("sendPwdEmail")
+    public Map<String, String> sendPwdEmail(@RequestParam("email") String email, HttpServletRequest httpServletRequest) throws MessagingException {
+        HttpSession session = httpServletRequest.getSession();
+        emailService.sendPwdEmail(email, session);
+        return new HashMap<>(Map.of("message", "이메일 전송 성공"));
     }
+
+    @PostMapping("changePwd")
+    public ModelAndView changePwd(@RequestParam("id")String id){
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("id",id);
+        modelAndView.setViewName("security/user/user_changePwd");
+        return modelAndView;
+    }
+    /*@PostMapping("changePwdOk")
+    public ModelAndView changePwdOk(@RequestParam("id")String id,
+                                    @RequestParam("pw")String pwd,
+                                    Model model){
+        Alarm alarm = new Alarm(model);
+        HashMap<String,String> map = new HashMap<>();
+        map.put("id",id);
+        map.put("pwd",pwd);
+        int check = this.memberService.changePwd(map);
+
+        if(check > 0){
+            alarm.setMessageAndRedirect("비밀번호가 변경되었습니다","user/con/log-in");
+        }else{
+            alarm.setMessageAndRedirect("비밀번호가 변경 실패","");
+        }
+
+        return new ModelAndView(alarm.getMessagePage());
+    }*/
+    /*public String changePassword(@RequestParam("pw") String newPassword,
+                                 @RequestParam("rePwd") String retypePassword,
+                                 Principal principal,
+                                 Model model) {
+        if (!newPassword.equals(retypePassword)) {
+            model.addAttribute("error", "입력한 비밀번호가 일치하지 않습니다.");
+            return "redirect:/user/con/changePwd";
+        }
+
+        Authentication authentication = (Authentication) principal;
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String id = userDetails.getUsername();
+
+        boolean success = memberService.changePwd(map);
+
+        if (!success) {
+            model.addAttribute("error", "비밀번호 변경에 실패했습니다.");
+            return "redirect:/user/con/changePwd";
+        }
+
+        return "redirect:user/con/log-in";
+    }*/
 
     // 로그아웃
     @GetMapping("log-out")
-    public ModelAndView logOut(){
-        return new ModelAndView("security/user/user_login_page");
-    }
+    public ModelAndView logOut(){return new ModelAndView("security/user/user_login_page");}
 
 }

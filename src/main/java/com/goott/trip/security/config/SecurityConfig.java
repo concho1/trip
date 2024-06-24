@@ -65,7 +65,7 @@ public class SecurityConfig {
                                                 .baseUri("/login/oauth2/code/**"))
                                 .userInfoEndpoint(userInfoEndpointConfig ->
                                         userInfoEndpointConfig
-                                                .userService(customOAuth2UserService)   //
+                                                .userService(customOAuth2UserService)
                                 )
                                 .successHandler(customAuthenticationSuccessHandler)
                                 .failureHandler(authenticationFailureHandler)
@@ -81,7 +81,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new SimpleUrlAuthenticationFailureHandler();
+        return new SimpleUrlAuthenticationFailureHandler("/user/con/log-in?error=true");
     }
 
     @Bean
