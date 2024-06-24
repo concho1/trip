@@ -1,0 +1,124 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<style>
+    @media (max-width: 640px) {
+        .my-text{
+            width: 100px;
+        }
+    }
+
+</style>
+<body>
+<div th:replace="~{common/head :: head-fragment}"></div>
+
+<!-- [E]tedu-N3 -->
+<main class="th-layout-main ">
+    <!-- [S]tedu-N47 -->
+    <div class="tedu-N47" data-bid="CulXIc4GvR">
+        <div class="content-inner">
+            <div class="content-container">
+                <section class="myedu-wrap">
+                    <div class="title-wrap">
+                        <h3 class="cont-title">검색된 숙박 목록</h3>
+                    </div>
+                    <div class="tab-menu-wrap">
+                        <div class="tab-menu active">
+                            <a href="javascript:void(0)">
+                                <span>전체 목록</span>
+                            </a>
+                        </div>
+                        <div class="tab-menu">
+                            <a href="javascript:void(0)">
+                                <span>최저가순</span>
+                            </a>
+                        </div>
+                        <div class="tab-menu">
+                            <a href="javascript:void(0)">
+                                <span>거리순</span>
+                            </a>
+                        </div>
+                        <div class="tab-menu">
+                            <a href="javascript:void(0)">
+                                <span>별점순</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="myedu-cont-wrap">
+                        <th:block th:each="hotel : ${hotelList}">
+                            <div class="myedu-area">
+                                <div class="myedu-cont">
+                                    <div class="img-area">
+                                        <img th:src="@{/common/images/hotel.png}" alt="이미지">
+                                    </div>
+                                    <div class="text-area">
+                                        <strong class="cate" th:text="${hotel.getIataCode()}"></strong>
+                                        <span th:text="${hotel.getCountryCode()}"></span>
+                                        <div class="title" th:text="${hotel.getName()}"></div>
+                                    </div>
+                                </div>
+                                <button type="button" class="tedu-btn tedu-btn-dark btn-link"
+                                        th:data-hotel-id-key="${hotel.getIdKey()}"
+                                        th:data-hotel-id="${hotel.getHotelId()}"
+                                        th:data-iata-code="${iataCode}"
+                                        th:data-start-date="${startDate}"
+                                        th:data-end-date="${endDate}"
+                                        th:data-person-cnt="${personCnt}">
+                                    <span class="my-text">숙박 상세보기</span>
+                                </button>
+                            </div>
+                        </th:block>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N47 -->
+</main>
+
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+<script>
+    $(document).ready(function() {
+        $('.btn-link').on('click', function() {
+            let hotelIdKey = $(this).data('hotel-id-key');
+            let hotelId = $(this).data('hotel-id');
+            let iataCode = $(this).data('iata-code');
+            let startDate = $(this).data('start-date');
+            let endDate = $(this).data('end-date');
+            let personCnt = $(this).data('person-cnt');
+            // 동적으로 form 생성
+            let form = $('<form></form>');
+            form.attr("method", "post");
+            form.attr("action", "/user/concho/service/hotel-info");
+            // 호텔 ID를 hidden input으로 추가
+            let hiddenField =
+                $('<input></input>').attr("type", "hidden").attr("name", "hotelIdKey").attr("value", hotelIdKey);
+            let hiddenField1 =
+                $('<input></input>').attr("type", "hidden").attr("name", "hotelId").attr("value", hotelId);
+            let hiddenField2 =
+                $('<input></input>').attr("type", "hidden").attr("name", "iataCode").attr("value", iataCode);
+            let hiddenField3 =
+                $('<input></input>').attr("type", "hidden").attr("name", "startDate").attr("value", startDate);
+            let hiddenField4 =
+                $('<input></input>').attr("type", "hidden").attr("name", "endDate").attr("value", endDate);
+            let hiddenField5 =
+                $('<input></input>').attr("type", "hidden").attr("name", "personCnt").attr("value", personCnt);
+
+            form.append(hiddenField);
+            form.append(hiddenField1);
+            form.append(hiddenField2);
+            form.append(hiddenField3);
+            form.append(hiddenField4);
+            form.append(hiddenField5);
+
+            // form을 body에 추가하고 제출
+            $(document.body).append(form);
+            form.submit();
+        });
+    });
+</script>
+</body>

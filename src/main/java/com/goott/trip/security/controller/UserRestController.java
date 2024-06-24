@@ -1,21 +1,17 @@
 package com.goott.trip.security.controller;
 
-import com.goott.trip.common.model.Alarm;
 import com.goott.trip.common.model.Image;
 import com.goott.trip.common.service.ImageService;
 import com.goott.trip.security.service.EmailService;
 import com.goott.trip.security.service.MemberService;
 import com.goott.trip.security.model.Member;
 import jakarta.mail.MessagingException;
-import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -34,15 +30,21 @@ public class UserRestController {
         return new ModelAndView("security/user/user_page");
     }
 
+    // 회원가입
+    @GetMapping("check")
+    public ModelAndView getSingInCheck(){
+        return new ModelAndView("security/user/user_signInCheck_page");
+    }
     @GetMapping("sign-in")
     public ModelAndView getSignInPage(){
         ModelAndView modelAndView = new ModelAndView("security/user/user_signIn_page");
 
-        String baseImgKey = "trip/2890e995-803d-4feb-91f3-046b49a883c6";
+        String baseImgKey = "trip/4708729d-fd41-4966-bf67-8ece2b20f6bb";
         Optional<Image> imageOp = imageService.findImageByKey(baseImgKey);
 
         if(imageOp.isPresent()){
             modelAndView.addObject("baseImgUrl", imageOp.get().getUrl());
+            /*System.out.println(imageOp.get().getUrl());*/
         }
         return modelAndView;
     }
@@ -51,7 +53,7 @@ public class UserRestController {
 
         Optional<Image> imageOp = imageService.insertFile(file);
         if (imageOp.isEmpty()) {
-            String baseImgKey = "trip/2890e995-803d-4feb-91f3-046b49a883c6";
+            String baseImgKey = "trip/4708729d-fd41-4966-bf67-8ece2b20f6bb";
             member.setImgKey(baseImgKey);
         } else {
             member.setImgKey(imageOp.get().getImgKey());
@@ -61,12 +63,21 @@ public class UserRestController {
         memberService.saveMember(member);
 
         // 로그인 요청 자동
-        ModelAndView modelAndView = new ModelAndView("security/user/user_auto_login");
+        /*ModelAndView modelAndView = new ModelAndView("security/user/user_auto_login");*/
+        ModelAndView modelAndView = new ModelAndView("security/user/user_signInOk_page");
         modelAndView.addObject("id", member.getId());
         modelAndView.addObject("pw", pwTm);
         return modelAndView;
     }
 
+    // 이메일 중복 체크
+    @PostMapping("checkDupId")
+    public Boolean checkDupId(@RequestParam("id") String id) {
+        Boolean result = this.memberService.checkDupId(id);
+        return result;
+    }
+
+    // 이메일 인증
     @PostMapping("sendEmail")
     public Map<String, String> sendEmail(@RequestParam("email") String email, HttpServletRequest httpServletRequest) throws MessagingException {
         HttpSession session = httpServletRequest.getSession();
@@ -74,7 +85,7 @@ public class UserRestController {
         emailService.sendEmail(email, session);
         return new HashMap<>(Map.of("message", "이메일 전송 성공"));
     }
-
+    // 코드 확인
     @PostMapping("codeCatch")
     public Map<String, String> codeCatcher(@RequestParam("code") String inCode, HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
@@ -85,13 +96,15 @@ public class UserRestController {
         } else {
             return new HashMap<>(Map.of("fail", "인증코드가 일치하지않습니다."));
         }
-
     }
 
+    // 로그인
     @GetMapping("log-in")
     public ModelAndView getLogIn(){
         return new ModelAndView("security/user/user_login_page");
     }
+
+    // 로그아웃
     @GetMapping("log-out")
     public ModelAndView logOut(){
         return new ModelAndView("security/user/user_login_page");

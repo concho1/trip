@@ -9,9 +9,15 @@
     </select>
 
     <insert id="save">
-        INSERT INTO trip.member(id, pw, role, name, phone, member.rank, img_key, created_at)
-        VALUES (#{id},#{pw},#{role},#{name},#{phone},null,#{imgKey},now())
+        INSERT INTO trip.member(id, pw, role, name, member.rank, img_key, created_at)
+        VALUES (#{id},#{pw},#{role},#{name},null,#{imgKey},now())
     </insert>
+
+    <select id="checkDupId" parameterType="String" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END
+        FROM trip.member
+        WHERE id = #{id}
+    </select>
 
 
 </mapper>

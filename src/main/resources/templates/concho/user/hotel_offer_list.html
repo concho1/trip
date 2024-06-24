@@ -1,0 +1,516 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<style>
+    .my-btn-box {
+        margin-top: 1.3rem;
+        display: flex;
+        justify-content: center;
+        gap: 1.3rem; /* 버튼 사이의 간격을 조절할 수 있습니다 */
+    }
+    #comment-list, #inquiry, #reply {
+        display: none; /* Initially hide both sections */
+    }
+</style>
+<body>
+<div th:replace="~{common/head :: head-fragment}"></div>
+<!-- [E]tedu-N3 -->
+<main class="th-layout-main ">
+    <!-- [S]tedu-N18 -->
+    <div class="tedu-N18" data-bid="JsLXmnn4Nl">
+        <div class="content-inner">
+            <div class="content-container">
+                <section class="subvisual">
+                    <div class="text-wrap">
+                        <h1 style="margin-bottom: 2rem; margin-left: 1rem" class="title" th:text="${hotel.getName()}"></h1>
+                    </div>
+                    <div class="card-img-area">
+                        <div class="img-wrap">
+                            <div class="img-box">
+                                <img class="card-img card-img-pc" th:src="@{/asset/images/img_N18_pc.png}" alt="이미지">
+                                <img class="card-img card-img-mo" th:src="@{/asset/images/img_N18_mo.png}" alt="모바일이미지">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N18 -->
+    <!-- [S]tedu-N20 -->
+    <div class="tedu-N20" data-bid="nflxmnn4ye" style="z-index: 0; margin-top: 1px">
+        <div class="content-container">
+            <div class="sidebar">
+                <div class="text-warp">
+                    <div class="cate-area">
+                        <div class="tbox-list">
+                            <span class="tbox" >최저가</span>
+                            <span class="tbox">오늘만!</span>
+                        </div>
+                        <button type="button" class="ico-bookmark">
+                            <em></em>
+                            <span>북마크</span>
+                        </button>
+                    </div>
+                    <div class="title-area">
+                        <h3 class="title" th:text="${hotelOfferList.get(0).getCategory()}"></h3>
+                        <span>사이즈 : </span><span class="text" th:text="${hotelOfferList.get(0).getBedType()}"></span><br>
+                        <span>침대 수 : </span><span class="text" th:text="${hotelOfferList.get(0).getBedCnt()}"></span>
+                    </div>
+                    <div class="price-area">
+                        <p class="sale-box">
+                            <span>정가</span>
+                            <span th:text="${fakePrice}" class="discount"></span>
+                        </p>
+                        <div class="price-box">
+                            <div class="price-text">
+                                <strong class="per">30%</strong>
+                                <strong class="price" th:text="${hotelOfferList.get(0).getTotalPrice()}"></strong>
+                            </div>
+                            <p class="price-info">* 12개월 무이자 할부 시 할인 불가</p>
+                        </div>
+                    </div>
+                    <button type="button" class="tedu-btn tedu-btn-light add-cart" onclick="alert('클릭')">예약하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N20 -->
+    <!-- [S]tedu-N22 -->
+    <div class="tedu-N22" data-bid="gClXmnN54I">
+        <div class="content-inner">
+            <div class="content-container">
+                <div class="tab-menu-wrap">
+                    <div class="tab-menu active" id="offer-btn">
+                        <a href="javascript:void(0)">
+                            <span>객실 목록</span>
+                            <strong th:text="${hotelOfferList.size()}"></strong>
+                        </a>
+                    </div>
+                    <div class="tab-menu" id="comment-btn">
+                        <a href="javascript:void(0)">
+                            <span>호텔 평점</span>
+                            <strong>20</strong>
+                        </a>
+                    </div>
+                    <div class="tab-menu" id="reply-btn">
+                        <a href="javascript:void(0)">
+                            <span>댓글</span>
+                            <strong>2</strong>
+                        </a>
+                    </div>
+                    <div class="tab-menu" id="inquiry-btn">
+                        <a href="javascript:void(0)">
+                            <span>문의사항</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N23 -->
+    <div class="tedu-N23" data-bid="tolxmNN5c7" id="offer-list">
+        <div class="content-inner">
+            <div class="content-container" th:each="hotelOffer : ${hotelOfferList}">
+                <section class="intro-wrap"
+                         style="border: 1px solid #dedede; padding: 1rem 1rem 1rem 1rem; border-radius: 3rem 3rem 3rem 3rem;
+                         margin-bottom: 2rem;">
+                    <div class="text-wrap" style="margin-left: 1.3rem; margin-top: 1.3rem">
+                        <div class="title"
+                             th:text="${(hotelOffer.getCategory() != null && !hotelOffer.getCategory().equals('null')) ? hotelOffer.getCategory() : '객실 이름 없음'}"></div>
+                        <p class="text"
+                           th:text="${(hotelOffer.getDescription() != null && !hotelOffer.getDescription().equals('null')) ? hotelOffer.getDescription() : '설명 없음'}"></p>
+                    </div>
+                    <div class="card-img-area">
+                        <div class="img-wrap">
+                            <div class="img-box">
+                                <img class="card-img card-img-pc" th:src="@{/asset/images/img_N25_pc.png}" alt="이미지">
+                                <img class="card-img card-img-mo" th:src="@{/asset/images/img_N25_pc.png}" alt="모바일이미지">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-wrap" style="margin-left: 1.3rem;">
+                        <p class="text">
+                            입실 날짜 : <th:block
+                                th:text="${hotelOffer.getStartDate() != null ? hotelOffer.getStartDate() : '정보 없음'}"></th:block>&nbsp;&nbsp;~&nbsp;&nbsp;
+                            퇴실 날짜 : <th:block
+                                th:text="${hotelOffer.getEndDate() != null ? hotelOffer.getEndDate() : '정보 없음'}"></th:block>
+                            <br>
+                            가격 : <th:block
+                                th:text="${hotelOffer.getBasePrice() != null ? hotelOffer.getBasePrice() : '정보 없음'}"></th:block>
+                            <br>
+                            세금 포함 가격 : <th:block
+                                th:text="${hotelOffer.getTotalPrice() != null ? hotelOffer.getTotalPrice() : '정보 없음'}"></th:block>
+                            <br>
+                            방 카테고리 : <th:block
+                                th:text="${hotelOffer.getCategory() != null ? hotelOffer.getCategory() : '정보 없음'}"></th:block>
+                            <br>
+                            침대 사이즈 : <th:block
+                                th:text="${hotelOffer.getBedType() != null ? hotelOffer.getBedType() : '정보 없음'}"></th:block>
+                            <br>
+                            침대 개수 : <th:block
+                                th:text="${hotelOffer.getBedCnt() != null ? hotelOffer.getBedCnt() : '정보 없음'}"></th:block>
+                            <br>
+                            예약 가능 여부 : <th:block
+                                th:text="${hotelOffer.getAvailable() != null ?
+                                (hotelOffer.getAvailable() ? '예약 가능' : '예약 불가')
+                                : '정보 없음'}"></th:block>
+                        </p>
+                        <div class="price-text" style="margin-top: 1.3rem; margin-bottom: 1.3rem">
+                            <strong style="font-size: large" class="per">total 가격 : </strong>
+                            &nbsp;&nbsp;
+                            <strong style="font-size: x-large; color: #4B00FF" class="price"
+                                    th:text="${hotelOffer.getTotalPrice() != null ? hotelOffer.getTotalPrice() : '정보 없음'}"></strong>
+                            &nbsp;&nbsp;
+                            <strong style="font-size: x-large; color: #4B00FF" class="price"
+                                    th:text="${hotelOffer.getCurrency() != null ? hotelOffer.getCurrency() : '통화 정보 없음'}"></strong>
+
+                        </div>
+                    </div>
+
+                    <div class="my-btn-box">
+                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; background-color: #4a8557"
+                                class="tedu-btn tedu-btn-light add-cart" onclick="alert('클릭')">예약하기</button>
+                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem"
+                                class="tedu-btn tedu-btn-light add-cart" onclick="alert('클릭')">장바구니</button>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- [S]tedu-N27 -->
+    <div class="tedu-N27" data-bid="JKlXMNn5oI" id="comment-list">
+        <div class="content-inner">
+            <div class="content-container">
+                <div class="review-wrap">
+                    <div class="text-wrap">
+                        <div class="title">수강평</div>
+                        <span>총 20개</span>
+                    </div>
+                    <p class="sm-text">수강생분들이 직접 작성하신 수강평입니다.</p>
+                    <div class="review-area">
+                        <div class="reveiw-component">
+                            <div class="num">4.9</div>
+                            <div class="rating-box">
+                                <div class="rating">
+                                    <span class="star"></span>
+                                    <span class="star"></span>
+                                    <span class="star"></span>
+                                    <span class="star"></span>
+                                    <span class="star"></span>
+                                </div>
+                            </div>
+                            <p class="text">20개의 수강평</p>
+                        </div>
+                        <div class="reveiw-list">
+                            <div class="review-swiper">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <div class="card-wrap">
+                                            <a href="javascript:void(0)">
+                                                <div class="card-area">
+                                                    <div class="card-title-area">
+                                                        <div class="profile-box">
+                                                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지">
+                                                        </div>
+                                                        <div class="review-list-rating">
+                                                            <div class="rating-box">
+                                                                <div class="rating">
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                </div>
+                                                            </div>
+                                                            <p class="name">수강생1</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-text-area">
+                                                        <p class="text">XD 시작하기 막막했는데, 강의 듣고 나니 이제 기존 웹사이트 똑같이 만드는 건 쉬워요! 이론과 실습을 같이 진행해주어서 새로운 툴도 이해하기 쉬웠습니다. 감사합니다. XD 시작하기 막막했는데, 강의 듣고 나니 </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="card-wrap">
+                                            <a href="javascript:void(0)">
+                                                <div class="card-area">
+                                                    <div class="card-title-area">
+                                                        <div class="profile-box">
+                                                            <img th:src="@{/asset/images/img_profile_05.png}" alt="이미지">
+                                                        </div>
+                                                        <div class="review-list-rating">
+                                                            <div class="rating-box">
+                                                                <div class="rating">
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                </div>
+                                                            </div>
+                                                            <p class="name">수강생2</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-text-area">
+                                                        <p class="text">XD 시작하기 막막했는데, 강의 듣고 나니 이제 기존 웹사이트 똑같이 만드는 건 쉬워요! 이론과 실습을 같이 진행해주어서 새로운 툴도 이해하기 쉬웠습니다. 감사합니다. XD 시작하기 막막했는데, 강의 듣고 나니 </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="card-wrap">
+                                            <a href="javascript:void(0)">
+                                                <div class="card-area">
+                                                    <div class="card-title-area">
+                                                        <div class="profile-box">
+                                                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지">
+                                                        </div>
+                                                        <div class="review-list-rating">
+                                                            <div class="rating-box">
+                                                                <div class="rating">
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                </div>
+                                                            </div>
+                                                            <p class="name">수강생3</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-text-area">
+                                                        <p class="text">XD 시작하기 막막했는데, 강의 듣고 나니 이제 기존 웹사이트 똑같이 만드는 건 쉬워요! 이론과 실습을 같이 진행해주어서 새로운 툴도 이해하기 쉬웠습니다. 감사합니다. XD 시작하기 막막했는데, 강의 듣고 나니 </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <div class="card-wrap">
+                                            <a href="javascript:void(0)">
+                                                <div class="card-area">
+                                                    <div class="card-title-area">
+                                                        <div class="profile-box">
+                                                            <img th:src="@{/asset/images/img_profile_05.png}" alt="이미지">
+                                                        </div>
+                                                        <div class="review-list-rating">
+                                                            <div class="rating-box">
+                                                                <div class="rating">
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                    <span class="star"></span>
+                                                                </div>
+                                                            </div>
+                                                            <p class="name">수강생4</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-text-area">
+                                                        <p class="text">XD 시작하기 막막했는데, 강의 듣고 나니 이제 기존 웹사이트 똑같이 만드는 건 쉬워요! 이론과 실습을 같이 진행해주어서 새로운 툴도 이해하기 쉬웠습니다. 감사합니다. XD 시작하기 막막했는데, 강의 듣고 나니 </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="control-wrap">
+                                    <div class="swiper-button-prev"></div>
+                                    <div class="swiper-button-next"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N27 -->
+    <!-- [S]tedu-N29 -->
+    <div class="tedu-N29" data-bid="UnLxmNn5uh" id="inquiry">
+        <div class="content-inner">
+            <div class="content-container">
+                <section class="faq-wrap">
+                    <div class="text-wrap">
+                        <div class="title">문의사항</div>
+                    </div>
+                    <div class="acc-wrap">
+                        <div class="acc-item">
+                            <div class="acc-header">
+                                <button class="acc-btn" type="button">
+                                    <span class="acc-q">Q</span>
+                                    <strong>온라인 교육을 들을 수 있는 방법은 무엇인가요?</strong>
+                                </button>
+                            </div>
+                            <div class="acc-body">
+                                <div class="acc-cont"> 네, 강의는 수강 기간 내 여러번 반복 시청이 가능합니다. 강의에서 사용된 업계 전문 용어, 학습을 위한 참고자료, 미션 팁 등을 정리한 PDF 자료로 온라인으로 전달됩니다. 동영상 강의 수강권: 10만 원 / 온라인 코칭권 : 8만 원(1회 당) </div>
+                            </div>
+                        </div>
+                        <div class="acc-item">
+                            <div class="acc-header">
+                                <button class="acc-btn" type="button">
+                                    <span class="acc-q">Q</span>
+                                    <strong>결제기한은 언제까지인가요?</strong>
+                                </button>
+                            </div>
+                            <div class="acc-body">
+                                <div class="acc-cont"> 네, 강의는 수강 기간 내 여러번 반복 시청이 가능합니다. 강의에서 사용된 업계 전문 용어, 학습을 위한 참고자료, 미션 팁 등을 정리한 PDF 자료로 온라인으로 전달됩니다. 동영상 강의 수강권: 10만 원 / 온라인 코칭권 : 8만 원(1회 당) </div>
+                            </div>
+                        </div>
+                        <div class="acc-item active">
+                            <div class="acc-header">
+                                <button class="acc-btn" type="button">
+                                    <span class="acc-q">Q</span>
+                                    <strong>동영상 강의는 기간 내 무제한 시청이 가능한가요?</strong>
+                                </button>
+                            </div>
+                            <div class="acc-body">
+                                <div class="acc-cont"> 네, 강의는 수강 기간 내 여러번 반복 시청이 가능합니다. 강의에서 사용된 업계 전문 용어, 학습을 위한 참고자료, 미션 팁 등을 정리한 PDF 자료로 온라인으로 전달됩니다. 동영상 강의 수강권: 10만 원 / 온라인 코칭권 : 8만 원(1회 당) </div>
+                            </div>
+                        </div>
+                        <div class="acc-item">
+                            <div class="acc-header">
+                                <button class="acc-btn" type="button">
+                                    <span class="acc-q">Q</span>
+                                    <strong>2개 이상의 카드로 분할 결제할 수 있나요?</strong>
+                                </button>
+                            </div>
+                            <div class="acc-body">
+                                <div class="acc-cont"> 네, 강의는 수강 기간 내 여러번 반복 시청이 가능합니다. 강의에서 사용된 업계 전문 용어, 학습을 위한 참고자료, 미션 팁 등을 정리한 PDF 자료로 온라인으로 전달됩니다. 동영상 강의 수강권: 10만 원 / 온라인 코칭권 : 8만 원(1회 당) </div>
+                            </div>
+                        </div>
+                        <div class="acc-item">
+                            <div class="acc-header">
+                                <button class="acc-btn" type="button">
+                                    <span class="acc-q">Q</span>
+                                    <strong>포트폴리오 활용 용도에 적합한가요?</strong>
+                                </button>
+                            </div>
+                            <div class="acc-body">
+                                <div class="acc-cont"> 네, 강의는 수강 기간 내 여러번 반복 시청이 가능합니다. 강의에서 사용된 업계 전문 용어, 학습을 위한 참고자료, 미션 팁 등을 정리한 PDF 자료로 온라인으로 전달됩니다. 동영상 강의 수강권: 10만 원 / 온라인 코칭권 : 8만 원(1회 당) </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N29 -->
+    <!-- [S]tedu-N31 -->
+    <div class="tedu-N31" data-bid="BGlxMNn5ZF" id="reply">
+        <div class="content-inner">
+            <div class="content-container">
+                <section class="news-wrap">
+                    <div class="text-wrap">
+                        <div class="title">새소식</div>
+                        <span>총 2개</span>
+                    </div>
+                    <div class="news-area">
+                        <div class="card-wrap badge">
+                            <div class="card-area">
+                                <div class="card-img-area">
+                                    <div class="profile-box">
+                                        <img th:src="@{/asset/images/img_profile_08.png}" alt="이미지">
+                                    </div>
+                                </div>
+                                <div class="card-text-area">
+                                    <h4 class="name">템플릿하우스</h4>
+                                    <p class="date">30일 전 (29일 전 수정됨)</p>
+                                    <p class="text">안녕하세요. 여러분! <br> 템하가 새로운 소식을 가지고 왔습니다. <br> 템플릿하우스는 코딩을 가장쉽고 빠르게 만들 수 있습니다. 원하는 블록을 가져다 놓기만 하세요. 템플릿하우스는 코딩을 가장쉽고 빠르게 만들 수 있습니다. 원하는 블록을 가져다 놓기만 하세요. </p>
+                                </div>
+                            </div>
+                            <button type="button" class="ico-heart">
+                                <em></em>
+                            </button>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-area">
+                                <div class="card-img-area">
+                                    <div class="profile-box">
+                                        <img th:src="@{/asset/images/img_profile_08.png}" alt="이미지">
+                                    </div>
+                                </div>
+                                <div class="card-text-area">
+                                    <h4 class="name">템플릿하우스</h4>
+                                    <p class="date">60일 전 (60일 전 수정됨)</p>
+                                    <p class="text">안녕하세요. 여러분! <br> 템하가 새로운 소식을 가지고 왔습니다. <br> 템플릿하우스는 코딩을 가장쉽고 빠르게 만들 수 있습니다. 감사합니다. </p>
+                                </div>
+                            </div>
+                            <button type="button" class="ico-heart">
+                                <em></em>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N31 -->
+</main>
+
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+<script>
+    $(document).ready(function () {
+        let $offerList = $('#offer-list');
+        let $commentList = $('#comment-list');
+        let $inquiry = $('#inquiry');
+        let $reply = $('#reply');
+
+        function hideAllSections(callback) {
+            $offerList.fadeOut('slow');
+            $commentList.fadeOut('slow');
+            $inquiry.fadeOut('slow');
+            $reply.fadeOut('slow', callback); // Ensure the last fadeOut calls the callback
+        }
+
+        function showOfferList() {
+            hideAllSections(function() {
+                $offerList.fadeIn('slow');
+            });
+        }
+
+        function showCommentList() {
+            hideAllSections(function() {
+                $commentList.fadeIn('slow');
+            });
+        }
+
+        function showInquiry() {
+            hideAllSections(function() {
+                $inquiry.fadeIn('slow');
+            });
+        }
+
+        function showReply() {
+            hideAllSections(function() {
+                $reply.fadeIn('slow');
+            });
+        }
+
+        $('#offer-btn').click(function () {
+            showOfferList();
+        });
+
+        $('#comment-btn').click(function () {
+            showCommentList();
+        });
+
+        $('#inquiry-btn').click(function () {
+            showInquiry();
+        });
+
+        $('#reply-btn').click(function () {
+            showReply();
+        });
+    });
+</script>
+</body>

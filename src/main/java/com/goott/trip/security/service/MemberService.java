@@ -23,4 +23,6 @@ public class MemberService {
         return memberMapper.findById(id);
     }
 
+    public boolean checkDupId(String id){return memberMapper.checkDupId(id);}
+
 }

@@ -1151,6 +1151,7 @@ body.body-hidden { overflow: hidden; }
 .checkset.lightmode .checkset-input.input-round:checked + .checkset-label::before { content:''; background: url('../../asset/icons/ico_check_fill_wh.svg') center no-repeat; background-size: 100%; }
 .checkset.lightmode .checkset-input:disabled + .checkset-label::before { content:''; background: url('../../asset/icons/ico_check_dis_wh.svg') center no-repeat; background-size: 100%; }
 
+
 /* Asset : Form - Btn */
 .formtype {position: relative; padding: 0;margin: 0;border: none; min-width: 0;}
 .formtype .input-group {display: flex; justify-content: space-between; align-items: flex-end;}

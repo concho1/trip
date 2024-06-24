@@ -90,7 +90,6 @@
 /* tedu-N1 [COlxI9l85P] : 편집됨 */
 .tedu-N1[data-bid=COlxI9l85P] .header-search-form .icon-search { background: url("../../asset/icons/ico_search.svg") no-repeat center; }
 .tedu-N1[data-bid=COlxI9l85P] .mhd-menu-wrap .mhd-menu-box .mhd-menu-title a::after { background: url("../../asset/icons/ico_arrow_down.svg") no-repeat center; }
-
 /* tedu-N7 [LwLxe9yR8z] */
 .tedu-N7 { overflow: hidden; }
 .tedu-N7.darkmode .visual-inner { background: #191a1f; }
@@ -486,6 +485,7 @@
 .tedu-N3[data-bid=nyLxiCE6ib] .header-search-form .icon-search { background: url("../../asset/icons/ico_search.svg") no-repeat center; }
 .tedu-N3[data-bid=nyLxiCE6ib] .mhd-menu-wrap .mhd-menu-box .mhd-menu-title a::after { background: url("../../asset/icons/ico_arrow_down.svg") no-repeat center; }
 
+
 /* tedu-N47 [RSlXeE3jI3] */
 .tedu-N47 { overflow: hidden; }
 .tedu-N47 .content-inner { background: #fff; padding: 5rem 0 16rem; }
@@ -543,6 +543,7 @@
 
 /* tedu-N47 [CulXIc4GvR] : 편집됨 */
 .tedu-N47[data-bid=CulXIc4GvR] .myedu-area .btn-link i::after { background: url("../../asset/icons/ico_play.svg") center; }
+
 
 /* tedu-N44 [GALxi9PyR7] */
 .tedu-N44 { overflow: hidden; }
