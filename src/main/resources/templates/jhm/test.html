@@ -1,101 +1,162 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <body>
+<div th:replace="~{common/head :: head-fragment}"></div>
 
-    <form id="tokenForm" method="post" action="/test">
-        <input type="radio" name="wangbok" value="false" id="oneWay" checked>편도
-        <input type="radio" name="wangbok" value="true" id="round">왕복
-        <input type="checkbox" name="nonStop" value="true">직항만 보기
-        <br>
-        <input type="text" name="origin" id="origin" placeholder="출발지">
-        <input type="button" id="change" onclick="changeTo()" value="바꿔">
-        <input type="text" name="destination" id="destination" placeholder="도착지">
-        <br>
-        <input value="가는날">
-        <input type="date" name="departure">
-        <br>
-        <input value="오는날">
-        <input type="date" name="comeback">
-        <br>
-        <input value="인원">
-        <br>
-        <input value="성인">
-        <select name="adults">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-        </select>
-        <input value="아동">
-        <select name="children">
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-        </select>
-        <input value="영아">
-        <select name="infants">
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-        </select>
-        <br>
-        <input value="좌석">
-        <select name="airplaneClass">
-            <option value="">--</option>
-            <option value="ECONOMY">이코노미</option>
-            <option value="PREMIUM_ECONOMY">프리미엄 이코노미</option>
-            <option value="BUSINESS">비즈니스</option>
-            <option value="FIRST">퍼스트</option>
-        </select>
+<!-- [E]tedu-N3 -->
+<main class="th-layout-main ">
+    <!-- [S]tedu-N44 -->
+    <div class="tedu-N44" data-bid="LRlXiC74YQ">
+        <div class="content-inner">
+            <div class="content-container">
+                <section class="">
+                    <div class="title-wrap">
+                        <h3 class="cont-title">항공권 검색</h3>
+                    </div>
+                    <form method="post" action="/test">
+                        <div class="payment-wrap">
+                            <div class="radioset-wrap" style="display: flex; align-items: center; justify-content: space-between;">
+                                <div class="radioset lightmode"><input id="radioset-a-1" name="radioset-a" class="radioset-input input-line" type="radio" value="" checked=""><label class="radioset-label" for="radioset-a-1"></label><span class="radioset-text" style="background-color: rgb(0, 0, 0); color: rgb(0, 0, 0);">편도</span></div>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="radioset lightmode"><input id="radioset-a-2" name="radioset-a" class="radioset-input input-line" type="radio" value=""><label class="radioset-label" for="radioset-a-2"></label><span class="radioset-text" style="color: rgb(0, 0, 0);">왕복</span></div>
+                                <div class="checkset-wrap" style="display: flex; align-items: center; margin-left: auto;">
+                                    <div class="checkset darkmode"><input id="checkset-t-1" class="checkset-input input-round" type="checkbox" name="nonStop" value="true"><label class="checkset-label" for="checkset-t-1"></label><span class="checkset-text" style="color: rgb(0, 0, 0);">직항만 검색</span></div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="payment-area">
+                                <div class="payment-cont payment-cont-type2">
+                                    <fieldset class="fieldset">
+                                        <p class="stitle">출발</p>
+                                        <div class="input-group">
+                                            <div class="tedu-inputset">
+                                                <input type="text" class="tedu-input lightmode" placeholder="출발지 입력" id="origin" name="origin" aria-label="출발">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button class="ico_menu btn" type="button" aria-label="아이콘" th:onclick="changeTo()">
+                                        <img src="/asset/icons/ico_menu.svg" alt="메뉴 아이콘">
+                                    </button>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <fieldset class="fieldset">
+                                        <p class="stitle">도착</p>
+                                        <div class="input-group">
+                                            <div class="tedu-inputset">
+                                                <input type="text" class="tedu-input lightmode" placeholder="도착지 입력" id="destination" name="destination" aria-label="도착">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div id="originModal" class="modal">
+                                        <div class="modal-content">
+                                            <span class="close" id="orgClose">&times;</span>
+                                            <input name="org" id="modalOrigin">
+                                            <hr>
+                                            <div id="originModalBody"></div>
+                                        </div>
+                                    </div>
+                                    <div id="desModal" class="modal">
+                                        <div class="modal-content">
+                                            <span class="close" id="desClose">&times;</span>
+                                            <input name="des" id="modalDes">
+                                            <hr>
+                                            <div id="desModalBody"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="payment-area">
+                                <div class="payment-cont payment-cont-type2">
+                                    <fieldset class="fieldset">
+                                        <p class="stitle">가는 날</p>
+                                        <div class="tedu-inputset">
+                                            <input class="tedu-input lightmode" name="departure" id="depDate" placeholder="YYYY-MM-DD">
+                                            <div id="depCalendarContainer" class="hidden"></div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="fieldset">
+                                        <p class="stitle">오는 날</p>
+                                        <div class="tedu-inputset">
+                                            <input type="date" name="comeback" class="tedu-input lightmode">
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="payment-area">
+                                <p class="stitle">인원</p>
+                                <div class="payment-cont payment-cont-type2">
+                                    <fieldset class="fieldset">
+                                        <p class="stitle">성인</p>
+                                        <select class="tedu-input lightmode" name="adults">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                        </select>
+                                    </fieldset>
 
-        <input value="화폐">
-        <select name="currency">
-            <option value="KRW">한국 원</option>
-            <option value="USD">미국 달러</option>
-            <option value="JPY">일본 엔</option>
-            <option value="CNY">중국 위안</option>
-        </select>
+                                    <fieldset class="fieldset" style="margin-left: 10px; margin-right: 10px;">
+                                        <p class="stitle">아동</p>
+                                        <select class="tedu-input lightmode" name="children">
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                        </select>
+                                    </fieldset>
 
-        <input type="submit" value="검색">
-    </form>
-    <br> <br> <br>
-
-    <form method="post" action="/upload_airport" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <input type="submit" value="공항 업로드">
-    </form>
-
-    <br>
-
-    <form method="post" action="/upload_airline" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <input type="submit" value="항공사 업로드">
-    </form>
-
-<script>
-    function changeTo() {
-        let temp;
-        let origin = document.getElementById("origin").value;
-        let destination = document.getElementById("destination").value;
-
-        document.getElementById("origin").value = destination;
-        document.getElementById("destination").value = origin;
-    }
-</script>
-
+                                    <fieldset class="fieldset">
+                                        <p class="stitle">유아</p>
+                                        <select class="tedu-input lightmode" name="infants">
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                        </select>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="payment-area">
+                                <div class="payment-cont-type2">
+                                    <p class="stitle">좌석</p>
+                                    <select class="tedu-input lightmode" name="airplaneClass">
+                                        <option value="">좌석 선택[선택사항]</option>
+                                        <option value="ECONOMY">이코노미</option>
+                                        <option value="PREMIUM_ECONOMY">프리미엄 이코노미</option>
+                                        <option value="BUSINESS">비즈니스</option>
+                                        <option value="FIRST">퍼스트</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="tedu-btn tedu-btn-light" type="submit" style="width: 300px;">검색</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N44 -->
+</main>
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
+<script th:src="@{/jhm/jhm.js}"></script>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
 </body>
-</html>

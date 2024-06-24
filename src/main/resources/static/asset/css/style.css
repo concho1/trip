@@ -17,8 +17,8 @@
 .tedu-N14 .control-wrap { width: 100%; position: absolute; top: 0; right: 0; width: 6.8rem; height: 3.2rem; }
 .tedu-N14 .control-wrap .swiper-button-prev,.tedu-N14 .control-wrap .swiper-button-next { width: 3.2rem; height: 3.2rem; margin-top: 0; transform: translateY(-50%); -webkit-filter: brightness(0) invert(1); filter: brightness(0) invert(1); }
 .tedu-N14 .control-wrap .swiper-button-prev::after,.tedu-N14 .control-wrap .swiper-button-next::after { display: none; }
-.tedu-N14 .control-wrap .swiper-button-prev { background: url("../icons/ico_btn_prev.svg") no-repeat center; left: 0; }
-.tedu-N14 .control-wrap .swiper-button-next { background: url("../icons/ico_btn_next.svg") no-repeat center; right: 0; }
+.tedu-N14 .control-wrap .swiper-button-prev { background: url("../../asset/icons/ico_btn_prev.svg") no-repeat center; left: 0; }
+.tedu-N14 .control-wrap .swiper-button-next { background: url("../../asset/icons/ico_btn_next.svg") no-repeat center; right: 0; }
 .tedu-N14 .control-wrap .swiper-button-next.swiper-button-disabled,.tedu-N14 .control-wrap .swiper-button-prev.swiper-button-disabled { opacity: 0.5; }
 @media (max-width: 1280px) {
  .tedu-N14 .content-inner { padding: 4rem 0 12rem; }
@@ -133,8 +133,9 @@
 .tedu-N15 .control-wrap { width: 100%; position: absolute; top: 0; right: 0; width: 6.8rem; height: 3.2rem; }
 .tedu-N15 .control-wrap .swiper-button-prev,.tedu-N15 .control-wrap .swiper-button-next { width: 3.2rem; height: 3.2rem; margin-top: 0; transform: translateY(-50%); -webkit-filter: grayscale(100%) brightness(0); filter: grayscale(100%) brightness(0); }
 .tedu-N15 .control-wrap .swiper-button-prev::after,.tedu-N15 .control-wrap .swiper-button-next::after { display: none; }
-.tedu-N15 .control-wrap .swiper-button-prev { background: url("../icons/ico_btn_prev.svg") no-repeat center; left: 0; }
-.tedu-N15 .control-wrap .swiper-button-next { background: url("../icons/ico_btn_next.svg") no-repeat center; right: 0; }
+.tedu-N15 .control-wrap .swiper-button-prev { background: url("../../asset/icons/ico_btn_prev.svg") no-repeat center; left: 0; }
+.tedu-N15 .control-wrap .swiper-button-next { background: url("../../asset/icons/ico_btn_next.svg") no-repeat center; right: 0; }
+
 .tedu-N15 .control-wrap .swiper-button-next.swiper-button-disabled,.tedu-N15 .control-wrap .swiper-button-prev.swiper-button-disabled { opacity: 0.1; }
 @media (max-width: 1280px) {
  .tedu-N15 .content-inner { padding: 4rem 0 12rem; }

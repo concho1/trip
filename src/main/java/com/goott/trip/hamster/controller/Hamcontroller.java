@@ -45,12 +45,25 @@ public class Hamcontroller {
         return new ModelAndView("Hamster/airplaneInfoList").addObject("list",list);
     }
 
-    @GetMapping("airplane/ticketing")
-    public ModelAndView airticketing(@RequestParam("key")String key){
+    @PostMapping("airplane/ticketing")
+    public ModelAndView airticketing(@RequestParam(name = "key", required = false)List<String> key){
+
         List<String> country = this.airservice.getCountry();
-        Testproduct cont = this.airservice.airplaneCont(key);
-        return new ModelAndView("Hamster/PlaneReservation").addObject("cont",cont).
-                addObject("country",country);
+
+        if(key.size() == 1){
+            Testproduct cont = this.airservice.airplaneCont(key.get(0));
+            return new ModelAndView("Hamster/PlaneReservation").addObject("cont",cont).
+                    addObject("country",country);
+        }else {
+            ModelAndView modelAndView = new ModelAndView("Hamster/PlaneReservation");
+            for(int i = 0; i < key.size(); i++){
+
+                Testproduct cont = this.airservice.airplaneCont(key.get(i));
+                modelAndView.addObject("cont",cont);
+            }
+            return modelAndView;
+        }
+
     }
 
     @GetMapping("airplane/shoppingCart")
@@ -58,12 +71,12 @@ public class Hamcontroller {
 
         Alarm alarm = new Alarm(model);
         String memberId = principal.getName();
-        List<shoppingCart> dbKey = this.shoppingCartService.checkDup(memberId);
+        List<shoppingCart> dbVal = this.shoppingCartService.checkDup(memberId);
         List<Testproduct> plist = new ArrayList<>();
 
         System.out.println(key);
 
-        boolean isAlreadyInCart = dbKey.stream().anyMatch(cartItem -> cartItem.getAirKey().equals(key));
+        boolean isAlreadyInCart = dbVal.stream().anyMatch(cartItem -> cartItem.getAirKey().equals(key));
 
         if (!isAlreadyInCart) {
             int check = this.shoppingCartService.insertCart(memberId, key);
@@ -75,12 +88,22 @@ public class Hamcontroller {
             }
         }
 
-        // DB에 있는 모든 항목을 추가
-        for (shoppingCart cartItem : dbKey) {
+        for (shoppingCart cartItem : dbVal) {
             plist.add(this.airservice.airplaneCont(cartItem.getAirKey()));
+
         }
 
-        return new ModelAndView("Hamster/shoppingCart").addObject("plist", plist);
+        return new ModelAndView("Hamster/shoppingCart").addObject("plist", plist).addObject("dbVal",dbVal);
+    }
+
+    @PostMapping("airplane/categoryDelete")
+    public ModelAndView categoryUpdate(@RequestParam("hotelKeyVal")String hotelKeyVal, Principal principal){
+
+        String memberId = principal.getName();
+
+        int check = this.shoppingCartService.deleteHotel(hotelKeyVal,memberId);
+
+        return new ModelAndView().addObject(check);
     }
 
     @PostMapping("airplane/payment")
