@@ -76,10 +76,6 @@ public class AmadeusSearchFlightDAO {
 
         }
 
-
-        for(FlightOfferSearch flightOfferSearch : flightOfferSearches) {
-            System.out.println(flightOfferSearch);
-        }
         return flightOfferSearches;
     }
 
