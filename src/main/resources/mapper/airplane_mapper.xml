@@ -15,4 +15,17 @@
     <select id="airplaneInfoList" resultType="airplaneInfo">
         select * from airplaneInfo order by air_num desc
     </select>
+
+    <select id="getAirInfo" parameterType="String" resultType="CartFlight">
+        select * from cartFlight where ffvId = #{AirKey}
+    </select>
+
+    <select id="getDurationInfo" parameterType="String" resultType="CartDuration">
+        select * from cartDuration where ffvId = #{AirKey}
+    </select>
+
+    <select id="getSegment" parameterType="String" resultType="CartSegment">
+        select * from cartSegment where ffvId = #{AirKey}
+    </select>
+
 </mapper>

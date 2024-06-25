@@ -6,6 +6,9 @@ import com.goott.trip.hamster.model.airplaneInfo;
 import com.goott.trip.hamster.model.shoppingCart;
 import com.goott.trip.hamster.service.airplaneService;
 import com.goott.trip.hamster.service.shoppingCartService;
+import com.goott.trip.jhm.model.CartDuration;
+import com.goott.trip.jhm.model.CartFlight;
+import com.goott.trip.jhm.model.CartSegment;
 import com.goott.trip.security.service.EmailService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +47,11 @@ public class Hamcontroller {
     }
 
     @PostMapping("airplane/ticketing")
-    public ModelAndView airticketing(@RequestParam(name = "key", required = false)List<String> key){
+    public ModelAndView airticketing(@RequestParam(name = "key", required = false)List<String> key,Principal principal){
+
+        String memId = principal.getName();
+        String AirKey = this.shoppingCartService.getAirKey(memId);
+        System.out.println(AirKey);
 
         List<String> country = this.airservice.getCountry();
 
@@ -65,22 +72,32 @@ public class Hamcontroller {
     }
 
     @GetMapping("airplane/ticketing")
-    public ModelAndView airticketingaa(@RequestParam(name = "key", required = false)List<String> key){
+    public ModelAndView airticketingaa(@RequestParam(name = "key", required = false)List<String> key,Principal principal){
 
+        ModelAndView modelAndView = new ModelAndView("Hamster/PlaneReservation");
+        String memId = principal.getName();
+        String AirKey = this.shoppingCartService.getAirKey(memId);
+        List<CartDuration> DurationInfo = this.airservice.getDurationInfo(AirKey);
+        List<CartFlight> airInfo = this.airservice.getAirInfo(AirKey);
+        List<CartSegment> airSeg = this.airservice.getSegment(AirKey);
         List<String> country = this.airservice.getCountry();
 
         if(key.size() == 1){
             Testproduct cont = this.airservice.airplaneCont(key.get(0));
-            return new ModelAndView("Hamster/PlaneReservation").addObject("cont",cont).
-                    addObject("country",country);
+            return modelAndView
+                    .addObject("cont",cont).
+                    addObject("country",country)
+                    .addObject("airInfo",airInfo)
+                    .addObject("airSeg",airSeg)
+                    .addObject("duration", DurationInfo);
         }else {
-            ModelAndView modelAndView = new ModelAndView("Hamster/PlaneReservation");
+            ModelAndView modelAndViewE = new ModelAndView("Hamster/PlaneReservation");
             for(int i = 0; i < key.size(); i++){
 
                 Testproduct cont = this.airservice.airplaneCont(key.get(i));
                 modelAndView.addObject("cont",cont);
             }
-            return modelAndView;
+            return modelAndViewE;
         }
 
     }
