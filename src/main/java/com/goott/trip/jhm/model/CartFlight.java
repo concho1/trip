@@ -11,6 +11,9 @@ public class CartFlight {
     private String destination;
     private String departure;
     private String comeback;
+    private int adults;
+    private int children;
+    private int infants;
     private double totalBase;
     private double totalPrice;
     private Timestamp createdAt;

@@ -42,8 +42,13 @@ public class FlightController {
         List<FlightForView> ffvList = new ArrayList<>();
         APIFlight fdto;
         int ffvCount = 0;
+        String memberId;
 
-        String memberId = principal.getName();
+        if(principal != null) {
+            memberId = principal.getName();
+        }else {
+            memberId = "";
+        }
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -168,7 +173,8 @@ public class FlightController {
     public String insertFfv(@RequestParam("ffv") String data, @RequestParam("ffvId") String ffvId,
                             @RequestParam("origin") String origin, @RequestParam("des") String des,
                             @RequestParam("dep") String dep, @RequestParam("comb") String comb,
-                            @RequestParam("memberId") String memberId) {
+                            @RequestParam("adults") int adults, @RequestParam("children") int children,
+                            @RequestParam("infants") int infants, @RequestParam("memberId") String memberId) {
 
         String[] ffvHead = {"ffvId", "totalBase", "totalPrice", "apiPricings", "apiSegments", "apiDurations"};
         String[] pricingHead = {"id", "itineraryCode", "flightCode", "type", "base", "total"};
@@ -188,6 +194,9 @@ public class FlightController {
         cf.setDestination(des);
         cf.setDeparture(dep);
         cf.setComeback(comb);
+        cf.setAdults(adults);
+        cf.setChildren(children);
+        cf.setInfants(infants);
 
         StringBuilder sb;
 
@@ -241,10 +250,12 @@ public class FlightController {
                             if(pri.substring(pri.length()-2, pri.length()-1).equals(",")) {
                                 pri = pri.substring(0, pri.length()-3);
                             }else {
-                                pri = pri.substring(0, pri.length()-2);
+                                pri = pri.substring(0, pri.length()-1);
                             }
                             cp = new CartPricing();
                             cp.setFfvId(ffvId);
+                            String cpId = "cp:"+UUID.randomUUID();
+                            cp.setId(cpId);
                             for(String ph : pricingHead) {
                                 int u = pri.indexOf(ph);
                                 StringBuilder nsb = new StringBuilder();
@@ -258,9 +269,6 @@ public class FlightController {
                                 String fin = nsb.toString();
                                 String[] fins = fin.split("=");
                                 switch(ph) {
-                                    case "id" :
-                                        cp.setId(fins[1]);
-                                        break;
                                     case "type" :
                                         cp.setType(fins[1]);
                                         break;
@@ -296,10 +304,12 @@ public class FlightController {
                             if(seg.substring(seg.length()-2, seg.length()-1).equals(",")) {
                                 seg = seg.substring(0, seg.length()-3);
                             }else {
-                                seg = seg.substring(0, seg.length()-2);
+                                seg = seg.substring(0, seg.length()-1);
                             }
                             cs = new CartSegment();
+                            String csId = "cs:"+UUID.randomUUID();
                             cs.setFfvId(ffvId);
+                            cs.setId(csId);
 
                             for(String sh : segmentHead) {
                                 int u = seg.indexOf(sh);
@@ -315,9 +325,6 @@ public class FlightController {
                                 String fin = nsb.toString();
                                 String[] fins = fin.split("=");
                                 switch(sh) {
-                                    case "id" :
-                                        cs.setId(fins[1]);
-                                        break;
                                     case "departureIata" :
                                         cs.setDepartureIata(fins[1]);
                                         break;
@@ -366,10 +373,12 @@ public class FlightController {
                             if(dur.substring(dur.length()-2, dur.length()-1).equals(",")) {
                                 dur = dur.substring(0, dur.length()-3);
                             }else {
-                                dur = dur.substring(0, dur.length()-2);
+                                dur = dur.substring(0, dur.length()-1);
                             }
                             cd = new CartDuration();
+                            String cdId = "cd:"+ UUID.randomUUID();
                             cd.setFfvId(ffvId);
+                            cd.setId(cdId);
 
                             for(String dh : durationHead) {
                                 int u = dur.indexOf(dh);
@@ -386,9 +395,6 @@ public class FlightController {
                                 String fin = nsb.toString();
                                 String[] fins = fin.split("=");
                                 switch(dh) {
-                                    case "id" :
-                                        cd.setId(fins[1]);
-                                        break;
                                     case "depOrComb" :
                                         cd.setDepOrComb(fins[1]);
                                         break;

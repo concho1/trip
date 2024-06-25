@@ -13,6 +13,9 @@
                 <input type="hidden" id="destination" th:value="${flight.destination}">
                 <input type="hidden" id="departure" th:value="${flight.departure}">
                 <input type="hidden" id="comeback" th:value="${flight.comeback}">
+                <input type="hidden" id="adults" th:value="${flight.adults}">
+                <input type="hidden" id="children" th:value="${flight.children}">
+                <input type="hidden" id="infants" th:value="${flight.infants}">
                 <input type="hidden" id="memberId" th:value="${memberId}">
                 <img th:src="${ffv.getApiDurations().get(0).airlineImg}" alt="이미지" style="width: 100px; height: 50px;">
                 <span th:text="${orgKor}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
