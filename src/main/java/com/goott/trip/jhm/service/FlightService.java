@@ -2,6 +2,7 @@ package com.goott.trip.jhm.service;
 
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
+import com.goott.trip.hamster.model.shoppingCart;
 import com.goott.trip.jhm.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -170,5 +171,10 @@ public class FlightService {
     public String findAirportByIATA(String iata) { return this.mapper.findAirportByIATA(iata); }
 
     public List<Airport> findAirportByKor(String kor) { return this.mapper.findAirportByKor(kor); }
+    public void insertShoppingCart(shoppingCart cart) { this.mapper.insertShoppingCart(cart); }
+    public void insertCartPricing(CartPricing cp) { this.mapper.insertCartPricing(cp); }
+    public void insertCartSegment(CartSegment cs) { this.mapper.insertCartSegment(cs); }
+    public void insertCartDuration(CartDuration cd) { this.mapper.insertCartDuration(cd); }
+    public void insertCartFlight(CartFlight cf) { this.mapper.insertCartFlight(cf); }
 
 }

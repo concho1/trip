@@ -15,7 +15,6 @@ $(document).ready(function() {
     function originAirport() {
         if (input.val().trim() !== "") {
             $('#originModalBody').empty();
-            console.log(input.val());
             $("#modalOrigin").val(input.val());
             $.ajax({
                 type : 'post',
@@ -60,7 +59,6 @@ $(document).ready(function() {
 
     function desAirport() {
         if (des.val().trim() !== "") {
-            console.log(des.val());
             $("#modalDes").val(des.val());
             $.ajax({
                 type : 'post',
@@ -121,26 +119,54 @@ $(document).ready(function() {
         }
     });
 
-    $('#depDate').click(function() {
-        // 경로 설정: template/cal.html
-        let pathToCalHtml = 'templates/jhm/cal.html';
-
-        // ajax 요청
+    /*$('#depDate').click(function() {
         $.ajax({
-            url: pathToCalHtml,
+            url: '/calendar/cal.html',
             type: 'GET',
-            dataType: 'html',
             success: function(data) {
-                $('#calendarContainer').html(data); // calendarContainer에 삽입
-                $('#calendarContainer').removeClass('hidden'); // 클래스 hidden 제거
+                $('#depCalendarContainer').html(data).removeClass('hidden'); // 클래스 hidden 제거
             },
             error: function(xhr, status, error) {
                 console.error('Fetch error:', error);
             }
         });
-    });
+    });*/
 
     $('.toggleBtn').click(function() {
         $(this).closest('.card-body').find('.tog-body').toggle();
     });
+
+    $('.cartBtn').click(function() {
+        let card = $(this).closest('.card');
+        let ffvData = card.data('ffv');
+        let ffvId = $(this).closest('.card').find('#ffvId').val();
+        let origin = $(this).closest('.card').find('#origin').val();
+        let des = $(this).closest('.card').find('#destination').val();
+        let dep = $(this).closest('.card').find('#departure').val();
+        let comb = $(this).closest('.card').find('#comeback').val();
+        let memberId = $(this).closest('.card').find('#memberId').val();
+
+        insertFfv(ffvData, ffvId, origin, des, dep, comb, memberId);
+    });
+
+    function insertFfv(data, ffvId, origin, des, dep, comb, memberId) {
+        $.ajax({
+           type : 'post',
+           url : 'insertFfv',
+           data : { ffv : data,
+                    ffvId : ffvId,
+                    origin : origin,
+                    des : des,
+                    dep : dep,
+                    comb : comb,
+                    memberId : memberId
+                    },
+           success : function() {
+               alert("장바구니에 추가되었습니다.");
+           },
+           error : function() {
+               alert('db 저장 중 오류 발생');
+           }
+        });
+    }
 })

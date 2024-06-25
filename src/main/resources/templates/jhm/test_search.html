@@ -6,15 +6,21 @@
 
 <main>
     <div class="card-wrapper" th:if="${ffvList != null}" th:each="ffv : ${ffvList}">
-        <div class="card">
+        <div class="card" th:attr="data-ffv=${ffv}">
             <div class="card-body">
+                <input type="hidden" id="ffvId" th:value="${ffv.ffvId}">
+                <input type="hidden" id="origin" th:value="${flight.origin}">
+                <input type="hidden" id="destination" th:value="${flight.destination}">
+                <input type="hidden" id="departure" th:value="${flight.departure}">
+                <input type="hidden" id="comeback" th:value="${flight.comeback}">
+                <input type="hidden" id="memberId" th:value="${memberId}">
                 <img th:src="${ffv.getApiDurations().get(0).airlineImg}" alt="이미지" style="width: 100px; height: 50px;">
                 <span th:text="${orgKor}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span th:text="${desKor}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span th:text="${#numbers.formatDecimal(ffv.totalPrice, 0, 'COMMA', 0, 'POINT')}"></span>&nbsp;&nbsp;
                 <img th:src="@{/asset/images/downarrow.webp}" class="toggleBtn" value="토글" style="width: 20px; height: 20px; cursor: pointer;">
                 <div class="tog-body">
-                    <div class="itinerary" th:each="seg : ${ffv.apiSegments}">
+                    <div th:class="itinerary" th:each="seg : ${ffv.apiSegments}">
                         <table>
                             <tr>
                                 <td>
@@ -42,8 +48,10 @@
                                 </td>
                             </tr>
                         </table>
-
+                        <br>
                     </div>
+                    <button class="tedu-btn tedu-btn-dark cartBtn">장바구니에 추가</button> <br>
+                    <button class="tedu-btn tedu-btn-light">선택하기</button>
                 </div>
             </div>
         </div>

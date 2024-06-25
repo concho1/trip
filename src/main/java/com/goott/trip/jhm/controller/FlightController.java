@@ -2,6 +2,7 @@ package com.goott.trip.jhm.controller;
 
 
 import com.amadeus.exceptions.ResponseException;
+import com.goott.trip.hamster.model.shoppingCart;
 import com.goott.trip.jhm.model.*;
 import com.goott.trip.jhm.service.FlightService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,11 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.Principal;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class FlightController {
@@ -34,7 +34,7 @@ public class FlightController {
     public ModelAndView flight() { return new ModelAndView("jhm/test"); }
 
     @PostMapping("test")
-    public ModelAndView search(Flight flight) throws ResponseException {
+    public ModelAndView search(Flight flight, Principal principal) throws ResponseException {
 
         ModelAndView mav = new ModelAndView("jhm/test_search");
 
@@ -42,6 +42,8 @@ public class FlightController {
         List<FlightForView> ffvList = new ArrayList<>();
         APIFlight fdto;
         int ffvCount = 0;
+
+        String memberId = principal.getName();
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -66,7 +68,10 @@ public class FlightController {
             LocalDateTime createdAt = fdto.getCreatedAt().toLocalDateTime();
             Duration diff = Duration.between(createdAt.toLocalTime(), now.toLocalTime());
             long min = diff.toMinutes();
-            if(min > 60) {
+            boolean t = createdAt.toLocalDate().isBefore(now.toLocalDate());
+            System.out.println("min : "+min);
+            System.out.println("t : "+t);
+            if(min > 60 || t) {
                 this.service.deleteAllByFlight(fdto.getCode());
                 iList = this.service.getSearch(sb.toString(), flight);
             }else {
@@ -79,6 +84,8 @@ public class FlightController {
         for(int i=0; i<iList.size(); i++) {
             FlightForView ffv = new FlightForView();
             String iCode = iList.get(i).getId();
+            String fID = "ffv/" + UUID.randomUUID();
+            ffv.setFfvId(fID);
             ffv.setTotalBase(iList.get(i).getTotalBase());
             ffv.setTotalPrice(iList.get(i).getTotalPrice());
             ffv.setApiPricings(this.service.findPricingForView(iCode));
@@ -96,7 +103,8 @@ public class FlightController {
         mav.addObject("flight", flight)
                 .addObject("ffvList", ffvList)
                 .addObject("orgKor", orgKor)
-                .addObject("desKor", desKor);
+                .addObject("desKor", desKor)
+                .addObject("memberId", memberId);
 
         return mav;
     }
@@ -151,6 +159,259 @@ public class FlightController {
         out.println(json.toString());
 
         out.close();
+
+        return null;
+    }
+
+    @PostMapping("insertFfv")
+    @ResponseBody
+    public String insertFfv(@RequestParam("ffv") String data, @RequestParam("ffvId") String ffvId,
+                            @RequestParam("origin") String origin, @RequestParam("des") String des,
+                            @RequestParam("dep") String dep, @RequestParam("comb") String comb,
+                            @RequestParam("memberId") String memberId) {
+
+        String[] ffvHead = {"ffvId", "totalBase", "totalPrice", "apiPricings", "apiSegments", "apiDurations"};
+        String[] pricingHead = {"id", "itineraryCode", "flightCode", "type", "base", "total"};
+        String[] segmentHead = {"id", "itineraryCode", "flightCode", "departureIata", "departureAt", "arrivalIata",
+                                    "arrivalAt", "duration", "carrierCode", "carrierNum"};
+        String[] durationHead = {"id", "itineraryCode", "flightCode", "depOrComb", "duration", "airline", "airlineImg"};
+
+        shoppingCart cart = new shoppingCart();
+        cart.setMemberId(memberId);
+        cart.setAirKey(ffvId);
+
+        this.service.insertShoppingCart(cart);
+
+        CartFlight cf = new CartFlight();
+        cf.setFfvId(ffvId);
+        cf.setOrigin(origin);
+        cf.setDestination(des);
+        cf.setDeparture(dep);
+        cf.setComeback(comb);
+
+        StringBuilder sb;
+
+        for(int i = 0; i< ffvHead.length; i++) {
+            int o = data.indexOf(ffvHead[i]);
+            String ffvBod = data.substring(o);
+            switch(ffvHead[i]) {
+                case "ffvId" :
+                    break;
+                case "totalBase" :
+                    sb = new StringBuilder();
+                    for(char a : ffvBod.toCharArray()) {
+                        if(a != ',') {
+                            sb.append(a);
+                        }else {
+                            String[] bases = sb.toString().split("=");
+                            cf.setTotalBase(Double.parseDouble(bases[1]));
+                            break;
+                        }
+                    }
+                    break;
+                case "totalPrice" :
+                    sb = new StringBuilder();
+                    for(char a : ffvBod.toCharArray()) {
+                        if(a != ',') {
+                            sb.append(a);
+                        }else {
+                            String[] prices = sb.toString().split("=");
+                            cf.setTotalPrice(Double.parseDouble(prices[1]));
+                            break;
+                        }
+                    }
+                    break;
+                case "apiPricings" :
+                    sb = new StringBuilder();
+                    CartPricing cp;
+
+                    for(char a : ffvBod.toCharArray()) {
+                        if(a != ']') {
+                            sb.append(a);
+                        }else {
+                            break;
+                        }
+                    }
+
+                    int p = sb.indexOf("APIPricing");
+                    String pricings = sb.substring(p);
+                    String[] pris = pricings.split("APIPricing");
+                    for(String pri : pris) {
+                        if(!pri.isEmpty()) {
+                            if(pri.substring(pri.length()-2, pri.length()-1).equals(",")) {
+                                pri = pri.substring(0, pri.length()-3);
+                            }else {
+                                pri = pri.substring(0, pri.length()-2);
+                            }
+                            cp = new CartPricing();
+                            cp.setFfvId(ffvId);
+                            for(String ph : pricingHead) {
+                                int u = pri.indexOf(ph);
+                                StringBuilder nsb = new StringBuilder();
+                                for(char z : pri.substring(u).toCharArray()) {
+                                    if(z != ',') {
+                                        nsb.append(z);
+                                    }else {
+                                        break;
+                                    }
+                                }
+                                String fin = nsb.toString();
+                                String[] fins = fin.split("=");
+                                switch(ph) {
+                                    case "id" :
+                                        cp.setId(fins[1]);
+                                        break;
+                                    case "type" :
+                                        cp.setType(fins[1]);
+                                        break;
+                                    case "base" :
+                                        cp.setBase(Double.parseDouble(fins[1]));
+                                        break;
+                                    case "total" :
+                                        cp.setTotal(Double.parseDouble(fins[1]));
+                                        break;
+                                }
+                            }
+                            this.service.insertCartPricing(cp);
+                        }
+                    }
+                    break;
+                case "apiSegments" :
+                    sb = new StringBuilder();
+                    CartSegment cs;
+
+                    for(char a : ffvBod.toCharArray()) {
+                        if(a != ']') {
+                            sb.append(a);
+                        }else {
+                            break;
+                        }
+                    }
+
+                    int p2 = sb.indexOf("APISegment");
+                    String segments = sb.substring(p2);
+                    String[] segs = segments.split("APISegment");
+                    for(String seg : segs) {
+                        if(!seg.isEmpty()) {
+                            if(seg.substring(seg.length()-2, seg.length()-1).equals(",")) {
+                                seg = seg.substring(0, seg.length()-3);
+                            }else {
+                                seg = seg.substring(0, seg.length()-2);
+                            }
+                            cs = new CartSegment();
+                            cs.setFfvId(ffvId);
+
+                            for(String sh : segmentHead) {
+                                int u = seg.indexOf(sh);
+                                StringBuilder nsb = new StringBuilder();
+
+                                for(char z : seg.substring(u).toCharArray()) {
+                                    if(z != ',') {
+                                        nsb.append(z);
+                                    }else {
+                                        break;
+                                    }
+                                }
+                                String fin = nsb.toString();
+                                String[] fins = fin.split("=");
+                                switch(sh) {
+                                    case "id" :
+                                        cs.setId(fins[1]);
+                                        break;
+                                    case "departureIata" :
+                                        cs.setDepartureIata(fins[1]);
+                                        break;
+                                    case "departureAt" :
+                                        cs.setDepartureAt(fins[1]);
+                                        break;
+                                    case "arrivalIata" :
+                                        cs.setArrivalIata(fins[1]);
+                                        break;
+                                    case "arrivalAt" :
+                                        cs.setArrivalAt(fins[1]);
+                                        break;
+                                    case "duration" :
+                                        cs.setDuration(fins[1]);
+                                        break;
+                                    case "carrierCode" :
+                                        cs.setCarrierCode(fins[1]);
+                                        break;
+                                    case "carrierNum" :
+                                        cs.setCarrierNum(fins[1]);
+                                        break;
+                                }
+                            }
+                            this.service.insertCartSegment(cs);
+                        }
+                    }
+                    break;
+                case "apiDurations" :
+                    sb = new StringBuilder();
+                    CartDuration cd;
+
+                    for(char a : ffvBod.toCharArray()) {
+                        if(a != ']') {
+                            sb.append(a);
+                        }else {
+                            break;
+                        }
+                    }
+
+                    int p3 = sb.indexOf("APIDuration");
+                    String durations = sb.substring(p3);
+                    String[] durs = durations.split("APIDuration");
+
+                    for(String dur : durs) {
+                        if(!dur.isEmpty()) {
+                            if(dur.substring(dur.length()-2, dur.length()-1).equals(",")) {
+                                dur = dur.substring(0, dur.length()-3);
+                            }else {
+                                dur = dur.substring(0, dur.length()-2);
+                            }
+                            cd = new CartDuration();
+                            cd.setFfvId(ffvId);
+
+                            for(String dh : durationHead) {
+                                int u = dur.indexOf(dh);
+                                StringBuilder nsb = new StringBuilder();
+
+                                for(char z : dur.substring(u).toCharArray()) {
+                                    if(z != ',') {
+                                        nsb.append(z);
+                                    }else {
+                                        break;
+                                    }
+                                }
+
+                                String fin = nsb.toString();
+                                String[] fins = fin.split("=");
+                                switch(dh) {
+                                    case "id" :
+                                        cd.setId(fins[1]);
+                                        break;
+                                    case "depOrComb" :
+                                        cd.setDepOrComb(fins[1]);
+                                        break;
+                                    case "duration" :
+                                        cd.setDuration(fins[1]);
+                                        break;
+                                    case "airline" :
+                                        cd.setAirline(fins[1]);
+                                        break;
+                                    case "airlineImg" :
+                                        cd.setAirlineImg(fins[1]);
+                                        break;
+                                }
+                            }
+                            this.service.insertCartDuration(cd);
+                        }
+                    }
+                    break;
+            }
+        }
+
+        this.service.insertCartFlight(cf);
+
 
         return null;
     }

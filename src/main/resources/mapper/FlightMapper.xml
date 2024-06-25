@@ -113,4 +113,25 @@
     <select id="findImgByIcao" parameterType="String" resultType="String">
         select logo from trip.airplaneInfo where icao_code like concat('%', #{str}, '%')
     </select>
+
+    <insert id="insertShoppingCart" parameterType="shoppingCart">
+        insert into trip.shoppingCart(member_id, air_key) values(#{memberId}, #{airKey})
+    </insert>
+
+    <insert id="insertCartPricing" parameterType="CartPricing">
+        insert into trip.cartPricing values(#{id}, #{ffvId}, #{type}, #{base}, #{total})
+    </insert>
+
+    <insert id="insertCartSegment" parameterType="CartSegment">
+        insert into trip.cartSegment values(#{id}, #{ffvId}, #{departureIata}, #{departureAt}, #{arrivalIata},
+                                            #{arrivalAt}, #{duration}, #{carrierCode}, #{carrierNum})
+    </insert>
+
+    <insert id="insertCartDuration" parameterType="CartDuration">
+        insert into trip.cartDuration values(#{id}, #{ffvId}, #{depOrComb}, #{duration}, #{airline}, #{airlineImg})
+    </insert>
+
+    <insert id="insertCartFlight" parameterType="CartFlight">
+        insert into trip.cartFlight values(#{ffvId}, #{origin}, #{destination}, #{departure}, #{comeback}, #{totalBase}, #{totalPrice}, now())
+    </insert>
 </mapper>
