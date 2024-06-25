@@ -49,8 +49,8 @@ public class ExchangeService {
             conn.setRequestProperty("Content-type", "application/xml");
 
             // 타임아웃 설정 (밀리초 단위)
-            conn.setConnectTimeout(3600000); // 1시간 연결 타임아웃
-            conn.setReadTimeout(3600000); // 1시간 읽기 타임아웃
+            conn.setConnectTimeout(10000); // 10초 연결 타임아웃
+            conn.setReadTimeout(30000); // 30초 읽기 타임아웃
 
             BufferedReader rd;
 
@@ -102,7 +102,7 @@ public class ExchangeService {
 
             return exchangeRates;
         } catch(Exception e) {
-            System.out.println("환전 요청에 오류가 발생했습니다.");
+            e.printStackTrace();
         }
         return null;
     }
