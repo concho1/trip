@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class FlightForView {
+    private String ffvId;
     private double totalBase;
     private double totalPrice;
     private List<APIPricing> apiPricings;
