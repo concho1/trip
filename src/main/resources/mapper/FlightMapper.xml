@@ -132,6 +132,6 @@
     </insert>
 
     <insert id="insertCartFlight" parameterType="CartFlight">
-        insert into trip.cartFlight values(#{ffvId}, #{origin}, #{destination}, #{departure}, #{comeback}, #{totalBase}, #{totalPrice}, now())
+        insert into trip.cartFlight values(#{ffvId}, #{origin}, #{destination}, #{departure}, #{comeback}, #{adults}, #{children}, #{infants}, #{totalBase}, #{totalPrice}, now())
     </insert>
 </mapper>

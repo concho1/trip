@@ -66,3 +66,87 @@
 .tog-body {
     display: none;
 }
+
+#dep-shang, #dep-xia, #comb-shang, #comb-xia {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+}
+
+#dep-wrapper, #comb-wrapper {
+    background: #fff;
+    width: 450px;
+    border-radius: 10px;
+    padding: 25px;
+    border: 1px solid black;
+}
+
+#dep-wrapper #dep-nav, #comb-wrapper #comb-nav {
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+#dep-wrapper #dep-nav #dep-currentDate, #comb-wrapper #comb-nav #comb-currentDate {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#dep-wrapper #dep-nav button, #comb-wrapper #comb-nav button {
+    width: 38px;
+    height: 38px;
+    font-size: 30px;
+    color: #878787
+}
+
+#dep-calendar ul, #comb-calendar ul {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+#dep-calendar #dep-weeks li, #comb-calendar #comb-weeks li {
+    font-weight: 500;
+}
+
+#dep-calendar #dep-days, #comb-calendar #comb-days {
+    margin-bottom: 20px;
+}
+
+#dep-calendar ul li, #comb-calendar ul li {
+    width: calc(100% / 7);
+    position: relative;
+}
+
+#dep-calendar #dep-days li, #comb-calendar #comb-days li {
+    z-index: 1;
+    margin-top: 30px;
+    cursor: pointer;
+}
+
+.inactive {
+    color: #aaa;
+}
+
+#dep-active, #comb-active {
+    background: skyblue;
+    color: white;
+    font-weight: 600;
+    border-radius: 40%;
+}
+
+#dep-calendar #dep-days li::before, #comb-calendar #comb-days li::before {
+    position: absolute;
+    content: '';
+    height: 40px;
+    width: 40px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: -1;
+}
