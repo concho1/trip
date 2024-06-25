@@ -16,7 +16,7 @@
         update shoppingCart set hotel_key = NULL where hotel_key = #{hotelKey} and member_id = #{memId}
     </update>
 
-    <select id="giveShoppingItem" resultType="String">
-        select air_key,hotel_key from shoppingCart where member_id = #{memberId}
+    <select id="getAirKey" resultType="String" parameterType="String">
+        select air_key from shoppingCart where member_id = #{memId}
     </select>
 </mapper>
