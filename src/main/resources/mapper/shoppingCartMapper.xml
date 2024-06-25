@@ -13,7 +13,7 @@
     </insert>
 
     <update id="deleteHotel" parameterType="String">
-        update shoppingCart set hotel_key = null where hotel_key = #{hotelKey} and member_id = #{memId}
+        update shoppingCart set hotel_key = NULL where hotel_key = #{hotelKey} and member_id = #{memId}
     </update>
 
     <select id="giveShoppingItem" resultType="String">
