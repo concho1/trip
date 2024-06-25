@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RequestMapping("member/hamster")
 @RestController
@@ -47,6 +45,27 @@ public class Hamcontroller {
 
     @PostMapping("airplane/ticketing")
     public ModelAndView airticketing(@RequestParam(name = "key", required = false)List<String> key){
+
+        List<String> country = this.airservice.getCountry();
+
+        if(key.size() == 1){
+            Testproduct cont = this.airservice.airplaneCont(key.get(0));
+            return new ModelAndView("Hamster/PlaneReservation").addObject("cont",cont).
+                    addObject("country",country);
+        }else {
+            ModelAndView modelAndView = new ModelAndView("Hamster/PlaneReservation");
+            for(int i = 0; i < key.size(); i++){
+
+                Testproduct cont = this.airservice.airplaneCont(key.get(i));
+                modelAndView.addObject("cont",cont);
+            }
+            return modelAndView;
+        }
+
+    }
+
+    @GetMapping("airplane/ticketing")
+    public ModelAndView airticketingaa(@RequestParam(name = "key", required = false)List<String> key){
 
         List<String> country = this.airservice.getCountry();
 
@@ -97,13 +116,19 @@ public class Hamcontroller {
     }
 
     @PostMapping("airplane/categoryDelete")
-    public ModelAndView categoryUpdate(@RequestParam("hotelKeyVal")String hotelKeyVal, Principal principal){
+    @ResponseBody
+    public Map<String,Object> categoryDelete(@RequestParam("hotelKeyVal")String hotelKeyVal, Principal principal){
 
-        String memberId = principal.getName();
-
-        int check = this.shoppingCartService.deleteHotel(hotelKeyVal,memberId);
-
-        return new ModelAndView().addObject(check);
+        Map<String, Object> response = new HashMap<>();
+        try{
+            String memberId = principal.getName();
+            int check = this.shoppingCartService.deleteHotel(hotelKeyVal,memberId);
+            response.put("success", check);
+        }catch (Exception e) {
+            response.put("success", -1);
+            response.put("message", e.getMessage());
+        }
+        return response;
     }
 
     @PostMapping("airplane/payment")
