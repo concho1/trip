@@ -49,11 +49,11 @@
 
                     <div class="myedu-cont-wrap" id="hotelList">
                     <th:block th:if="${dbVal != null}" th:each="dto, iterStat : ${dbVal}">
-                        <div class="myedu-area" style="position: relative;">
+                        <div class="myedu-area" style="position: relative;" th:if="${dto.getHotelKey() != null}">
                             <div class="myedu-cont">
                                 <img th:src="@{/common/images/test.webp}" alt="이미지">
                                 <div class="text-area">
-                                    <legend class="legend hotelKey" th:id="'hotelKey'+${iterStat.index}"
+                                    <legend class="legend hotelKey" th:id="'hotelKey_'+${iterStat.index}"
                                             th:value="${dto.getHotelKey()}" th:text="${dto.getHotelKey()}"></legend>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                                     <span class="checkset-text" name="check">결제하기</span>
                                 </div>
                             </div>
-                                <img th:src="@{/common/images/xButton.png}" id="delBtn[[${iterStat.index}]]" class="top-right-image" style="height: 40px; width: 40px;"
+                                <img th:src="@{/common/images/xButton.png}" class="top-right-image" style="height: 40px; width: 40px;"
                                      th:onclick="'deleteItem(' + ${iterStat.index} + ')'">
                         </div>
                     </th:block>
@@ -120,6 +120,7 @@
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
 <script>
     $(document).ready(function () {
+
         let $hotelList = $('#hotelList');
         let $airList = $('#airList');
 
