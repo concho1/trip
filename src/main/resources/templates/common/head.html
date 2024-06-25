@@ -4,7 +4,31 @@
         <div class="header-top">
             <div class="inner">
                 <div class="header-member">
-                    <a th:href="@{/user/con/log-in}">
+                    <a th:if="${logIn}" th:href="@{/user/con/log-out}">
+                        <em class="ico">
+                            <img th:src="@{/resources/icons/ico_login.svg}" alt="로그아웃 아이콘">
+                        </em>
+                        <span>로그아웃</span>
+                    </a>
+                    <a th:unless="${logIn}" th:href="@{/user/con/log-in}">
+                        <em class="ico">
+                            <img th:src="@{/resources/icons/ico_login.svg}" alt="로그인 아이콘">
+                        </em>
+                        <span>로그인</span>
+                    </a>
+                    <a th:if="${logIn}" th:href="@{/member/con/myPage}">
+                        <em class="ico">
+                            <img th:src="@{/resources/icons/ico_member.svg}" alt="마이페이지 아이콘">
+                        </em>
+                        <span>마이페이지</span>
+                    </a>
+                    <a th:unless="${logIn}" th:href="@{/user/con/check}">
+                        <em class="ico">
+                            <img th:src="@{/resources/icons/ico_member.svg}" alt="회원가입 아이콘">
+                        </em>
+                        <span>회원가입</span>
+                    </a>
+                    <!--<a th:href="@{/user/con/log-in}">
                         <em class="ico">
                             <img th:src="@{/resources/icons/ico_login.svg}" alt="로그인 아이콘">
                         </em>
@@ -15,7 +39,7 @@
                             <img th:src="@{/resources/icons/ico_member.svg}" alt="회원가입 아이콘">
                         </em>
                         <span>회원가입</span>
-                    </a>
+                    </a>-->
                     <a href="javascript:void(0)" th:href="@{/member/hamster/shoppingCart}">
                         <em class="ico">
                             <img th:src="@{/resources/icons/shoppingCart.svg}" alt="장바구니 아이콘">

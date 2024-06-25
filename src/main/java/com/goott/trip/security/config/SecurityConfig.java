@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .formLogin(
                         (form) -> form
                                 .loginPage("/user/con/log-in").permitAll()
-                                .defaultSuccessUrl("/member/con/test", true)
+                                .defaultSuccessUrl("/member/con/myPage", true)
                                 .usernameParameter("id")
                                 .passwordParameter("pw")
                 )
@@ -86,6 +86,7 @@ public class SecurityConfig {
 
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService() {
-        return new DefaultOAuth2UserService();
+        /*return new DefaultOAuth2UserService();*/
+        return customOAuth2UserService;
     }
 }
