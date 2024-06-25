@@ -2,15 +2,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
 
 <!-- [E]tedu-N3 -->
-<main class="th-layout-main ">
+<main class="th-layout-main background">
     <!-- [S]tedu-N44 -->
     <div class="tedu-N44" data-bid="LRlXiC74YQ">
         <div class="content-inner">
-            <div class="content-container">
+            <div class="content-container" style="max-width: 1600px;">
                 <section class="">
                     <div class="title-wrap">
                         <h3 class="cont-title">항공권 검색</h3>
@@ -18,9 +19,9 @@
                     <form method="post" action="/test">
                         <div class="payment-wrap">
                             <div class="radioset-wrap" style="display: flex; align-items: center; justify-content: space-between;">
-                                <div class="radioset lightmode"><input id="radioset-a-1" name="radioset-a" class="radioset-input input-line" type="radio" value="" checked=""><label class="radioset-label" for="radioset-a-1"></label><span class="radioset-text" style="background-color: rgb(0, 0, 0); color: rgb(0, 0, 0);">편도</span></div>
+                                <div class="radioset lightmode"><input id="radioset-a-1" name="radioset-a" class="radioset-input input-line" type="radio" value="true" checked><label class="radioset-label" for="radioset-a-1"></label><span class="radioset-text" style="background-color: rgb(0, 0, 0); color: rgb(0, 0, 0);">편도</span></div>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                <div class="radioset lightmode"><input id="radioset-a-2" name="radioset-a" class="radioset-input input-line" type="radio" value=""><label class="radioset-label" for="radioset-a-2"></label><span class="radioset-text" style="color: rgb(0, 0, 0);">왕복</span></div>
+                                <div class="radioset lightmode"><input id="radioset-a-2" name="radioset-a" class="radioset-input input-line" type="radio" value="false"><label class="radioset-label" for="radioset-a-2"></label><span class="radioset-text" style="color: rgb(0, 0, 0);">왕복</span></div>
                                 <div class="checkset-wrap" style="display: flex; align-items: center; margin-left: auto;">
                                     <div class="checkset darkmode"><input id="checkset-t-1" class="checkset-input input-round" type="checkbox" name="nonStop" value="true"><label class="checkset-label" for="checkset-t-1"></label><span class="checkset-text" style="color: rgb(0, 0, 0);">직항만 검색</span></div>
                                 </div>
@@ -73,13 +74,62 @@
                                         <p class="stitle">가는 날</p>
                                         <div class="tedu-inputset">
                                             <input class="tedu-input lightmode" name="departure" id="depDate" placeholder="YYYY-MM-DD">
-                                            <div id="depCalendarContainer" class="hidden"></div>
+                                            <div id="depCalendarContainer" class="hidden">
+                                                <div id="dep-wrapper">
+                                                    <header>
+                                                        <div id="dep-nav">
+                                                            <button type="button" id="dep-shang">◀</button>
+                                                            <p id="dep-currentDate"></p>
+                                                            <button type="button" id="dep-xia">▶</button>
+                                                        </div>
+                                                    </header>
+                                                    <div id="dep-calendar">
+                                                        <ul id="dep-weeks">
+                                                            <li>Sun</li>
+                                                            <li>Mon</li>
+                                                            <li>Tue</li>
+                                                            <li>Wed</li>
+                                                            <li>Thu</li>
+                                                            <li>Fri</li>
+                                                            <li>Sat</li>
+                                                        </ul>
+                                                        <ul id="dep-days">
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </fieldset>
-                                    <fieldset class="fieldset">
+                                    <fieldset class="fieldset hidden" id="comb-field">
                                         <p class="stitle">오는 날</p>
                                         <div class="tedu-inputset">
-                                            <input type="date" name="comeback" class="tedu-input lightmode">
+                                            <input name="comeback" id="combDate" class="tedu-input lightmode" placeholder="YYYY-MM-DD">
+                                            <div id="combCalendarContainer" class="hidden">
+                                                <div id="comb-wrapper">
+                                                    <header>
+                                                        <div id="comb-nav">
+                                                            <button type="button" id="comb-shang">◀</button>
+                                                            <p id="comb-currentDate"></p>
+                                                            <button type="button" id="comb-xia">▶</button>
+                                                        </div>
+                                                    </header>
+                                                    <div id="comb-calendar">
+                                                        <ul id="comb-weeks">
+                                                            <li>Sun</li>
+                                                            <li>Mon</li>
+                                                            <li>Tue</li>
+                                                            <li>Wed</li>
+                                                            <li>Thu</li>
+                                                            <li>Fri</li>
+                                                            <li>Sat</li>
+                                                        </ul>
+                                                        <ul id="comb-days">
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </fieldset>
                                 </div>
@@ -156,7 +206,6 @@
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
 </div>
-<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
 <script th:src="@{/jhm/jhm.js}"></script>
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
 </body>
