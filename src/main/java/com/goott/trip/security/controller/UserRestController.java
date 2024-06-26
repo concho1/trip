@@ -45,7 +45,7 @@ public class UserRestController {
     public ModelAndView getSignInPage(){
         ModelAndView modelAndView = new ModelAndView("security/user/user_signIn_page");
 
-        String baseImgKey = "trip/4708729d-fd41-4966-bf67-8ece2b20f6bb";
+        String baseImgKey = "trip/f0fcf1b5-42c6-4a49-a9d1-7dadf703c35a";
         Optional<Image> imageOp = imageService.findImageByKey(baseImgKey);
 
         if(imageOp.isPresent()){
@@ -59,7 +59,7 @@ public class UserRestController {
 
         Optional<Image> imageOp = imageService.insertFile(file);
         if (imageOp.isEmpty()) {
-            String baseImgKey = "trip/4708729d-fd41-4966-bf67-8ece2b20f6bb";
+            String baseImgKey = "trip/f0fcf1b5-42c6-4a49-a9d1-7dadf703c35a";
             member.setImgKey(baseImgKey);
         } else {
             member.setImgKey(imageOp.get().getImgKey());
