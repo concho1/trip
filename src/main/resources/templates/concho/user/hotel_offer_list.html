@@ -37,22 +37,37 @@
     .slick-prev:before, .slick-next:before {
         color: black; /* 화살표 색상 변경 */
     }
-    .my-btn-box ul {
-
+    .my-btn-box {
         display: flex;
-        flex-direction: row; /* 가로로 배열 */
-        list-style: none; /* 불릿 포인트 제거 */
+        flex-wrap: wrap;
+    }
+    .my-btn-box ul {
+        display: flex;
+        flex-wrap: wrap;
+        list-style-type: none;
         padding: 0;
-        margin: 1.3rem 0;
+        margin: 0;
     }
     .my-btn-box li {
-        margin-right: 20px; /* 각 항목 간의 간격 조정 */
+        flex: 1 1 calc(33.333% - 10px); /* 3 columns */
+        margin: 5px;
+        box-sizing: border-box;
     }
     .bf33709ee1{
         display: none;
     }
     .content-inner{
         padding-top: 1.3rem;
+    }
+    @media (max-width: 768px) {
+        .my-btn-box li {
+            flex: 1 1 calc(50% - 10px); /* 2 columns on tablet */
+        }
+    }
+    @media (max-width: 480px) {
+        .my-btn-box li {
+            flex: 1 1 100%; /* 1 column on mobile */
+        }
     }
 </style>
 <body>

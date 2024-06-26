@@ -118,7 +118,7 @@ public class HotelCrawlingService {
         boolean result = false;
         // 이미 크롤링 한 호텔이면 return ( 모든 정보가 잘 들어가 있는 경우)
         if(hotelCrawledMapper.existsHotelInAllTables(hotelId)){
-            System.out.println("이미 크롤링 한 호텔");
+            //System.out.println("이미 크롤링 한 호텔");
             return true;
         }
         try {
@@ -184,10 +184,10 @@ public class HotelCrawlingService {
                 }
             }
             if(maxNum == 0){
-                System.out.println("크롤링 일치하는 결과 없음 ....");
+                //System.out.println("크롤링 일치하는 결과 없음 ....");
             }else{
                 if(crawlingHotelName == null || crawlingHotelInfoLink == null){
-                    System.out.println("크롤링 일치하는 결과 없음 ....");
+                    //System.out.println("크롤링 일치하는 결과 없음 ....");
                 }else{
                     // 이때만 결과가 있음
                     System.out.println(crawlingHotelName+ " 호텔 크롤링 완료");
@@ -197,9 +197,9 @@ public class HotelCrawlingService {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             // 뭔가 오류가 나도 없는거로 처리
-            System.out.println("크롤링 일치하는 결과 없음 ....");
+            //System.out.println("크롤링 일치하는 결과 없음 ....");
         }
         return result;
     }
