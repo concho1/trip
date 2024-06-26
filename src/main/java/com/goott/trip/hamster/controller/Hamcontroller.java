@@ -49,10 +49,6 @@ public class Hamcontroller {
     @PostMapping("airplane/ticketing")
     public ModelAndView airticketing(@RequestParam(name = "key", required = false)List<String> key,Principal principal){
 
-        String memId = principal.getName();
-        String AirKey = this.shoppingCartService.getAirKey(memId);
-        System.out.println(AirKey);
-
         List<String> country = this.airservice.getCountry();
 
         if(key.size() == 1){
@@ -64,7 +60,7 @@ public class Hamcontroller {
             for(int i = 0; i < key.size(); i++){
 
                 Testproduct cont = this.airservice.airplaneCont(key.get(i));
-                modelAndView.addObject("cont",cont);
+                modelAndView.addObject("cont",cont).addObject("country",country);
             }
             return modelAndView;
         }
@@ -78,9 +74,11 @@ public class Hamcontroller {
         String memId = principal.getName();
         String AirKey = this.shoppingCartService.getAirKey(memId);
         List<CartDuration> DurationInfo = this.airservice.getDurationInfo(AirKey);
-        List<CartFlight> airInfo = this.airservice.getAirInfo(AirKey);
         List<CartSegment> airSeg = this.airservice.getSegment(AirKey);
+        List<CartFlight> airInfo = this.airservice.getAirInfo(AirKey);
         List<String> country = this.airservice.getCountry();
+
+
 
         if(key.size() == 1){
             Testproduct cont = this.airservice.airplaneCont(key.get(0));
@@ -93,7 +91,6 @@ public class Hamcontroller {
         }else {
             ModelAndView modelAndViewE = new ModelAndView("Hamster/PlaneReservation");
             for(int i = 0; i < key.size(); i++){
-
                 Testproduct cont = this.airservice.airplaneCont(key.get(i));
                 modelAndView.addObject("cont",cont);
             }

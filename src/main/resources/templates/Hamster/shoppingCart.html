@@ -58,13 +58,12 @@
                                 </div>
                             </div>
                             <div class="contents-checkset d-flex justify-content-start">
-                                <picture>
-                                    <source srcset="/common/images/test.webp" type="image/webp">
-                                </picture>
-                                <div class="checkset">
-                                    <input id="hotel-check" name="check" class="checkset-input input-fill" type="checkbox" value="">
-                                    <label class="checkset-label" for="hotel-check"></label>
-                                    <span class="checkset-text" name="check">결제하기</span>
+                                <div class="checkset-wrap">
+                                    <div class="checkset lightmode"><input id="checkset-b-1" class="checkset-input input-round" type="checkbox" value="" checked="">
+                                        <label class="checkset-label" for="checkset-b-1"></label><span class="checkset-text">
+                                            결제하기
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                                 <img th:src="@{/common/images/xButton.png}" class="top-right-image" style="height: 40px; width: 40px;"
@@ -75,7 +74,7 @@
 
                     <div class="myedu-cont-wrap" id="airList">
                         <th:block th:if="${plist }" th:each="cont, iterStat : ${plist}">
-                        <div class="myedu-area">
+                        <div class="myedu-area" style="position: relative;">
                             <div class="myedu-cont">
                                     <img th:src="@{/common/images/hamsic.jpg}" alt="이미지" style="height: 65px;">
                                     <div class="text-area">
@@ -86,17 +85,16 @@
                                     </div>
                             </div>
                             <div class="contents-checkset d-flex justify-content-start">
-                                <picture>
-                                    <source srcset="/common/images/test.webp" type="image/webp">
-                                </picture>
-                                <div class="checkset">
-                                    <input id="air-check-[[${iterStat.index}]]" name="key" class="checkset-input input-fill" type="checkbox" th:value="${cont.getAirplaneKey()}">
-                                    <label class="checkset-label" for="air-check-[[${iterStat.index}]]"></label>
-                                    <span class="checkset-text" name="check">결제하기</span>
+                                <div class="checkset-wrap">
+                                    <div class="checkset lightmode">
+                                        <input th:id="'air-checkset-b-'+${iterStat.index}" class="checkset-input input-round" type="checkbox" name="key" th:value="${cont.getAirplaneKey()}">
+                                        <label class="checkset-label" th:for="'air-checkset-b-'+${iterStat.index}"></label><span class="checkset-text">
+                                            결제하기
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="checkset">
-                                    <input id="delete" class="checkset-input input-fill" type="button" th:value="${cont.getAirplaneKey()}">
-                                </div>
+                                <img th:src="@{/common/images/xButton.png}" class="top-right-image" style="height: 40px; width: 40px;"
+                                     th:onclick="'deleteItem(' + ${iterStat.index} + ')'">
                             </div>
                         </div>
                         </th:block>
