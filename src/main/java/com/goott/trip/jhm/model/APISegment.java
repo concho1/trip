@@ -7,6 +7,7 @@ public class APISegment {
     private String id;
     private String itineraryCode;
     private String flightCode;
+    private String depOrComb;
     private String departureIata;
     private String departureAt;
     private String arrivalIata;

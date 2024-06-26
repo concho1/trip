@@ -24,18 +24,21 @@
                     <legend class="legend" th:text="${info.getDeparture().substring(5, 10)} + ' - ' + ${info.getComeback().substring(5, 10)}"></legend>
                   </th:block>
 
-                    <th:block th:if="${duration}">
-                      <th:block th:each="dur : ${duration}">
-                        <th:block th:each="seg : ${airSeg}">
-                          <legend th:text="${seg.getDepartureIata()} +' -> '+${seg.getArrivalIata()}"></legend>
+                  <th:block th:if="${duration}">
+                    <th:block th:each="dur, iterStat : ${duration}">
+                      <div>
+                        <legend th:text="'항공사 : ' + ${dur.airline}"></legend>
+                        <img th:src="${dur.airlineImg}" style="height: 65px;">
+                      </div>
+
+                      <th:block th:each="seg : ${airSeg}">
                         <div>
-                          <legend th:text="'항공사 : '+${dur.getAirline()}"></legend>
-                          <img th:src="${dur.getAirlineImg()}" style="height: 65px;">
+                          <legend th:text="'출발지 : ' + ${seg.departureIata} + ' / 도착지 : ' + ${seg.arrivalIata}"></legend>
+                          <legend th:text="'출발 날짜 : ' + ${seg.getDepartureAt().substring(6, 10)}"></legend>
                         </div>
-                        </th:block>
                       </th:block>
                     </th:block>
-
+                  </th:block>
 
                   <th:block th:each="info : ${airInfo}">
                     <legend class="legend" th:text="'기본운임 ' + ${#numbers.formatInteger(info.getTotalBase(), 3, 'COMMA') + '원'}"></legend>
@@ -45,7 +48,6 @@
                 </div>
               </div>
             </form>
-
           <div class="form-wrap">
             <form method="post" action="/member/hamster/airplane/payment">
               <input type="hidden" th:value="${cont.getAirplaneKey()}" name="key">
