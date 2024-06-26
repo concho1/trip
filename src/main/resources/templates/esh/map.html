@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <title>Map Display</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5karXGpFD8tez3DjhrO5Y1np5TONtJl0"></script>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: {lat: -34.397, lng: 150.644}  // 기본 위치
+            });
+
+            var hotels = /*[[${hotels}]]*/ '[]';
+            hotels = JSON.parse(hotels);
+
+            hotels.forEach(function(hotel) {
+                new google.maps.Marker({
+                    position: {lat: hotel.latitude, lng: hotel.longitude},
+                    map: map,
+                    title: hotel.name
+                });
+            });
+        }
+    </script>
+</head>
+<body onload="initMap()">
+    <div id="map" style="height: 500px; width: 60%;"></div>
+</body>
+</html>

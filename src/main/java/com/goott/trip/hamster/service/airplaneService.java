@@ -3,6 +3,9 @@ package com.goott.trip.hamster.service;
 import com.goott.trip.hamster.mapper.AirplaneMapper;
 import com.goott.trip.hamster.model.Testproduct;
 import com.goott.trip.hamster.model.airplaneInfo;
+import com.goott.trip.jhm.model.CartDuration;
+import com.goott.trip.jhm.model.CartFlight;
+import com.goott.trip.jhm.model.CartSegment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,12 @@ public class airplaneService {
     public Testproduct airplaneCont(String key){return this.mapper.airplaneCont(key); };
 
     public List<airplaneInfo> airplaneInfoList(){return this.mapper.airplaneInfoList(); };
+
+    public List<CartFlight> getAirInfo(String AirKey){return this.mapper.getAirInfo(AirKey); }
+
+    public List<CartDuration> getDurationInfo(String AirKey){return this.mapper.getDurationInfo(AirKey); }
+
+    public List<CartSegment> getSegment(String AirKey){return this.mapper.getSegment(AirKey); }
 
     public List<String> getCountry(){
         List<String> countries = new ArrayList<>();

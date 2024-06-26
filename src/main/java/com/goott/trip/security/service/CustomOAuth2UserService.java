@@ -1,5 +1,6 @@
 package com.goott.trip.security.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.goott.trip.security.model.Member;
 import com.goott.trip.security.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -42,7 +45,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     // 구글
     private OAuth2User processGoogleUser(OAuth2User oAuth2User) {
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        String nameAttributeKey = "sub"; // 구글에서는 일반적으로 sub을 사용
+        String nameAttributeKey = "email";
 
         String email = (String) attributes.get("email");
         Member existingMember = memberService.getMemberById(email);
@@ -59,7 +62,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         member.setId(email);
         member.setRole(Role.MEMBER);
         /*member.setName((String) attributes.get("name"));*/
-        member.setName("영문 이름을 등록하세요");
+        /*member.setName("");*/
         member.setImgKey((String) attributes.get("picture"));
         member.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
@@ -79,10 +82,20 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     // 카카오
     private OAuth2User processKakaoUser(OAuth2User oAuth2User) {
+        // 카카오의 사용자 정보를 가져옴
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
 
-        String email = kakaoAccount != null ? kakaoAccount.get("email").toString() : null;
+        // attributes 맵을 복사하여 수정 가능하도록 함
+        Map<String, Object> modifiableAttributes = new HashMap<>(attributes);
+
+        // kakao_account JSON 객체에서 email 추출
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+        System.out.println(kakaoAccount.keySet().toString());
+        String email = (String) kakaoAccount.get("email");
+        System.out.println("User email: " + email);
+        modifiableAttributes.put("email", email);
+        // 이제 email 변수를 사용하여 필요한 작업을 수행할 수 있습니다.
+
         String profileImage = null;
 
         if (kakaoAccount != null) {
@@ -97,15 +110,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (existingMember != null) {
             return new DefaultOAuth2User(
                     Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
-                    attributes,
-                    "id"
+                    modifiableAttributes,
+                    "email"
             );
         }
 
         Member member = new Member();
         member.setId(email);
         member.setRole(Role.MEMBER);
-        member.setName("영문 이름을 등록하세요");
+        /*member.setName("이름등록필요 이름등록필요");*/
         member.setImgKey(profileImage);
         member.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
@@ -118,8 +131,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
-                attributes,
-                "id"
+                modifiableAttributes,
+                "email"
         );
     }
 }

@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .formLogin(
                         (form) -> form
                                 .loginPage("/user/con/log-in").permitAll()
-                                .defaultSuccessUrl("/member/con/test", true)
+                                .defaultSuccessUrl("/member/con/myPage", true)
                                 .usernameParameter("id")
                                 .passwordParameter("pw")
                 )
@@ -65,7 +65,7 @@ public class SecurityConfig {
                                                 .baseUri("/login/oauth2/code/**"))
                                 .userInfoEndpoint(userInfoEndpointConfig ->
                                         userInfoEndpointConfig
-                                                .userService(customOAuth2UserService)   //
+                                                .userService(customOAuth2UserService)
                                 )
                                 .successHandler(customAuthenticationSuccessHandler)
                                 .failureHandler(authenticationFailureHandler)
@@ -81,11 +81,12 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new SimpleUrlAuthenticationFailureHandler();
+        return new SimpleUrlAuthenticationFailureHandler("/user/con/log-in?error=true");
     }
 
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService() {
-        return new DefaultOAuth2UserService();
+        /*return new DefaultOAuth2UserService();*/
+        return customOAuth2UserService;
     }
 }

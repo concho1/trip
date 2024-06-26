@@ -16,17 +16,38 @@
           <div class="form-body">
 
             <form method="post" action="/member/hamster/airplane/wishList">
-              <input type="hidden" th:value="${cont.getAirplaneKey()}" name="key">
-            <legend class="legend"><h2>예약하시는 항공권의 정보를 다시한번 확인해주세요!</h2></legend>
-            <div class="input-group">
-              <div class="tedu-inputset">
-                <legend class="legend" th:text="${cont.getAirplaneDepart() + ' -> ' + cont.getAirplaneArrive()}"></legend>
-                <legend class="legend" th:text="${cont.getAirplaneDepartTime().toString().substring(0,16) + ' - ' + cont.getAirplaneArriveTime().toString().substring(0,16)}"></legend>
-                <legend class="legend" th:text="${cont.getAirplaneName()}"></legend>
-              </div>
-            </div>
-            </form>
+              <legend class="legend"><h2>예약하시는 항공권의 정보를 다시한번 확인해주세요! 테스트</h2></legend>
+              <div class="input-group">
+                <div class="tedu-inputset">
+                  <th:block th:each="info : ${airInfo}">
+                    <legend class="legend" th:text="${info.getOrigin()} + ' -> ' + ${info.getDestination()}"></legend>
+                    <legend class="legend" th:text="${info.getDeparture().substring(5, 10)} + ' - ' + ${info.getComeback().substring(5, 10)}"></legend>
+                  </th:block>
 
+                  <th:block th:if="${duration}">
+                    <th:block th:each="dur, iterStat : ${duration}">
+                      <div>
+                        <legend th:text="'항공사 : ' + ${dur.airline}"></legend>
+                        <img th:src="${dur.airlineImg}" style="height: 65px;">
+                      </div>
+
+                      <th:block th:each="seg : ${airSeg}">
+                        <div>
+                          <legend th:text="'출발지 : ' + ${seg.departureIata} + ' / 도착지 : ' + ${seg.arrivalIata}"></legend>
+                          <legend th:text="'출발 날짜 : ' + ${seg.getDepartureAt().substring(6, 10)}"></legend>
+                        </div>
+                      </th:block>
+                    </th:block>
+                  </th:block>
+
+                  <th:block th:each="info : ${airInfo}">
+                    <legend class="legend" th:text="'기본운임 ' + ${#numbers.formatInteger(info.getTotalBase(), 3, 'COMMA') + '원'}"></legend>
+                    <legend class="legend" th:text="'세금 및 제반요금 ' + ${#numbers.formatInteger(info.getTotalPrice() - info.getTotalBase(), 3, 'COMMA') + '원'}"></legend>
+                    <legend class="legend" th:text="'총계 ' + ${#numbers.formatInteger(info.getTotalPrice(), 3, 'COMMA') + '원'}"></legend>
+                  </th:block>
+                </div>
+              </div>
+            </form>
           <div class="form-wrap">
             <form method="post" action="/member/hamster/airplane/payment">
               <input type="hidden" th:value="${cont.getAirplaneKey()}" name="key">

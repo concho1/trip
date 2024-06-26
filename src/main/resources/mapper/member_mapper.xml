@@ -5,7 +5,8 @@
 <mapper namespace="com.goott.trip.security.mapper.MemberMapper">
 
     <select id="findById" parameterType="String" resultType="Member">
-        SELECT * FROM trip.member WHERE id = #{id}
+        SELECT * FROM trip.member
+        WHERE id = #{id}
     </select>
 
     <insert id="save">
@@ -19,5 +20,39 @@
         WHERE id = #{id}
     </select>
 
+    <select id="checkDupPwd" parameterType="String" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END
+        FROM trip.member
+        WHERE pw = #{pw}
+    </select>
+
+    <update id="changePwd" parameterType="map">
+        update trip.member
+        set pw = #{pw}
+        where id = #{id}
+    </update>
+
+    <update id="updateMem" parameterType="Member">
+        UPDATE trip.member
+        SET name=#{name}, img_key=#{imgKey}
+        WHERE id=#{id}
+    </update>
+
+    <update id="updatePwd" parameterType="String">
+        UPDATE trip.member
+        SET pw=#{pw}
+        WHERE id=#{id}
+    </update>
+
+    <select id="checkPwd" parameterType="Member" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM trip.member
+        WHERE id = #{id} AND pw = #{pw}
+    </select>
+
+    <delete id="deleteMem" parameterType="String">
+        DELETE FROM trip.member
+        WHERE id=#{id}
+    </delete>
 
 </mapper>

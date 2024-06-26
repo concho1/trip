@@ -1,73 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <body>
+<div th:replace="~{common/head :: head-fragment}"></div>
 
-    <div th:if="${fList != null}" th:each="flight, fliStat : ${fList}">
-        <fieldset>
-        <span th:text="'뱅기표' + (${fliStat.index+1})"></span> <br>
-        <br>
-
-        <div th:if="${flight.itineraries != null}" th:each="itinerary : ${flight.itineraries}">
-            <fieldset>
-            <span>총 비행시간</span> <br>
-            <span th:text="${itinerary.duration}"></span> <br>
-            <br>
-            <div th:if="${itinerary.segments != null}" th:each="sgm, sgmStat : ${itinerary.segments}">
-                <fieldset>
-                <span th:text="'여정' + (${sgmStat.index+1})"></span> <br>
-                <br>
-                <span>출발 공항</span> <br>
-                <span th:text="${sgm.departure.iataCode}"></span> <br>
-                <br>
-                <span>출발 시간</span> <br>
-                <span th:text="${sgm.departure.at}"></span> <br>
-                <br>
-                <span>도착 공항</span> <br>
-                <span th:text="${sgm.arrival.iataCode}"></span> <br>
-                <br>
-                <span>도착 시간</span> <br>
-                <span th:text="${sgm.arrival.at}"></span> <br>
-                <br>
-                <span>총 비행시간</span> <br>
-                <span th:text="${sgm.duration}"></span> <br>
-                </fieldset>
-                <br>
+<main>
+    <div class="card-wrapper" th:if="${ffvList != null}" th:each="ffv : ${ffvList}">
+        <div class="card" th:attr="data-ffv=${ffv}">
+            <div class="card-body">
+                <input type="hidden" id="ffvId" th:value="${ffv.ffvId}">
+                <input type="hidden" id="origin" th:value="${flight.origin}">
+                <input type="hidden" id="destination" th:value="${flight.destination}">
+                <input type="hidden" id="departure" th:value="${flight.departure}">
+                <input type="hidden" id="comeback" th:value="${flight.comeback}">
+                <input type="hidden" id="adults" th:value="${flight.adults}">
+                <input type="hidden" id="children" th:value="${flight.children}">
+                <input type="hidden" id="infants" th:value="${flight.infants}">
+                <input type="hidden" id="memberId" th:value="${memberId}">
+                <img th:src="${ffv.getApiDurations().get(0).airlineImg}" alt="이미지" style="width: 100px; height: 50px;">
+                <span th:text="${orgKor}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span th:text="${desKor}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span th:text="${#numbers.formatDecimal(ffv.totalPrice, 0, 'COMMA', 0, 'POINT')}"></span>&nbsp;&nbsp;
+                <img th:src="@{/asset/images/downarrow.webp}" class="toggleBtn" value="토글" style="width: 20px; height: 20px; cursor: pointer;">
+                <div class="tog-body">
+                    <div th:each="dur : ${ffv.apiDurations}">
+                        <p th:text="${dur.duration}"></p>
+                    </div>
+                    <button class="tedu-btn tedu-btn-dark cartBtn">장바구니에 추가</button> <br>
+                    <button class="tedu-btn tedu-btn-light">선택하기</button>
+                </div>
             </div>
-            </fieldset>
-            <br>
         </div>
-        <fieldset>
-        <span>가격</span> <br>
-        <br>
-        <div th:if="${flight.travelerPricings != null}" th:each="pricing, priStat : ${flight.travelerPricings}">
-            <fieldset>
-            <span th:text="'탑승객' + (${priStat.index+1})"></span> <br>
-            <br>
-            <span>유형</span> <br>
-            <span th:text="${pricing.travelerType}"></span> <br>
-            <br>
-            <span>기본 가격</span> <br>
-            <span th:text="${pricing.price.base}"></span> <br>
-            <br>
-            <span>총 가격</span> <br>
-            <span th:text="${pricing.price.total}"></span> <br>
-            </fieldset>
-            <br>
-        </div>
-            <span>총 인원 기본 가격</span> <br>
-            <span th:text="${flight.price.base}"></span> <br>
-            <br>
-            <span>총 인원 합산 가격</span> <br>
-            <span th:text="${flight.price.total}"></span>
-            </fieldset>
-            <br>
-        </fieldset>
-        <br>
     </div>
+    <div th:if="${ffvList.size() == 0}">
+        <h3>검색결과 없음</h3>
+    </div>
+</main>
 
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
+<script th:src="@{/jhm/jhm.js}"></script>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
 </body>
 </html>

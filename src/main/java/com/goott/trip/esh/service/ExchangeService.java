@@ -2,15 +2,14 @@ package com.goott.trip.esh.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.goott.trip.esh.exchangeMapper.ExchangeMapper;
-import com.goott.trip.esh.exchangeModel.Exchange;
+import com.goott.trip.esh.mapper.ExchangeMapper;
+import com.goott.trip.esh.model.Exchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -27,13 +26,10 @@ public class ExchangeService {
     @Autowired
     private ExchangeMapper mapper;
 
-    @Autowired
-    private RestTemplate restTemplate;
-
     @Value("${exchange.api.key}")
     private String exchangeApiKey;
 
-    //@Scheduled(fixedDelay = 86400000) // 24시간마다 실행
+    @Scheduled(fixedDelay = 86400000) // 24시간마다 실행
     public void updateExchangeRates() {
         getExchangeData();
     }
@@ -41,7 +37,7 @@ public class ExchangeService {
     private static final Logger logger = LoggerFactory.getLogger(ExchangeService.class);
 
     public List<Map<String, Object>> getExchangeData() {
-        System.out.println("55555");
+        /*System.out.println("55555");*/
         try {
             URL url = new URL(
                     "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON" +
@@ -53,8 +49,8 @@ public class ExchangeService {
             conn.setRequestProperty("Content-type", "application/xml");
 
             // 타임아웃 설정 (밀리초 단위)
-            conn.setConnectTimeout(3600000); // 1시간 연결 타임아웃
-            conn.setReadTimeout(3600000); // 1시간 읽기 타임아웃
+            conn.setConnectTimeout(10000); // 10초 연결 타임아웃
+            conn.setReadTimeout(30000); // 30초 읽기 타임아웃
 
             BufferedReader rd;
 
@@ -80,11 +76,7 @@ public class ExchangeService {
             for(Map<String, Object> ex : exchangeRates) {
                 String code = (String)ex.get("cur_unit");
                 String buy = ((String)ex.get("ttb")).replace(",", "");
-                /*String sel = ((String)ex.get("tts")).replace(",", "");*/
                 String name = (String)ex.get("cur_nm");
-                /*System.out.println(buy);
-                System.out.println(name);
-                System.out.println(code);*/
 
                 Exchange exchange = new Exchange();
                 exchange.setCountryName(name);
@@ -109,7 +101,7 @@ public class ExchangeService {
             }
 
             return exchangeRates;
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -130,12 +122,9 @@ public class ExchangeService {
         }
 
         double fromRate = fromExchange.getBuyingTtRate();
-        //double toRate = toExchange.getBuyingTtRate();
+
         double KRW = fromRate * amount;
         double result = KRW/toExchange.getBuyingTtRate();
-
-        //double Amount = amount/fromRate;
-        //double convertedAmount = Amount * toRate;
 
         return result;
     }

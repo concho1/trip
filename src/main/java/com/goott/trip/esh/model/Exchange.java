@@ -1,4 +1,4 @@
-package com.goott.trip.esh.exchangeModel;
+package com.goott.trip.esh.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
