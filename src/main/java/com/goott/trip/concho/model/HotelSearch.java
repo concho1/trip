@@ -16,8 +16,7 @@ public class HotelSearch {
     private Integer searchLongitude;
     private Timestamp searchAt;
     private String memberId;
-    public HotelSearch(int searchNum,String searchCategory, String searchIataCode, String memberId){
-        this.searchNum = searchNum;
+    public HotelSearch(String searchCategory, String searchIataCode, String memberId){
         this.searchCategory = searchCategory;
         this.searchIataCode = searchIataCode;
         this.memberId = memberId;

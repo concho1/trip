@@ -3,12 +3,31 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <style>
+
+    .card-img-my{
+        height: 25rem;
+        width: 70%;
+        margin-right: 1.3rem;
+    }
+    .myedu-cont{
+        width: 50%;
+    }
     @media (max-width: 640px) {
         .my-text{
             width: 100px;
         }
+        .card-img-my{
+            height: 200px;
+            width: 100%;
+        }
+        .myedu-cont{
+            margin-top: 1.3rem;
+            width: 90%;
+        }
     }
-
+    .myedu-area{
+        display: none;
+    }
 </style>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
@@ -26,7 +45,8 @@
                     <div class="tab-menu-wrap">
                         <div class="tab-menu active">
                             <a href="javascript:void(0)">
-                                <span>전체 목록</span>
+                                <span>전체 목록</span>&nbsp;
+                                <strong style="color: blue" id="hotel-cnt"></strong>
                             </a>
                         </div>
                         <div class="tab-menu">
@@ -47,12 +67,10 @@
                     </div>
                     <div class="myedu-cont-wrap">
                         <th:block th:if="${hotelList != null && !hotelList.isEmpty()}">
-                            <div class="myedu-area" th:each="hotel : ${hotelList}">
+                            <div class="myedu-area" th:each="hotel : ${hotelList}" th:id="${hotel.getHotelId()}">
+                                <img class="card-img-my" src="/common/images/hotel_base.png" alt="이미지">
                                 <div class="myedu-cont">
-                                    <div class="img-area">
-                                        <img th:src="@{/common/images/hotel.png}" alt="이미지">
-                                    </div>
-                                    <div class="text-area">
+                                    <div class="text-area" >
                                         <strong class="cate" th:text="${hotel.getIataCode()}"></strong>
                                         <span th:text="${hotel.getCountryCode()}"></span>
                                         <div class="title" th:text="${hotel.getName()}"></div>
@@ -81,7 +99,14 @@
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
 </div>
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
-<script>
+<script th:inline="javascript">
+    let hotelInfoList = /*[[${hotelList}]]*/ null;
+    let iataCode = /*[[${iataCode}]]*/ null;
+    let $viewBox = $('.myedu-cont-wrap');
+    let $hotelCnt = $('#hotel-cnt');
+    let hotelLoadCnt = 0;
+    let hotelReqCnt = 0;
+    console.log(hotelInfoList);
     $(document).ready(function() {
         $('.btn-link').on('click', function() {
             let hotelIdKey = $(this).data('hotel-id-key');
@@ -119,6 +144,57 @@
             $(document.body).append(form);
             form.submit();
         });
+
+
     });
+
+
+    // 크롤링을 요청하고 이미지 받아오기
+    $.each(hotelInfoList, function (index, hotel) {
+        let formData = new FormData();
+        hotelReqCnt++;
+        formData.append('hotelName', hotel.name);
+        formData.append('iataCode', iataCode);
+        formData.append('hotelId', hotel.hotelId);
+        if(hotelReqCnt > 50) return false;
+        ajaxGo('/concho/crawling', formData, function (response) {
+            if(response.result === 'ok'){
+                let $box = $viewBox.find(`#${response.hotelId}`);
+                let $img = $box.find('.card-img-my');
+                $img.attr('src', response.imgUrl);
+                $hotelCnt.text(Number($hotelCnt.text()) + 1);
+                console.log(hotel.name + " 호텔 로딩 완료 " + response.hotelId);
+                hotelLoadCnt++;
+                $box.show();
+            }else{
+                console.log(`#${hotel.hotelId}`);
+                let $box = $viewBox.find(`#${response.hotelId}`);
+                $box.hide();
+                console.log(hotel.name + " 호텔 숨기기 " + response.hotelId)
+            }
+        });
+    });
+
+    function ajaxGo(url, formData, callback){
+        let responseResult = null;
+        let baseUrl = window.location.origin;
+        $.ajax({
+            url: baseUrl + url,
+            type: 'POST',
+            data: formData,
+            async: true,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (callback) {
+                    callback(response);
+                }
+            },
+            error: function(error) {
+                alert('통신 오류: ' + error);
+            }
+        });
+        return responseResult;
+    }
 </script>
 </body>

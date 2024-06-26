@@ -14,10 +14,13 @@ public interface IataCodeMapper {
                         @Param("city") String city,
                         @Param("cityKo") String cityKo,
                         @Param("country") String country,
-                        @Param("countryKo") String countryKo);
+                        @Param("countryKo") String countryKo,
+                        @Param("destId") Integer destId);
 
     Optional<IataCode> findCityByIataCode(@Param("iataCode") String iataCode);
+    List<IataCode> findIataCodeBySearchStr(@Param("searchStr") String searchStr);
 
+    Optional<IataCode> findIataCodeBySearchStrLimit(@Param("searchStr") String searchStr);
     void insertAirplaneInfo(@Param("country") String country,
                         @Param("airplaneName") String airplaneName,
                         @Param("iataCode") String iataCode,

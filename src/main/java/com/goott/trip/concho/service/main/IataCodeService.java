@@ -4,6 +4,9 @@ import com.goott.trip.concho.mapper.IataCodeMapper;
 import com.goott.trip.concho.model.ConchoHotel;
 import com.goott.trip.concho.model.IataCode;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,24 +22,40 @@ import java.util.Optional;
 public class IataCodeService {
     private final IataCodeMapper iataCodeMapper;
 
-    public boolean uploadCsv(MultipartFile file){
+    public List<IataCode> findIataCodeBySearchStr(String searchStr){
+        return iataCodeMapper.findIataCodeBySearchStr(searchStr);
+    }
+
+    public boolean uploadCsv(MultipartFile file) {
         boolean result = false;
+
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-            String line;
-            reader.readLine(); // Skip header
-            while ((line = reader.readLine()) != null) {
-                String[] data = line.split(",");
-                if (data.length == 5) {
-                    String city = data[0].trim();
-                    String country = data[1].trim();
-                    String iataCode = data[2].trim();
-                    String countryKo = data[3].trim();
-                    String cityKo = data[4].trim();
-                    iataCodeMapper.insertIataCode(iataCode, city, cityKo, country, countryKo);
+            CSVFormat format = CSVFormat.DEFAULT.builder()
+                    .setHeader()
+                    .setSkipHeaderRecord(true)
+                    .build();
+            CSVParser csvParser = new CSVParser(reader, format);
+
+            for (CSVRecord record : csvParser) {
+                String city = record.get(0).trim();
+                String country = record.get(1).trim();
+                String iataCode = record.get(2).trim();
+                String countryKo = record.get(3).trim();
+                String cityKo = record.get(4).trim();
+                Integer destId = null;
+                try {
+                    if(record.get(5) != null && !record.get(5).isEmpty()){
+                        destId = Integer.valueOf(record.get(5).trim());
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("숫자가 아님 : " + record.get(5).trim());
                 }
+
+                iataCodeMapper.insertIataCode(iataCode, city, cityKo, country, countryKo, destId);
             }
+
             result = true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             result = false;
         }

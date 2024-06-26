@@ -2,7 +2,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+
 <style>
+    svg{
+        width: 40px;
+        height: 40px;
+    }
     .my-btn-box {
         margin-top: 1.3rem;
         display: flex;
@@ -11,6 +18,41 @@
     }
     #comment-list, #inquiry, #reply {
         display: none; /* Initially hide both sections */
+    }
+
+
+    .profile-box {
+        width: 90%;
+        height: 30rem;
+        margin: auto;
+        position: relative;
+        z-index: 1; /* z-index 추가 */
+    }
+    .slider img {
+        width: 100%;
+        height: 30rem;
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+    .slick-prev:before, .slick-next:before {
+        color: black; /* 화살표 색상 변경 */
+    }
+    .my-btn-box ul {
+
+        display: flex;
+        flex-direction: row; /* 가로로 배열 */
+        list-style: none; /* 불릿 포인트 제거 */
+        padding: 0;
+        margin: 1.3rem 0;
+    }
+    .my-btn-box li {
+        margin-right: 20px; /* 각 항목 간의 간격 조정 */
+    }
+    .bf33709ee1{
+        display: none;
+    }
+    .content-inner{
+        padding-top: 1.3rem;
     }
 </style>
 <body>
@@ -25,11 +67,11 @@
                     <div class="text-wrap">
                         <h1 style="margin-bottom: 2rem; margin-left: 1rem" class="title" th:text="${hotel.getName()}"></h1>
                     </div>
-                    <div class="card-img-area">
-                        <div class="img-wrap">
-                            <div class="img-box">
-                                <img class="card-img card-img-pc" th:src="@{/asset/images/img_N18_pc.png}" alt="이미지">
-                                <img class="card-img card-img-mo" th:src="@{/asset/images/img_N18_mo.png}" alt="모바일이미지">
+
+                    <div class="profile-box">
+                        <div class="slider">
+                            <div th:each="imgUrl : ${imgUrlList}">
+                                <img th:src="${imgUrl}" alt="">
                             </div>
                         </div>
                     </div>
@@ -37,6 +79,21 @@
             </div>
         </div>
     </div>
+    <div class="tedu-N18" data-bid="JsLXmnn4Nl">
+        <div class="content-inner">
+            <div class="content-container">
+                <section class="subvisual">
+                    <div class="my-btn-box">
+                        <div th:utext="${hotelCrawledInfoList.get(0).getCrContent()}"></div>
+                    </div>
+                    <div class="my-btn-box">
+                        <div th:utext="${hotelCrawledInfoList.get(0).getCrFacility()}"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
     <!-- [E]tedu-N18 -->
     <!-- [S]tedu-N20 -->
     <div class="tedu-N20" data-bid="nflxmnn4ye" style="z-index: 0; margin-top: 1px">
@@ -90,14 +147,8 @@
                     </div>
                     <div class="tab-menu" id="comment-btn">
                         <a href="javascript:void(0)">
-                            <span>호텔 평점</span>
-                            <strong>20</strong>
-                        </a>
-                    </div>
-                    <div class="tab-menu" id="reply-btn">
-                        <a href="javascript:void(0)">
-                            <span>댓글</span>
-                            <strong>2</strong>
+                            <span>호텔 평점 및 편의</span>
+                            <strong></strong>
                         </a>
                     </div>
                     <div class="tab-menu" id="inquiry-btn">
@@ -121,14 +172,6 @@
                              th:text="${(hotelOffer.getCategory() != null && !hotelOffer.getCategory().equals('null')) ? hotelOffer.getCategory() : '객실 이름 없음'}"></div>
                         <p class="text"
                            th:text="${(hotelOffer.getDescription() != null && !hotelOffer.getDescription().equals('null')) ? hotelOffer.getDescription() : '설명 없음'}"></p>
-                    </div>
-                    <div class="card-img-area">
-                        <div class="img-wrap">
-                            <div class="img-box">
-                                <img class="card-img card-img-pc" th:src="@{/asset/images/img_N25_pc.png}" alt="이미지">
-                                <img class="card-img card-img-mo" th:src="@{/asset/images/img_N25_pc.png}" alt="모바일이미지">
-                            </div>
-                        </div>
                     </div>
                     <div class="text-wrap" style="margin-left: 1.3rem;">
                         <p class="text">
@@ -186,10 +229,11 @@
             <div class="content-container">
                 <div class="review-wrap">
                     <div class="text-wrap">
-                        <div class="title">수강평</div>
-                        <span>총 20개</span>
+                        <div class="title">편의시설</div>
                     </div>
-                    <p class="sm-text">수강생분들이 직접 작성하신 수강평입니다.</p>
+                    <div class="my-btn-box">
+                        <div th:utext="${hotelCrawledInfoList.get(0).getCrFacilityInfo()}"></div>
+                    </div>
                     <div class="review-area">
                         <div class="reveiw-component">
                             <div class="num">4.9</div>
@@ -458,6 +502,7 @@
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
 </div>
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script>
     $(document).ready(function () {
         let $offerList = $('#offer-list');
@@ -510,6 +555,16 @@
 
         $('#reply-btn').click(function () {
             showReply();
+        });
+
+        $('.slider').slick({
+            dots: true,
+            infinite: true,
+            speed: 300,
+            slidesToShow: 1,
+            adaptiveHeight: true,
+            prevArrow: '<button type="button" class="slick-prev">Previous</button>',
+            nextArrow: '<button type="button" class="slick-next">Next</button>'
         });
     });
 </script>

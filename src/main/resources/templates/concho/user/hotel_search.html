@@ -73,7 +73,44 @@
         background-color: #0056b3;
     }
 
+    .destination {
+        position: relative;
+        display: inline-block;
+    }
+
+    .destination-list {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 4px;
+        margin-top: 55px;
+        width: 45%;
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    .destination input:focus + .destination-list {
+        display: block;
+    }
+    .destination-item {
+        padding: 10px;
+        cursor: pointer;
+    }
+    .destination-item:hover {
+        background-color: #f0f0f0;
+    }
+    @media (max-width: 1300px) {
+        .destination-list {
+            width: 60%;
+        }
+    }
+
     @media (max-width: 768px) {
+        .destination-list {
+            width: 80%;
+        }
         .search-form {
             width: 90%;
             padding: 20px;
@@ -104,14 +141,19 @@
 
     <div class="background">
         <form class="search-form" action="/user/concho/service/hotel-list-iata" method="get">
-            <input name="iataCode" id="location" type="text" placeholder="어디로 떠나시나요?" class="destination" value="LON">
+            <input name="iataCode" id="location" type="text" placeholder="어디로 떠나시나요?" class="destination" value="" autocomplete="off">
+            <div class="destination-list" id="search-list">
+                <div class="destination-item">
+                    <span>검색어를 입력해주세요!</span>
+                </div>
+            </div>
             <div class="input-group">
-                <div class="date-picker">
+                <div class="date-picker" id="start-date-picker">
                     <input name="startDate" id="start-date" type="date" placeholder="연도-월-일">
                     <span>체크인 날짜</span>
                 </div>
                 <div id="end-date" class="date-picker">
-                    <input name="endDate" type="date" placeholder="연도-월-일">
+                    <input name="endDate" id="end-date-input" type="date" placeholder="연도-월-일">
                     <span>체크아웃 날짜</span>
                 </div>
                 <div id="person-cnt" class="date-picker">
@@ -126,7 +168,7 @@
                     <span>인원 선택</span>
                 </div>
             </div>
-            <button type="submit">검색하기</button>
+            <button id="search-btn" type="button">검색하기</button>
         </form>
     </div>
 </main>
@@ -137,10 +179,133 @@
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
 <script th:inline="javascript">
     $(document).ready(function () {
-        $('#location').click(function () {
+        let $searchListDiv = $('#search-list');
+        let $location = $('#location');
+        let $beforeSelect = null;
+
+        $('#search-btn').click(function(){
+            // 영어 문자인지 확인하는 정규 표현식
+            let isEnglish = /^[A-Za-z\s]+$/.test($location.val());
+            if (!isEnglish || $location.val().length !== 3) {
+                alert('검색창 아래의 지역 코드를 선택해 주세요.');
+                return false;
+            }else{
+                $('.search-form').submit();
+            }
 
         });
-    })
+
+        $(document).click(function(event) {
+            if (!$(event.target).closest('#location').length) {
+                if(!$(event.target).closest('.destination-item').length){
+                    $searchListDiv.hide();
+                }
+            }
+        });
+
+        $(document).on('click', '.destination-item', function (){
+            if($beforeSelect != null){
+                $beforeSelect.find('.iata').css('color', 'black');
+                $beforeSelect.find('.contry-ko').css('color', 'black');
+                $beforeSelect.find('.city').css('color', 'black');
+            }else{
+                $searchListDiv.children().first().find('.iata').css('color', 'black');
+                $searchListDiv.children().first().find('.contry-ko').css('color', 'black');
+                $searchListDiv.children().first().find('.city').css('color', 'black');
+            }
+            $beforeSelect = $(this);
+            let $iata = $(this).find('.iata');
+            let $con = $(this).find('.contry-ko');
+            let $city = $(this).find('.city');
+            $iata.css('color', 'blue');
+            $city.css('color', 'blue');
+            $con.css('color', 'blue');
+            $location.val($iata.text());
+        });
+        $location.click(function() {
+            $searchListDiv.show();
+        });
+        $location.keydown(function (event) {
+            if (event.keyCode === 13) { // 엔터 키가 눌렸는지 확인
+                event.preventDefault(); // 기본 동작(폼 제출) 방지
+            }
+        });
+        $location.keyup(function (event) {
+            let str = $(this).val();
+            if (event.keyCode === 13) { // 엔터 키가 눌렸는지 확인
+                event.preventDefault();
+                // 영어 문자인지 확인하는 정규 표현식
+                let isEnglish = /^[A-Za-z\s]+$/.test($location.val());
+                if (!isEnglish || $location.val().length !== 3) {
+                    alert('검색창 아래의 지역 코드를 선택해 주세요.');
+                    return false;
+                }else{
+                    $('.search-form').submit();
+                }
+            }
+
+            $searchListDiv.show();
+            if(str == null){
+                console.log('실패');
+                return;
+            }
+            if(str.length > 0){
+                console.log(str);
+                let formData = new FormData();
+                formData.append("searchStr", str);
+                ajaxGo('/user/concho/search-iatacode', formData, function (response) {
+                    $searchListDiv.empty();
+                    let iataCodeList = response.result;
+                    iataCodeList.forEach(function (iataCode, index) {
+                        $searchListDiv.append(
+                            `
+                            <div class="destination-item">
+                                <span class="iata">${iataCode.iataCode}</span><span> / </span>
+                                <span class="contry-ko">${iataCode.countryKo}</span><span> / </span>
+                                <span class="city">${iataCode.cityKo}</span>
+                            </div>
+                            `
+                        );
+                    });
+                });
+            }
+        });
+
+        // 현재 날짜와 다음 날짜를 포맷에 맞게 가져옴
+        let today = new Date();
+        let tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+
+        let formattedToday = today.toISOString().split('T')[0];
+        let formattedTomorrow = tomorrow.toISOString().split('T')[0];
+
+        // 현재 날짜와 다음 날짜를 각 input 요소에 설정
+        $('#start-date').val(formattedToday);
+        $('#end-date-input').val(formattedTomorrow);
+
+    });
+    function ajaxGo(url, formData, callback){
+        let responseResult = null;
+        let baseUrl = window.location.origin;
+        $.ajax({
+            url: baseUrl + url,
+            type: 'POST',
+            data: formData,
+            async: true,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (callback) {
+                    callback(response);
+                }
+            },
+            error: function(error) {
+                //alert('통신 오류: ' + error);
+            }
+        });
+        return responseResult;
+    }
+
 </script>
 </body>
 </html>
