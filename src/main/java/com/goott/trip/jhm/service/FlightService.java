@@ -79,29 +79,6 @@ public class FlightService {
             }
         }
 
-        // APISegment
-        for(int i=0; i<iList.size(); i++) {
-            String iCode = iList.get(i).getId();
-            for(int j=0; j<list[i].getItineraries().length;j++) {
-                for(int k=0; k<list[i].getItineraries()[j].getSegments().length; k++) {
-                    APISegment sdto = new APISegment();
-                    sdto.setItineraryCode(iCode);
-                    sdto.setFlightCode(fdto.getCode());
-                    sdto.setDepartureIata(list[i].getItineraries()[j].getSegments()[k].getDeparture().getIataCode());
-                    sdto.setDepartureAt(list[i].getItineraries()[j].getSegments()[k].getDeparture().getAt());
-                    sdto.setArrivalIata(list[i].getItineraries()[j].getSegments()[k].getArrival().getIataCode());
-                    sdto.setArrivalAt(list[i].getItineraries()[j].getSegments()[k].getArrival().getAt());
-                    sdto.setDuration(list[i].getItineraries()[j].getSegments()[k].getDuration());
-                    sdto.setCarrierCode(list[i].getItineraries()[j].getSegments()[k].getCarrierCode());
-                    sdto.setCarrierNum(list[i].getItineraries()[j].getSegments()[k].getNumber());
-                    String segId = "seg" + iCode + j + k;
-                    sdto.setId(segId);
-                    this.insertAPISegment(sdto);
-                    segCount ++;
-                }
-            }
-        }
-
         // APIDuration
         for(int i=0; i<iList.size(); i++) {
             String iCode = iList.get(i).getId();
@@ -124,6 +101,26 @@ public class FlightService {
                 ddto.setAirlineImg(logo);
                 this.insertAPIDuration(ddto);
                 durCount ++;
+
+                // APISegment
+                for(int k=0; k<list[i].getItineraries()[j].getSegments().length; k++) {
+                    APISegment sdto = new APISegment();
+                    sdto.setItineraryCode(iCode);
+                    sdto.setFlightCode(fdto.getCode());
+                    sdto.setDepOrComb(ddto.getDepOrComb());
+                    sdto.setDepartureIata(list[i].getItineraries()[j].getSegments()[k].getDeparture().getIataCode());
+                    sdto.setDepartureAt(list[i].getItineraries()[j].getSegments()[k].getDeparture().getAt());
+                    sdto.setArrivalIata(list[i].getItineraries()[j].getSegments()[k].getArrival().getIataCode());
+                    sdto.setArrivalAt(list[i].getItineraries()[j].getSegments()[k].getArrival().getAt());
+                    sdto.setDuration(list[i].getItineraries()[j].getSegments()[k].getDuration());
+                    sdto.setCarrierCode(list[i].getItineraries()[j].getSegments()[k].getCarrierCode());
+                    sdto.setCarrierNum(list[i].getItineraries()[j].getSegments()[k].getNumber());
+                    String segId = "seg" + iCode + j + k;
+                    System.out.println("segId : "+segId);
+                    sdto.setId(segId);
+                    this.insertAPISegment(sdto);
+                    segCount ++;
+                }
             }
         }
 

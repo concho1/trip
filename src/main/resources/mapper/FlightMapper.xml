@@ -57,17 +57,15 @@
     </insert>
 
     <insert id="insertAPIPricing" parameterType="APIPricing">
-        insert into trip.APIPricing(id, itinerary_code, flight_code, type, base, total) values(#{id}, #{itineraryCode}, #{flightCode}, #{type}, #{base}, #{total})
+        insert into trip.APIPricing values(#{id}, #{itineraryCode}, #{flightCode}, #{type}, #{base}, #{total})
     </insert>
 
     <insert id="insertAPISegment" parameterType="APISegment">
-        insert into trip.APISegment(id, itinerary_code, flight_code, departure_iata, departure_at, arrival_iata, arrival_at, duration, carrier_code, carrier_num)
-            values(#{id}, #{itineraryCode}, #{flightCode}, #{departureIata}, #{departureAt}, #{arrivalIata}, #{arrivalAt}, #{duration}, #{carrierCode}, #{carrierNum})
+        insert into trip.APISegment values(#{id}, #{itineraryCode}, #{flightCode}, #{depOrComb}, #{departureIata}, #{departureAt}, #{arrivalIata}, #{arrivalAt}, #{duration}, #{carrierCode}, #{carrierNum})
     </insert>
 
     <insert id="insertAPIDuration" parameterType="APIDuration">
-        insert into trip.APIDuration(id, itinerary_code, flight_code, depOrComb, duration, airline, airline_img)
-            values(#{id}, #{itineraryCode}, #{flightCode}, #{depOrComb}, #{duration}, #{airline}, #{airlineImg})
+        insert into trip.APIDuration values(#{id}, #{itineraryCode}, #{flightCode}, #{depOrComb}, #{duration}, #{airline}, #{airlineImg})
     </insert>
 
     <select id="findItineraryForView" parameterType="String" resultType="APIItinerary">
@@ -123,7 +121,7 @@
     </insert>
 
     <insert id="insertCartSegment" parameterType="CartSegment">
-        insert into trip.cartSegment values(#{id}, #{ffvId}, #{departureIata}, #{departureAt}, #{arrivalIata},
+        insert into trip.cartSegment values(#{id}, #{ffvId}, #{depOrComb}, #{departureIata}, #{departureAt}, #{arrivalIata},
                                             #{arrivalAt}, #{duration}, #{carrierCode}, #{carrierNum})
     </insert>
 

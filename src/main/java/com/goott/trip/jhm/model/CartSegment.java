@@ -6,6 +6,7 @@ import lombok.Data;
 public class CartSegment {
     private String id;
     private String ffvId;
+    private String depOrComb;
     private String departureIata;
     private String departureAt;
     private String arrivalIata;

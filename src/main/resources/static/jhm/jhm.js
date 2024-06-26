@@ -159,7 +159,11 @@ $(document).ready(function() {
         let infants = $(this).closest('.card').find('#infants').val();
         let memberId = $(this).closest('.card').find('#memberId').val();
 
-        insertFfv(ffvData, ffvId, origin, des, dep, comb, memberId, adults, children, infants);
+        if(memberId == "") {
+            alert("회원가입 후 이용하실 수 있습니다.");
+        }else {
+            insertFfv(ffvData, ffvId, origin, des, dep, comb, memberId, adults, children, infants);
+        }
     });
 
     function insertFfv(data, ffvId, origin, des, dep, comb, memberId, adults, children, infants) {
