@@ -1,7 +1,6 @@
 package com.goott.trip.esh.controller;
 
 import com.google.gson.Gson;
-import com.goott.trip.concho.model.ConchoHotel;
 import com.goott.trip.esh.model.ESHConchoHotel;
 import com.goott.trip.esh.service.ExchangeService;
 import com.goott.trip.esh.service.GlobeService;
@@ -31,9 +30,8 @@ public class EshMainController {
     @GetMapping("/map")
     public String showMap(Model model) {
         List<ESHConchoHotel> hotels = globeService.getAllHotelData();
-        String hotelJson = new Gson().toJson(hotels);
-        System.out.println(hotelJson);
-        model.addAttribute("hotels", hotelJson);
+        System.out.println(hotels.size());
+        model.addAttribute("hotels", hotels);
         return "esh/map";
     }
 
