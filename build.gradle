@@ -33,7 +33,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    implementation 'org.apache.poi:poi:5.2.3'
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
     implementation 'io.awspring.cloud:spring-cloud-aws-s3:3.0.2'
+    implementation "com.amadeus:amadeus-java:9.0.0"
+    implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation group: 'org.apache.commons', name: 'commons-csv', version: '1.9.0'
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.3'
+
+
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

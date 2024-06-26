@@ -2,16 +2,19 @@ package com.goott.trip.common.service;
 
 import com.goott.trip.common.mapper.ImageMapper;
 import com.goott.trip.common.model.Image;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
-
 @Service
 public class ImageService {
 
@@ -20,6 +23,34 @@ public class ImageService {
 
     @Autowired
     private ImageMapper imageMapper;
+
+    public Optional<Image> insertImageUrl(String imageUrl) {
+        if (imageUrl == null || imageUrl.isEmpty()) {
+            System.out.println("이미지 URL이 비었습니다.");
+            return Optional.empty();
+        }
+
+        String randomKey = "trip/" + UUID.randomUUID(); // UUID를 이용한 고유 키 생성
+
+        try {
+            // URL을 MultipartFile로 변환
+            MultipartFile multipartFile = urlToMultipartFile(imageUrl);
+            // 기존 insertFile 메서드 재사용
+            return insertFile(multipartFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    private MultipartFile urlToMultipartFile(String fileUrl) throws Exception {
+        URL url = new URL(fileUrl);
+        try (InputStream inputStream = url.openStream()) {
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            String fileName = url.getPath().substring(url.getPath().lastIndexOf("/") + 1);
+            return new MockMultipartFile(fileName, fileName, "image/jpeg", bytes);
+        }
+    }
 
     /*
      * 이미지 파일 저장 후 저장한 Optional<Image> 반환
@@ -38,7 +69,7 @@ public class ImageService {
         try {
             String url = awsS3Service.uploadMultipartFile(multipartFile,randomKey);
             Timestamp now = Timestamp.valueOf(LocalDateTime.now()); // 현재시간
-            Image image = new Image(randomKey,url,now);
+            Image image = new Image(randomKey,now,url);
             int dbresult = imageMapper.insertImage(image);
 
             if(dbresult>0) {
@@ -76,7 +107,7 @@ public class ImageService {
         }
         try{
             String url = awsS3Service.getUrl(key);
-            Image image = new Image(key,url,Timestamp.valueOf(LocalDateTime.now()));
+            Image image = new Image(key,Timestamp.valueOf(LocalDateTime.now()),url);
             imageMapper.updateImage(image);
             resultImage = Optional.of(image);
         }catch (Exception e){

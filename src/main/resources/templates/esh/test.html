@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Exchange Rates</title>
+</head>
+<body>
+<h1>Exchange Rates</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Currency Unit</th>
+        <th>Buying TT Rate</th>
+        <th>Currency Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="rate : ${exchangeRates}">
+        <td th:text="${rate['cur_unit']}"></td>
+        <td th:text="${rate['ttb']}"></td>
+        <td th:text="${rate['cur_nm']}"></td>
+    </tr>
+
+    </tbody>
+</table>
+<h2>Exchange Currency</h2>
+<form action="user/esh/doConvert" method="get">
+    <label>From Currency:</label>
+    <input type="text" name="fromCurrency"><br>
+    <label>To Currency:</label>
+    <input type="text" name="toCurrency"><br>
+    <label>Amount:</label>
+    <input type="text" name="amount"><br>
+
+    <input type="submit" value="Convert">
+</form>
+
+<!-- 환전 결과를 표시할 부분 -->
+<h3>Converted Amount:</h3>
+<p id="convertedAmount"></p>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); // 폼 제출 기본 동작을 막음
+
+        const fromCurrency = document.querySelector('input[name="fromCurrency"]').value;
+        const toCurrency = document.querySelector('input[name="toCurrency"]').value;
+        const amount = document.querySelector('input[name="amount"]').value;
+
+        fetch(`/user/esh/doConvert?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&amount=${amount}`)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('convertedAmount').innerText = data;
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+</body>
+</html>

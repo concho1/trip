@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.goott.trip.esh.mapper.ExchangeMapper">
+    <select id="selectExchangeDataByCurrencyCode" parameterType="String" resultType="com.goott.trip.esh.model.Exchange">
+        SELECT country_name, currency_code, exchange_date, buying_tt_rate
+        FROM exchange
+        WHERE currency_code = #{currencyCode}
+    </select>
+
+    <insert id="insertExchangeData" parameterType="com.goott.trip.esh.model.Exchange">
+        INSERT INTO exchange (country_name, currency_code, exchange_date, buying_tt_rate)
+        VALUES (#{countryName}, #{currencyCode}, #{exchangeDate}, #{buyingTtRate})
+    </insert>
+
+    <update id="updateExchangeData" parameterType="com.goott.trip.esh.model.Exchange">
+        UPDATE exchange
+        SET currency_code = #{currencyCode}, exchange_date = #{exchangeDate}, buying_tt_rate = #{buyingTtRate}
+        WHERE country_name = #{countryName}
+    </update>
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.goott.trip.jhm.model.FlightMapper">
+
+    <insert id="uploadAirport">
+        insert into trip.airport(eng_name, kor_name, iata, icao, region, eng_country, kor_country, eng_city) values
+        <foreach collection="list" item="airport" separator=",">
+            (
+             #{airport.engName},
+             #{airport.korName},
+             #{airport.iata},
+             #{airport.icao},
+             #{airport.region},
+             #{airport.engCountry},
+             #{airport.korCountry},
+             #{airport.engCity}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="uploadAirline">
+        insert into trip.airline(eng_name, kor_name, iata, icao, status, model, country, region) values
+        <foreach collection="list" item="airline" separator=",">
+            (
+             #{airline.engName},
+             #{airline.korName},
+             #{airline.iata},
+             #{airline.icao},
+             #{airline.status},
+             #{airline.model},
+             #{airline.country},
+             #{airline.region}
+            )
+        </foreach>
+    </insert>
+
+    <select id="findAirportByIATA" parameterType="String" resultType="String">
+        select kor_name from trip.airport where iata = #{iata}
+    </select>
+
+    <select id="findAirportByKor" parameterType="String" resultType="Airport">
+        select * from trip.airport where kor_name like concat('%', #{kor}, '%') or kor_country like concat('%', #{kor}, '%')
+    </select>
+
+    <insert id="insertFlightCode" parameterType="String">
+        insert into trip.APIFlight values(#{str}, now())
+    </insert>
+
+    <select id="findAPIFlight" parameterType="String" resultType="APIFlight">
+        select * from trip.APIFlight where code = #{str}
+    </select>
+
+    <insert id="insertAPIItinerary" parameterType="APIItinerary">
+        insert into trip.APIItinerary values(#{id}, #{flightCode}, #{totalBase}, #{totalPrice})
+    </insert>
+
+    <insert id="insertAPIPricing" parameterType="APIPricing">
+        insert into trip.APIPricing values(#{id}, #{itineraryCode}, #{flightCode}, #{type}, #{base}, #{total})
+    </insert>
+
+    <insert id="insertAPISegment" parameterType="APISegment">
+        insert into trip.APISegment values(#{id}, #{itineraryCode}, #{flightCode}, #{depOrComb}, #{departureIata}, #{departureAt}, #{arrivalIata}, #{arrivalAt}, #{duration}, #{carrierCode}, #{carrierNum})
+    </insert>
+
+    <insert id="insertAPIDuration" parameterType="APIDuration">
+        insert into trip.APIDuration values(#{id}, #{itineraryCode}, #{flightCode}, #{depOrComb}, #{duration}, #{airline}, #{airlineImg})
+    </insert>
+
+    <select id="findItineraryForView" parameterType="String" resultType="APIItinerary">
+        select * from trip.APIItinerary where flight_code = #{str}
+    </select>
+
+    <select id="findPricingForView" parameterType="String" resultType="APIPricing">
+        select * from trip.APIPricing where itinerary_code = #{str}
+    </select>
+
+    <select id="findSegmentForView" parameterType="String" resultType="APISegment">
+        select * from trip.APISegment where itinerary_code = #{str}
+    </select>
+
+    <select id="findDurationForView" parameterType="String" resultType="APIDuration">
+        select * from trip.APIDuration where itinerary_code = #{str}
+    </select>
+
+    <delete id="deleteAPIFlight" parameterType="String">
+        delete from trip.APIFlight where code = #{str}
+    </delete>
+
+    <delete id="deleteAPIItinerary" parameterType="String">
+        delete from trip.APIItinerary where flight_code = #{str}
+    </delete>
+
+    <delete id="deleteAPIPricing" parameterType="String">
+        delete from trip.APIPricing where flight_code = #{str}
+    </delete>
+
+    <delete id="deleteAPISegment" parameterType="String">
+        delete from trip.APISegment where flight_code = #{str}
+    </delete>
+
+    <delete id="deleteAPIDuration" parameterType="String">
+        delete from trip.APIDuration where flight_code = #{str}
+    </delete>
+
+    <select id="findIcaoByIata" parameterType="String" resultType="String">
+        select icao from trip.airline where iata like concat('%', #{str}, '%') and model not like '%Cargo%' limit 1
+    </select>
+
+    <select id="findImgByIcao" parameterType="String" resultType="String">
+        select logo from trip.airplaneInfo where icao_code like concat('%', #{str}, '%')
+    </select>
+
+    <insert id="insertShoppingCart" parameterType="shoppingCart">
+        insert into trip.shoppingCart(member_id, air_key) values(#{memberId}, #{airKey})
+    </insert>
+
+    <insert id="insertCartPricing" parameterType="CartPricing">
+        insert into trip.cartPricing values(#{id}, #{ffvId}, #{type}, #{base}, #{total})
+    </insert>
+
+    <insert id="insertCartSegment" parameterType="CartSegment">
+        insert into trip.cartSegment values(#{id}, #{ffvId}, #{depOrComb}, #{departureIata}, #{departureAt}, #{arrivalIata},
+                                            #{arrivalAt}, #{duration}, #{carrierCode}, #{carrierNum})
+    </insert>
+
+    <insert id="insertCartDuration" parameterType="CartDuration">
+        insert into trip.cartDuration values(#{id}, #{ffvId}, #{depOrComb}, #{duration}, #{airline}, #{airlineImg})
+    </insert>
+
+    <insert id="insertCartFlight" parameterType="CartFlight">
+        insert into trip.cartFlight values(#{ffvId}, #{origin}, #{destination}, #{departure}, #{comeback}, #{adults}, #{children}, #{infants}, #{totalBase}, #{totalPrice}, now())
+    </insert>
+</mapper>

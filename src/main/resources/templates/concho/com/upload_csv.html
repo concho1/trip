@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CSV File Upload</title>
+</head>
+<body>
+<h1>Upload CSV File</h1>
+<h3>1800개 => 3분</h3>
+<form action="#" th:action="@{/user/concho/upload}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".csv" required />
+    <button type="submit">Upload</button>
+</form>
+
+<form action="#" th:action="@{/user/concho/air_upload}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".csv" required />
+    <button type="submit">항공업로드</button>
+</form>
+</body>
+</html>

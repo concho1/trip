@@ -1,0 +1,15 @@
+.tab-menu-wrap{
+    justify-content: space-between;
+}
+.form-wrap{
+    display: flex;
+    justify-content: center;
+}
+
+.form-body{
+    width: 80%;
+}
+
+.fieldset{
+    margin-bottom: 3rem;
+}

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.goott.trip.hamster.mapper.AirplaneMapper">
+
+    <select id="airplaneList" resultType="Testproduct">
+        SELECT * FROM testproduct
+    </select>
+
+    <select id="airplaneCont" parameterType="String" resultType="Testproduct">
+        SELECT * FROM testproduct where airplane_key = #{key}
+    </select>
+
+    <select id="airplaneInfoList" resultType="airplaneInfo">
+        select * from airplaneInfo order by air_num desc
+    </select>
+
+    <select id="getAirInfo" parameterType="String" resultType="CartFlight">
+        select * from cartFlight where ffvId = #{AirKey}
+    </select>
+
+    <select id="getDurationInfo" parameterType="String" resultType="CartDuration">
+        select * from cartDuration where ffvId = #{AirKey}
+    </select>
+
+    <select id="getDepDur" parameterType="String" resultType="CartDuration">
+        select * from cartDuration where depOrComb = 'Dep' and ffvId = #{AirKey}
+    </select>
+
+    <select id="getCombDur" parameterType="String" resultType="CartDuration">
+        select * from cartDuration where depOrComb = 'Comb' and ffvId = #{AirKey}
+    </select>
+
+    <select id="getSegment" parameterType="String" resultType="CartSegment">
+        select * from cartSegment where ffvId = #{AirKey}
+    </select>
+
+    <select id="getDep" parameterType="String" resultType="CartSegment">
+        select * from cartSegment where depOrComb = 'Dep' and ffvId = #{AirKey} order by departure_at asc
+    </select>
+
+    <select id="getComb" parameterType="String" resultType="CartSegment">
+        select * from cartSegment where depOrComb = 'Comb' and ffvId = #{AirKey} order by departure_at asc
+    </select>
+
+    <select id="getPrice" parameterType="String" resultType="CartPricing">
+        select * from cartPricing where ffvId = #{AirKey} order by type asc
+    </select>
+
+</mapper>

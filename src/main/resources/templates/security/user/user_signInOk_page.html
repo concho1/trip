@@ -1,0 +1,57 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<body>
+<div th:replace="~{common/head :: head-fragment}"></div>
+
+<main class="th-layout-main ">
+    <div class="tedu-N41" data-bid="TtlXIK0896">
+        <div class="content-inner">
+            <div class="content-container">
+                <div class="member-wrap-04">
+                    <ul class="step-list">
+                        <li class="step">
+                            <span class="step-num">1</span>
+                            <p>약관동의</p>
+                        </li>
+                        <li class="step">
+                            <span class="step-num">2</span>
+                            <p>정보입력</p>
+                        </li>
+                        <li class="step active">
+                            <span class="step-num">3</span>
+                            <p>가입완료</p>
+                        </li>
+                    </ul>
+                    <div class="con-figure">
+                        <div class="con-img-box">
+                            <img class="con-img" src="../resources/icons/ico_join_wh.svg" alt="signup">
+                        </div>
+                    </div>
+                    <div class="textset">
+                        <h2 class="textset-tit">
+                            <span> 환영합니다 !</span>
+                            <span>회원으로 가입이 완료되었습니다.</span>
+                        </h2>
+                        <p class="textset-desc">템하에듀의 서비스와 혜택을 이용하실 수 있습니다. <br>로그인 후 이용이 가능합니다. </p>
+                    </div>
+                    <div class="btn-box">
+                        <!--<a class="tedu-btn tedu-btn-dark btn-link" href="javascript:void(0)">메인으로 이동</a>-->
+                        <a class="tedu-btn tedu-btn-dark btn-link" th:href="@{user/con/log-in}">로그인 페이지로 이동</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N41 -->
+</main>
+
+
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+</body>
+</html>
