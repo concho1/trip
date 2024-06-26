@@ -1,16 +1,29 @@
 <!-- [S]tedu-N3 -->
-<div th:fragment="head-fragment" class="tedu-N3" data-bid="sqlxIC74Uc" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="head-fragment" class="tedu-N3" data-bid="sqlxIC74Uc" xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.springframework.org/schema/security">
     <div class="header-container lightmode">
         <div class="header-top">
             <div class="inner">
                 <div class="header-member">
-                    <a th:href="@{/user/con/log-in}">
+                    <a sec:authorize="isAuthenticated()" th:href="@{/user/con/log-out}">
+                        <em class="ico">
+                            <img th:src="@{/resources/icons/ico_login.svg}" alt="로그아웃 아이콘">
+                        </em>
+                        <span>로그아웃</span>
+                    </a>
+                    <a sec:authorize="!isAuthenticated()" th:href="@{/user/con/log-in}">
                         <em class="ico">
                             <img th:src="@{/resources/icons/ico_login.svg}" alt="로그인 아이콘">
                         </em>
                         <span>로그인</span>
                     </a>
-                    <a th:href="@{/user/con/check}">
+                    <a sec:authorize="isAuthenticated()" th:href="@{/member/con/myPage}">
+                        <em class="ico">
+                            <img th:src="@{/resources/icons/ico_member.svg}" alt="마이페이지 아이콘">
+                        </em>
+                        <span>마이페이지</span>
+                    </a>
+                    <a sec:authorize="!isAuthenticated()" th:href="@{/user/con/check}">
                         <em class="ico">
                             <img th:src="@{/resources/icons/ico_member.svg}" alt="회원가입 아이콘">
                         </em>

@@ -28,7 +28,15 @@ public class airplaneService {
 
     public List<CartDuration> getDurationInfo(String AirKey){return this.mapper.getDurationInfo(AirKey); }
 
+    public List<CartDuration> getDepDur(String AirKey){return this.mapper.getDepDur(AirKey); }
+
+    public List<CartDuration> getCombDur(String AirKey){return this.mapper.getCombDur(AirKey); }
+
     public List<CartSegment> getSegment(String AirKey){return this.mapper.getSegment(AirKey); }
+
+    public List<CartSegment> getDep(String AirKey){return this.mapper.getDep(AirKey); }
+
+    public List<CartSegment> getComb(String AirKey){return this.mapper.getComb(AirKey); }
 
     public List<String> getCountry(){
         List<String> countries = new ArrayList<>();

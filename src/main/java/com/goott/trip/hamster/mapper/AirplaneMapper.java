@@ -22,5 +22,13 @@ public interface AirplaneMapper {
 
     public List<CartDuration> getDurationInfo(String AirKey);
 
+    public List<CartDuration> getDepDur(String AirKey);
+
+    public List<CartDuration> getCombDur(String AirKey);
+
     public List<CartSegment> getSegment(String AirKey);
+
+    public List<CartSegment> getDep(String AirKey);
+
+    public List<CartSegment> getComb(String AirKey);
 }
