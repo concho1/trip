@@ -33,6 +33,21 @@ public class MemberRestController {
             System.out.println("이미지 키 없음");
         }
     }
+    // 이미지
+    private String handleImageUpload(String memberId, MultipartFile file) {
+
+        String baseImgKey = "trip/f0fcf1b5-42c6-4a49-a9d1-7dadf703c35a";
+        Optional<Image> uploadedImage = imageService.insertFile(file);
+
+        if (uploadedImage.isPresent()) {
+            return uploadedImage.get().getImgKey();
+        } else {
+            Member existingUser = memberService.getMemberById(memberId);
+            String existingImgKey = (existingUser != null) ? existingUser.getImgKey() : null;
+
+            return (existingImgKey != null && !existingImgKey.isEmpty()) ? existingImgKey : baseImgKey;
+        }
+    }
 
     /*@GetMapping("test")
         public ModelAndView getTest(Principal principal){
@@ -45,125 +60,39 @@ public class MemberRestController {
     @GetMapping("myPage")
     public ModelAndView getMyPage(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("security/member/member_page");
-
-        if (principal != null) {
-            String memberId = principal.getName(); // 로그인된 사용자의 ID getName 이 member Id 임
-            System.out.println("memberId : " + memberId);
-            modelAndView.addObject("memberId", memberId);
-            modelAndView.addObject("logIn", true); // 로그인 상태 추가
-        } else {
-            modelAndView.addObject("logIn", false); // 로그인되지 않은 상태
-        }
+        String memberId = principal.getName(); // 로그인된 사용자의 ID getName 이 member Id 임
+        System.out.println("memberId : " + memberId);
+        modelAndView.addObject("memberId", memberId);
 
         return modelAndView;
     }
     @GetMapping("reservation")
     public ModelAndView getReservation(Principal principal, Member member) {
-        /*ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");*/
-
-        /*if (principal != null) {
-            String memberId = principal.getName(); // 로그인된 사용자의 ID getName 이 member Id 임
-            System.out.println("memberId : " + memberId);
-            modelAndView.addObject("memberId", memberId);
-            modelAndView.addObject("logIn", true); // 로그인 상태 추가
-        } else {
-            modelAndView.addObject("logIn", false); // 로그인되지 않은 상태
-        }*/
-        /*String pwTm = member.getPw();
-        modelAndView.addObject("id", member.getId());
-        modelAndView.addObject("pw", pwTm);
+        /*ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");
+        setCommonAttributes(principal, modelAndView);
         return modelAndView;*/
-        String memberId = principal.getName();          //getName 이 member Id 임
-        System.out.println("memberId : " + memberId);
+        /*String memberId = principal.getName();          //getName 이 member Id 임
+        System.out.println("memberId : " + memberId);*/
         ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");
-        modelAndView.addObject("memberId",memberId);
-        modelAndView.addObject("logIn", true); // 로그인 상태 추가
+        /*modelAndView.addObject("memberId",memberId);*/
         return modelAndView;
     }
 
-    /*@GetMapping("info")
-    public ModelAndView getInfo(Principal principal) {
-        ModelAndView modelAndView = new ModelAndView("security/member/member_info");
-        String memberId = principal.getName();          //getName 이 member Id 임
-        System.out.println("memberId : " + memberId);
-
-        String baseImgKey = "trip/4708729d-fd41-4966-bf67-8ece2b20f6bb";
-        Optional<Image> imageOp = imageService.findImageByKey(baseImgKey);
-
-        if(imageOp.isPresent()){
-            modelAndView.addObject("baseImgUrl", imageOp.get().getUrl());
-        }
-        if (principal != null) {
-            Member cont = this.memberService.getMemberById(memberId);
-            modelAndView.addObject("dto", cont);
-            modelAndView.addObject("memberId", memberId);
-            modelAndView.addObject("logIn", true); // 로그인 상태 추가
-        } else {
-            modelAndView.addObject("logIn", false); // 로그인되지 않은 상태
-        }
-        return modelAndView;
-    }
-    @PostMapping("info")
-    public ModelAndView postInfo(Principal principal, Model model,
-                                 HttpServletRequest request,
-                                 Member member, @RequestPart("file")MultipartFile file) {
-        Alarm alarm = new Alarm(model);
-
-        String memberId = principal.getName();          //getName 이 member Id 임
-
-        System.out.println("memberId : " + memberId);
-        String baseImgKey = "trip/4708729d-fd41-4966-bf67-8ece2b20f6bb";
-
-        // 새 이미지 업로드 시도
-        Optional<Image> uploadedImage = imageService.insertFile(file);
-
-        if (uploadedImage.isPresent()) {
-            // 새 이미지가 성공적으로 업로드된 경우
-            member.setImgKey(uploadedImage.get().getImgKey());
-        } else {// 새 이미지 업로드 실패 시
-            // 기존 프로필 사진이 있는지 확인
-            Member existingUser = memberService.getMemberById(memberId);
-            String existingImgKey = (existingUser != null) ? existingUser.getImgKey() : null;
-
-            if (existingImgKey != null && !existingImgKey.isEmpty()) {
-                // 기존 프로필 사진이 있을 경우
-                member.setImgKey(existingImgKey);
-            } else {
-                // 기존 프로필 사진이 없을 경우
-                member.setImgKey(baseImgKey);
-            }
-        }
-
-        int check = memberService.updateMem(member);
-        if(check > 0){
-            // 이미지 갱신 메서드 호출
-            refreshImgUrl(request, member.getImgKey());
-            *//*session.setAttribute("userImgKey", member.getImgKey());*//*
-            alarm.setMessageAndRedirect("수정되었습니다.","info");
-        }else {
-            alarm.setMessageAndRedirect("수정에 실패하였습니다","");
-        }
-
-        return new ModelAndView(alarm.getMessagePage());
-    }*/
     @GetMapping("info")
     public ModelAndView getInfo(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("security/member/member_info");
         String memberId = principal.getName();
-        System.out.println("memberId : " + memberId);
+        /*System.out.println("memberId : " + memberId);*/
 
-        String baseImgKey = "trip/4708729d-fd41-4966-bf67-8ece2b20f6bb";
+        String baseImgKey = "trip/f0fcf1b5-42c6-4a49-a9d1-7dadf703c35a";
         imageService.findImageByKey(baseImgKey).ifPresent(image ->
                 modelAndView.addObject("baseImgUrl", image.getUrl())
         );
 
-        if (principal != null) {
+        if (memberId != null) {
             Member member = memberService.getMemberById(memberId);
             modelAndView.addObject("dto", member);
             modelAndView.addObject("memberId", memberId);
-            modelAndView.addObject("logIn", true); // 로그인 상태 추가
-        } else {
-            modelAndView.addObject("logIn", false); // 로그인되지 않은 상태
         }
 
         return modelAndView;
@@ -195,27 +124,16 @@ public class MemberRestController {
         return new ModelAndView(alarm.getMessagePage());
     }
 
-    private String handleImageUpload(String memberId, MultipartFile file) {
-        String baseImgKey = "trip/4708729d-fd41-4966-bf67-8ece2b20f6bb";
-        Optional<Image> uploadedImage = imageService.insertFile(file);
-
-        if (uploadedImage.isPresent()) {
-            return uploadedImage.get().getImgKey();
-        } else {
-            Member existingUser = memberService.getMemberById(memberId);
-            String existingImgKey = (existingUser != null) ? existingUser.getImgKey() : null;
-
-            return (existingImgKey != null && !existingImgKey.isEmpty()) ? existingImgKey : baseImgKey;
-        }
-    }
-
     @GetMapping("vip")
     public ModelAndView getVip(Principal principal, Member member) {
-        String memberId = principal.getName();          //getName 이 member Id 임
-        System.out.println("memberId : " + memberId);
-        ModelAndView modelAndView = new ModelAndView("security/member/member_vip");
-        modelAndView.addObject("memberId",memberId);
-        modelAndView.addObject("logIn", true); // 로그인 상태 추가
+        /*ModelAndView modelAndView = new ModelAndView("security/member/member_vip");
+        setCommonAttributes(principal, modelAndView);
+        return modelAndView;*/
+        /*String memberId = principal.getName();          //getName 이 member Id 임*/
+        ModelAndView modelAndView = new ModelAndView("security/member/member_vip");/*
+        modelAndView.addObject("memberId",memberId);*/
         return modelAndView;
     }
+
+
 }
