@@ -70,7 +70,7 @@ public class HotelCrawlingService {
         for (Element img : imgElements) {
             // facebook 은 현제 이미지 크롤링을 막고있음
             if(img.attr("src").contains("hotel")){
-                System.out.println(img.attr("src"));
+                //System.out.println(img.attr("src"));
                 // 이미지 s3 저장 + DB 저장
                 Image image = imageService.insertImageUrl(img.attr("src")).get();
                 hotelCrawledImgList.add(new HotelCrawledImg(image.getImgKey(), hotelId));
