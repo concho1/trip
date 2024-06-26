@@ -1,3 +1,48 @@
+/*body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.background {
+    background-image: url('../common/images/back_img.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainWrapper {
+    margin-right: 750px;
+}
+
+.section {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+    width: 400%;
+    max-width: 1600px;
+}
+
+.search-flight-form {
+    display: flex;
+}
+
+.changeOrgDes {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+}*/
+
 .modal {
     display: none;
     position: fixed;

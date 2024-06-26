@@ -23,35 +23,8 @@
                 <span th:text="${#numbers.formatDecimal(ffv.totalPrice, 0, 'COMMA', 0, 'POINT')}"></span>&nbsp;&nbsp;
                 <img th:src="@{/asset/images/downarrow.webp}" class="toggleBtn" value="토글" style="width: 20px; height: 20px; cursor: pointer;">
                 <div class="tog-body">
-                    <div th:class="itinerary" th:each="seg : ${ffv.apiSegments}">
-                        <table>
-                            <tr>
-                                <td>
-                                    <span th:text="${seg.departureAt}"></span>
-                                </td>
-                                <td>
-                                    <span th:text="${seg.departureIata}"></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span th:text="${seg.duration}"></span>
-                                </td>
-                                <td>
-                                    <span th:text="${seg.carrierCode}"></span>
-                                    <span th:text="${seg.carrierCode} + ${seg.carrierNum}"></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span th:text="${seg.arrivalAt}"></span>
-                                </td>
-                                <td>
-                                    <span th:text="${seg.arrivalIata}"></span>
-                                </td>
-                            </tr>
-                        </table>
-                        <br>
+                    <div th:each="dur : ${ffv.apiDurations}">
+                        <p th:text="${dur.duration}"></p>
                     </div>
                     <button class="tedu-btn tedu-btn-dark cartBtn">장바구니에 추가</button> <br>
                     <button class="tedu-btn tedu-btn-light">선택하기</button>

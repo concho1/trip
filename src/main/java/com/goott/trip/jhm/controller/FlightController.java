@@ -33,6 +33,9 @@ public class FlightController {
     @RequestMapping("/flight")
     public ModelAndView flight() { return new ModelAndView("jhm/test"); }
 
+    @RequestMapping("search_flight")
+    public ModelAndView searchFlight() { return new ModelAndView("jhm/search_flight"); }
+
     @PostMapping("test")
     public ModelAndView search(Flight flight, Principal principal) throws ResponseException {
 
@@ -178,7 +181,7 @@ public class FlightController {
 
         String[] ffvHead = {"ffvId", "totalBase", "totalPrice", "apiPricings", "apiSegments", "apiDurations"};
         String[] pricingHead = {"id", "itineraryCode", "flightCode", "type", "base", "total"};
-        String[] segmentHead = {"id", "itineraryCode", "flightCode", "departureIata", "departureAt", "arrivalIata",
+        String[] segmentHead = {"id", "itineraryCode", "flightCode", "depOrComb", "departureIata", "departureAt", "arrivalIata",
                                     "arrivalAt", "duration", "carrierCode", "carrierNum"};
         String[] durationHead = {"id", "itineraryCode", "flightCode", "depOrComb", "duration", "airline", "airlineImg"};
 
@@ -325,6 +328,9 @@ public class FlightController {
                                 String fin = nsb.toString();
                                 String[] fins = fin.split("=");
                                 switch(sh) {
+                                    case "depOrComb" :
+                                        cs.setDepOrComb(fins[1]);
+                                        break;
                                     case "departureIata" :
                                         cs.setDepartureIata(fins[1]);
                                         break;
