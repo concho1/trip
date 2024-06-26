@@ -20,9 +20,8 @@ public class HotelOfferSearch {
     private String memberId;
 
     public HotelOfferSearch(
-        int searchNum,String hotelId,String startDate,
+        String hotelId,String startDate,
         String endDate,int personCnt, String memberId){
-        this.searchNum = searchNum;
         this.hotelId = hotelId;
         this.startDate = startDate;
         this.endDate = endDate;

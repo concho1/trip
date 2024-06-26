@@ -7,12 +7,24 @@
         <selectKey resultType="int" keyProperty="iata_key" order="BEFORE">
             select NVL(max(iata_key), 0) + 1 from iata_code
         </selectKey>
-        INSERT IGNORE INTO iata_code (iata_key, iata_code, city, country, country_ko)
-        VALUES (#{iata_key}, #{iataCode}, #{city}, #{country}, #{countryKo})
+        INSERT IGNORE INTO iata_code (iata_key, iata_code, city, city_ko, country, country_ko, dest_id)
+        VALUES (#{iata_key}, #{iataCode}, #{city}, #{cityKo}, #{country}, #{countryKo}, #{destId})
     </insert>
     <select id="findCityByIataCode" parameterType="String" resultType="IataCode">
         SELECT * FROM iata_code WHERE iata_code = #{iataCode}
         LIMIT 1
+    </select>
+    <select id="findIataCodeBySearchStr" parameterType="String" resultType="IataCode">
+        SELECT * FROM iata_code
+        WHERE city_ko LIKE CONCAT('%', #{searchStr}, '%')
+           OR country_ko LIKE CONCAT('%', #{searchStr}, '%')
+           OR iata_code LIKE CONCAT('%', #{searchStr}, '%')
+    </select>
+    <select id="findIataCodeBySearchStrLimit" parameterType="String" resultType="IataCode">
+        SELECT * FROM iata_code
+        WHERE country LIKE CONCAT('%', #{searchStr}, '%')
+           AND dest_id is not null
+        LIMIT 1;
     </select>
 
     <insert id="insertAirplaneInfo" parameterType="map">

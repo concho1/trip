@@ -25,18 +25,18 @@
     </select>
 
     <!-- 호텔별 search 정보 -->
-    <insert id="insertHotelsSearch" parameterType="HotelSearch">
+    <insert id="insertHotelsSearch" parameterType="HotelSearch" keyProperty="searchNum">
+        <selectKey resultType="int" keyProperty="searchNum" order="BEFORE">
+            SELECT IFNULL(max(search_num), 0) + 1 FROM trip.hotels_search
+        </selectKey>
         INSERT INTO trip.hotels_search (
-            search_num, search_category, search_iata_code,
-            search_latitude, search_longitude, search_at, member_id
+        search_num, search_category, search_iata_code,
+        search_latitude, search_longitude, search_at, member_id
         ) VALUES (
-                     #{searchNum}, #{searchCategory}, #{searchIataCode},
-                     #{searchLatitude}, #{searchLongitude}, now(), #{memberId}
-                 )
+        #{searchNum}, #{searchCategory}, #{searchIataCode},
+        #{searchLatitude}, #{searchLongitude}, now(), #{memberId}
+        )
     </insert>
-    <select id="getMaxNum" resultType="Integer">
-        SELECT IFNULL(MAX(search_num), 0) FROM trip.hotels_search
-    </select>
     <select id="findSearchNumByIataCode" parameterType="String" resultType="Integer">
         SELECT search_num FROM hotels_search
         WHERE
@@ -55,7 +55,10 @@
     </select>
 
     <!-- 호텔별 offer search -->
-    <insert id="insertHotelOfferSearch" parameterType="HotelSearch">
+    <insert id="insertHotelOfferSearch" parameterType="HotelSearch" keyProperty="searchNum">
+        <selectKey resultType="int" keyProperty="searchNum" order="BEFORE">
+            SELECT IFNULL(max(search_num), 0) + 1 FROM trip.hotel_offer_search
+        </selectKey>
         INSERT INTO trip.hotel_offer_search (
             search_num, hotel_id, offer_id, start_date, end_date, person_cnt, search_at, member_id
         ) VALUES (
@@ -66,7 +69,8 @@
     <select id="getOfferSearchMaxNum" resultType="Integer">
         SELECT IFNULL(MAX(search_num), 0) FROM trip.hotel_offer_search
     </select>
-    <select id="findOfferSearchNumByHotelIdAndStartDateAndEndDateAndPersonCnt" parameterType="map" resultType="Integer">
+    <select id="findOfferSearchNumByHotelIdAndStartDateAndEndDateAndPersonCnt"
+            parameterType="map" resultType="Integer">
         SELECT search_num FROM hotel_offer_search
         WHERE
             (hotel_id = #{hotelId} AND start_date = #{startDate}
