@@ -24,8 +24,24 @@
         select * from cartDuration where ffvId = #{AirKey}
     </select>
 
+    <select id="getDepDur" parameterType="String" resultType="CartDuration">
+        select * from cartDuration where depOrComb = 'Dep' and ffvId = #{AirKey}
+    </select>
+
+    <select id="getCombDur" parameterType="String" resultType="CartDuration">
+        select * from cartDuration where depOrComb = 'Comb' and ffvId = #{AirKey}
+    </select>
+
     <select id="getSegment" parameterType="String" resultType="CartSegment">
         select * from cartSegment where ffvId = #{AirKey}
+    </select>
+
+    <select id="getDep" parameterType="String" resultType="CartSegment">
+        select * from cartSegment where depOrComb = 'Dep' and ffvId = #{AirKey} order by departure_at asc
+    </select>
+
+    <select id="getComb" parameterType="String" resultType="CartSegment">
+        select * from cartSegment where depOrComb = 'Comb' and ffvId = #{AirKey} order by departure_at asc
     </select>
 
 </mapper>

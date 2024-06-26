@@ -74,10 +74,13 @@ public class Hamcontroller {
         String memId = principal.getName();
         String AirKey = this.shoppingCartService.getAirKey(memId);
         List<CartDuration> DurationInfo = this.airservice.getDurationInfo(AirKey);
+        List<CartDuration> DepDur = this.airservice.getDepDur(AirKey);
+        List<CartDuration> CombDur = this.airservice.getCombDur(AirKey);
         List<CartSegment> airSeg = this.airservice.getSegment(AirKey);
         List<CartFlight> airInfo = this.airservice.getAirInfo(AirKey);
         List<String> country = this.airservice.getCountry();
-
+        List<CartSegment> segDep = this.airservice.getDep(AirKey);
+        List<CartSegment> segComb = this.airservice.getComb(AirKey);
 
 
         if(key.size() == 1){
@@ -87,7 +90,11 @@ public class Hamcontroller {
                     addObject("country",country)
                     .addObject("airInfo",airInfo)
                     .addObject("airSeg",airSeg)
-                    .addObject("duration", DurationInfo);
+                    .addObject("segDep",segDep)
+                    .addObject("segComb",segComb)
+                    .addObject("duration", DurationInfo)
+                    .addObject("DepDur",DepDur)
+                    .addObject("CombDur",CombDur);
         }else {
             ModelAndView modelAndViewE = new ModelAndView("Hamster/PlaneReservation");
             for(int i = 0; i < key.size(); i++){
