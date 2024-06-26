@@ -17,14 +17,36 @@
                 <input type="hidden" id="children" th:value="${flight.children}">
                 <input type="hidden" id="infants" th:value="${flight.infants}">
                 <input type="hidden" id="memberId" th:value="${memberId}">
-                <img th:src="${ffv.getApiDurations().get(0).airlineImg}" alt="이미지" style="width: 100px; height: 50px;">
+                <img th:src="${ffv.getApiDurations().get(0).airlineImg}" style="width: 100px; height: 50px;">
                 <span th:text="${orgKor}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span th:text="${desKor}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span th:text="${#numbers.formatDecimal(ffv.totalPrice, 0, 'COMMA', 0, 'POINT')}"></span>&nbsp;&nbsp;
                 <img th:src="@{/asset/images/downarrow.webp}" class="toggleBtn" value="토글" style="width: 20px; height: 20px; cursor: pointer;">
                 <div class="tog-body">
-                    <div th:each="dur : ${ffv.apiDurations}">
-                        <p th:text="${dur.duration}"></p>
+                    <div th:each="dur : ${ffv.apiDurations}" style="border: 1px solid black;">
+                        <div style="display: inline-block; border: 1px solid black; align-items: center">
+                            <img th:src="${dur.airlineImg}" style="width:100px; height: 50px;">
+                            <span th:text="${dur.duration}"></span>
+                        </div>
+                        <div style="display: inline-block;">
+                            <div th:each="seg : ${ffv.apiSegments}" th:if="${seg.depOrComb == dur.depOrComb}" style="border: 1px solid black; margin: 30px; padding: 15px;">
+                                <div class="seg-dep">
+                                    <span th:text="${seg.departureIata}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span th:text="${seg.departureAt}"></span>
+                                </div>
+                                <br>
+                                <div class="seg-etc">
+                                    <span th:text="${seg.duration}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span th:text="${seg.carrierCode} + ${seg.carrierNum}"></span>
+                                </div>
+                                <br>
+                                <div class="seg-arv">
+                                    <span th:text="${seg.arrivalIata}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span th:text="${seg.arrivalAt}"></span>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
                     </div>
                     <button class="tedu-btn tedu-btn-dark cartBtn">장바구니에 추가</button> <br>
                     <button class="tedu-btn tedu-btn-light">선택하기</button>

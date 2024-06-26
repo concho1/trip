@@ -7,10 +7,15 @@ function changeTo() {
 $(document).ready(function() {
     const orgModal = $("#originModal");
     const desModal = $("#desModal");
-    const input = $("#origin");
+    const peopleModal = $("#peopleModal");
+
     const orgCloseBtn = $("#orgClose");
     const desCloseBtn = $("#desClose");
+    const peopleCloseBtn = $("#peopleClose");
+
+    const input = $("#origin");
     const des = $("#destination");
+    const peo = $("#peopleAndClass");
 
     $('input[name=radioset-a]').change(function() {
         let oneWay = $('input[name=radioset-a]:checked').val();
@@ -79,8 +84,9 @@ $(document).ready(function() {
                     $('#desModalBody').empty();
 
                     $.each(res, function(i) {
+
                         let txt = "<span style='cursor: pointer' class='desAirportItem'>" + res[i].korName + '(' + res[i].iata + ')' + "</span>" +"&nbsp;&nbsp;&nbsp;&nbsp;" +
-                            "<span>" + res[i].korCountry + "&nbsp;&nbsp;&nbsp;" + res[i].engCity + "</span><br>";
+                                "<span>" + res[i].korCountry + "&nbsp;&nbsp;&nbsp;" + res[i].engCity + "</span><br>";
 
                         $('#desModalBody').append(txt);
 
@@ -118,6 +124,14 @@ $(document).ready(function() {
         desModal.hide();
     });
 
+    peo.on('click', function() {
+       peopleModal.toggle();
+    });
+
+    peopleCloseBtn.on('click', function() {
+        peopleModal.hide();
+    });
+
     $(window).on('click', function(event) {
         if ($(event.target).is(orgModal)) {
             orgModal.hide();
@@ -126,6 +140,35 @@ $(document).ready(function() {
         if ($(event.target).is(desModal)) {
             desModal.hide();
         }
+
+        if ($(event.target).is(peopleModal)) {
+            peopleModal.hide();
+        }
+    });
+
+    $('#peopleSubmitBtn').on('click', function() {
+        let adults = $('select[name=adults]').val();
+        let children = $('select[name=children]').val();
+        let infants = $('select[name=infants]').val();
+        let classes = $('input[name=airplaneClass]:checked').next('span').text();
+
+        let pac = "인원 [ ";
+        if(adults != 0) {
+            pac = pac + "성인 : "+adults+"명 ";
+        }
+        if(children != 0) {
+            pac = pac + "아동 : "+children+"명 ";
+        }
+        if(infants != 0) {
+            pac = pac + "유아 : "+infants+"명"
+        }
+        pac = pac + "] & 좌석 : " + classes;
+
+        peo.val(pac);
+
+        peo.css('font-size', '15px');
+
+        peopleModal.hide();
     });
 
     $('#depDate').click(function() {
@@ -229,12 +272,14 @@ $(document).ready(function() {
         $('#dep-days').html(dayTag);
 
         $('#dep-days li').on('click', function() {
-           $('#dep-days li').removeAttr('id');
-           $(this).attr('id', 'dep-active');
-           let monVal = (depCurrMonth+1).toString().padStart(2, "0")
-           let dayVal = `${depCurrYear}-${monVal}-${$(this).text().padStart(2, "0")}`;
-           $('#depDate').val(dayVal);
-           $('#depCalendarContainer').hide();
+            if($(this).attr('class') != "inactive"){
+                $('#dep-days li').removeAttr('id');
+                $(this).attr('id', 'dep-active');
+                let monVal = (depCurrMonth+1).toString().padStart(2, "0")
+                let dayVal = `${depCurrYear}-${monVal}-${$(this).text().padStart(2, "0")}`;
+                $('#depDate').val(dayVal);
+                $('#depCalendarContainer').hide();
+            }
         });
     }
 
@@ -287,12 +332,14 @@ $(document).ready(function() {
         $('#comb-days').html(dayTag);
 
         $('#comb-days li').on('click', function() {
-            $('#comb-days li').removeAttr('id');
-            $(this).attr('id', 'comb-active');
-            let monVal = (combCurrMonth+1).toString().padStart(2, "0")
-            let dayVal = `${combCurrYear}-${monVal}-${$(this).text().padStart(2, "0")}`;
-            $('#combDate').val(dayVal);
-            $('#combCalendarContainer').hide();
+            if($(this).attr("class") != "inactive") {
+                $('#comb-days li').removeAttr('id');
+                $(this).attr('id', 'comb-active');
+                let monVal = (combCurrMonth+1).toString().padStart(2, "0")
+                let dayVal = `${combCurrYear}-${monVal}-${$(this).text().padStart(2, "0")}`;
+                $('#combDate').val(dayVal);
+                $('#combCalendarContainer').hide();
+            }
         });
     }
 
