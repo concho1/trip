@@ -11,10 +11,7 @@ function pwd() {
         alert("비밀번호 확인이 비밀번호와 일치하지 않습니다.");
         $("#rePwd").focus();
         return false;
-    }else if($("#pwdDupError").is(':visible')){
-        alert("이미 존재하는 이메일입니다.");
-        return false;
-    } else{
+    }else{
         $('.needs-validation').submit();
         return true;
     }

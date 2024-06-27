@@ -8,6 +8,9 @@ import com.goott.trip.security.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -81,6 +86,7 @@ public class MemberRestController {
     @GetMapping("info")
     public ModelAndView getInfo(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("security/member/member_info");
+
         String memberId = principal.getName();
         /*System.out.println("memberId : " + memberId);*/
 
@@ -123,6 +129,87 @@ public class MemberRestController {
 
         return new ModelAndView(alarm.getMessagePage());
     }
+
+    @PostMapping("updatePwd")
+    public ModelAndView postPwd(Principal principal, Model model, Member member,
+                                @RequestParam("pw") String currentPwd, @RequestParam("newPw") String newPw) {
+        Alarm alarm = new Alarm(model);
+        String memberId = principal.getName();
+
+        /*// 사용자가 입력한 기존 비밀번호와 DB에 저장된 비밀번호가 일치하는지 확인
+        if(memberService.checkPwd(memberId, currentPwd)){
+            member.setId(memberId);
+            // 비밀번호 업데이트
+            int check = this.memberService.updatePwd(memberId,newPw);
+            if(check > 0){
+                alarm.setMessageAndRedirect("비밀번호가 변경되었습니다.","info");
+            }else {
+                alarm.setMessageAndRedirect("비밀번호 변경 실패","");
+            }
+            return new ModelAndView(alarm.getMessagePage());
+        }else {
+            alarm.setMessageAndRedirect("기존 비밀번호가 일치하지 않습니다.","");
+        }
+        return new ModelAndView(alarm.getMessagePage());*/
+        // 사용자가 입력한 기존 비밀번호와 DB에 저장된 비밀번호가 일치하는지 확인
+        if (memberService.checkPwd(memberId, currentPwd)) {
+            // 비밀번호 업데이트 시도
+            int check = memberService.updatePwd(memberId, currentPwd, newPw);
+            if (check > 0) {
+                alarm.setMessageAndRedirect("비밀번호가 변경되었습니다.", "info");
+            } else if (check == -1) {
+                alarm.setMessageAndRedirect("기존 비밀번호와 동일한 비밀번호로는 변경할 수 없습니다.", "");
+            } else {
+                alarm.setMessageAndRedirect("비밀번호 변경 실패", "");
+            }
+        } else {
+            alarm.setMessageAndRedirect("기존 비밀번호가 일치하지 않습니다.", "");
+        }
+
+        return new ModelAndView(alarm.getMessagePage());
+    }
+
+/*    // 회원 탈퇴
+    @PostMapping("delete")
+    public ModelAndView delOk(@RequestParam("pw") String pw, Model model) {
+        Alarm alarm = new Alarm(model);
+        User cont = this.myPageService.contUser(userId);
+        model.addAttribute("dto", cont);
+
+        if(pwd.equals(cont.getPwd())){
+            int check = this.myPageService.deleteUser(userId);
+            if(check > 0){
+                alarm.setMessageAndRedirect("탈퇴 성공했습니다.","/logout");
+            }else{
+                alarm.setMessageAndRedirect("탈퇴 실패, 다시 시도해주세요.","");
+            }
+            return new ModelAndView(alarm.getMessagePage());
+        }else {
+            alarm.setMessageAndRedirect("비밀번호가 틀렸습니다.","");
+        }
+        return new ModelAndView(alarm.getMessagePage());
+    }
+
+    // 카카오 회원 탈퇴
+    @PostMapping("deleteNull")
+    public ModelAndView delOkNull(HttpServletRequest request, Model model){
+        Alarm alarm = new Alarm(model);
+        HttpSession session = request.getSession();
+        String userId = (String)session.getAttribute("userId");
+        if (userId == null) {
+            alarm.setRedirectTo("/login");
+            return new ModelAndView(alarm.getRedirectTo());
+        }
+        User cont = this.myPageService.contUser(userId);
+        model.addAttribute("dto", cont);
+        int check = this.myPageService.deleteUser(userId);
+        if(check > 0){
+            alarm.setMessageAndRedirect("탈퇴 성공했습니다.","/logout");
+        }else{
+            alarm.setMessageAndRedirect("탈퇴 실패, 다시 시도해주세요.","");
+        }
+        return new ModelAndView(alarm.getMessagePage());
+    }*/
 
     @GetMapping("vip")
     public ModelAndView getVip(Principal principal, Member member) {
