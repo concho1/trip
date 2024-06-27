@@ -45,14 +45,14 @@ public class MemberService {
         return this.memberMapper.updatePwd(id, encodedPwd);
     }*/
     // 비밀번호 변경 메서드
-    public int updatePwd(String id, String currentPwd, String newPw) {
+    public int updatePwd(String id, String pw, String newPw) {
         // 기존 비밀번호 확인
-        if (!checkPwd(id, currentPwd)) {
+        if (!checkPwd(id, pw)) {
             return 0; // 기존 비밀번호가 일치하지 않으면 실패
         }
 
         // 새 비밀번호와 기존 비밀번호가 동일한지 확인
-        if (currentPwd.equals(newPw)) {
+        if (pw.equals(newPw)) {
             return -1; // 새 비밀번호가 기존 비밀번호와 동일하면 실패 (-1을 사용하여 실패 상황을 나타냄)
         }
 

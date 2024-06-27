@@ -132,7 +132,7 @@ public class MemberRestController {
 
     @PostMapping("updatePwd")
     public ModelAndView postPwd(Principal principal, Model model, Member member,
-                                @RequestParam("pw") String currentPwd, @RequestParam("newPw") String newPw) {
+                                @RequestParam("pw") String pw, @RequestParam("newPw") String newPw) {
         Alarm alarm = new Alarm(model);
         String memberId = principal.getName();
 
@@ -152,9 +152,9 @@ public class MemberRestController {
         }
         return new ModelAndView(alarm.getMessagePage());*/
         // 사용자가 입력한 기존 비밀번호와 DB에 저장된 비밀번호가 일치하는지 확인
-        if (memberService.checkPwd(memberId, currentPwd)) {
+        if (memberService.checkPwd(memberId, pw)) {
             // 비밀번호 업데이트 시도
-            int check = memberService.updatePwd(memberId, currentPwd, newPw);
+            int check = memberService.updatePwd(memberId, pw, newPw);
             if (check > 0) {
                 alarm.setMessageAndRedirect("비밀번호가 변경되었습니다.", "info");
             } else if (check == -1) {
