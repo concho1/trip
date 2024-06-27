@@ -82,12 +82,12 @@ public class UserRestController {
         Boolean result = this.memberService.checkDupId(id);
         return result;
     }
-    // 비밀번호 중복 체크
+    /*// 비밀번호 중복 체크
     @PostMapping("pwdDupPwd")
     public Boolean checkDupPwd(@RequestParam("pw") String pw) {
         Boolean result = this.memberService.checkDupPwd(pw);
         return result;
-    }
+    }*/
 
     // 이메일 인증
     @PostMapping("sendEmail")
