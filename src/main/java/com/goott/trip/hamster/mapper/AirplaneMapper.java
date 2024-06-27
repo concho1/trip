@@ -4,6 +4,7 @@ import com.goott.trip.hamster.model.Testproduct;
 import com.goott.trip.hamster.model.airplaneInfo;
 import com.goott.trip.jhm.model.CartDuration;
 import com.goott.trip.jhm.model.CartFlight;
+import com.goott.trip.jhm.model.CartPricing;
 import com.goott.trip.jhm.model.CartSegment;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -22,5 +23,15 @@ public interface AirplaneMapper {
 
     public List<CartDuration> getDurationInfo(String AirKey);
 
+    public List<CartDuration> getDepDur(String AirKey);
+
+    public List<CartDuration> getCombDur(String AirKey);
+
     public List<CartSegment> getSegment(String AirKey);
+
+    public List<CartSegment> getDep(String AirKey);
+
+    public List<CartSegment> getComb(String AirKey);
+
+    public List<CartPricing> getPrice(String AirKey);
 }

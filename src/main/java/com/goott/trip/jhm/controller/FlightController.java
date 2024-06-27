@@ -30,9 +30,6 @@ public class FlightController {
         this.service.resetSerCount();
     }
 
-    @RequestMapping("/flight")
-    public ModelAndView flight() { return new ModelAndView("jhm/test"); }
-
     @RequestMapping("search_flight")
     public ModelAndView searchFlight() { return new ModelAndView("jhm/search_flight"); }
 

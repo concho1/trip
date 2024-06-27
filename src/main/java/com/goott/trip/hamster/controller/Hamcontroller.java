@@ -8,6 +8,7 @@ import com.goott.trip.hamster.service.airplaneService;
 import com.goott.trip.hamster.service.shoppingCartService;
 import com.goott.trip.jhm.model.CartDuration;
 import com.goott.trip.jhm.model.CartFlight;
+import com.goott.trip.jhm.model.CartPricing;
 import com.goott.trip.jhm.model.CartSegment;
 import com.goott.trip.security.service.EmailService;
 import jakarta.mail.MessagingException;
@@ -72,22 +73,35 @@ public class Hamcontroller {
 
         ModelAndView modelAndView = new ModelAndView("Hamster/PlaneReservation");
         String memId = principal.getName();
+        List<Integer> count = new ArrayList<>();
         String AirKey = this.shoppingCartService.getAirKey(memId);
         List<CartDuration> DurationInfo = this.airservice.getDurationInfo(AirKey);
+        List<CartDuration> DepDur = this.airservice.getDepDur(AirKey);
+        List<CartDuration> CombDur = this.airservice.getCombDur(AirKey);
         List<CartSegment> airSeg = this.airservice.getSegment(AirKey);
         List<CartFlight> airInfo = this.airservice.getAirInfo(AirKey);
         List<String> country = this.airservice.getCountry();
-
+        List<String> OnlyCountry = this.airservice.getOnlyCountry();
+        List<CartSegment> segDep = this.airservice.getDep(AirKey);
+        List<CartSegment> segComb = this.airservice.getComb(AirKey);
+        List<CartPricing> price = this.airservice.getPricing(AirKey);
 
 
         if(key.size() == 1){
             Testproduct cont = this.airservice.airplaneCont(key.get(0));
             return modelAndView
-                    .addObject("cont",cont).
-                    addObject("country",country)
+                    .addObject("cont",cont)
+                    .addObject("count",count)
+                    .addObject("country",country)
                     .addObject("airInfo",airInfo)
                     .addObject("airSeg",airSeg)
-                    .addObject("duration", DurationInfo);
+                    .addObject("segDep",segDep)
+                    .addObject("segComb",segComb)
+                    .addObject("duration", DurationInfo)
+                    .addObject("DepDur",DepDur)
+                    .addObject("CombDur",CombDur)
+                    .addObject("price",price)
+                    .addObject("OnlyCountry",OnlyCountry);
         }else {
             ModelAndView modelAndViewE = new ModelAndView("Hamster/PlaneReservation");
             for(int i = 0; i < key.size(); i++){
@@ -97,6 +111,17 @@ public class Hamcontroller {
             return modelAndViewE;
         }
 
+    }
+
+    @GetMapping("hotel/shoppingCart")
+    public ModelAndView hotelShoppingCart(@RequestParam("hotelIdKey")String hotelIdKey,
+                                          @RequestParam("hotelContKey")String hotelContKey,
+                                          @RequestParam("crImgKey")String crImgKey,
+                                          Principal principal){
+
+        System.out.println(hotelIdKey+hotelContKey+crImgKey);
+
+        return null;
     }
 
     @GetMapping("airplane/shoppingCart")

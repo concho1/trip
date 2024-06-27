@@ -14,4 +14,5 @@ public class IataCode {
     private String cityKo;
     private String country;
     private String countryKo;
+    private Integer destId;
 }
