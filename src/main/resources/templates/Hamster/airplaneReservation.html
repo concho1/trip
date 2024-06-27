@@ -1,0 +1,165 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://js.tosspayments.com/v1/payment-widget"></script>
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<body>
+<div th:replace="~{common/head :: head-fragment}"></div>
+
+<main class="th-layout-main ">
+    <!-- [S]tedu-N44 -->
+    <div class="tedu-N44" data-bid="GALxi9PyR7">
+        <div class="content-inner">
+            <div class="content-container">
+                <section class="">
+                    <div class="title-wrap">
+                        <h3 class="cont-title">결제하기</h3>
+                    </div>
+                    <div class="payment-wrap">
+                        <div class="payment-area">
+                            <div class="title">주문자 정보</div>
+                            <div class="payment-cont payment-cont-type2">
+                                <fieldset class="fieldset">
+                                    <p class="stitle">이름</p>
+                                    <div class="input-group">
+                                    </div>
+                                </fieldset>
+                                <fieldset class="fieldset">
+                                    <p class="stitle">휴대전화</p>
+                                    <div class="input-group">
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="payment-cont">
+                                <fieldset class="fieldset">
+                                    <p class="stitle">이메일</p>
+                                    <div class="input-group">
+                                    </div>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p><p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                                    <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N44 -->
+    <!-- [S]tedu-N45 -->
+    <div class="tedu-N45" data-bid="WmLXi9pyUS" style="z-index: 0; width: fit-content; right: -1400px;">
+        <div class="content-container" style="width: fit-content">
+            <div class="sidebar">
+                <div class="title-wrap">
+                    <h3 class="title">결제 상품 정보</h3>
+                </div>
+                <div class="pay-info-warp">
+                    <div class="img-area">
+                        <img class="card-img card-img-mo" src="../resources/images/img_edu_01.png" alt="이미지">
+                    </div>
+                    <div class="text-area">
+                        <div class="title" th:text="${cont.getAirplaneDepart() + ' -> ' + cont.getAirplaneArrive()}"></div>
+                        <p class="text" id="airTime" th:text="${cont.getAirplaneDepartTime().toString().substring(5,16) + ' ~ ' + cont.getAirplaneArriveTime().toString().substring(5,16)}"></p>
+                        <p class="text" th:text="${cont.getAirplaneName()}"></p>
+                    </div>
+                </div>
+
+                <div class="price-info-wrap" th:each="info : ${airInfo}">
+                    <div class="price-area">
+                        <span th:text="'기본운임'">정가</span>
+                        <strong th:text="${#numbers.formatInteger(info.getTotalBase(), 3, 'COMMA') + '원'}"></strong>
+                    </div>
+                    <div class="price-area">
+                        <span th:text="'세금 및 제반요금'">쿠폰사용</span>
+                        <strong th:text="${#numbers.formatInteger(info.getTotalPrice() - info.getTotalBase(), 3, 'COMMA') + '원'}"></strong>
+                    </div>
+                    <div class="price-area price-total">
+                        <span th:text="'총계'">결제 금액</span>
+                        <strong th:text="${#numbers.formatInteger(info.getTotalPrice(), 3, 'COMMA') + '원'}"></strong>
+                    </div>
+
+
+                </div>
+                <div class="card-wrapper">
+                    <div class="card" th:each="dep : ${DepDur}">
+                        <div class="card-body">
+                            <img th:src="${dep.getAirlineImg()}" alt="이미지" style="width: 100px; height: 50px;">
+                            <p th:text="'가는편 여정 상세보기'"></p>
+                            <img th:src="@{/asset/images/downarrow.webp}" class="toggleBtn" value="토글" style="width: 20px; height: 20px; cursor: pointer;">
+
+                            <div class="tog-body" th:each="dep, iterStat : ${segDep}">
+                                <legend class="text" th:text="'여정 '+${iterStat.index+1}"></legend>
+                                <legend class="legend" th:text="${dep.getDepartureIata()} +' -> '+ ${dep.getArrivalIata()}"></legend>
+                                <legend class="legend" th:text="${dep.getDepartureAt().substring(5,10)}+'  '+${dep.getDepartureAt().substring(11,16)}+' - '+
+                                 ${dep.getArrivalAt().substring(5,10)}+'  '+${dep.getArrivalAt().substring(11,16)}"></legend>
+                                <legend class="legend" th:text="'총 소요시간 : ' + ${dep.getDuration().substring(2)}" style="margin-bottom: 25px;"></legend>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-wrapper">
+                    <div class="card" th:each="dep : ${DepDur}">
+                        <div class="card-body">
+                            <img th:src="${dep.getAirlineImg()}" alt="이미지" style="width: 100px; height: 50px;">
+                            <p th:text="'가는편 여정 상세보기'"></p>
+                            <img th:src="@{/asset/images/downarrow.webp}" class="toggleBtn" value="토글" style="width: 20px; height: 20px; cursor: pointer;">
+
+                            <div class="tog-body" th:each="dep, iterStat : ${segDep}">
+                                <legend class="text" th:text="'여정 '+${iterStat.index+1}"></legend>
+                                <legend class="legend" th:text="${dep.getDepartureIata()} +' -> '+ ${dep.getArrivalIata()}"></legend>
+                                <legend class="legend" th:text="${dep.getDepartureAt().substring(5,10)}+'  '+${dep.getDepartureAt().substring(11,16)}+' - '+
+                                 ${dep.getArrivalAt().substring(5,10)}+'  '+${dep.getArrivalAt().substring(11,16)}"></legend>
+                                <legend class="legend" th:text="'총 소요시간 : ' + ${dep.getDuration().substring(2)}" style="margin-bottom: 25px;"></legend>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-wrapper">
+                    <div class="card" th:each="dep : ${DepDur}">
+                        <div class="card-body">
+                            <img th:src="${dep.getAirlineImg()}" alt="이미지" style="width: 100px; height: 50px;">
+                            <p th:text="'가는편 여정 상세보기'"></p>
+                            <img th:src="@{/asset/images/downarrow.webp}" class="toggleBtn" value="토글" style="width: 20px; height: 20px; cursor: pointer;">
+
+                            <div class="tog-body" th:each="dep, iterStat : ${segDep}">
+                                <legend class="text" th:text="'여정 '+${iterStat.index+1}"></legend>
+                                <legend class="legend" th:text="${dep.getDepartureIata()} +' -> '+ ${dep.getArrivalIata()}"></legend>
+                                <legend class="legend" th:text="${dep.getDepartureAt().substring(5,10)}+'  '+${dep.getDepartureAt().substring(11,16)}+' - '+
+                                 ${dep.getArrivalAt().substring(5,10)}+'  '+${dep.getArrivalAt().substring(11,16)}"></legend>
+                                <legend class="legend" th:text="'총 소요시간 : ' + ${dep.getDuration().substring(2)}" style="margin-bottom: 25px;"></legend>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N45 -->
+</main>
+<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+</body>
