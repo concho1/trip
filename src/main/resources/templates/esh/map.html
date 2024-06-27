@@ -11,24 +11,52 @@
             });
 
             let hotels = /*[[${hotels}]]*/ '[]';
+            //인포윈도우
+            let infowindow = new google.maps.InfoWindow();
+            let marker;
             hotels.forEach(function (hotel, index) {
                 // 첫 번째 호텔의 위치로 마커를 표시
                 if (hotels.length > 0) {
-                    new google.maps.Marker({
+                    marker = new google.maps.Marker({
                         position: {lat: hotel.latitude, lng: hotel.longitude},
                         map: map,
                         title: hotel.name
                     });
-                    if(index === 0){
+                    if(index === 0) {
                         // 지도의 중심을 첫 번째 호텔 위치로 이동
                         map.setCenter({lat: hotel.latitude, lng: hotel.longitude});
+                    }
+
+                    google.maps.event.addListener(marker, 'click', (function(marker, index) {
+                        return function() {
+                            //html로 표시될 인포 윈도우의 내용
+                            infowindow.setContent(
+                                hotels[index].name + '<br>' + "<img src='" +`${hotels[index].countryCode}`+"'" +">"
+                            );
+
+                            //인포윈도우가 표시될 위치
+                            infowindow.open(map, marker);
+                        }
+                    })
+                        (marker, index));
+
+                    if (marker) {
+                        marker.addListener('click', function() {
+
+                            //중심 위치를 클릭된 마커의 위치로 변경
+                            map.setCenter(this.getPosition());
+
+                            //마커 클릭 시의 줌 변화
+                            map.setZoom(14);
+                        });
                     }
                 } else {
                     console.error("No hotels data available");
                 }
-            })
 
-            console.log(hotels);
+
+            })
+            /*console.log(hotels);*/
         }
     </script>
 </head>

@@ -5,7 +5,7 @@
 <mapper namespace="com.goott.trip.esh.mapper.GlobeMapper">
     <select id="selectAllHotels" resultType="com.goott.trip.esh.model.ESHConchoHotel">
         SELECT name, latitude, longitude FROM hotels
-        LIMIT 10
+        LIMIT 20
     </select>
 
 
