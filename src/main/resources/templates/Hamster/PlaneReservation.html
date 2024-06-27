@@ -129,17 +129,11 @@
                     <legend class="legend" th:text="'탑승객 '+${iterStat.index+1}+' : '+${air.getType()}"></legend>
                     <legend class="legend">[주의] 탑승객 정보는 반드시 여권에 나와 있는 정보와 일치해야 합니다. 대한민국 국적 여행객의 경우 국내 항공편 이용 시에도 여권을 소지하지 않으신 경우 항공기 탑승이 제한됩니다.</legend>
 
-                    <div class="checkset">
-                      <input id="checkset-c-3-1" class="checkset-input input-round" type="checkbox" value="" checked="">
-                      <label class="checkset-label" for="checkset-c-3-1"></label>
-                      <span class="checkset-text">자동 로그인</span>
-                    </div>
-
                     <fieldset class="fieldset" style="margin-top: 30px;">
                       <legend class="legend">영문 이름(First Name)</legend>
                       <div class="input-group">
                         <div class="tedu-inputset">
-                          <input type="text" id="rideFname" name="callFname" class="tedu-input lightmode" placeholder="영문 이름(First Name)" aria-label="영문 이름(First Name)">
+                          <input type="text" th:id="'rideFname'+${iterStat.index}" name="rideFname" class="tedu-input lightmode" placeholder="영문 이름(First Name)" aria-label="영문 이름(First Name)">
                           <div id="rideFirstnameError" style="color: red; display: none;">이름을 입력해주세요.</div>
                           <div id="rideFirstnameEngError" style="color: red; display: none;">이름은 대,소문자 영어로 작성해주세요.</div>
                         </div>
@@ -150,7 +144,7 @@
                       <legend class="legend">영문 성(Last Name)</legend>
                       <div class="input-group flex-style">
                         <div class="tedu-inputset">
-                          <input type="text" id="rideLname" name="callLname" class="tedu-input lightmode" placeholder="영문 성(Last Name)" aria-label="영문 성(Last Name)">
+                          <input type="text" th:id="'rideLname'+${iterStat.index}" name="rideLname" class="tedu-input lightmode" placeholder="영문 성(Last Name)" aria-label="영문 성(Last Name)">
                           <div id="rideLastnameError" style="color: red; display: none;">이름을 입력해주세요.</div>
                           <div id="rideLastnameEngError" style="color: red; display: none;">이름은 대,소문자 영어로 작성해주세요.</div>
                         </div>
@@ -161,7 +155,8 @@
                       <legend class="legend">생년월일</legend>
                       <div class="input-group flex-style">
                         <div class="tedu-inputset">
-                          <input type="date"  name="callLname" class="tedu-input lightmode">
+                          <input type="date" th:id="'birth'+${iterStat.index}"  name="birth" class="tedu-input lightmode">
+                          <div th:id="'birthError'+${iterStat.index}" style="color: red; display: none;">생년월일을 입력해주세요.</div>
                         </div>
                       </div>
                     </fieldset>
@@ -169,7 +164,7 @@
                     <fieldset class="fieldset" style="margin-top: 30px;">
                       <legend class="legend">국적</legend>
                       <div class="input-group">
-                        <select class="form-select form-select-lg mb-3" name="country">
+                        <select class="form-select form-select-lg mb-3" name="onlyCountry">
                           <th:block th:each="OnlyCountry : ${OnlyCountry}">
                             <option th:text="${OnlyCountry}" th:value="${OnlyCountry}" ></option>
                           </th:block>
@@ -181,7 +176,7 @@
                       <legend class="legend">여권번호</legend>
                       <div class="input-group flex-style">
                         <div class="tedu-inputset">
-                          <input type="text" id="passPort" name="callLname" class="tedu-input lightmode">
+                          <input type="text" th:id="'passPort'+${iterStat.index}" name="passPort" class="tedu-input lightmode">
                         </div>
                       </div>
                     </fieldset>
@@ -189,7 +184,7 @@
                     <fieldset class="fieldset" style="margin-top: 30px;">
                       <legend class="legend">여권발행 국가/지역</legend>
                       <div class="input-group">
-                        <select class="form-select form-select-lg mb-3" name="country">
+                        <select class="form-select form-select-lg mb-3" name="passPortCountry">
                           <th:block th:each="OnlyCountry : ${OnlyCountry}">
                             <option th:text="${OnlyCountry}" th:value="${OnlyCountry}" ></option>
                           </th:block>
@@ -201,14 +196,13 @@
                       <legend class="legend">여권 만료일</legend>
                       <div class="input-group flex-style">
                         <div class="tedu-inputset">
-                          <input type="date"  name="callLname" class="tedu-input lightmode">
+                          <input type="date" th:id="'passPortExDate'+${iterStat.index}" name="passPortExDate" class="tedu-input lightmode">
                         </div>
                       </div>
                     </fieldset>
                   </div>
                 </div>
               </th:block>
-
 
                 <div class="form-footer btn-box">
                   <input type="submit" value="결제하기" class="tedu-btn tedu-btn-light" onclick="return PlaneReservationCheck()">
