@@ -71,7 +71,7 @@ public class Hamcontroller {
     @GetMapping("airplane/ticketing")
     public ModelAndView airticketingaa(@RequestParam(name = "key", required = false)List<String> key,Principal principal){
 
-        ModelAndView modelAndView = new ModelAndView("Hamster/PlaneReservation");
+        ModelAndView modelAndView = new ModelAndView("Hamster/airplaneReservation");
         String memId = principal.getName();
         List<Integer> count = new ArrayList<>();
         String AirKey = this.shoppingCartService.getAirKey(memId);
@@ -103,7 +103,7 @@ public class Hamcontroller {
                     .addObject("price",price)
                     .addObject("OnlyCountry",OnlyCountry);
         }else {
-            ModelAndView modelAndViewE = new ModelAndView("Hamster/PlaneReservation");
+            ModelAndView modelAndViewE = new ModelAndView("Hamster/airplaneReservation");
             for(int i = 0; i < key.size(); i++){
                 Testproduct cont = this.airservice.airplaneCont(key.get(i));
                 modelAndView.addObject("cont",cont);
