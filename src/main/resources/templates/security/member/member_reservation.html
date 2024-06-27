@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
+<link rel="stylesheet" th:href="@{/security/css/memberInfo.css}">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
@@ -18,7 +18,7 @@
                     <div class="tab-menu-wrap">
                         <div class="tab-menu active" id="tab-all">
                             <a th:href="@{reservation}">
-                                <span>내 예약</span>
+                                <span>모든 예약</span>
                             </a>
                         </div>
                        <!-- <div class="tab-menu" id="tab-upcomingReservation">
@@ -46,13 +46,8 @@
                                 <span>호텔</span>
                             </a>
                         </div>
-                        <div class="tab-menu" id="tab-activity">
-                            <a href="#activity">
-                                <span>즐길거리</span>
-                            </a>
-                        </div>
                         <div class="tab-menu">
-                            <a href="javascript:void(0)">
+                            <a th:href="@{vip}">
                                 <span>VIP</span>
                             </a>
                         </div>
@@ -128,7 +123,7 @@
                                 <span>교육 시청하기</span>
                             </button>
                         </div>
-                        <div class="myedu-area">
+                        <!--<div class="myedu-area">
                             <div class="myedu-cont">
                                 <div class="img-area">
                                     <img src="../resources/images/img_edu_02.png" alt="이미지">
@@ -159,7 +154,7 @@
                                 <i></i>
                                 <span>교육 시청하기</span>
                             </button>
-                        </div>
+                        </div>-->
                     </div>
                     <div class="myedu-cont-wrap" id="hotel" style="display: none;">
                         <div class="myedu-area">

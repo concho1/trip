@@ -44,4 +44,8 @@
         select * from cartSegment where depOrComb = 'Comb' and ffvId = #{AirKey} order by departure_at asc
     </select>
 
+    <select id="getPrice" parameterType="String" resultType="CartPricing">
+        select * from cartPricing where ffvId = #{AirKey} order by type asc
+    </select>
+
 </mapper>
