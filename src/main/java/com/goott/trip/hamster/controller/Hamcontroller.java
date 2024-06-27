@@ -113,6 +113,17 @@ public class Hamcontroller {
 
     }
 
+    @GetMapping("hotel/shoppingCart")
+    public ModelAndView hotelShoppingCart(@RequestParam("hotelIdKey")String hotelIdKey,
+                                          @RequestParam("hotelContKey")String hotelContKey,
+                                          @RequestParam("crImgKey")String crImgKey,
+                                          Principal principal){
+
+        System.out.println(hotelIdKey+hotelContKey+crImgKey);
+
+        return null;
+    }
+
     @GetMapping("airplane/shoppingCart")
     public ModelAndView airShoppingCart(@RequestParam("key")String key, Principal principal, Model model){
 
