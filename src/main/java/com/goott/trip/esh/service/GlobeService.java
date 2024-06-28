@@ -16,4 +16,6 @@ public class GlobeService {
     public List<ESHConchoHotel> getAllHotelData() {
         return mapper.selectAllHotels();
     }
+
+
 }

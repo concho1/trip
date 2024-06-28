@@ -12,8 +12,8 @@
 
             let hotels = /*[[${hotels}]]*/ '[]';
             //인포윈도우
-            let infowindow = new google.maps.InfoWindow();
-            let marker;
+            let infowindow = new google.maps.InfoWindow(); /*인포윈도우 사용을 위한 초기화*/
+            let marker; /*마커 사용을 위한 초기화*/
             hotels.forEach(function (hotel, index) {
                 // 첫 번째 호텔의 위치로 마커를 표시
                 if (hotels.length > 0) {
@@ -31,14 +31,15 @@
                         return function() {
                             //html로 표시될 인포 윈도우의 내용
                             infowindow.setContent(
-                                hotels[index].name + '<br>' + "<img src='" +`${hotels[index].countryCode}`+"'" +">"
+                                // hotels[index].name + '<br>' + "<img src='" +${hotels[index].countryCode}+"'" +">"
+                                `<a href="${hotels[index].url}" target="_blank">${hotels[index].name}</a><br>` +
+                                "<img src='" + `${hotels[index].countryCode}` + "'>"
                             );
 
                             //인포윈도우가 표시될 위치
                             infowindow.open(map, marker);
                         }
-                    })
-                        (marker, index));
+                    }) (marker, index));
 
                     if (marker) {
                         marker.addListener('click', function() {
@@ -53,9 +54,7 @@
                 } else {
                     console.error("No hotels data available");
                 }
-
-
-            })
+            });
             /*console.log(hotels);*/
         }
     </script>
