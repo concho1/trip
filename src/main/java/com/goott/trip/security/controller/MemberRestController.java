@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("member/con")
+@RequestMapping("member/ming")
 public class MemberRestController {
     private final ImageService imageService;
     private final MemberService memberService;
@@ -88,7 +88,6 @@ public class MemberRestController {
         ModelAndView modelAndView = new ModelAndView("security/member/member_info");
 
         String memberId = principal.getName();
-        /*System.out.println("memberId : " + memberId);*/
 
         String baseImgKey = "trip/f0fcf1b5-42c6-4a49-a9d1-7dadf703c35a";
         imageService.findImageByKey(baseImgKey).ifPresent(image ->
@@ -113,6 +112,27 @@ public class MemberRestController {
         String memberId = principal.getName();
         System.out.println("memberId : " + memberId);
 
+        String baseImgKey = "trip/f0fcf1b5-42c6-4a49-a9d1-7dadf703c35a";
+
+        // 새 이미지 업로드 시도
+        Optional<Image> uploadedImage = imageService.insertFile(file);
+
+        if (uploadedImage.isPresent()) {
+            // 새 이미지가 성공적으로 업로드된 경우
+            member.setImgKey(uploadedImage.get().getImgKey());
+        } else {// 새 이미지 업로드 실패 시
+            // 기존 프로필 사진이 있는지 확인
+            Member existingUser = memberService.getMemberById(memberId);
+            String existingImgKey = (existingUser != null) ? existingUser.getImgKey() : null;
+
+            if (existingImgKey != null && !existingImgKey.isEmpty()) {
+                // 기존 프로필 사진이 있을 경우
+                member.setImgKey(existingImgKey);
+            } else {
+                // 기존 프로필 사진이 없을 경우
+                member.setImgKey(baseImgKey);
+            }
+        }
 
         String newImgKey = handleImageUpload(memberId, file);
         member.setImgKey(newImgKey);
@@ -136,21 +156,6 @@ public class MemberRestController {
         Alarm alarm = new Alarm(model);
         String memberId = principal.getName();
 
-        /*// 사용자가 입력한 기존 비밀번호와 DB에 저장된 비밀번호가 일치하는지 확인
-        if(memberService.checkPwd(memberId, currentPwd)){
-            member.setId(memberId);
-            // 비밀번호 업데이트
-            int check = this.memberService.updatePwd(memberId,newPw);
-            if(check > 0){
-                alarm.setMessageAndRedirect("비밀번호가 변경되었습니다.","info");
-            }else {
-                alarm.setMessageAndRedirect("비밀번호 변경 실패","");
-            }
-            return new ModelAndView(alarm.getMessagePage());
-        }else {
-            alarm.setMessageAndRedirect("기존 비밀번호가 일치하지 않습니다.","");
-        }
-        return new ModelAndView(alarm.getMessagePage());*/
         // 사용자가 입력한 기존 비밀번호와 DB에 저장된 비밀번호가 일치하는지 확인
         if (memberService.checkPwd(memberId, pw)) {
             // 비밀번호 업데이트 시도
@@ -169,17 +174,17 @@ public class MemberRestController {
         return new ModelAndView(alarm.getMessagePage());
     }
 
-/*    // 회원 탈퇴
+    /*// 회원 탈퇴
     @PostMapping("delete")
-    public ModelAndView delOk(@RequestParam("pw") String pw, Model model) {
+    public ModelAndView delOk(Principal principal, @RequestParam("pw") String pw, Model model) {
         Alarm alarm = new Alarm(model);
-        User cont = this.myPageService.contUser(userId);
-        model.addAttribute("dto", cont);
+        String memberId = principal.getName();
+        Member cont = this.memberService.getMemberById(memberId);
 
-        if(pwd.equals(cont.getPwd())){
-            int check = this.myPageService.deleteUser(userId);
+        if(pw.equals(cont.getPw())){
+            int check = this.memberService.deleteMem(memberId, pw);
             if(check > 0){
-                alarm.setMessageAndRedirect("탈퇴 성공했습니다.","/logout");
+                alarm.setMessageAndRedirect("탈퇴 성공했습니다.","user/con/log-in");
             }else{
                 alarm.setMessageAndRedirect("탈퇴 실패, 다시 시도해주세요.","");
             }
@@ -188,7 +193,29 @@ public class MemberRestController {
             alarm.setMessageAndRedirect("비밀번호가 틀렸습니다.","");
         }
         return new ModelAndView(alarm.getMessagePage());
+    }*/
+    // 회원 탈퇴
+    @PostMapping("delete")
+    public ModelAndView delOk(Principal principal, @RequestParam("pw") String pw, Model model) {
+        Alarm alarm = new Alarm(model);
+        String memberId = principal.getName();
+
+        // 사용자가 입력한 비밀번호와 DB에 저장된 비밀번호가 일치하는지 확인
+        if (memberService.checkPwd(memberId, pw)) {
+            // 회원 탈퇴 시도
+            int check = memberService.deleteMem(memberId, pw);
+            if (check > 0) {
+                alarm.setMessageAndRedirect("탈퇴 성공했습니다.", "log-out");
+            } else {
+                alarm.setMessageAndRedirect("탈퇴 실패, 다시 시도해주세요.", "");
+            }
+        } else {
+            alarm.setMessageAndRedirect("비밀번호가 틀렸습니다.", "");
+        }
+
+        return new ModelAndView(alarm.getMessagePage());
     }
+/*
 
     // 카카오 회원 탈퇴
     @PostMapping("deleteNull")
@@ -221,6 +248,10 @@ public class MemberRestController {
         modelAndView.addObject("memberId",memberId);*/
         return modelAndView;
     }
+
+    // 로그아웃
+    @GetMapping("log-out")
+    public ModelAndView logOut(){return new ModelAndView("security/user/user_login_page");}
 
 
 }
