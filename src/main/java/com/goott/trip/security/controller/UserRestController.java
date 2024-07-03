@@ -24,18 +24,18 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("user/con")
+@RequestMapping("user/ming")
 public class UserRestController {
 
     private final MemberService memberService;
     private final ImageService imageService;
     private final EmailService emailService;
 
-    @GetMapping("test")
+    /*@GetMapping("test")
     public ModelAndView getTest(){
         return new ModelAndView("security/user/user_page");
     }
-
+*/
     // 회원가입
     @GetMapping("check")
     public ModelAndView getSingInCheck(){
@@ -173,8 +173,8 @@ public class UserRestController {
         return "redirect:user/con/log-in";
     }*/
 
-    // 로그아웃
+    /*// 로그아웃
     @GetMapping("log-out")
-    public ModelAndView logOut(){return new ModelAndView("security/user/user_login_page");}
+    public ModelAndView logOut(){return new ModelAndView("security/user/user_login_page");}*/
 
 }
