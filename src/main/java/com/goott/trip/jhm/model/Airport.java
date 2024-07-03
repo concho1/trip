@@ -12,4 +12,5 @@ public class Airport {
     private String engCountry;
     private String korCountry;
     private String engCity;
+    private String korCity;
 }

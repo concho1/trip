@@ -5,7 +5,7 @@
 <mapper namespace="com.goott.trip.jhm.model.FlightMapper">
 
     <insert id="uploadAirport">
-        insert into trip.airport(eng_name, kor_name, iata, icao, region, eng_country, kor_country, eng_city) values
+        insert into trip.airport(eng_name, kor_name, iata, icao, region, eng_country, kor_country, eng_city, kor_city) values
         <foreach collection="list" item="airport" separator=",">
             (
              #{airport.engName},
@@ -15,7 +15,8 @@
              #{airport.region},
              #{airport.engCountry},
              #{airport.korCountry},
-             #{airport.engCity}
+             #{airport.engCity},
+             #{airport.korCity}
             )
         </foreach>
     </insert>
