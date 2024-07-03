@@ -158,7 +158,16 @@ public class FlightService {
 
     public List<APIItinerary> findItineraryForView(String str) { return this.mapper.findItineraryForView(str); }
     public List<APIPricing> findPricingForView(String str) { return this.mapper.findPricingForView(str); }
-    public List<APISegment> findSegmentForView(String str) { return this.mapper.findSegmentForView(str); }
+    public List<APISegment> findSegmentForView(String str) {
+        List<APISegment> sList = this.mapper.findSegmentForView(str);
+
+        for(APISegment sdto : sList) {
+            sdto.setDepartureIata(this.findAirportByIATA(sdto.getDepartureIata()));
+            sdto.setArrivalIata(this.findAirportByIATA(sdto.getArrivalIata()));
+        }
+
+        return sList;
+    }
     public List<APIDuration> findDurationForView(String str) { return this.mapper.findDurationForView(str); }
 
     public void uploadAirport(MultipartFile file) throws IOException {this.module.uploadAirport(file);}

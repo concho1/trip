@@ -33,6 +33,9 @@ public class FlightController {
     @RequestMapping("search_flight")
     public ModelAndView searchFlight() { return new ModelAndView("jhm/search_flight"); }
 
+    @RequestMapping("upload")
+    public ModelAndView upload() { return new ModelAndView("jhm/upload"); }
+
     @PostMapping("test")
     public ModelAndView search(Flight flight, Principal principal) throws ResponseException {
 
@@ -148,8 +151,8 @@ public class FlightController {
                     json.append("\"").append(dto.getKorCountry()).append("\"");
                     json.append(",");
 
-                    json.append("\"engCity\" : ");
-                    json.append("\"").append(dto.getEngCity()).append("\"");
+                    json.append("\"korCity\" : ");
+                    json.append("\"").append(dto.getKorCity()).append("\"");
                     json.append("}, ");
                 }
             }
