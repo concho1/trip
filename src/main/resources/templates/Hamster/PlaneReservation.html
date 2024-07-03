@@ -12,7 +12,6 @@
   <div class="tedu-N39" data-bid="EyLxIFDIaZ">
     <div class="content-inner">
       <div class="content-container">
-              <form method="post" action="/member/hamster/airplane/wishList">
                 <p class="legend"><h2>예약하시는 항공권의 정보를 다시한번 확인해주세요!</h2></p>
                 <th:block th:each="info : ${airInfo}">
                   <p class="text" th:text="${info.getOrigin()} + ' -> ' + ${info.getDestination()}"></p>
@@ -65,7 +64,6 @@
                     </div>
                   </div>
                 </div>
-              </form>
 
           <div class="form-wrap">
             <form method="post" action="/member/hamster/airplane/payment">

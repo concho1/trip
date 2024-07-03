@@ -24,27 +24,40 @@
 </table>
 <h2>Exchange Currency</h2>
 <form action="user/esh/doConvert" method="get">
+    <th:block>
     <label>From Currency:</label>
-    <input type="text" name="fromCurrency"><br>
+
+    <select name="fromCurrency">
+        <option th:each="rate : ${exchangeRates}"
+                th:value="${rate['cur_unit']}"
+                th:text="${rate['cur_nm']} + '(' + ${rate['cur_unit']} + ')'"></option>
+    </select><br>
+
     <label>To Currency:</label>
-    <input type="text" name="toCurrency"><br>
-    <label>Amount:</label>
+    <select name="toCurrency">
+        <option th:each="rate : ${exchangeRates}"
+                th:value="${rate['cur_unit']}"
+                th:text="${rate['cur_nm']} + '(' + ${rate['cur_unit']} + ')'"></option>
+    </select><br>
+    <label>금액을 입력하세요</label>
     <input type="text" name="amount"><br>
 
     <input type="submit" value="Convert">
+    </th:block>
 </form>
 
 <!-- 환전 결과를 표시할 부분 -->
 <h3>Converted Amount:</h3>
 <p id="convertedAmount"></p>
 
-<script>
+<script th:inline="javascript">
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault(); // 폼 제출 기본 동작을 막음
 
-        const fromCurrency = document.querySelector('input[name="fromCurrency"]').value;
-        const toCurrency = document.querySelector('input[name="toCurrency"]').value;
+        const fromCurrency = document.querySelector('select[name="fromCurrency"]').value;
+        const toCurrency = document.querySelector('select[name="toCurrency"]').value;
         const amount = document.querySelector('input[name="amount"]').value;
+
 
         fetch(`/user/esh/doConvert?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&amount=${amount}`)
             .then(response => response.text())
@@ -54,5 +67,8 @@
             .catch(error => console.error('Error:', error));
     });
 </script>
+
 </body>
+
+
 </html>
