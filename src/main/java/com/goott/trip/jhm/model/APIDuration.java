@@ -10,5 +10,6 @@ public class APIDuration {
     private String depOrComb;
     private String duration;
     private String airline;
+    private String airlineKor;
     private String airlineImg;
 }

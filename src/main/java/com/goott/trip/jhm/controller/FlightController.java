@@ -182,8 +182,8 @@ public class FlightController {
         String[] ffvHead = {"ffvId", "totalBase", "totalPrice", "apiPricings", "apiSegments", "apiDurations"};
         String[] pricingHead = {"id", "itineraryCode", "flightCode", "type", "base", "total"};
         String[] segmentHead = {"id", "itineraryCode", "flightCode", "depOrComb", "departureIata", "departureAt", "arrivalIata",
-                                    "arrivalAt", "duration", "carrierCode", "carrierNum"};
-        String[] durationHead = {"id", "itineraryCode", "flightCode", "depOrComb", "duration", "airline", "airlineImg"};
+                                    "arrivalAt", "duration", "carrierCode", "carrierNum", "airlineKor"};
+        String[] durationHead = {"id", "itineraryCode", "flightCode", "depOrComb", "duration", "airline", "airlineKor", "airlineImg"};
 
         shoppingCart cart = new shoppingCart();
         cart.setMemberId(memberId);
@@ -352,6 +352,9 @@ public class FlightController {
                                     case "carrierNum" :
                                         cs.setCarrierNum(fins[1]);
                                         break;
+                                    case "airlineKor" :
+                                        cs.setAirlineKor(fins[1]);
+                                        break;
                                 }
                             }
                             this.service.insertCartSegment(cs);
@@ -409,6 +412,9 @@ public class FlightController {
                                         break;
                                     case "airline" :
                                         cd.setAirline(fins[1]);
+                                        break;
+                                    case "airlineKor" :
+                                        cd.setAirlineKor(fins[1]);
                                         break;
                                     case "airlineImg" :
                                         cd.setAirlineImg(fins[1]);

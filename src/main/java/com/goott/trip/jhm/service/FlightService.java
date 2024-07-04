@@ -96,6 +96,7 @@ public class FlightService {
                 ddto.setId(durId);
                 String airIATA = list[i].getItineraries()[j].getSegments()[0].getCarrierCode();
                 ddto.setAirline(airIATA);
+                ddto.setAirlineKor(this.mapper.findAirlineKor(airIATA));
                 String airICAO = this.mapper.findIcaoByIata(airIATA);
                 String logo = "https:" + this.mapper.findImgByIcao(airICAO);
                 ddto.setAirlineImg(logo);
@@ -115,6 +116,7 @@ public class FlightService {
                     sdto.setDuration(list[i].getItineraries()[j].getSegments()[k].getDuration());
                     sdto.setCarrierCode(list[i].getItineraries()[j].getSegments()[k].getCarrierCode());
                     sdto.setCarrierNum(list[i].getItineraries()[j].getSegments()[k].getNumber());
+                    sdto.setAirlineKor(this.mapper.findAirlineKor(list[i].getItineraries()[j].getSegments()[k].getCarrierCode()));
                     String segId = "seg" + iCode + j + k;
                     System.out.println("segId : "+segId);
                     sdto.setId(segId);
