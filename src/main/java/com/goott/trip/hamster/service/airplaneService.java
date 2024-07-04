@@ -5,6 +5,7 @@ import com.goott.trip.hamster.model.Testproduct;
 import com.goott.trip.hamster.model.airplaneInfo;
 import com.goott.trip.jhm.model.CartDuration;
 import com.goott.trip.jhm.model.CartFlight;
+import com.goott.trip.jhm.model.CartPricing;
 import com.goott.trip.jhm.model.CartSegment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,17 @@ public class airplaneService {
 
     public List<CartDuration> getDurationInfo(String AirKey){return this.mapper.getDurationInfo(AirKey); }
 
+    public List<CartDuration> getDepDur(String AirKey){return this.mapper.getDepDur(AirKey); }
+
+    public List<CartDuration> getCombDur(String AirKey){return this.mapper.getCombDur(AirKey); }
+
     public List<CartSegment> getSegment(String AirKey){return this.mapper.getSegment(AirKey); }
+
+    public List<CartSegment> getDep(String AirKey){return this.mapper.getDep(AirKey); }
+
+    public List<CartSegment> getComb(String AirKey){return this.mapper.getComb(AirKey); }
+
+    public List<CartPricing> getPricing(String AirKey){return this.mapper.getPrice(AirKey); }
 
     public List<String> getCountry(){
         List<String> countries = new ArrayList<>();
@@ -108,6 +119,86 @@ public class airplaneService {
         countries.add("홍콩 (852)");
 
         return countries;
+    }
+
+    public List<String> getOnlyCountry(){
+        List<String> OnlyCountries = new ArrayList<>();
+        OnlyCountries.add("가나");
+        OnlyCountries.add("가봉");
+        OnlyCountries.add("감비아");
+        OnlyCountries.add("과테말라");
+        OnlyCountries.add("그리스");
+        OnlyCountries.add("나미비아");
+        OnlyCountries.add("나이지리아");
+        OnlyCountries.add("네덜란드");
+        OnlyCountries.add("노르웨이");
+        OnlyCountries.add("뉴질랜드");
+        OnlyCountries.add("니카라과");
+        OnlyCountries.add("대만");
+        OnlyCountries.add("덴마크");
+        OnlyCountries.add("대한민국");
+        OnlyCountries.add("독일");
+        OnlyCountries.add("러시아");
+        OnlyCountries.add("루마니아");
+        OnlyCountries.add("룩셈부르크");
+        OnlyCountries.add("르완다");
+        OnlyCountries.add("리비아");
+        OnlyCountries.add("리투아니아");
+        OnlyCountries.add("리히텐슈타인");
+        OnlyCountries.add("마다가스카르");
+        OnlyCountries.add("말레이시아");
+        OnlyCountries.add("멕시코");
+        OnlyCountries.add("모로코");
+        OnlyCountries.add("몽골");
+        OnlyCountries.add("미국");
+        OnlyCountries.add("베트남");
+        OnlyCountries.add("벨기에");
+        OnlyCountries.add("보츠와나");
+        OnlyCountries.add("브라질");
+        OnlyCountries.add("사우디아라비아");
+        OnlyCountries.add("스웨덴");
+        OnlyCountries.add("스위스");
+        OnlyCountries.add("스페인");
+        OnlyCountries.add("싱가포르");
+        OnlyCountries.add("아르헨티나");
+        OnlyCountries.add("아랍에미리트");
+        OnlyCountries.add("아이슬란드");
+        OnlyCountries.add("아일랜드");
+        OnlyCountries.add("아프가니스탄");
+        OnlyCountries.add("알제리");
+        OnlyCountries.add("영국");
+        OnlyCountries.add("오스트리아");
+        OnlyCountries.add("우간다");
+        OnlyCountries.add("우루과이");
+        OnlyCountries.add("우크라이나");
+        OnlyCountries.add("이란");
+        OnlyCountries.add("이스라엘");
+        OnlyCountries.add("이집트");
+        OnlyCountries.add("이탈리아)");
+        OnlyCountries.add("인도");
+        OnlyCountries.add("인도네시아");
+        OnlyCountries.add("일본");
+        OnlyCountries.add("중국");
+        OnlyCountries.add("칠레");
+        OnlyCountries.add("카자흐스탄");
+        OnlyCountries.add("캐나다");
+        OnlyCountries.add("케냐");
+        OnlyCountries.add("코스타리카");
+        OnlyCountries.add("콜롬비아");
+        OnlyCountries.add("쿠바");
+        OnlyCountries.add("태국");
+        OnlyCountries.add("튀니지");
+        OnlyCountries.add("파나마");
+        OnlyCountries.add("파키스탄");
+        OnlyCountries.add("페루");
+        OnlyCountries.add("폴란드");
+        OnlyCountries.add("프랑스");
+        OnlyCountries.add("필리핀");
+        OnlyCountries.add("헝가리");
+        OnlyCountries.add("호주");
+        OnlyCountries.add("홍콩");
+
+        return OnlyCountries;
     }
 
 }

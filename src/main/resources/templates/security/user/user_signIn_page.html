@@ -32,7 +32,7 @@
                         </li>
                     </ul>
                     <div class="form-wrap">
-                        <form id="join" th:action="@{/user/con/sign-in}" method="post" enctype="multipart/form-data">
+                        <form id="join" th:action="@{/user/ming/sign-in}" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="name" id="name">
                             <div class="form-body">
 
@@ -105,7 +105,7 @@
                                 </fieldset>
 
                                 <div class="form-footer btn-box">
-                                    <button class="tedu-btn tedu-btn-light btn-mono" type="button" th:onclick="'window.location.href=\'/user/con/check\''">취소</button>
+                                    <button class="tedu-btn tedu-btn-light btn-mono" type="button" th:onclick="'window.location.href=\'/user/ming/check\''">취소</button>
                                     <button class="tedu-btn tedu-btn-light btn-link" type="submit" style="margin-left: 5px;" onclick="return joinCheck()">확인</button>
                                 </div>
                             </div>

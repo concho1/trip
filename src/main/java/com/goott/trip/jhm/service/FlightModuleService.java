@@ -71,6 +71,7 @@ public class FlightModuleService {
             dto.setEngCountry(row.getCell(5).getStringCellValue());
             dto.setKorCountry(row.getCell(6).getStringCellValue());
             dto.setEngCity(row.getCell(7).getStringCellValue());
+            dto.setKorCity(row.getCell(8).getStringCellValue());
 
             list.add(dto);
         }

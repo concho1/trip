@@ -5,7 +5,7 @@
 <mapper namespace="com.goott.trip.jhm.model.FlightMapper">
 
     <insert id="uploadAirport">
-        insert into trip.airport(eng_name, kor_name, iata, icao, region, eng_country, kor_country, eng_city) values
+        insert into trip.airport(eng_name, kor_name, iata, icao, region, eng_country, kor_country, eng_city, kor_city) values
         <foreach collection="list" item="airport" separator=",">
             (
              #{airport.engName},
@@ -15,7 +15,8 @@
              #{airport.region},
              #{airport.engCountry},
              #{airport.korCountry},
-             #{airport.engCity}
+             #{airport.engCity},
+             #{airport.korCity}
             )
         </foreach>
     </insert>
@@ -61,11 +62,11 @@
     </insert>
 
     <insert id="insertAPISegment" parameterType="APISegment">
-        insert into trip.APISegment values(#{id}, #{itineraryCode}, #{flightCode}, #{depOrComb}, #{departureIata}, #{departureAt}, #{arrivalIata}, #{arrivalAt}, #{duration}, #{carrierCode}, #{carrierNum})
+        insert into trip.APISegment values(#{id}, #{itineraryCode}, #{flightCode}, #{depOrComb}, #{departureIata}, #{departureAt}, #{arrivalIata}, #{arrivalAt}, #{duration}, #{carrierCode}, #{carrierNum}, #{airlineKor})
     </insert>
 
     <insert id="insertAPIDuration" parameterType="APIDuration">
-        insert into trip.APIDuration values(#{id}, #{itineraryCode}, #{flightCode}, #{depOrComb}, #{duration}, #{airline}, #{airlineImg})
+        insert into trip.APIDuration values(#{id}, #{itineraryCode}, #{flightCode}, #{depOrComb}, #{duration}, #{airline}, #{airlineKor}, #{airlineImg})
     </insert>
 
     <select id="findItineraryForView" parameterType="String" resultType="APIItinerary">
@@ -104,6 +105,10 @@
         delete from trip.APIDuration where flight_code = #{str}
     </delete>
 
+    <select id="findAirlineKor" parameterType="String" resultType="String">
+        select kor_name from trip.airline where iata like concat('%', #{str}, '%') and model not like '%Cargo%' limit 1
+    </select>
+
     <select id="findIcaoByIata" parameterType="String" resultType="String">
         select icao from trip.airline where iata like concat('%', #{str}, '%') and model not like '%Cargo%' limit 1
     </select>
@@ -122,11 +127,11 @@
 
     <insert id="insertCartSegment" parameterType="CartSegment">
         insert into trip.cartSegment values(#{id}, #{ffvId}, #{depOrComb}, #{departureIata}, #{departureAt}, #{arrivalIata},
-                                            #{arrivalAt}, #{duration}, #{carrierCode}, #{carrierNum})
+                                            #{arrivalAt}, #{duration}, #{carrierCode}, #{carrierNum}, #{airlineKor})
     </insert>
 
     <insert id="insertCartDuration" parameterType="CartDuration">
-        insert into trip.cartDuration values(#{id}, #{ffvId}, #{depOrComb}, #{duration}, #{airline}, #{airlineImg})
+        insert into trip.cartDuration values(#{id}, #{ffvId}, #{depOrComb}, #{duration}, #{airline}, #{airlineKor}, #{airlineImg})
     </insert>
 
     <insert id="insertCartFlight" parameterType="CartFlight">

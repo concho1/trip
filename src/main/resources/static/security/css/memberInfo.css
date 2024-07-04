@@ -1,4 +1,32 @@
-.tab-menu-wrap{
+/*.form-footer.btn-box {
+    display: flex;
+    justify-content: center;
+}*/
+.form-footer {
+    padding-top: 4rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+.tedu-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 5.6rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    border-radius: 0.4rem;
+    border: none;
+    transition: 0.3s;
+    margin-left: 3px;
+    margin-right: 3px;
+
+}
+.tab-menu-wrap {
+    display: flex;
+    margin: 4rem 0;
+    position: relative;
     justify-content: space-between;
 }
 .form-wrap{
