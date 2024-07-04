@@ -17,12 +17,9 @@
                     </div>
                     <div class="tab-menu-wrap">
                         <div class="tab-menu active" id="tab-info">
-                            <a th:href="@{info}">
+                            <a href="#info">
                                 <span>내 정보</span>
                             </a>
-                            <!--<a href="#info">
-                                <span>내 정보</span>
-                            </a>-->
                         </div>
                         <div class="tab-menu" id="tab-changePwd">
                             <a href="#changePwd">
@@ -45,7 +42,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="form-wrap" >
+                    <div class="form-wrap">
                         <div class="form-body" id="info">
                             <form id="modify" th:action="@{/member/ming/info}" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="name" id="name">
@@ -160,12 +157,12 @@
                         <div class="form-body" id="delete" style="display: none;">
                             <form th:action="@{/member/ming/delete}" method="post">
                                 <div class="form-check">
-                                    <p>탈퇴 후 회원정보 및 개인형 서비스 이용기록은 모두 삭제됩니다.</p>
-                                    <p>탈퇴 후에도 게시판형 서비스에 등록한 게시물은 그대로 남아 있습니다.</p>
-                                    <p>회원정보 및 결제내역, 이용기록은 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다.</p>
+                                    <p>탈퇴 후 회원정보 및 개인형 서비스 이용기록은 모두 삭제됩니다.</p><br>
+                                    <p>탈퇴 후에도 게시판형 서비스에 등록한 게시물은 그대로 남아 있습니다.</p><br>
+                                    <p>회원정보 및 결제내역, 이용기록은 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다.</p><br>
                                     <div class="mb-4" style="color: red;">
-                                        <p>탈퇴 후에는 아이디 (<span th:text="${dto.id}"></span>)의 데이터는 복구할 수 없습니다.</p>
-                                    </div>
+                                        <p>탈퇴 후에는 아이디 (<span th:text="${dto.id}"></span>)의 데이터는 복구할 수 없습니다.</p><br>
+                                    </div> <br>
 
                                     <p>
                                         <input class="form-check-input" type="checkbox" name="chk" id="proOffers" style="margin-left: 3px;">&nbsp;
@@ -182,12 +179,12 @@
                                             </div>
                                         </div>
                                     </div>-->
-                                     <div class="form-footer btn-box">
-                                         <input type="password" name="pw" placeholder="비밀번호 입력" aria-label="pw" aria-describedby="button-addon2">
-                                         <button class="tedu-btn tedu-btn-light btn-link" type="submit" id="pwdButton" onclick="return boxcheck()">탈퇴</button>
-                                      </div>
-                                </div>
 
+                                </div>
+                                <div class="form-footer btn-box">
+                                    <input type="password" name="pw" placeholder="비밀번호 입력" aria-label="pw" aria-describedby="button-addon2">
+                                    <button class="tedu-btn tedu-btn-light btn-link" type="submit" id="pwdButton" onclick="return boxcheck()">탈퇴</button>
+                                </div>
 
                             </form>
                         </div>
