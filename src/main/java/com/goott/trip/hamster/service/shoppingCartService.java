@@ -1,8 +1,7 @@
 package com.goott.trip.hamster.service;
 
 import com.goott.trip.hamster.mapper.shoppingCartMapper;
-import com.goott.trip.hamster.model.Testproduct;
-import com.goott.trip.hamster.model.shoppingCart;
+import com.goott.trip.hamster.model.ShoppingCart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,7 @@ public class shoppingCartService {
     @Autowired
     private shoppingCartMapper mapper;
 
-    public List<shoppingCart> checkDup(String memId){return this.mapper.checkDup(memId);}
+    public List<ShoppingCart> checkDup(String memId){return this.mapper.checkDup(memId);}
 
     public int insertCart(String memId,String key){return this.mapper.insertCart(memId,key); }
 
