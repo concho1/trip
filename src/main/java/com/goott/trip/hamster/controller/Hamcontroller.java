@@ -2,9 +2,11 @@ package com.goott.trip.hamster.controller;
 
 import com.goott.trip.common.model.Alarm;
 import com.goott.trip.hamster.model.Testproduct;
-import com.goott.trip.hamster.model.airplaneInfo;
-import com.goott.trip.hamster.model.shoppingCart;
+import com.goott.trip.hamster.model.AirplaneInfo;
+import com.goott.trip.hamster.model.Payment;
+import com.goott.trip.hamster.model.ShoppingCart;
 import com.goott.trip.hamster.service.airplaneService;
+import com.goott.trip.hamster.service.paymentService;
 import com.goott.trip.hamster.service.shoppingCartService;
 import com.goott.trip.jhm.model.CartDuration;
 import com.goott.trip.jhm.model.CartFlight;
@@ -30,6 +32,8 @@ public class Hamcontroller {
     private airplaneService airservice;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private paymentService paymentservice;
 
     @GetMapping("airplane/list")
     public ModelAndView list() {
@@ -42,7 +46,7 @@ public class Hamcontroller {
     @GetMapping("airplane/airplaneInfoList")
     public ModelAndView airplaneInfoList(){
 
-        List<airplaneInfo> list = this.airservice.airplaneInfoList();
+        List<AirplaneInfo> list = this.airservice.airplaneInfoList();
 
         return new ModelAndView("Hamster/airplaneInfoList").addObject("list",list);
     }
@@ -93,6 +97,7 @@ public class Hamcontroller {
                     .addObject("cont",cont)
                     .addObject("count",count)
                     .addObject("country",country)
+                    .addObject("AirKey",AirKey)
                     .addObject("airInfo",airInfo)
                     .addObject("airSeg",airSeg)
                     .addObject("segDep",segDep)
@@ -129,7 +134,7 @@ public class Hamcontroller {
 
         Alarm alarm = new Alarm(model);
         String memberId = principal.getName();
-        List<shoppingCart> dbVal = this.shoppingCartService.checkDup(memberId);
+        List<ShoppingCart> dbVal = this.shoppingCartService.checkDup(memberId);
         List<Testproduct> plist = new ArrayList<>();
 
         System.out.println(key);
@@ -146,7 +151,7 @@ public class Hamcontroller {
             }
         }
 
-        for (shoppingCart cartItem : dbVal) {
+        for (ShoppingCart cartItem : dbVal) {
             plist.add(this.airservice.airplaneCont(cartItem.getAirKey()));
 
         }
@@ -171,17 +176,28 @@ public class Hamcontroller {
     }
 
     @PostMapping("airplane/payment")
-    public ModelAndView airplanePayment(@RequestParam("key")String key,@RequestParam("callFname")String callFname,
-                                        @RequestParam("callLname")String callLname,@RequestParam("country")String country,
-                                        @RequestParam("phone")String phone,@RequestParam("email")String email){
-        Testproduct cont = this.airservice.airplaneCont(key);
+    public ModelAndView airplanePayment(@ModelAttribute Payment payment, @RequestParam("key")String AirKey,Principal principal){
+
+        String memberId = principal.getName();
+        List<CartFlight> airInfo = this.airservice.getAirInfo(AirKey);
+        List<CartDuration> DepDur = this.airservice.getDepDur(AirKey);
+        List<CartDuration> CombDur = this.airservice.getCombDur(AirKey);
+        List<CartSegment> segDep = this.airservice.getDep(AirKey);
+        List<CartSegment> segComb = this.airservice.getComb(AirKey);
 
         UUID uuid = UUID.randomUUID();
 
-        return new ModelAndView("Hamster/airplanePayment").addObject("cont",cont)
-                .addObject("callFname",callFname).addObject("callLname",callLname)
-                .addObject("country",country).addObject("phone",phone)
-                .addObject("email",email).addObject("UUID",uuid);
+
+        return new ModelAndView("Hamster/airplanePayment")
+                .addObject("airInfo",airInfo)
+                .addObject("memberId",memberId)
+                .addObject("DepDur",DepDur)
+                .addObject("CombDur",CombDur)
+                .addObject("segDep",segDep)
+                .addObject("segComb",segComb)
+                .addObject("payment",payment)
+                .addObject("key",AirKey)
+                .addObject("UUID",uuid);
     }
 
     @GetMapping("/success")
@@ -209,12 +225,8 @@ public class Hamcontroller {
         return modelAndView;
     }
 
-    @GetMapping("/hotel/{id_key}")
-    public ModelAndView hotel(@PathVariable String id_key) {
-
-        return new ModelAndView("Hamster/testHotel").addObject("hotelID",id_key);
-    }
-
     @GetMapping("/shoppingCart")
     public ModelAndView shoppingCart() {return new ModelAndView("Hamster/shoppingCart");}
+
+
 }
