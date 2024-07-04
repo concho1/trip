@@ -17,5 +17,9 @@ public class GlobeService {
         return mapper.selectAllHotels();
     }
 
+    public ESHConchoHotel getHotelById(String hotelIdKey, String hotelId) {
+        return mapper.selectHotelById(hotelIdKey, hotelId);
+    }
+
 
 }

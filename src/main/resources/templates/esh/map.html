@@ -3,6 +3,7 @@
 <head>
     <title>Map Display</title>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5karXGpFD8tez3DjhrO5Y1np5TONtJl0"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script th:inline="javascript">
         function initMap() {
             const map = new google.maps.Map(document.getElementById('map'), {
@@ -29,11 +30,17 @@
 
                     google.maps.event.addListener(marker, 'click', (function(marker, index) {
                         return function() {
+                            /*console.log('??');*/
                             //html로 표시될 인포 윈도우의 내용
                             infowindow.setContent(
                                 // hotels[index].name + '<br>' + "<img src='" +${hotels[index].countryCode}+"'" +">"
-                                `<a href="${hotels[index].url}" target="_blank">${hotels[index].name}</a><br>` +
-                                "<img src='" + `${hotels[index].countryCode}` + "'>"
+                                `<h5>${hotels[index].name}</h5>` +
+                                ` <button type="button" class="btn-link" style="background-color: white; color: white"`
+                                + ` data-hotel-id-key = ${hotels[index].idKey}`
+                                + ` data-hotel-id = ${hotels[index].hotelId}`
+                                + ` data-iata-code = ${hotels[index].iataCode}`
+                                + `</button><br>`
+                                + "<img style='width: 200px; height: 200px' src='" + `${hotels[index].countryCode}` + "'>"
                             );
 
                             //인포윈도우가 표시될 위치
@@ -41,22 +48,57 @@
                         }
                     }) (marker, index));
 
-                    if (marker) {
-                        marker.addListener('click', function() {
+                    marker.addListener('click', function() {
 
-                            //중심 위치를 클릭된 마커의 위치로 변경
-                            map.setCenter(this.getPosition());
+                        //중심 위치를 클릭된 마커의 위치로 변경
+                        map.setCenter(this.getPosition());
 
-                            //마커 클릭 시의 줌 변화
-                            map.setZoom(14);
-                        });
-                    }
+                        //마커 클릭 시의 줌 변화
+                        map.setZoom(14);
+                    });
+
                 } else {
                     console.error("No hotels data available");
                 }
             });
             /*console.log(hotels);*/
         }
+        $(document).on('click', '.btn-link', function () {
+            let hotelIdKey = $(this).data('hotel-id-key');
+            let hotelId = $(this).data('hotel-id');
+            let iataCode = $(this).data('iata-code');
+            let startDate = '2024-08-27';
+            let endDate = '2024-08-28';
+            let personCnt = '3';
+            // 동적으로 form 생성
+            let form = $('<form></form>');
+            form.attr("method", "post");
+            form.attr("action", "/user/concho/service/hotel-info");
+            // 호텔 ID를 hidden input으로 추가
+            let hiddenField =
+                $('<input></input>').attr("type", "hidden").attr("name", "hotelIdKey").attr("value", hotelIdKey);
+            let hiddenField1 =
+                $('<input></input>').attr("type", "hidden").attr("name", "hotelId").attr("value", hotelId);
+            let hiddenField2 =
+                $('<input></input>').attr("type", "hidden").attr("name", "iataCode").attr("value", iataCode);
+            let hiddenField3 =
+                $('<input></input>').attr("type", "hidden").attr("name", "startDate").attr("value", startDate);
+            let hiddenField4 =
+                $('<input></input>').attr("type", "hidden").attr("name", "endDate").attr("value", endDate);
+            let hiddenField5 =
+                $('<input></input>').attr("type", "hidden").attr("name", "personCnt").attr("value", personCnt);
+
+            form.append(hiddenField);
+            form.append(hiddenField1);
+            form.append(hiddenField2);
+            form.append(hiddenField3);
+            form.append(hiddenField4);
+            form.append(hiddenField5);
+
+            // form을 body에 추가하고 제출
+            $(document.body).append(form);
+            form.submit();
+        });
     </script>
 </head>
 <body onload="initMap()">
