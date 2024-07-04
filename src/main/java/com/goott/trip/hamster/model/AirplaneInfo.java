@@ -3,7 +3,7 @@ package com.goott.trip.hamster.model;
 import lombok.Data;
 
 @Data
-public class airplaneInfo {
+public class AirplaneInfo {
 
     private int airNum;
     private String iataCode;
