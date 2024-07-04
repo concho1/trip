@@ -33,7 +33,7 @@
             </div>
 
             <div class="input-group">
-                <input type="text" placeholder="출발지 입력" id="origin" name="origin" aria-label="출발">
+                <input type="text" placeholder="출발지 입력" id="origin" name="origin" aria-label="출발" autocomplete="off">
                 <div id="originModal" class="modal">
                     <div class="modal-content">
                         <span class="close" id="orgClose">&times;</span>
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <img src="/asset/icons/changed.svg" class="changeImg" th:onclick="changeTo()">
-                <input type="text" placeholder="도착지 입력" id="destination" name="destination" aria-label="도착">
+                <input type="text" placeholder="도착지 입력" id="destination" name="destination" aria-label="도착" autocomplete="off">
                 <div id="desModal" class="modal">
                     <div class="modal-content">
                         <span class="close" id="desClose">&times;</span>
@@ -56,7 +56,7 @@
 
             <div class="input-group">
                 <div class="date-picker">
-                    <input type="text" name="departure" id="depDate" placeholder="가는 날">
+                    <input type="text" name="departure" id="depDate" placeholder="가는 날" autocomplete="off">
                     <div id="depCalendarContainer" class="hidden">
                         <div id="dep-wrapper">
                             <header>
@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <div id="comb-field" class="date-picker hidden">
-                    <input type="text" name="comeback" id="combDate" placeholder="오는 날">
+                    <input type="text" name="comeback" id="combDate" placeholder="오는 날" autocomplete="off">
                     <div id="combCalendarContainer" class="hidden">
                         <div id="comb-wrapper">
                             <header>
@@ -169,7 +169,7 @@
                             <div class="input-group">
                                 <div class="radio-group">
                                     <label class="custom-radio">
-                                        <input name="airplaneClass" type="radio" value="">
+                                        <input name="airplaneClass" type="radio" value="" checked>
                                         <span class="button-style">선택 안 함</span>
                                     </label>
                                     <label class="custom-radio">

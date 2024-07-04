@@ -31,34 +31,31 @@
                         <div class="dv1">
                             <span th:text="${#strings.replace(#strings.replace(#strings.substring(dur.duration, 2), 'H', '시간'), 'M', '분')}"></span>
                         </div>
-                        <hr class="verticalSeparator-long">
-                        <div>
-                            <div class="dv2">
-                                <div th:each="seg : ${ffv.apiSegments}" th:if="${seg.depOrComb == dur.depOrComb}" class="segContainer">
-                                    <div class="seg">
-                                        <div class="sg1">
-                                            <span th:text="${#strings.arraySplit(#strings.substring(seg.departureAt, 0, seg.departureAt.length()-3), 'T')[1]}" class="sgTime"></span> <br>
-                                            <span th:text="${#strings.replace(#strings.substring(#strings.arraySplit(#strings.substring(seg.departureAt, 0, seg.departureAt.length()-3), 'T')[0], 5), '-', '월 ')+'일'}" class="sgDay"></span>
-                                        </div>
-                                        <div class="sg2">
-                                            <span th:text="${#strings.replace(#strings.replace(#strings.substring(seg.duration, 2), 'H', '시간'), 'M', '분')}"></span> <br>
-                                        </div>
-                                        <div class="sg3">
-                                            <span th:text="${#strings.arraySplit(#strings.substring(seg.arrivalAt, 0, seg.arrivalAt.length()-3), 'T')[1]}" class="sgTime"></span> <br>
-                                            <span th:text="${#strings.replace(#strings.substring(#strings.arraySplit(#strings.substring(seg.arrivalAt, 0, seg.arrivalAt.length()-3), 'T')[0], 5), '-', '월 ')+'일'}" class="sgDay"></span>
-                                        </div>
+                        <div class="dv2">
+                            <div th:each="seg : ${ffv.apiSegments}" th:if="${seg.depOrComb == dur.depOrComb}" class="segContainer">
+                                <div class="seg1">
+                                    <div>
+                                        <span th:text="${#strings.arraySplit(#strings.substring(seg.departureAt, 0, seg.departureAt.length()-3), 'T')[1]}" class="sgTime"></span> <br>
+                                        <span th:text="${#strings.replace(#strings.substring(#strings.arraySplit(#strings.substring(seg.departureAt, 0, seg.departureAt.length()-3), 'T')[0], 5), '-', '월 ')+'일'}" class="sgDay"></span>
                                     </div>
-                                    <hr class="verticalSeparator">
-                                    <div class="seg">
-                                        <div class="sg1">
-                                            <span th:text="${seg.departureIata}"></span>
-                                        </div>
-                                        <div class="sg2">
-                                            <span th:text="${seg.carrierCode} + ${seg.carrierNum}"></span>
-                                        </div>
-                                        <div class="sg3">
-                                            <span th:text="${seg.arrivalIata}"></span>
-                                        </div>
+                                    <div class="sg2">
+                                        <span th:text="${#strings.replace(#strings.replace(#strings.substring(seg.duration, 2), 'H', '시간'), 'M', '분')}"></span> <br>
+                                    </div>
+                                    <div>
+                                        <span th:text="${#strings.arraySplit(#strings.substring(seg.arrivalAt, 0, seg.arrivalAt.length()-3), 'T')[1]}" class="sgTime"></span> <br>
+                                        <span th:text="${#strings.replace(#strings.substring(#strings.arraySplit(#strings.substring(seg.arrivalAt, 0, seg.arrivalAt.length()-3), 'T')[0], 5), '-', '월 ')+'일'}" class="sgDay"></span>
+                                    </div>
+                                </div>
+                                <div class="seg2">
+                                    <div>
+                                        <span th:text="${seg.departureIata}"></span>
+                                    </div>
+                                    <div class="sg2">
+                                        <span th:text="${seg.carrierCode} + ${seg.carrierNum}"></span> &nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;&nbsp;
+                                        <span th:text="${seg.airlineKor} + Airline"></span>
+                                    </div>
+                                    <div>
+                                        <span th:text="${seg.arrivalIata}"></span>
                                     </div>
                                 </div>
                             </div>
