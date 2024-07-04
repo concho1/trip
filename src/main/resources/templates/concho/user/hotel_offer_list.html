@@ -59,15 +59,567 @@
     .content-inner{
         padding-top: 1.3rem;
     }
+    .my-btn-box {
+        display: flex;
+        gap: 10px; /* Adjust the gap between buttons as needed */
+    }
+    .add-cart{
+        width: 45%;
+    }
+    .text-wrap-1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.3rem;
+    }
+
+    .title {
+        margin-bottom: 2rem;
+        margin-left: 1rem;
+    }
+
+    .back-button {
+        border-radius: 3rem;
+        width: 80px;
+        background-color: #009EFF;
+    }
+    .my-img{
+        border-radius: 3rem 3rem 3rem 3rem;
+    }
     @media (max-width: 768px) {
         .my-btn-box li {
             flex: 1 1 calc(50% - 10px); /* 2 columns on tablet */
+        }
+        .add-cart{
+            width: 95%;
         }
     }
     @media (max-width: 480px) {
         .my-btn-box li {
             flex: 1 1 100%; /* 1 column on mobile */
         }
+    }
+    button{
+        z-index: 10;
+    }
+
+    .cr-data {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .my-btn-box {
+        margin-bottom: 20px;
+    }
+
+    .my-btn-box div {
+        border: 1px solid #f7f7fb;
+        border-radius: 8px;
+        background-color: #f7f7fb;
+    }
+
+    .da2b81213f {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .d488939770 {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #fff;
+        transition: background-color 0.3s;
+    }
+
+    .d488939770:hover {
+        background-color: #f0f0f0;
+    }
+
+    .f4822175d4 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: #eee;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .f4822175d4 svg {
+        width: 24px;
+        height: 24px;
+        fill: #555;
+    }
+
+    .aa8cb18438 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+    }
+
+    .aa8cb18438 svg {
+        width: 24px;
+        height: 24px;
+        fill: #555;
+    }
+
+    .e9a1d8ab5b {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .bf33709ee1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background-color: #ffffff;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .bf33709ee1:hover {
+        background-color: #0056b3;
+    }
+
+    .roomstable {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .roomstable th, .roomstable td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .roomstable th {
+        background-color: #f1f1f1;
+        font-weight: bold;
+    }
+
+    .roomstable a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .roomstable a:hover {
+        text-decoration: underline;
+    }
+
+    .review-score-component {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .review-score-component .score {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .review-score-component .rating {
+        font-size: 18px;
+        color: #777;
+    }
+
+    .review-subscore {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .review-subscore .label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .review-subscore .score {
+        font-size: 16px;
+        color: #777;
+    }
+
+    .review-subscore .meter {
+        width: 100%;
+        height: 8px;
+        background-color: #eee;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .review-subscore .meter span {
+        display: block;
+        height: 100%;
+        background-color: #007bff;
+    }
+
+    .topic-filter-component {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .topic-filter-component input {
+        margin-right: 10px;
+    }
+
+    .topic-filter-component .label {
+        font-size: 16px;
+        color: #333;
+    }
+    .da2b81213f,
+    .d3dffd48cb,
+    .c6381d692a {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .eb2c6a4f4b,
+    .e9a1d8ab5b {
+        font-weight: bold;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .da2b81213f, .d3dffd48cb, .c6381d692a{
+        width: 100%;
+    }
+    .eb2c6a4f4b, .e9a1d8ab5b {
+        width: 100%;
+        height: 100%;
+        /*display: flex;*/
+        align-items: center;
+        justify-content: center;
+    }
+    .ecf9109f95 .a338edc597 .cdce6c2a52 {
+        display: none;
+    }
+    button:not(:disabled), [type="button"]:not(:disabled), [type="reset"]:not(:disabled), [type="submit"]:not(:disabled) {
+        display: none;
+    }
+
+    .da2b81213f.f598d65660.ba88e720cd.bf38bcbedd.c6381d692a.da1088d585.caa4366310 {
+        /* 원하는 스타일 작성 */
+        width: 100%;
+    }
+    .e7975765d8.a338edc597.ef9f46e53a{
+        width: 50%;
+    }
+    .e7975765d8.a338edc597.df3d4584cf{
+        width: 50%;
+    }
+    .e7975765d8.a338edc597.cdce6c2a52{
+        display: none;
+    }
+    .my-btn-box > * {
+        width: 90%;
+    }
+    .ecf9109f95.a338edc597.ef9f46e53a ,
+    .ecf9109f95.a338edc597.df3d4584cf{
+        width: 50%;
+    }
+    .ecf9109f95.a338edc597.df3d4584cf > *,
+    .cc3f48b4d5.d73a3259c4{
+        height: 100%;
+        align-items: center;
+    }
+
+    .roomstable { /* 투숙객 수 , 숙박 업체 종류*/
+        margin: 0;
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    .da2b81213f.d3dffd48cb.c6381d692a{
+        height: 100%;
+    }
+    .cc3f48b4d5.d73a3259c4{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .bf33709ee1.d6d02bd320.a67c9a259a.js-legacy-room-name.af44803caf {
+        pointer-events: none; /* 클릭 비활성화 */
+        cursor: default; /* 마우스 커서를 기본 모양으로 변경 */
+    }
+    .my-btn-box-con > *{
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        margin: 1.3rem 1.3rem 1.3rem 1.3rem;
+        padding: 1.3rem 1.3rem 1.3rem 1.3rem;
+    }
+    .da2b81213f.f598d65660.ba88e720cd.bf38bcbedd.c6381d692a.da1088d585.caa4366310 .ecd0590af5{
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        font-size: large;
+        font-style: initial;
+        border: 0;
+    }
+
+    .f5113518a6{    /* 이건 이용 후기*/
+        display: none;
+    }
+    .eed6ad6ae5.f78d1a26ba.ca74d51094 svg{
+        width: 20px;
+        height: 20px;
+    }
+    .a338edc597.d58e499cfa.f2b16fe44a{
+        display: none;
+    }
+    .a338edc597.d58e499cfa > *{
+        border: 0px;
+    }
+    .da2b81213f.d3dffd48cb.c6381d692a{
+        border: 0px;
+    }
+    .da2b81213f.f598d65660.bf38bcbedd.c6381d692a.da1088d585.caa4366310{
+        border: 0;
+    }
+    .bd08814e06{
+        display: none;
+    }
+    .a338edc597.d58e499cfa .daa8593c50{
+        border: 0;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+    .a338edc597.d58e499cfa .bba3c3f611,
+    .a338edc597.d58e499cfa .d08b880f48{
+        border: 0;
+    }
+    .da2b81213f.f598d65660.bf38bcbedd.c6381d692a.da1088d585.caa4366310 .da2b81213f.f598d65660.cc63df6804.b5731cb5eb.d88a94cedb.c6381d692a{
+        border: 0;
+        margin: 1rem 1rem 1rem 1rem;
+    }
+    .da2b81213f.f598d65660.bf38bcbedd.c6381d692a.da1088d585.caa4366310 .da2b81213f.f598d65660.cc63df6804.b5731cb5eb.d88a94cedb.c6381d692a .d08b880f48.f24c988168{
+        font-size: 2rem;
+        color: #4B00FF;
+    }
+    [data-testid="PropertyReviewsRegionBlock"] .a18f252d36.d3e9d05e1e.dcf155a363 {
+        width: 80px;
+        height: 80px;
+    }
+    [data-testid="PropertyReviewsRegionBlock"] div:nth-of-type(4) {
+        display: none;
+    }
+    .fc0d487ba1 .da2b81213f.d3dffd48cb.c6381d692a > *{
+        width: 100%;
+    }
+    [data-testid="PropertyReviewsRegionBlock"] .fc0d487ba1 .da2b81213f.d3dffd48cb.c6381d692a .da2b81213f.f598d65660.ba88e720cd.cfe5c03925.c6381d692a
+    .fa298e29e2.b5501ca491.e8b7755ec7.b96211f5aa.afecc4e220.bdc5690074.c1c45c9268{
+        width: 80px;
+    }
+    [data-testid="PropertyReviewsRegionBlock"] .fc0d487ba1 .da2b81213f.d3dffd48cb.c6381d692a .da2b81213f.f598d65660.ba88e720cd.cfe5c03925.c6381d692a
+    .e98ee79976.daa8593c50{
+        width: calc(100% - 80px);
+    }
+     [data-testid="PropertyReviewsRegionBlock"] .fc0d487ba1 .da2b81213f.d3dffd48cb.c6381d692a .da2b81213f.f598d65660.ba88e720cd.cfe5c03925.c6381d692a
+     .e98ee79976.daa8593c50 .b290e5dfa6.a5cc9f664c{
+         height: 100%;
+     }
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies {
+        background-color: #f9f9f9; /* Light background for better contrast */
+        padding: 20px; /* Add some padding around the section */
+        border-radius: 10px; /* Rounded corners */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .containh2 {
+        margin-bottom: 20px; /* Space below the header */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description {
+        display: flex; /* Use flexbox for layout */
+        flex-direction: row; /* Elements in a row */
+        align-items: center; /* Align items vertically */
+        padding: 10px; /* Space around the content */
+        border: 1px solid #e0e0e0; /* Light border */
+        border-radius: 5px; /* Rounded corners */
+        margin-bottom: 10px; /* Space below each description */
+        background-color: #fff; /* White background for the descriptions */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .policy_name {
+        flex: 1; /* Allow this element to grow */
+        font-weight: bold; /* Bold text for policy names */
+        display: flex; /* Use flexbox for layout */
+        align-items: center; /* Align items vertically */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .policy_name_icon {
+        margin-right: 10px; /* Space between icon and text */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description p {
+        margin: 0; /* Remove default margins */
+        flex: 2; /* Allow this element to grow more */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description .child-policies-table-wrapper {
+        display: flex; /* Use flexbox for layout */
+        flex-wrap: wrap; /* Wrap content */
+    }
+
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description .child-policies-table-wrapper > div {
+        flex: 1; /* Flex item */
+        min-width: 200px; /* Minimum width for child items */
+        margin: 5px; /* Space between child items */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description .child-policies-table-wrapper h2 {
+        flex-basis: 100%; /* Take full width */
+        margin-bottom: 10px; /* Space below header */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description .payment_methods_overall {
+        display: flex; /* Use flexbox for layout */
+        flex-wrap: wrap; /* Wrap content */
+        align-items: center; /* Align items vertically */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description .payment_methods_overall img {
+        margin-right: 10px; /* Space between images */
+        max-height: 30px; /* Uniform height for images */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description .payment_methods_overall span {
+        margin-right: 10px; /* Space between text and images */
+    }
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies {
+        background-color: #f9f9f9; /* Light background for better contrast */
+        padding: 20px; /* Add some padding around the section */
+        border-radius: 10px; /* Rounded corners */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .containh2 {
+        display: flex; /* Use flexbox for layout */
+        justify-content: space-between; /* Space between title and button */
+        align-items: center; /* Align items vertically */
+        background-color: #fff; /* White background for the header */
+        padding: 15px; /* Space around the content */
+        border-radius: 5px; /* Rounded corners */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        margin-bottom: 20px; /* Space below the header */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .containh2 h2 {
+        margin: 0; /* Remove default margins */
+        font-size: 1.5em; /* Larger font size for the title */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description {
+        display: flex; /* Use flexbox for layout */
+        flex-direction: row; /* Elements in a row */
+        align-items: center; /* Align items vertically */
+        padding: 10px; /* Space around the content */
+        border: 1px solid #e0e0e0; /* Light border */
+        border-radius: 5px; /* Rounded corners */
+        margin-bottom: 10px; /* Space below each description */
+        background-color: #fff; /* White background for the descriptions */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .policy_name {
+        flex: 1; /* Allow this element to grow */
+        font-weight: bold; /* Bold text for policy names */
+        display: flex; /* Use flexbox for layout */
+        align-items: center; /* Align items vertically */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .policy_name_icon {
+        margin-right: 10px; /* Space between icon and text */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description p {
+        margin: 0; /* Remove default margins */
+        flex: 2; /* Allow this element to grow more */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .child-policies-table-wrapper {
+        display: flex; /* Use flexbox for layout */
+        flex-direction: column; /* Stack items vertically */
+        padding: 10px; /* Space around the content */
+        border: 1px solid #e0e0e0; /* Light border */
+        border-radius: 5px; /* Rounded corners */
+        background-color: #fff; /* White background for the wrapper */
+        margin-bottom: 10px; /* Space below the wrapper */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .child-policies-table-wrapper h2 {
+        font-size: 1.2em; /* Slightly larger font size for section titles */
+        margin-bottom: 10px; /* Space below the title */
+        color: #333; /* Darker color for better readability */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .child-policies-table-wrapper > div {
+        display: flex; /* Use flexbox for layout */
+        justify-content: space-between; /* Space between items */
+        padding: 5px 0; /* Vertical padding for items */
+        border-bottom: 1px solid #e0e0e0; /* Light border for separation */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .child-policies-table-wrapper > div:last-child {
+        border-bottom: none; /* Remove border for the last item */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .child-policies-table-wrapper .f001d0cda5 {
+        flex: 1; /* Allow this element to grow */
+        font-weight: bold; /* Bold text for age range */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .child-policies-table-wrapper .afc5337879 {
+        flex: 2; /* Allow this element to grow more */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description .payment_methods_overall {
+        display: flex; /* Use flexbox for layout */
+        flex-wrap: wrap; /* Wrap content */
+        align-items: center; /* Align items vertically */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description .payment_methods_overall img {
+        margin-right: 10px; /* Space between images */
+        max-height: 30px; /* Uniform height for images */
+    }
+
+    .page-section.js-k2-hp--block.k2-hp--facilities_and_policies .description .payment_methods_overall span {
+        margin-right: 10px; /* Space between text and images */
+    }
+    .add-cart{
+        width: 48%;
+    }
+    @media (max-width: 700px) {
+        .add-cart{
+            width: 95%;
+        }
+    }
+    .propertySectionFixedSpacing.fdac3a123a .eb2c6a4f4b{
+        text-align: left;
+        float: left;
+    }
+    .propertySectionFixedSpacing.fdac3a123a .dd29c92d5f.a5cc9f664c.b945536500{
+        display: none;
+    }
+    .propertySectionFixedSpacing.fdac3a123a svg{
+        margin-top: 1.3rem;
     }
 </style>
 <body>
@@ -79,14 +631,18 @@
         <div class="content-inner">
             <div class="content-container">
                 <section class="subvisual">
-                    <div class="text-wrap">
-                        <h1 style="margin-bottom: 2rem; margin-left: 1rem" class="title" th:text="${hotel.getName()}"></h1>
+                    <div class="text-wrap-1">
+                        <h1 style="margin-bottom: 2rem; margin-left: 1rem" class="title" th:text="${hotel.getName()}">
+
+                        </h1>
+                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; width: 80px; height: 40px; background-color: #009EFF"
+                                class="tedu-btn tedu-btn-light add-cart" onclick="history.back()">뒤로가기</button>
                     </div>
 
                     <div class="profile-box">
                         <div class="slider">
-                            <div th:each="imgUrl : ${imgUrlList}">
-                                <img th:src="${imgUrl}" alt="">
+                            <div th:each="imgUrl : ${imgUrlList}"  >
+                                <img th:src="${imgUrl}" alt="" class="my-img">
                             </div>
                         </div>
                     </div>
@@ -95,14 +651,21 @@
         </div>
     </div>
     <div class="tedu-N18" data-bid="JsLXmnn4Nl">
-        <div class="content-inner">
+        <div class="content-inner" style="padding-top: 0">
             <div class="content-container">
                 <section class="subvisual">
-                    <div class="my-btn-box">
-                        <div th:utext="${hotelCrawledInfoList.get(0).getCrContent()}"></div>
-                    </div>
-                    <div class="my-btn-box">
-                        <div th:utext="${hotelCrawledInfoList.get(0).getCrFacility()}"></div>
+                    <div class="cr-data">
+                        <div class="my-btn-box-con">
+                            <div th:utext="${hotelCrawledInfoList.get(0).getCrContent()}"></div>
+                        </div>
+                        <div class="my-btn-box">
+                            <div th:utext="${hotelCrawledInfoList.get(0).getCrFacility()}"></div>
+                        </div>
+                        <div class="my-btn-box">
+                            <div th:utext="${hotelCrawledInfoList.get(0).getCrRoomInfo()}"></div>
+                        </div>
+
+
                     </div>
                 </section>
             </div>
@@ -112,17 +675,20 @@
     <!-- [E]tedu-N18 -->
     <!-- [S]tedu-N20 -->
     <div class="tedu-N20" data-bid="nflxmnn4ye" style="z-index: 0; margin-top: 1px">
+
         <div class="content-container">
+
             <div class="sidebar">
                 <div class="text-warp">
                     <div class="cate-area">
                         <div class="tbox-list">
                             <span class="tbox" >최저가</span>
-                            <span class="tbox">오늘만!</span>
+                            <span style="margin-left: 1.3rem; background-color: #009EFF; color: white; cursor: pointer" class="tbox" id="back-my">뒤로가기</span>
                         </div>
                         <button type="button" class="ico-bookmark">
                             <em></em>
                             <span>북마크</span>
+
                         </button>
                     </div>
                     <div class="title-area">
@@ -168,7 +734,7 @@
                     </div>
                     <div class="tab-menu" id="inquiry-btn">
                         <a href="javascript:void(0)">
-                            <span>문의사항</span>
+                            <span>이용수칙</span>
                         </a>
                     </div>
                 </div>
@@ -227,10 +793,10 @@
                         </div>
                     </div>
 
-                    <div class="my-btn-box">
-                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; background-color: #4a8557"
+                    <div class="my-btn-box" style="display: flex">
+                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; background-color: #4a8557; display: flex;"
                                 class="tedu-btn tedu-btn-light add-cart" onclick="alert('클릭')">예약하기</button>
-                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem"
+                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; display: flex"
                                 class="tedu-btn tedu-btn-light add-cart" onclick="alert('클릭')">장바구니</button>
                     </div>
 
@@ -248,6 +814,9 @@
                     </div>
                     <div class="my-btn-box">
                         <div th:utext="${hotelCrawledInfoList.get(0).getCrFacilityInfo()}"></div>
+                    </div>
+                    <div class="my-btn-box">
+                        <div th:utext="${hotelCrawledInfoList.get(0).getCrReview()}"></div>
                     </div>
                     <div class="review-area">
                         <div class="reveiw-component">
@@ -400,60 +969,8 @@
                         <div class="title">문의사항</div>
                     </div>
                     <div class="acc-wrap">
-                        <div class="acc-item">
-                            <div class="acc-header">
-                                <button class="acc-btn" type="button">
-                                    <span class="acc-q">Q</span>
-                                    <strong>온라인 교육을 들을 수 있는 방법은 무엇인가요?</strong>
-                                </button>
-                            </div>
-                            <div class="acc-body">
-                                <div class="acc-cont"> 네, 강의는 수강 기간 내 여러번 반복 시청이 가능합니다. 강의에서 사용된 업계 전문 용어, 학습을 위한 참고자료, 미션 팁 등을 정리한 PDF 자료로 온라인으로 전달됩니다. 동영상 강의 수강권: 10만 원 / 온라인 코칭권 : 8만 원(1회 당) </div>
-                            </div>
-                        </div>
-                        <div class="acc-item">
-                            <div class="acc-header">
-                                <button class="acc-btn" type="button">
-                                    <span class="acc-q">Q</span>
-                                    <strong>결제기한은 언제까지인가요?</strong>
-                                </button>
-                            </div>
-                            <div class="acc-body">
-                                <div class="acc-cont"> 네, 강의는 수강 기간 내 여러번 반복 시청이 가능합니다. 강의에서 사용된 업계 전문 용어, 학습을 위한 참고자료, 미션 팁 등을 정리한 PDF 자료로 온라인으로 전달됩니다. 동영상 강의 수강권: 10만 원 / 온라인 코칭권 : 8만 원(1회 당) </div>
-                            </div>
-                        </div>
-                        <div class="acc-item active">
-                            <div class="acc-header">
-                                <button class="acc-btn" type="button">
-                                    <span class="acc-q">Q</span>
-                                    <strong>동영상 강의는 기간 내 무제한 시청이 가능한가요?</strong>
-                                </button>
-                            </div>
-                            <div class="acc-body">
-                                <div class="acc-cont"> 네, 강의는 수강 기간 내 여러번 반복 시청이 가능합니다. 강의에서 사용된 업계 전문 용어, 학습을 위한 참고자료, 미션 팁 등을 정리한 PDF 자료로 온라인으로 전달됩니다. 동영상 강의 수강권: 10만 원 / 온라인 코칭권 : 8만 원(1회 당) </div>
-                            </div>
-                        </div>
-                        <div class="acc-item">
-                            <div class="acc-header">
-                                <button class="acc-btn" type="button">
-                                    <span class="acc-q">Q</span>
-                                    <strong>2개 이상의 카드로 분할 결제할 수 있나요?</strong>
-                                </button>
-                            </div>
-                            <div class="acc-body">
-                                <div class="acc-cont"> 네, 강의는 수강 기간 내 여러번 반복 시청이 가능합니다. 강의에서 사용된 업계 전문 용어, 학습을 위한 참고자료, 미션 팁 등을 정리한 PDF 자료로 온라인으로 전달됩니다. 동영상 강의 수강권: 10만 원 / 온라인 코칭권 : 8만 원(1회 당) </div>
-                            </div>
-                        </div>
-                        <div class="acc-item">
-                            <div class="acc-header">
-                                <button class="acc-btn" type="button">
-                                    <span class="acc-q">Q</span>
-                                    <strong>포트폴리오 활용 용도에 적합한가요?</strong>
-                                </button>
-                            </div>
-                            <div class="acc-body">
-                                <div class="acc-cont"> 네, 강의는 수강 기간 내 여러번 반복 시청이 가능합니다. 강의에서 사용된 업계 전문 용어, 학습을 위한 참고자료, 미션 팁 등을 정리한 PDF 자료로 온라인으로 전달됩니다. 동영상 강의 수강권: 10만 원 / 온라인 코칭권 : 8만 원(1회 당) </div>
-                            </div>
+                        <div class="my-btn-box">
+                            <div th:utext="${hotelCrawledInfoList.get(0).getCrRule()}"></div>
                         </div>
                     </div>
                 </section>
@@ -570,6 +1087,9 @@
 
         $('#reply-btn').click(function () {
             showReply();
+        });
+        $('#back-my').click(function () {
+            history.back();
         });
 
         $('.slider').slick({
