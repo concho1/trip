@@ -229,7 +229,7 @@ body, html {
 }
 .card {
     width: 100%; /* 카드의 너비 설정 */
-    max-width: 800px; /* 최대 너비 설정 */
+    max-width: 1000px; /* 최대 너비 설정 */
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -415,4 +415,82 @@ input[type="checkbox"]:checked + label:after {
     border: solid #007bff;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
+}
+
+.separator {
+    display: inline-block;
+    width: 100px; /* 가로줄의 길이를 조정 */
+    border: none; /* 기본 테두리 제거 */
+    border-top: 3px solid red; /* 상단 테두리로 가로줄을 만듦 */
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    vertical-align: middle; /* 텍스트와 세로로 가운데 정렬 */
+}
+
+.durContainer {
+    display: flex;
+    align-items: center;
+    margin: 30px 0;
+    background-color: rgba(35, 133, 63, 0.1);
+    border-radius: 5px;
+}
+
+.segContainer {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+.flight-price {
+    padding-left: 20px;
+    padding-right: 30px;
+    font-weight: bold;
+    font-size: 20px;
+    color: red;
+}
+
+.airlineImg {
+    padding-right: 20px;
+}
+
+.seg1 {
+    margin: 10px 20px;
+    padding-left: 0;
+    width: 200px;
+    height: 100%;
+    max-height: 250px;
+    border-right: 5px solid gray;
+}
+
+.seg2 {
+    width: 200px;
+    height: 100%;
+    max-height: 250px;
+}
+
+.sg2 {
+    margin: 10px 0;
+}
+
+.sgTime {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.sgDay {
+    font-size: 13px;
+}
+
+.dv1 {
+    padding-right: 30px;
+}
+
+.dv2 {
+    padding-left: 30px;
+    border-left: 5px solid royalblue;
+}
+
+.tog-body {
+    font-size: 13px;
 }

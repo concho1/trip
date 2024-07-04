@@ -14,4 +14,5 @@ public class CartSegment {
     private String duration;
     private String carrierCode;
     private String carrierNum;
+    private String airlineKor;
 }

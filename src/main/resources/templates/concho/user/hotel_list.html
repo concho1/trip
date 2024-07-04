@@ -5,12 +5,32 @@
 <style>
 
     .card-img-my{
+        border-radius: 3rem 3rem 3rem 3rem;
         height: 25rem;
-        width: 70%;
+        width: 40%;
         margin-right: 1.3rem;
     }
     .myedu-cont{
-        width: 50%;
+        width: 38%;
+    }
+    .text-wrap-1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.3rem;
+    }
+    @media (max-width: 1000px) {
+        .my-text{
+            width: 100px;
+        }
+        .card-img-my{
+            height: 200px;
+            width: 50%;
+        }
+        .myedu-cont{
+            margin-top: 1.3rem;
+            width: 90%;
+        }
     }
     @media (max-width: 640px) {
         .my-text{
@@ -39,9 +59,10 @@
         <div class="content-inner">
             <div class="content-container">
                 <section class="myedu-wrap">
-                    <div class="title-wrap">
+                    <div class="title-wrap-1" style="display: flex; align-items: center; justify-content: space-between;">
                         <h3 class="cont-title">검색된 숙박 목록</h3>
-                        <h5><a href="/user/concho/service/search">다시 검색하기</a></h5>
+                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; width: 80px; height: 40px; background-color: #009EFF"
+                                class="tedu-btn tedu-btn-light add-cart" onclick="location.href='/user/concho/service/search'">뒤로가기</button>
                     </div>
                     <div class="tab-menu-wrap">
                         <div class="tab-menu active">
@@ -67,6 +88,7 @@
                         </div>
                     </div>
                     <div class="myedu-cont-wrap">
+                        <h1 id="message-my" style="margin-bottom: 3rem">정보를 가져오는 중입니다....</h1>
                         <th:block th:if="${hotelList != null && !hotelList.isEmpty()}">
                             <div class="myedu-area" th:each="hotel : ${hotelList}" th:id="${hotel.getHotelId()}" style="display: none">
                                 <img class="card-img-my" src="/common/images/hotel_base.png" alt="이미지">
@@ -108,11 +130,75 @@
     let iataCode = /*[[${iataCode}]]*/ null;
     let $viewBox = $('.myedu-cont-wrap');
     let $hotelCnt = $('#hotel-cnt');
-    let hotelLoadCnt = 0;
+
     let hotelReqCnt = 0;
+    let hotelLoadingTrueCnt = 0;
+    let endHotelLoadingCnt = 0;
+    let startIdx = 0;
+    let endIdx = 20;
     let isLoading = false;
+
     console.log(hotelInfoList);
+    function getHotelInfoAndCrawling(startIndex, endIndex) {
+        if(isLoading){
+            alert('호텔 정보를 로딩중입니다..');
+            return false;
+        }
+        isLoading = true;
+        // 호텔 list 가 startIndex 보다 작을때
+        if(hotelInfoList.length < startIndex){
+            alert('모든 호텔 정보를 가져왔습니다.');
+            return false;
+        // 호텔 list 가 startIndex , endIndex 사이일때
+        }else if(startIndex <= hotelInfoList.length && hotelInfoList.length <= endIndex){
+            alert('마지막 호텔 리스트를 가져옵니다.');
+        }
+
+        console.log('크롤링 시작 : ' + startIndex + " " + endIndex);
+        $.each(hotelInfoList.slice(startIndex, endIndex), function (index, hotel) {
+            console.log('크롤링 for 문');
+            hotelReqCnt++;
+            let formData = new FormData();
+
+            formData.append('hotelName', hotel.name);
+            formData.append('iataCode', iataCode);
+            formData.append('hotelId', hotel.hotelId);
+
+            ajaxGo('/concho/crawling', formData, function (response) {
+                endHotelLoadingCnt++;
+                if(endHotelLoadingCnt === hotelReqCnt){
+                    $('#message-my').hide();
+                    isLoading = false;
+                }
+                if (response.result === 'ok') {
+                    hotelLoadingTrueCnt++;
+                    let $box = $viewBox.find(`#${response.hotelId}`);
+                    let $img = $box.find('.card-img-my');
+                    $img.attr('src', response.imgUrl);
+                    $box.show();
+                    $hotelCnt.text(Number($hotelCnt.text()) + 1);
+                    //console.log(hotel.name + " 호텔 로딩 완료 " + response.hotelId);
+                } else {
+                    //console.log(`#${hotel.hotelId}`);
+                    //let $box = $viewBox.find(`#${response.hotelId}`);
+                    //$box.hide();
+                    //console.log(hotel.name + " 호텔 숨기기 " + response.hotelId);
+                }
+            });
+        });
+    }
+    $(document).on('click', '#more', function (){
+        endIdx += 10;
+        startIdx = (endIdx-10);
+        getHotelInfoAndCrawling(startIdx, endIdx);
+    });
+
+
     $(document).ready(function() {
+        // 초기 로딩
+        getHotelInfoAndCrawling(startIdx, endIdx);
+
+
         $('.btn-link').on('click', function() {
             let hotelIdKey = $(this).data('hotel-id-key');
             let hotelId = $(this).data('hotel-id');
@@ -153,73 +239,6 @@
 
     });
 
-    $(document).on('click', '#more', function (){
-        if(isLoading) return false;
-        isLoading = true;
-        // hotelReqCnt 부터 10 개씩 더 불러오는걸로 수정
-        let startIndex = hotelReqCnt;
-        let endIndex = hotelReqCnt + 10;
-        console.log('크롤링 시작');
-        $.each(hotelInfoList.slice(startIndex, endIndex), function (index, hotel) {
-            console.log('크롤링 for 문');
-            hotelReqCnt++;
-            let formData = new FormData();
-
-            formData.append('hotelName', hotel.name);
-            formData.append('iataCode', iataCode);
-            formData.append('hotelId', hotel.hotelId);
-
-            ajaxGo('/concho/crawling', formData, function (response) {
-                if (response.result === 'ok') {
-                    let $box = $viewBox.find(`#${response.hotelId}`);
-                    let $img = $box.find('.card-img-my');
-                    $img.attr('src', response.imgUrl);
-                    $hotelCnt.text(Number($hotelCnt.text()) + 1);
-                    console.log(hotel.name + " 호텔 로딩 완료 " + response.hotelId);
-                    hotelLoadCnt++;
-                    $box.show();
-                } else {
-                    console.log(`#${hotel.hotelId}`);
-                    let $box = $viewBox.find(`#${response.hotelId}`);
-                    $box.hide();
-                    console.log(hotel.name + " 호텔 숨기기 " + response.hotelId);
-                }
-            });
-        });
-        isLoading = false;
-    });
-
-    // 크롤링을 요청하고 이미지 받아오기
-    $.each(hotelInfoList, function (index, hotel) {
-        isLoading = true;
-        hotelReqCnt++;
-        if(hotelReqCnt > 50){
-            isLoading = false;
-            return false;
-        }
-        let formData = new FormData();
-
-        formData.append('hotelName', hotel.name);
-        formData.append('iataCode', iataCode);
-        formData.append('hotelId', hotel.hotelId);
-
-        ajaxGo('/concho/crawling', formData, function (response) {
-            if(response.result === 'ok'){
-                let $box = $viewBox.find(`#${response.hotelId}`);
-                let $img = $box.find('.card-img-my');
-                $img.attr('src', response.imgUrl);
-                $hotelCnt.text(Number($hotelCnt.text()) + 1);
-                console.log(hotel.name + " 호텔 로딩 완료 " + response.hotelId);
-                hotelLoadCnt++;
-                $box.show();
-            }else{
-                console.log(`#${hotel.hotelId}`);
-                let $box = $viewBox.find(`#${response.hotelId}`);
-                $box.hide();
-                console.log(hotel.name + " 호텔 숨기기 " + response.hotelId)
-            }
-        });
-    });
 
     function ajaxGo(url, formData, callback){
         let responseResult = null;

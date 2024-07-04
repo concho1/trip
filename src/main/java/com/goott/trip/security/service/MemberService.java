@@ -58,11 +58,19 @@ public class MemberService {
 
         // 비밀번호 업데이트
         String encodedPwd = passwordEncoder.encode(newPw);
-        int result = memberMapper.updatePwd(id, encodedPwd);
-
-        return result; // 업데이트 결과 반환
+        return memberMapper.updatePwd(id, encodedPwd); // 업데이트 결과 반환
     }
 
+    /*// 회원 탈퇴
+    public int deleteMem(String id) {return this.memberMapper.deleteMem(id);}*/
+
     // 회원 탈퇴
-    public int deleteMem(String id) {return this.memberMapper.deleteMem(id);}
+    public int deleteMem(String id, String pw) {
+        // 기존 비밀번호 확인
+        if (!checkPwd(id, pw)) {
+            return 0; // 기존 비밀번호가 일치하지 않으면 실패
+        }
+        // 회원 탈퇴 처리
+        return memberMapper.deleteMem(id); // 탈퇴 결과 반환
+    }
 }

@@ -217,4 +217,6 @@ public class Hamcontroller {
 
     @GetMapping("/shoppingCart")
     public ModelAndView shoppingCart() {return new ModelAndView("Hamster/shoppingCart");}
+
+
 }
