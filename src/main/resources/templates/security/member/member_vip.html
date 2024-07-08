@@ -4,7 +4,8 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <link rel="stylesheet" th:href="@{/security/css/memberInfo.css}">
 <link rel="stylesheet" th:href="@{/security/css/vip.css}">
-<!--<link rel="stylesheet" th:href="@{/security/css/vipImfo.css}">-->
+<link rel="stylesheet" th:href="@{/security/css/vipImfo.css}">
+
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
@@ -35,74 +36,6 @@
                         </div>
                     </div>
 
-                    <!--등급 설명할 때 사용하면 좋을 듯-->
-                    <!--<div class="vip-container">
-                        <span class="vip-badge">VIP</span>
-
-                        <div class="vip-tier">
-                            <h3>Bronze</h3>
-                            <p>기본 회원 및 최근 2년 동안 1건의 예약 완료</p>
-                            <div class="vip-bar-container">
-                                <div class="vip-bar vip-Bronze"></div>
-                            </div>
-                            <ul class="vip-benefits">
-                                <li>베스트 요금 보장</li>
-                                <li>회원 특가 혜택</li>
-                            </ul>
-                        </div>
-
-                        <div class="vip-tier">
-                            <h3>Silver</h3>
-                            <p>최근 2년 동안 2건 이상 예약 완료</p>
-                            <div class="vip-bar-container">
-                                <div class="vip-bar vip-silver"></div>
-                            </div>
-                            <ul class="vip-benefits">
-                                <li>베스트 요금 보장</li>
-                                <li>회원 특가 혜택</li>
-                                <li>VIP 특가 혜택 - 최대 12% 할인</li>
-                            </ul>
-                        </div>
-
-                        <div class="vip-tier">
-                            <h3>Gold</h3>
-                            <p>최근 2년 동안 5건 이상 예약 완료</p>
-                            <div class="vip-bar-container">
-                                <div class="vip-bar vip-gold"></div>
-                            </div>
-                            <ul class="vip-benefits">
-                                <li>베스트 요금 보장</li>
-                                <li>회원 특가 혜택</li>
-                                <li>VIP 특가 혜택 - 최대 12% 할인</li>
-                                <li>VIP 특가 혜택 - 최대 18% 할인</li>
-                            </ul>
-                        </div>
-
-                        <div class="vip-tier">
-                            <h3>Platinum</h3>
-                            <p>최근 2년 동안 10건 이상 예약 완료한 최고 회원을 위한 독점 혜택</p>
-                            <div class="vip-bar-container">
-                                <div class="vip-bar vip-platinum"></div>
-                            </div>
-                            <ul class="vip-benefits">
-                                <li>베스트 요금 보장</li>
-                                <li>회원 특가 혜택</li>
-                                <li>VIP 특가 혜택 - 최대 12% 할인</li>
-                                <li>VIP 특가 혜택 - 최대 18% 할인</li>
-                                <li>VIP 특가 혜택 - 최대 25% 할인</li>
-                                <li>일부 숙소 이용 시 무료 조식 및 기타 혜택 제공</li>
-                            </ul>
-                        </div>
-
-                        &lt;!&ndash;<ul class="vip-benefits">
-                            <li>독점 할인 혜택</li>
-                            <li>우선 고객 서비스</li>
-                            <li>조기 판매 접근</li>
-                        </ul>&ndash;&gt;
-
-                        <a href="#" class="vip-button">예약하러 가기</a>
-                    </div>-->
-
                     <div class="vip-container">
                         <!--<span class="vip-badge">VIP Member</span>-->
 
@@ -129,6 +62,70 @@
                             <li>우선 고객 서비스</li>
                             <li>조기 판매 접근</li>
                         </ul>
+
+                        <a href="search_flight" class="vip-button">예약하러 가기</a>
+                    </div>
+
+                    <br><br><br>
+
+                    <!--등급 설명-->
+                    <div class="explain-container">
+                        <span class="explain-badge">VIP</span>
+
+                        <div class="explain-tier">
+                            <h3>Bronze</h3>
+                            <p>기본 회원 및 최근 2년 동안 1건의 예약 완료</p>
+                            <div class="explain-bar-container">
+                                <div class="explain-bar explain-Bronze"></div>
+                            </div>
+                            <ul class="explain-benefits">
+                                <li>베스트 요금 보장</li>
+                                <li>회원 특가 혜택</li>
+                            </ul>
+                        </div>
+
+                        <div class="explain-tier">
+                            <h3>Silver</h3>
+                            <p>최근 2년 동안 2건 이상 예약 완료</p>
+                            <div class="explain-bar-container">
+                                <div class="explain-bar explain-silver"></div>
+                            </div>
+                            <ul class="explain-benefits">
+                                <li>베스트 요금 보장</li>
+                                <li>회원 특가 혜택</li>
+                                <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                            </ul>
+                        </div>
+
+                        <div class="explain-tier">
+                            <h3>Gold</h3>
+                            <p>최근 2년 동안 5건 이상 예약 완료</p>
+                            <div class="explain-bar-container">
+                                <div class="explain-bar explain-gold"></div>
+                            </div>
+                            <ul class="explain-benefits">
+                                <li>베스트 요금 보장</li>
+                                <li>회원 특가 혜택</li>
+                                <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                                <li>VIP 특가 혜택 - 최대 18% 할인</li>
+                            </ul>
+                        </div>
+
+                        <div class="explain-tier">
+                            <h3>Platinum</h3>
+                            <p>최근 2년 동안 10건 이상 예약 완료한 최고 회원을 위한 독점 혜택</p>
+                            <div class="explain-bar-container">
+                                <div class="explain-bar explain-platinum"></div>
+                            </div>
+                            <ul class="explain-benefits">
+                                <li>베스트 요금 보장</li>
+                                <li>회원 특가 혜택</li>
+                                <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                                <li>VIP 특가 혜택 - 최대 18% 할인</li>
+                                <li>VIP 특가 혜택 - 최대 25% 할인</li>
+                                <li>일부 숙소 이용 시 무료 조식 및 기타 혜택 제공</li>
+                            </ul>
+                        </div>
 
                         <a href="#" class="vip-button">예약하러 가기</a>
                     </div>
