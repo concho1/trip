@@ -7,8 +7,11 @@
         <selectKey resultType="int" keyProperty="crNum" order="BEFORE">
             SELECT IFNULL(max(cr_num), 0) + 1 FROM trip.hotel_crawled_info
         </selectKey>
-        INSERT INTO hotel_crawled_info (cr_num, cr_hotel_id, cr_facility, cr_facility_info, cr_content)
-        VALUES (#{crNum}, #{crHotelId}, #{crFacility}, #{crFacilityInfo}, #{crContent})
+        INSERT INTO hotel_crawled_info (cr_num, cr_hotel_id, cr_facility, cr_facility_info,
+            cr_content, cr_room_info, cr_review,cr_rule, cr_hotel_name_ko, cr_hotel_stars)
+        VALUES (#{crNum}, #{crHotelId}, #{crFacility},
+                #{crFacilityInfo}, #{crContent}, #{crRoomInfo}, #{crReview},
+                #{crRule},#{crHotelNameKo}, #{crHotelStars})
     </insert>
 
     <select id="findHotelCrawledInfoByHotelId" parameterType="String" resultType="HotelCrawledInfo">
@@ -42,8 +45,7 @@
     <select id="existsHotelInAllTables" parameterType="String" resultType="Boolean">
         SELECT CASE
                    WHEN (EXISTS (SELECT 1 FROM hotel_crawled_info WHERE cr_hotel_id = #{crHotelId})
-                       AND EXISTS (SELECT 1 FROM hotel_crawled_img WHERE cr_hotel_id = #{crHotelId})
-                       AND EXISTS (SELECT 1 FROM hotel_crawled_room WHERE cr_hotel_id = #{crHotelId}))
+                       AND EXISTS (SELECT 1 FROM hotel_crawled_img WHERE cr_hotel_id = #{crHotelId}))
                        THEN TRUE
                    ELSE FALSE
                    END

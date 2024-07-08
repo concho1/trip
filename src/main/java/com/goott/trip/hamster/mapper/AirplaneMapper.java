@@ -1,7 +1,7 @@
 package com.goott.trip.hamster.mapper;
 
 import com.goott.trip.hamster.model.Testproduct;
-import com.goott.trip.hamster.model.airplaneInfo;
+import com.goott.trip.hamster.model.AirplaneInfo;
 import com.goott.trip.jhm.model.CartDuration;
 import com.goott.trip.jhm.model.CartFlight;
 import com.goott.trip.jhm.model.CartPricing;
@@ -17,7 +17,7 @@ public interface AirplaneMapper {
 
     public Testproduct airplaneCont(String key);
 
-    public List<airplaneInfo> airplaneInfoList();
+    public List<AirplaneInfo> airplaneInfoList();
 
     public List<CartFlight> getAirInfo(String AirKey);
 
