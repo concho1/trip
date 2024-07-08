@@ -1,0 +1,74 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
+<body>
+<div th:replace="~{common/head :: head-fragment}"></div>
+
+<main class="th-layout-main ">
+
+    <div class="background">
+        <div class="faq-list">
+            <div class="title-wrap">
+                <h3 class="cont-title">자주 묻는 질문</h3>
+            </div>
+
+            <div class="radio-group" style="display: flex; align-items: center;">
+                <label class="custom-radio">
+                    <input name="faq_div" type="radio" value="flight" checked>
+                    <span class="button-style">항공</span>
+                </label>
+
+                <label class="custom-radio">
+                    <input name="faq_div" type="radio" value="hotel">
+                    <span class="button-style">숙소</span>
+                </label>
+            </div>
+
+            <div class="accordion-wrapper">
+
+                <div class="acc" th:if="${faqList != null}" th:each="faq : ${faqList}">
+                    <div class="faq-acc"><span class="faq-title" th:text="${faq.faqTitle}"></span> <img th:src="@{/asset/icons/ico_arrow_down.svg}" class="accBtn" alt="화살표"></div>
+                    <div class="faq-acc-panel"><span class="faq-cont" th:text="${faq.faqCont}"></span></div>
+                </div>
+
+            </div>
+            <input type="button" onclick="insertFaq()" value="추가">
+            <div id="faqModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="faqClose">&times;</span>
+                    <form method="post" action="insertFaq">
+                        <div class="radio-group" style="display: flex; align-items: center;">
+                            <label class="custom-radio">
+                                <input name="div" type="radio" value="flight">
+                                <span class="button-style">항공</span>
+                            </label>
+
+                            <label class="custom-radio">
+                                <input name="div" type="radio" value="hotel">
+                                <span class="button-style">숙소</span>
+                            </label>
+                        </div>
+                        <label for="faq-new-title">제목</label> <br>
+                        <input name="title" id="faq-new-title">
+                        <hr>
+                        <div id="faqModalBody">
+                            <label for="faq_cont">내용</label> <br>
+                            <textarea id="faq_cont" name="cont" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="button-style">추가</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<script th:src="@{/jhm/jhm.js}"></script>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+</body>

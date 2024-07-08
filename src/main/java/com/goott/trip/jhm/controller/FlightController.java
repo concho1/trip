@@ -2,7 +2,7 @@ package com.goott.trip.jhm.controller;
 
 
 import com.amadeus.exceptions.ResponseException;
-import com.goott.trip.hamster.model.shoppingCart;
+import com.goott.trip.hamster.model.ShoppingCart;
 import com.goott.trip.jhm.model.*;
 import com.goott.trip.jhm.service.FlightService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
+@RequestMapping("flight")
 public class FlightController {
 
     @Autowired
@@ -185,7 +186,7 @@ public class FlightController {
                                     "arrivalAt", "duration", "carrierCode", "carrierNum", "airlineKor"};
         String[] durationHead = {"id", "itineraryCode", "flightCode", "depOrComb", "duration", "airline", "airlineKor", "airlineImg"};
 
-        shoppingCart cart = new shoppingCart();
+        ShoppingCart cart = new ShoppingCart();
         cart.setMemberId(memberId);
         cart.setAirKey(ffvId);
 

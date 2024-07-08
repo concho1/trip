@@ -1,8 +1,8 @@
-package com.goott.trip.jhm.model;
+package com.goott.trip.jhm.mapper;
 
 import com.goott.trip.hamster.model.shoppingCart;
+import com.goott.trip.jhm.model.*;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

@@ -155,21 +155,30 @@
                     </div>
                     <div class="form-wrap">
                         <div class="form-body" id="delete" style="display: none;">
-                            <form th:action="@{/member/ming/delete}" method="post">
+                            <form th:action="@{/member/ming/delete}" method="post" style="text-align: center;">
                                 <div class="form-check">
                                     <p>탈퇴 후 회원정보 및 개인형 서비스 이용기록은 모두 삭제됩니다.</p><br>
                                     <p>탈퇴 후에도 게시판형 서비스에 등록한 게시물은 그대로 남아 있습니다.</p><br>
                                     <p>회원정보 및 결제내역, 이용기록은 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다.</p><br>
                                     <div class="mb-4" style="color: red;">
                                         <p>탈퇴 후에는 아이디 (<span th:text="${dto.id}"></span>)의 데이터는 복구할 수 없습니다.</p><br>
-                                    </div> <br>
+                                    </div>
 
-                                    <p>
+                                    <div class="checkset" style="justify-content: center;">
+                                        <input id="checkset-all" name="chk" class="checkset-input input-round" type="checkbox" value="">
+                                        <label class="checkset-label" for="checkset-all"></label>
+                                        <!--<label class="form-check-label">
+                                            안내 사항을 모두 확인하였으며, 이에 동의합니다.
+                                        </label>-->
+                                        <span class="checkset-text">안내 사항을 모두 확인하였으며, 이에 동의합니다.</span>
+                                    </div>
+
+                                    <!--<p>
                                         <input class="form-check-input" type="checkbox" name="chk" id="proOffers" style="margin-left: 3px;">&nbsp;
                                         <label class="form-check-label" for="proOffers">
                                             안내 사항을 모두 확인하였으며, 이에 동의합니다.
                                         </label>
-                                    </p>
+                                    </p>-->
                                     <!--<div class="d-flex justify-content-center">
                                         <div class="col-md-8 col-lg-9 col-xl-5">
                                             <div class="input-group mb-3 align-items-center">
@@ -181,9 +190,9 @@
                                     </div>-->
 
                                 </div>
-                                <div class="form-footer btn-box">
-                                    <input type="password" name="pw" placeholder="비밀번호 입력" aria-label="pw" aria-describedby="button-addon2">
-                                    <button class="tedu-btn tedu-btn-light btn-link" type="submit" id="pwdButton" onclick="return boxcheck()">탈퇴</button>
+                                <div class="form-footer btn-box" >
+                                    <input type="password" name="pw" placeholder="비밀번호 입력" aria-label="pw" aria-describedby="button-addon2" style="width: 30%;">
+                                    <button class="tedu-btn tedu-btn-light btn-link" type="submit" id="pwdButton" onclick="return boxcheck()" style="width: 20%;">탈퇴</button>
                                 </div>
 
                             </form>

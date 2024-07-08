@@ -2,7 +2,7 @@ package com.goott.trip.hamster.service;
 
 import com.goott.trip.hamster.mapper.AirplaneMapper;
 import com.goott.trip.hamster.model.Testproduct;
-import com.goott.trip.hamster.model.airplaneInfo;
+import com.goott.trip.hamster.model.AirplaneInfo;
 import com.goott.trip.jhm.model.CartDuration;
 import com.goott.trip.jhm.model.CartFlight;
 import com.goott.trip.jhm.model.CartPricing;
@@ -23,7 +23,7 @@ public class airplaneService {
 
     public Testproduct airplaneCont(String key){return this.mapper.airplaneCont(key); };
 
-    public List<airplaneInfo> airplaneInfoList(){return this.mapper.airplaneInfoList(); };
+    public List<AirplaneInfo> airplaneInfoList(){return this.mapper.airplaneInfoList(); };
 
     public List<CartFlight> getAirInfo(String AirKey){return this.mapper.getAirInfo(AirKey); }
 

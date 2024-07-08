@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.goott.trip.jhm.model.FlightMapper">
+<mapper namespace="com.goott.trip.jhm.mapper.FlightMapper">
 
     <insert id="uploadAirport">
         insert into trip.airport(eng_name, kor_name, iata, icao, region, eng_country, kor_country, eng_city, kor_city) values
