@@ -4,6 +4,13 @@ function changeTo() {
     document.getElementById("destination").value = origin;
 }
 
+function insertFaq() {
+    $('input[name="div"]').prop('checked', false);
+    $('#faq-new-title').val('');
+    $('#faq_cont').val('');
+    $('#faqModal').show();
+}
+
 $(document).ready(function() {
     const orgModal = $("#originModal");
     const desModal = $("#desModal");
@@ -16,6 +23,59 @@ $(document).ready(function() {
     const input = $("#origin");
     const des = $("#destination");
     const peo = $("#peopleAndClass");
+
+    $('#faqClose').click(function() {
+        $('#faqModal').hide();
+    })
+
+    $(window).on('click', function(event) {
+        if ($(event.target).is('#faqModal')) {
+            $('#faqModal').hide();
+        }
+    })
+
+    $(document).on('click', '.faq-acc', function() {
+        $(this).next('.faq-acc-panel').slideToggle();
+        $('.faq-acc-panel').not($(this).next()).slideUp();
+
+        $(this).children('.accBtn').toggleClass('faq-acc-rotate');
+        $(this).children('.faq-title').toggleClass('faq-title-open')
+        $('.accBtn').not($(this).children()).removeClass('faq-acc-rotate');
+        $('.faq-title').not($(this).children()).removeClass('faq-title-open');
+
+    });
+
+    $('input[name=faq_div]').change(function() {
+        let div = $('input[name=faq_div]:checked').val();
+
+        $.ajax({
+            type : 'post',
+            url : 'showFAQByDiv',
+            data : { div : div },
+            dataType : 'json',
+            success : function(res) {
+
+                $('.accordion-wrapper').empty();
+
+                $.each(res, function(i) {
+                    let acc = $('<div class="acc"></div>');
+                    let faqAcc = $('<div class="faq-acc"></div>');
+                    let faqTitle = $('<span class="faq-title"></span>').text(res[i].title);
+                    let faqImg = $('<img src="/asset/icons/ico_arrow_down.svg" class="accBtn" alt="화살표">');
+                    let faqAccPanel = $('<div class="faq-acc-panel"></div>');
+                    let faqCont = $('<span class="faq-cont"></span>').text(res[i].cont);
+
+                    faqAcc.append(faqTitle).append(faqImg);
+                    faqAccPanel.append(faqCont);
+                    acc.append(faqAcc).append(faqAccPanel);
+                    $('.accordion-wrapper').append(acc);
+                });
+            },
+            error : function() {
+                alert('FAQ 로드 중 에러 발생');
+            }
+        });
+    });
 
     $('input[name=radioset-a]').change(function() {
         let oneWay = $('input[name=radioset-a]:checked').val();
@@ -233,183 +293,195 @@ $(document).ready(function() {
         }
     });
 
-        $('.goPayBtn').click(function() {
-            listFfv();
-            let ffvId = $(this).closest('.card').find('#ffvId').val();
-            let memberId = $(this).closest('.card').find('#memberId').val();
-        })
+    $('.goPayBtn').click(function() {
+        let card = $(this).closest('.card');
+        let ffvData = card.data('ffv');
+        let ffvId = $(this).closest('.card').find('#ffvId').val();
+        let origin = $(this).closest('.card').find('#origin').val();
+        let des = $(this).closest('.card').find('#destination').val();
+        let dep = $(this).closest('.card').find('#departure').val();
+        let comb = $(this).closest('.card').find('#comeback').val();
+        let adults = $(this).closest('.card').find('#adults').val();
+        let children = $(this).closest('.card').find('#children').val();
+        let infants = $(this).closest('.card').find('#infants').val();
+        let memberId = $(this).closest('.card').find('#memberId').val();
 
-        function listFfv() {
-            let card = $(this).closest('.card');
-            let ffvData = card.data('ffv');
-            let ffvId = $(this).closest('.card').find('#ffvId').val();
-            let origin = $(this).closest('.card').find('#origin').val();
-            let des = $(this).closest('.card').find('#destination').val();
-            let dep = $(this).closest('.card').find('#departure').val();
-            let comb = $(this).closest('.card').find('#comeback').val();
-            let adults = $(this).closest('.card').find('#adults').val();
-            let children = $(this).closest('.card').find('#children').val();
-            let infants = $(this).closest('.card').find('#infants').val();
-            let memberId = $(this).closest('.card').find('#memberId').val();
-
-            if(memberId == "") {
-                alert("회원가입 후 이용하실 수 있습니다.");
-            }else {
-                insertFfv(ffvData, ffvId, origin, des, dep, comb, memberId, adults, children, infants);
-            }
-        }
-
-        function insertFfv(data, ffvId, origin, des, dep, comb, memberId, adults, children, infants) {
+        if (memberId == "") {
+            alert("회원가입 후 이용하실 수 있습니다.");
+        } else {
             $.ajax({
-                type : 'post',
-                url : 'insertFfv',
-                data : { ffv : data,
-                    ffvId : ffvId,
-                    origin : origin,
-                    des : des,
-                    dep : dep,
-                    comb : comb,
-                    adults : adults,
-                    children : children,
-                    infants : infants,
-                    memberId : memberId
+                type: 'post',
+                url: 'insertFfv',
+                data: {
+                    ffv: ffvData,
+                    ffvId: ffvId,
+                    origin: origin,
+                    des: des,
+                    dep: dep,
+                    comb: comb,
+                    adults: adults,
+                    children: children,
+                    infants: infants,
+                    memberId: memberId
                 },
-                error : function() {
+                success: function () {
+                    let form = $('<form>', {
+                        'method' : 'POST',
+                        'action' : 'member/hamster/airplane/ticketing'
+                    });
+
+                    let key = $('<input>', {
+                        'type' : 'hidden',
+                        'name' : 'key',
+                        'value' : ffvId
+                    })
+
+                    form.append(key);
+
+                    $(document.body).append(form);
+                    form.submit();
+
+                },
+                error: function () {
                     alert('db 저장 중 오류 발생');
                 }
+
             });
         }
+    })
 
-        const date = new Date();
-        let depCurrYear = date.getFullYear();
-        let combCurrYear = date.getFullYear();
-        let depCurrMonth = date.getMonth();
-        let combCurrMonth = date.getMonth();
-        const months = ['Jenuary', 'February', 'March',
-            'April', 'May', 'June',
-            'July', 'August', 'September',
-            'October', 'November', 'December'];
 
-        function renderDepCalendar() {
-            $('#dep-currentDate').html(`${months[depCurrMonth]} ${depCurrYear}`);
+    const date = new Date();
+    let depCurrYear = date.getFullYear();
+    let combCurrYear = date.getFullYear();
+    let depCurrMonth = date.getMonth();
+    let combCurrMonth = date.getMonth();
+    const months = ['Jenuary', 'February', 'March',
+        'April', 'May', 'June',
+        'July', 'August', 'September',
+        'October', 'November', 'December'];
 
-            let lastDay = new Date(depCurrYear, depCurrMonth+1, 0).getDate();
-            let first_yoil = new Date(depCurrYear, depCurrMonth, 1).getDay();
-            let last_yoil = new Date(depCurrYear, depCurrMonth, lastDay).getDay();
-            let lastDayofLastMonth = new Date(depCurrYear, depCurrMonth, 0).getDate();
-            let dayTag = "";
+    function renderDepCalendar() {
+        $('#dep-currentDate').html(`${months[depCurrMonth]} ${depCurrYear}`);
 
-            for(let i=first_yoil; i>0; i--) {
-                dayTag += `<li class="inactive">${lastDayofLastMonth - i + 1}</li>`;
-            }
+        let lastDay = new Date(depCurrYear, depCurrMonth+1, 0).getDate();
+        let first_yoil = new Date(depCurrYear, depCurrMonth, 1).getDay();
+        let last_yoil = new Date(depCurrYear, depCurrMonth, lastDay).getDay();
+        let lastDayofLastMonth = new Date(depCurrYear, depCurrMonth, 0).getDate();
+        let dayTag = "";
 
-            for(let i=1; i<= lastDay; i++) {
-
-                let isToday = i === date.getDate() &&
-                depCurrMonth === new Date().getMonth() &&
-                depCurrYear === new Date().getFullYear()
-                    ? 'dep-active' : '';
-                dayTag += `<li id="${isToday}">${i}</li>`
-            }
-
-            for(let i=last_yoil; i<6; i++) {
-                dayTag += `<li class="inactive">${i - last_yoil + 1}</li>`;
-            }
-
-            $('#dep-days').html(dayTag);
-
-            $('#dep-days li').on('click', function() {
-                if($(this).attr('class') != "inactive"){
-                    $('#dep-days li').removeAttr('id');
-                    $(this).attr('id', 'dep-active');
-                    let monVal = (depCurrMonth+1).toString().padStart(2, "0")
-                    let dayVal = `${depCurrYear}-${monVal}-${$(this).text().padStart(2, "0")}`;
-                    $('#depDate').val(dayVal);
-                    $('#depCalendarContainer').hide();
-                }
-            });
+        for(let i=first_yoil; i>0; i--) {
+            dayTag += `<li class="inactive">${lastDayofLastMonth - i + 1}</li>`;
         }
 
-        $('#dep-shang').on('click', function() {
-            if(depCurrMonth == 0) {
-                depCurrMonth = 11;
-                depCurrYear = depCurrYear - 1;
-            }else {
-                depCurrMonth = depCurrMonth - 1;
-            }
-            renderDepCalendar();
-        });
+        for(let i=1; i<= lastDay; i++) {
 
-        $('#dep-xia').on('click', function() {
-            if(depCurrMonth == 11) {
-                depCurrMonth = 0;
-                depCurrYear = depCurrYear + 1;
-            }else {
-                depCurrMonth = depCurrMonth + 1;
-            }
-            renderDepCalendar();
-        });
-
-        function renderCombCalendar() {
-            $('#comb-currentDate').html(`${months[combCurrMonth]} ${combCurrYear}`);
-
-            let lastDay = new Date(combCurrYear, combCurrMonth+1, 0).getDate();
-            let first_yoil = new Date(combCurrYear, combCurrMonth, 1).getDay();
-            let last_yoil = new Date(combCurrYear, combCurrMonth, lastDay).getDay();
-            let lastDayofLastMonth = new Date(combCurrYear, combCurrMonth, 0).getDate();
-            let dayTag = "";
-
-            for(let i=first_yoil; i>0; i--) {
-                dayTag += `<li class="inactive">${lastDayofLastMonth - i + 1}</li>`;
-            }
-
-            for(let i=1; i<= lastDay; i++) {
-
-                let isToday = i === date.getDate() &&
-                combCurrMonth === new Date().getMonth() &&
-                combCurrYear === new Date().getFullYear()
-                    ? 'comb-active' : '';
-                dayTag += `<li id="${isToday}">${i}</li>`
-            }
-
-            for(let i=last_yoil; i<6; i++) {
-                dayTag += `<li class="inactive">${i - last_yoil + 1}</li>`;
-            }
-
-            $('#comb-days').html(dayTag);
-
-            $('#comb-days li').on('click', function() {
-                if($(this).attr("class") != "inactive") {
-                    $('#comb-days li').removeAttr('id');
-                    $(this).attr('id', 'comb-active');
-                    let monVal = (combCurrMonth+1).toString().padStart(2, "0")
-                    let dayVal = `${combCurrYear}-${monVal}-${$(this).text().padStart(2, "0")}`;
-                    $('#combDate').val(dayVal);
-                    $('#combCalendarContainer').hide();
-                }
-            });
+            let isToday = i === date.getDate() &&
+            depCurrMonth === new Date().getMonth() &&
+            depCurrYear === new Date().getFullYear()
+                ? 'dep-active' : '';
+            dayTag += `<li id="${isToday}">${i}</li>`
         }
 
-        $('#comb-shang').on('click', function() {
-            if(combCurrMonth == 0) {
-                combCurrMonth = 11;
-                combCurrYear = combCurrYear - 1;
-            }else {
-                combCurrMonth = combCurrMonth - 1;
-            }
-            renderCombCalendar();
-        });
+        for(let i=last_yoil; i<6; i++) {
+            dayTag += `<li class="inactive">${i - last_yoil + 1}</li>`;
+        }
 
-        $('#comb-xia').on('click', function() {
-            if(combCurrMonth == 11) {
-                combCurrMonth = 0;
-                combCurrYear = combCurrYear + 1;
-            }else {
-                combCurrMonth = combCurrMonth + 1;
-            }
-            renderCombCalendar();
-        });
+        $('#dep-days').html(dayTag);
 
+        $('#dep-days li').on('click', function() {
+            if($(this).attr('class') != "inactive"){
+                $('#dep-days li').removeAttr('id');
+                $(this).attr('id', 'dep-active');
+                let monVal = (depCurrMonth+1).toString().padStart(2, "0")
+                let dayVal = `${depCurrYear}-${monVal}-${$(this).text().padStart(2, "0")}`;
+                $('#depDate').val(dayVal);
+                $('#depCalendarContainer').hide();
+            }
+        });
+    }
+
+    $('#dep-shang').on('click', function() {
+        if(depCurrMonth == 0) {
+            depCurrMonth = 11;
+            depCurrYear = depCurrYear - 1;
+        }else {
+            depCurrMonth = depCurrMonth - 1;
+        }
         renderDepCalendar();
+    });
+
+    $('#dep-xia').on('click', function() {
+        if(depCurrMonth == 11) {
+            depCurrMonth = 0;
+            depCurrYear = depCurrYear + 1;
+        }else {
+            depCurrMonth = depCurrMonth + 1;
+        }
+        renderDepCalendar();
+    });
+
+    function renderCombCalendar() {
+        $('#comb-currentDate').html(`${months[combCurrMonth]} ${combCurrYear}`);
+
+        let lastDay = new Date(combCurrYear, combCurrMonth+1, 0).getDate();
+        let first_yoil = new Date(combCurrYear, combCurrMonth, 1).getDay();
+        let last_yoil = new Date(combCurrYear, combCurrMonth, lastDay).getDay();
+        let lastDayofLastMonth = new Date(combCurrYear, combCurrMonth, 0).getDate();
+        let dayTag = "";
+
+        for(let i=first_yoil; i>0; i--) {
+            dayTag += `<li class="inactive">${lastDayofLastMonth - i + 1}</li>`;
+        }
+
+        for(let i=1; i<= lastDay; i++) {
+
+            let isToday = i === date.getDate() &&
+            combCurrMonth === new Date().getMonth() &&
+            combCurrYear === new Date().getFullYear()
+                ? 'comb-active' : '';
+            dayTag += `<li id="${isToday}">${i}</li>`
+        }
+
+        for(let i=last_yoil; i<6; i++) {
+            dayTag += `<li class="inactive">${i - last_yoil + 1}</li>`;
+        }
+
+        $('#comb-days').html(dayTag);
+
+        $('#comb-days li').on('click', function() {
+            if($(this).attr("class") != "inactive") {
+                $('#comb-days li').removeAttr('id');
+                $(this).attr('id', 'comb-active');
+                let monVal = (combCurrMonth+1).toString().padStart(2, "0")
+                let dayVal = `${combCurrYear}-${monVal}-${$(this).text().padStart(2, "0")}`;
+                $('#combDate').val(dayVal);
+                $('#combCalendarContainer').hide();
+            }
+        });
+    }
+
+    $('#comb-shang').on('click', function() {
+        if(combCurrMonth == 0) {
+            combCurrMonth = 11;
+            combCurrYear = combCurrYear - 1;
+        }else {
+            combCurrMonth = combCurrMonth - 1;
+        }
         renderCombCalendar();
     });
+
+    $('#comb-xia').on('click', function() {
+        if(combCurrMonth == 11) {
+            combCurrMonth = 0;
+            combCurrYear = combCurrYear + 1;
+        }else {
+            combCurrMonth = combCurrMonth + 1;
+        }
+        renderCombCalendar();
+    });
+
+    renderDepCalendar();
+    renderCombCalendar();
+
+});

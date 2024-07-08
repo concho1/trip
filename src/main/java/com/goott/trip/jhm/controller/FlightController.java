@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
+@RequestMapping("flight")
 public class FlightController {
 
     @Autowired
