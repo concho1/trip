@@ -2,7 +2,7 @@ package com.goott.trip.jhm.service;
 
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
-import com.goott.trip.hamster.model.shoppingCart;
+import com.goott.trip.hamster.model.ShoppingCart;
 import com.goott.trip.jhm.mapper.FlightMapper;
 
 import com.goott.trip.jhm.model.*;

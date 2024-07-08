@@ -1,5 +1,5 @@
 /* VIP 섹션의 컨테이너 스타일 */
-.vip-container {
+.explain-container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -10,7 +10,7 @@
 }
 
 /* VIP 배지 스타일 */
-.vip-badge {
+.explain-badge {
     display: inline-block;
     padding: 10px 20px;
     margin-bottom: 20px;
@@ -21,7 +21,7 @@
 }
 
 /* VIP 등급 스타일 */
-.vip-tier {
+.explain-tier {
     padding: 15px 20px;
     margin-bottom: 15px;
     background-color: #fff;
@@ -30,24 +30,24 @@
     transition: background-color 0.3s ease;
 }
 
-.vip-tier:hover {
+.explain-tier:hover {
     background-color: #f1f1f1;
 }
 
 /* VIP 등급의 텍스트 스타일 */
-.vip-tier h3 {
+.explain-tier h3 {
     margin: 0;
     font-size: 1.5em;
     color: #333;
 }
 
-.vip-tier p {
+.explain-tier p {
     margin: 5px 0 0;
     color: #666;
 }
 
 /* VIP 막대기 스타일 */
-.vip-bar-container {
+.explain-bar-container {
     position: relative;
     width: 100%;
     height: 30px;
@@ -56,45 +56,45 @@
     margin-top: 10px;
 }
 
-.vip-bar {
+.explain-bar {
     position: absolute;
     height: 100%;
     border-radius: 15px;
 }
 
-.vip-Bronze{
+.explain-Bronze{
     width: 10%;
     background-color: #cf7d4e;
 }
-.vip-silver {
+.explain-silver {
     width: 20%;
     background-color: #bec2c9;
 }
 
-.vip-gold {
+.explain-gold {
     width: 50%;
     background-color: #ecc43a;;
 }
 
-.vip-platinum {
+.explain-platinum {
     width: 100%;
     background-color: #3cabce;
 }
 
 /* VIP 혜택 목록 스타일 */
-.vip-benefits {
+.explain-benefits {
     list-style: none;
     padding: 0;
 }
 
-.vip-benefits li {
+.explain-benefits li {
     margin-top: 10px;
     margin-bottom: 10px;
     padding-left: 20px;
     position: relative;
 }
 
-.vip-benefits li:before {
+.explain-benefits li:before {
     content: "\2713"; /* 체크 표시 */
     position: absolute;
     left: 0;
@@ -102,7 +102,7 @@
 }
 
 /* 버튼 스타일 */
-.vip-button {
+.explain-button {
     display: inline-block;
     padding: 10px 20px;
     background-color: #007bff;
@@ -112,6 +112,7 @@
     transition: background-color 0.3s ease;
 }
 
+/*
 .vip-button:hover {
     background-color: #0056b3;
-}
+}*/
