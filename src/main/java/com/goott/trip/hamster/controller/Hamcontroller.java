@@ -1,5 +1,10 @@
 package com.goott.trip.hamster.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.goott.trip.common.model.Alarm;
 import com.goott.trip.hamster.model.Testproduct;
 import com.goott.trip.hamster.model.AirplaneInfo;
@@ -19,6 +24,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.security.Principal;
 import java.util.*;
 
@@ -41,6 +48,11 @@ public class Hamcontroller {
         List<Testproduct> list =  this.airservice.airplaneList();
 
         return new ModelAndView("Hamster/testAirplaneList").addObject("list",list);
+    }
+
+    @GetMapping("airplane/table")
+    public ModelAndView table(){
+        return new ModelAndView("Hamster/table");
     }
 
     @GetMapping("airplane/airplaneInfoList")
@@ -201,26 +213,34 @@ public class Hamcontroller {
     }
 
     @GetMapping("/success")
-    public ModelAndView PaymentSuccess(
-            @RequestParam String airKey,
-            @RequestParam String email,
-            @RequestParam String UUID,
-            @RequestParam String paymentType,
-            @RequestParam String orderId,
-            @RequestParam String paymentKey) throws MessagingException {
+    public ModelAndView PaymentSuccess(@RequestParam String airKey, @RequestParam String email,
+                                       @RequestParam String UUID, @RequestParam String paymentType, @RequestParam String orderId,
+                                       @RequestParam String paymentKey, @RequestParam("paymentInfo") String paymentInfo) throws UnsupportedEncodingException, MessagingException {
 
         String newAirKey = airKey.replaceAll("[{}]","");
         String newEmail = email.replaceAll("[{}]","");
         String newUUID = UUID.replaceAll("[{}]","");
 
-        Testproduct cont = this.airservice.airplaneCont(newAirKey);
-        this.emailService.sendAirplaneEmail(newEmail,newUUID,cont);
+        String decodedPaymentInfo = URLDecoder.decode(paymentInfo, "UTF-8");
+
+        Gson gson = new Gson();
+        Payment payment = gson.fromJson(decodedPaymentInfo, Payment.class);
+
+        System.out.println(payment);
+
+        List<CartFlight> airInfo = this.airservice.getAirInfo(newAirKey);
+        List<CartDuration> DepDur = this.airservice.getDepDur(newAirKey);
+        List<CartDuration> CombDur = this.airservice.getCombDur(newAirKey);
+        List<CartSegment> segDep = this.airservice.getDep(newAirKey);
+        List<CartSegment> segComb = this.airservice.getComb(newAirKey);
+        List<CartPricing> price = this.airservice.getPricing(newAirKey);
+
+        this.emailService.sendAirplaneEmail(newEmail,newUUID,payment,airInfo,DepDur,CombDur,segDep,segComb,price);
 
         ModelAndView modelAndView = new ModelAndView("Hamster/airplanePaymentSuccess");
         modelAndView.addObject("paymentKey", paymentKey)
                 .addObject("orderId", orderId)
-                .addObject("email", newEmail)
-                .addObject("amount", cont.getAirplanePrice()).addObject("cont",cont);
+                .addObject("email", newEmail);
 
         return modelAndView;
     }
