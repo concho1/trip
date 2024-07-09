@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://js.tosspayments.com/v1/payment-widget"></script>
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <body>
@@ -9,11 +10,13 @@
 
 <!-- [E]tedu-N3 -->
 <main class="th-layout-main ">
-  <input type="hidden" th:value="${email}" id="email">
+  <input type="hidden" th:value="${payment.getCallEmail()}" id="email">
+  <input type="hidden" th:value="${memberId}" id="memberId">
+  <input type="hidden" th:value="${airInfo.get(0).getTotalPrice()}" id="airPrice">
+  <input type="hidden" th:value="'놀러감 항공권 '+${airInfo.get(0).getOrigin()} + ' -> ' + ${airInfo.get(0).getDestination()}" id="airName">
   <input type="hidden" th:value="${UUID}" id="UUID">
-  <input type="hidden" th:value="${cont.getAirplanePrice()}" id="airPrice">
-  <input type="hidden" th:value="${cont.getAirplaneName()}+' '+${cont.getAirplaneDepart()}+'->'+${cont.getAirplaneArrive()}+'행 항공권'" id="airName">
-  <input type="hidden" th:value="${cont.getAirplaneKey()}" id="airKey"></input>
+  <input type="hidden" th:value="${key}" id="airKey">
+  <input type="hidden" th:value="${payment.getCallNumber()}" id="customerPhone">
   <!-- [S]tedu-N44 -->
   <div class="tedu-N44" data-bid="GALxi9PyR7">
     <div class="content-inner">
@@ -24,63 +27,44 @@
           </div>
           <div class="payment-wrap">
             <div class="payment-area">
-              <div class="title">주문자 정보</div>
-              <div class="payment-cont payment-cont-type2">
-                <fieldset class="fieldset">
-                  <p class="stitle">이름</p>
-                  <div class="input-group">
-                    <div class="tedu-inputset">
-                      <legend class="legend" th:text="${callFname} + ' '+${callLname}"></legend>
-                    </div>
-                  </div>
-                </fieldset>
-                <fieldset class="fieldset">
-                  <p class="stitle">휴대전화</p>
-                  <div class="input-group">
-                    <div class="tedu-inputset">
-                      <legend class="legend" th:text="${country} + ' '+${phone}"></legend>
-                    </div>
-                  </div>
-                </fieldset>
-              </div>
               <div class="payment-cont">
                 <fieldset class="fieldset">
-                  <p class="stitle">이메일</p>
+                  <p class="title" style="margin-bottom: 8px;">연락처 정보</p>
                   <div class="input-group">
                     <div class="tedu-inputset">
-                      <legend class="legend" th:text="${email}"></legend>
+                      <img th:src="@{/common/images/callHuman.png}" style="width: 18px;">
+                      <legend class="stitle" th:text="${payment.getCallFirstName()}+' '+${payment.getCallLastName()}"></legend>
                     </div>
                   </div>
-                  <p class="desc">전자 영수증이 작성하신 E-Mail로 발송됩니다. 정확히 확인해주세요.</p>
+                  <p class="desc" th:text="${payment.getCallEmail()}"></p>
+                  <p class="desc" th:text="${payment.getCallCountry()}+${payment.getCallNumber()}" style="margin-bottom: 40px;"></p>
                 </fieldset>
+
+                <fieldset class="fieldset">
+                    <p class="title" style="margin-bottom: 8px;">탑승객 정보</p>
+                    <th:block th:each="i, iterStat : ${#numbers.sequence(0, payment.rideFirstName.length - 1)}">
+                      <div class="input-group">
+                        <div class="tedu-inputset">
+                          <img th:src="@{/common/images/human.png}" style="width: 26px;">
+                          <legend class="stitle" th:text="${payment.rideFirstName[i]} + ' ' + ${payment.rideLastName[i]}"></legend>
+                        </div>
+                      </div>
+                      <p class="desc" th:text="'여권번호: ' + ${payment.ridePassport[i]}" style="margin-bottom: 20px;"></p>
+                    </th:block>
+                  </fieldset>
               </div>
             </div>
             <div class="payment-area">
               <div class="title">쿠폰 선택</div>
-              <div class="payment-cont">
-                <div class="selectset tedu-selectset lightmode">
-                  <button class="selectset-toggle" type="button">
-                    <span>쿠폰 선택안함</span>
-                  </button>
-                  <ul class="selectset-list">
-                    <li class="selectset-item">
-                      <button class="selectset-link" type="button" data-value="템플릿1">
-                        <span>쿠폰 선택안함</span>
-                      </button>
-                    </li>
-                    <li class="selectset-item">
-                      <button class="selectset-link" type="button" data-value="템플릿2">
-                        <span>쿠폰 선택1</span>
-                      </button>
-                    </li>
-                    <li class="selectset-item">
-                      <button class="selectset-link" type="button" data-value="템플릿3">
-                        <span>쿠폰 선택2</span>
-                      </button>
-                    </li>
-                  </ul>
+              <fieldset class="fieldset" style="margin-top: 30px;">
+                <legend class="legend">보유중인 쿠폰</legend>
+                <div class="input-group">
+                  <select class="form-select form-select-lg mb-3"  id="coupon-box" onchange="couponPrice()">
+                    <option selected value="noneCoupon">선택 안함</option>
+                    <option value="openCoupon">놀러감 오픈기념 5,000원 할인 쿠폰</option>
+                  </select>
                 </div>
-              </div>
+              </fieldset>
             </div>
             <div class="payment-area">
               <div class="title">결제수단선택</div>
@@ -94,40 +78,74 @@
       </div>
     </div>
   </div>
-  <!-- [E]tedu-N44 -->
+
   <!-- [S]tedu-N45 -->
   <div class="tedu-N45" data-bid="WmLXi9pyUS">
-    <div class="content-container" style="width: fit-content">
+    <div class="content-container">
       <div class="sidebar">
         <div class="title-wrap">
           <h3 class="title">결제 상품 정보</h3>
         </div>
-        <div class="pay-info-warp">
-          <div class="img-area">
-            <img class="card-img card-img-mo" src="../resources/images/img_edu_01.png" alt="이미지">
-          </div>
+        <div class="pay-info-warp" th:each="info : ${airInfo}">
           <div class="text-area">
-            <div class="title" th:text="${cont.getAirplaneDepart() + ' -> ' + cont.getAirplaneArrive()}"></div>
-            <p class="text" id="airTime" th:text="${cont.getAirplaneDepartTime().toString().substring(5,16) + ' ~ ' + cont.getAirplaneArriveTime().toString().substring(5,16)}"></p>
-            <p class="text" th:text="${cont.getAirplaneName()}"></p>
+            <div class="title" th:text="${info.getOrigin()} + ' -> ' + ${info.getDestination()}+
+                          '/탑승객 '+${info.getAdults()+info.getChildren()+info.getInfants()}+' 명'" th:value="${info.getOrigin()} + ' -> ' + ${info.getDestination()}"></div>
+            <p class="text" id="airTime" th:text="${info.getDeparture().toString().substring(5,10)} + ' ~ ' + ${info.getComeback().toString().substring(5,10)}"></p>
           </div>
         </div>
-        <div class="price-info-wrap">
+
+        <div class="card-wrapper">
+          <div class="card" th:each="dep : ${DepDur}">
+            <div class="card-body">
+              <img th:src="${dep.getAirlineImg()}" alt="이미지" style="width: 100px; height: 50px;">
+              <p th:text="'가는편 여정 상세보기'"></p>
+              <img th:src="@{/asset/images/downarrow.webp}" class="toggleBtn" value="토글" style="width: 20px; height: 20px; cursor: pointer;">
+
+              <div class="tog-body" th:each="dep, iterStat : ${segDep}">
+                <legend class="text" th:text="'가는편 여정 '+${iterStat.index+1}"></legend>
+                <legend class="legend" th:text="${dep.getDepartureIata()} +' -> '+ ${dep.getArrivalIata()}"></legend>
+                <legend class="legend" th:text="${dep.getDepartureAt().substring(5,10)}+'  '+${dep.getDepartureAt().substring(11,16)}+' - '+
+                                 ${dep.getArrivalAt().substring(5,10)}+'  '+${dep.getArrivalAt().substring(11,16)}"></legend>
+                <legend class="legend" th:text="'총 소요시간 : ' + ${dep.getDuration().substring(2)}" style="margin-bottom: 25px;"></legend>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-wrapper">
+          <div class="card" th:each="comb : ${CombDur}">
+            <div class="card-body">
+              <img th:src="${comb.getAirlineImg()}" alt="이미지" style="width: 100px; height: 50px;">
+              <p th:text="'오는편 여정 상세보기'"></p>
+              <img th:src="@{/asset/images/downarrow.webp}" class="toggleBtn" value="토글" style="width: 20px; height: 20px; cursor: pointer;">
+
+              <div class="tog-body" th:each="comb, iterStat : ${segComb}">
+                <legend class="text" th:text="'오는편 여정 '+${iterStat.index+1}"></legend>
+                <legend class="legend" th:text="${comb.getDepartureIata()} +' -> '+ ${comb.getArrivalIata()}"></legend>
+                <legend class="legend" th:text="${comb.getDepartureAt().substring(5,10)}+'  '+${comb.getDepartureAt().substring(11,16)}+' - '+
+                                ${comb.getArrivalAt().substring(5,10)}+'  '+${comb.getArrivalAt().substring(11,16)}"></legend>
+                <legend class="legend" th:text="'총 소요시간 : ' + ${comb.getDuration().substring(2)}" style="margin-bottom: 25px;"></legend>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="price-info-wrap" th:each="info : ${airInfo}">
           <div class="price-area">
-            <span>정가</span>
-            <strong>1,200,000원</strong>
+            <span th:text="'기본운임'"></span>
+            <strong th:text="${#numbers.formatInteger(info.getTotalBase(), 3, 'COMMA') + '원'}"></strong>
           </div>
           <div class="price-area">
-            <span>쿠폰사용</span>
-            <strong>-</strong>
+            <span th:text="'세금 및 제반요금'"></span>
+            <strong th:text="${#numbers.formatInteger(info.getTotalPrice() - info.getTotalBase(), 3, 'COMMA') + '원'}"></strong>
           </div>
           <div class="price-area">
-            <span>할인</span>
-            <strong>- 840,000원</strong>
+            <span th:text="'쿠폰'"></span>
+            <strong id="couponPrice">-</strong>
           </div>
           <div class="price-area price-total">
-            <span>결제 금액</span>
-            <strong>360,000원</strong>
+            <span th:text="'총계'">결제 금액</span>
+            <strong id="totalPrice" th:value="${info.getTotalPrice()}" th:text="${#numbers.formatInteger(info.getTotalPrice(), 3, 'COMMA') + '원'}"></strong>
           </div>
         </div>
       </div>
@@ -135,49 +153,87 @@
   </div>
   <!-- [E]tedu-N45 -->
 </main>
-<script>
+<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
+<script th:src="@{/jhm/jhm.js}"></script>
+<script th:inline="javascript">
+
+  let payment = /*[[${payment}]]*/ null;
+  console.log(payment);
 
   const button = document.getElementById("payment-button");
+  const coupon = document.getElementById("coupon-box").value;
   const airPrice = document.getElementById("airPrice");
   const airName = document.getElementById("airName");
-  const airTime = document.getElementById("airTime").value;
   const UUID = document.getElementById("UUID");
   const amount = parseFloat(airPrice.value);
   const airKey = document.getElementById("airKey").value;
   const email = document.getElementById("email").value;
-
-  // 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요.
-  // 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
+  const customerName = document.getElementById("memberId").value;
+  const customerPhone = document.getElementById("customerPhone").value;
   const widgetClientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
   const customerKey = "5JSIE9Ck2bINa_In__32e";
   const paymentWidget = PaymentWidget(widgetClientKey, customerKey); // 회원 결제
-  // const paymentWidget = PaymentWidget(widgetClientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
-
-  const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+  let paymentMethodWidget = paymentWidget.renderPaymentMethods(
           "#payment-method",
           { value: amount },
           { variantKey: "DEFAULT" }
   );
+  function formatNumberWithCommas(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function couponPrice(){
+    const price = parseInt($('#airPrice').val());
+    const totalPrice = $('#totalPrice');
+    const couponPrice = $('#couponPrice');
+    const coupon = $('#coupon-box').val();
+
+    if(coupon === "noneCoupon"){
+      couponPrice.text("-");
+      totalPrice.text(formatNumberWithCommas(price) + '원');
+      paymentMethodWidget = paymentWidget.renderPaymentMethods(
+              "#payment-method",
+              { value: amount},
+              { variantKey: "DEFAULT" }
+      );
+
+    } else if(coupon === "openCoupon"){
+      couponPrice.text("5,000원");
+      const discountedPrice = price - 5000;
+      totalPrice.text(formatNumberWithCommas(discountedPrice) + '원');
+      paymentMethodWidget = paymentWidget.renderPaymentMethods(
+              "#payment-method",
+              { value: discountedPrice},
+              { variantKey: "DEFAULT" }
+      );
+    }
+  }
+
+
+
 
   paymentWidget.renderAgreement(
           "#agreement",
           { variantKey: "AGREEMENT" }
   );
 
+  if(coupon)
 
-  button.addEventListener("click", function () {
-    // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
-    // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
-    paymentWidget.requestPayment({
-      orderId: UUID.value,
-      orderName: airName.value,
-      successUrl:window.location.origin +"/member/hamster/success?"+"airKey={"+airKey+"}&email={"+email+"}&UUID={"+UUID.value+"}&",
-      failUrl: window.location.origin +"/member/hamster/fail",
-      customerEmail: "customer123@gmail.com",
-      customerName: "김토스",
-      customerMobilePhone: "01012341234",
+    button.addEventListener("click", function () {
+      const encodedPaymentInfo = encodeURIComponent(JSON.stringify(payment));
+      const successUrl = `${window.location.origin}/member/hamster/success?airKey=${airKey}&email=${email}&UUID=${UUID.value}&paymentInfo=${encodedPaymentInfo}`;
+      const failUrl = `${window.location.origin}/member/hamster/fail`;
+
+      paymentWidget.requestPayment({
+        orderId: UUID.value,
+        orderName: airName.value,
+        successUrl: successUrl,
+        failUrl: failUrl,
+        customerEmail: email,
+        customerName: customerName,
+        customerMobilePhone: customerPhone,
+      });
     });
-  });
 </script>
 <div class="tedu-N17" data-bid="fjlxiC75U0">
   <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>

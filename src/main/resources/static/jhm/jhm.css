@@ -191,7 +191,7 @@ body, html {
     position: relative;
 }
 
-#peopleSubmitBtn {
+#peopleSubmitBtn, .faq-submit {
     position: absolute;
     bottom: 20px;
     right: 20px;
@@ -493,4 +493,149 @@ input[type="checkbox"]:checked + label:after {
 
 .tog-body {
     font-size: 13px;
+}
+
+.faq-list, .qna-list {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1500px;
+}
+
+.faq-list input[type="text"] {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 100%;
+}
+
+.faq-list textarea {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 100%;
+    resize: none;
+}
+
+.acc {
+    border: 1px solid black;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    max-height: 300px;
+}
+
+.acc:hover {
+    border: 1px solid rgba(36, 90, 249, 0.5);
+    box-shadow: 3px 3px 1px gray;
+}
+
+.faq-acc {
+    position: relative;
+    padding-right: 30px;
+    padding-top: 10px;
+    cursor: pointer;
+    height: 50px;
+}
+
+.faq-acc-panel {
+    display: none;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+.faq-acc-rotate {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+.accBtn {
+    transition: transform 0.3s ease;
+    position: absolute;
+    right: 10px;
+    top: 4px;
+    cursor: pointer;
+}
+
+.faq-title {
+    padding-left: 10px;
+}
+
+.faq-title-open {
+    font-weight: bold;
+    color: rgba(36, 65, 249, 0.8);
+}
+
+.qna-insert-list {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.qna-insert-btn {
+    width: 10%;
+    padding: 15px 30px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.qna-insert-btn:hover {
+    background-color: #0056b3;
+}
+
+.qna-insert-list textarea {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 100%;
+    resize: none;
+}
+
+.qna-label {
+    margin-bottom: 10px;
+}
+
+.qna-list table tbody tr:hover {
+    background-color: rgba(78, 78, 193, 0.1);
+}
+
+.th1 {
+    width: 50%;
+}
+
+.th2 {
+    width: 20%;
+}
+
+.th3 {
+    width: 15%;
+}
+
+.qna-list a {
+    color: blue;
+    font-style: italic;
+}
+
+.qna-list a:hover {
+    text-decoration: underline;
 }

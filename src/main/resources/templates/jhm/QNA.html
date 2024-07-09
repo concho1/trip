@@ -1,0 +1,63 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
+<body>
+<div th:replace="~{common/head :: head-fragment}"></div>
+
+<main class="th-layout-main ">
+
+    <div class="background">
+        <div class="qna-list">
+            <div class="title-wrap">
+                <h3 class="cont-title">Q&A</h3>
+            </div>
+
+            <table th:if="${qList.size() == 0}">
+                <tr>
+                    <td colspan="4" th:align="center"><h3>Q&A 게시판의 내용이 없습니다.</h3></td>
+                </tr>
+            </table>
+
+            <table th:if="${qList.size() != 0}">
+                <thead>
+                    <tr>
+                        <th class="th1">제목</th>
+                        <th class="th2">ID</th>
+                        <th class="th3">상태</th>
+                        <th class="th3">등록일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="qna : ${qList}">
+                        <td th:attr="colspan=${qna.memberId != ID} ? 4 : 1">
+                            <span th:if="${qna.memberId == ID}"><a href=# th:text="${qna.title}"></a></span>
+                            <span th:if="${qna.memberId != ID}" th:text="비밀글입니다."></span>
+                        </td>
+                        <td th:if="${qna.memberId == ID}">
+                            <span th:text="${qna.memberId}"></span>
+                        </td>
+                        <td th:if="${qna.memberId == ID}">
+                            <span th:if="${qna.status == 0}" th:text="답변대기"></span>
+                        </td>
+                        <td th:if="${qna.memberId == ID}">
+                            <span th:text="${qna.createdAt.toString().substring(5, 10)}"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 페이징 처리 -->
+            <button type="button" class="qna-insert-btn" onclick="location.href='insert_qna'">질문하기</button>
+        </div>
+
+    </div>
+
+</main>
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<script th:src="@{/jhm/jhm.js}"></script>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+</body>

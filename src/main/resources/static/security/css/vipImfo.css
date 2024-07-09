@@ -1,0 +1,118 @@
+/* VIP 섹션의 컨테이너 스타일 */
+.explain-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* VIP 배지 스타일 */
+.explain-badge {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    background-color: #5a6783;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+/* VIP 등급 스타일 */
+.explain-tier {
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.explain-tier:hover {
+    background-color: #f1f1f1;
+}
+
+/* VIP 등급의 텍스트 스타일 */
+.explain-tier h3 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.explain-tier p {
+    margin: 5px 0 0;
+    color: #666;
+}
+
+/* VIP 막대기 스타일 */
+.explain-bar-container {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    background-color: #eee;
+    border-radius: 15px;
+    margin-top: 10px;
+}
+
+.explain-bar {
+    position: absolute;
+    height: 100%;
+    border-radius: 15px;
+}
+
+.explain-Bronze{
+    width: 10%;
+    background-color: #cf7d4e;
+}
+.explain-silver {
+    width: 20%;
+    background-color: #bec2c9;
+}
+
+.explain-gold {
+    width: 50%;
+    background-color: #ecc43a;;
+}
+
+.explain-platinum {
+    width: 100%;
+    background-color: #3cabce;
+}
+
+/* VIP 혜택 목록 스타일 */
+.explain-benefits {
+    list-style: none;
+    padding: 0;
+}
+
+.explain-benefits li {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.explain-benefits li:before {
+    content: "\2713"; /* 체크 표시 */
+    position: absolute;
+    left: 0;
+    color: #ffcc00;
+}
+
+/* 버튼 스타일 */
+.explain-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+/*
+.vip-button:hover {
+    background-color: #0056b3;
+}*/
