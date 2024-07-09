@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="/security/css/memberInfo.css">
+<link rel="stylesheet" th:href="@{/security/css/memberInfo.css}">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
@@ -16,18 +16,18 @@
                         <h3 class="cont-title">회원 정보</h3>
                     </div>
                     <div class="tab-menu-wrap">
-                        <div class="tab-menu active">
-                            <a th:href="@{info}">
+                        <div class="tab-menu active" id="tab-info">
+                            <a href="#info">
                                 <span>내 정보</span>
                             </a>
                         </div>
-                        <div class="tab-menu">
-                            <a href="javascript:void(0)">
+                        <div class="tab-menu" id="tab-changePwd">
+                            <a href="#changePwd">
                                 <span>비밀번호 변경</span>
                             </a>
                         </div>
-                        <div class="tab-menu">
-                            <a href="javascript:void(0)">
+                        <div class="tab-menu" id="tab-delete">
+                            <a href="#delete">
                                 <span>탈퇴</span>
                             </a>
                         </div>
@@ -37,14 +37,14 @@
                             </a>
                         </div>
                         <div class="tab-menu">
-                            <a href="javascript:void(0)">
+                            <a th:href="@{vip}">
                                 <span>VIP</span>
                             </a>
                         </div>
                     </div>
                     <div class="form-wrap">
-                        <div class="form-body">
-                            <form id="modify" th:action="@{/member/con/info}" method="post" enctype="multipart/form-data">
+                        <div class="form-body" id="info">
+                            <form id="modify" th:action="@{/member/ming/info}" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="name" id="name">
                                 <fieldset class="fieldset">
                                     <legend class="fileAjax">프로필 사진</legend>
@@ -89,7 +89,6 @@
                                         <input type="text" th:value="${dto.createdAt.toString().substring(0,10)}" class="tedu-input lightmode" disabled readonly>
                                     </div>
                                 </fieldset>
-
                                 <!--<fieldset class="fieldset">
                                     <legend class="legend">비밀번호</legend>
                                     <div class="input-group">
@@ -109,11 +108,93 @@
                                     </div>
                                     <p class="description"> 영문/숫자/특수문자를 포함하여 입력해주세요.</p>
                                 </fieldset>-->
-
                                 <div class="form-footer btn-box">
                                     <button class="tedu-btn tedu-btn-light btn-mono" type="reset">취소</button>
                                     <button class="tedu-btn tedu-btn-light btn-link" type="submit">수정</button>
                                 </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="form-wrap">
+                        <div class="form-body" id="changePwd" style="display: none;">
+                            <form th:action="@{/member/ming/updatePwd}" method="post" id="updatePwdForm">
+                                <fieldset class="fieldset">
+                                    <legend class="legend">기존 비밀번호</legend>
+                                    <div class="input-group">
+                                        <div class="tedu-inputset">
+                                            <input type="password" class="tedu-input lightmode" id="pw" name="pw" placeholder="기존 비밀번호 입력" aria-label="영문/숫자/특수문자 8 - 20자리" required>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="fieldset">
+                                    <legend class="legend">새 비밀번호</legend>
+                                    <div class="input-group">
+                                        <div class="tedu-inputset">
+                                            <input type="password" class="tedu-input lightmode" id="newPw" name="newPw" placeholder="영문/숫자/특수문자를 사용하여, 8 - 20자리로만 입력해주세요." aria-label="영문/숫자/특수문자 8 - 20자리" required>
+                                           <!-- <div id="pwdDupError" style="color: red; display: none;">기존 비밀번호와 동일한 비밀번호로는 변경할 수 없습니다.</div>-->
+                                            <div id="pwdError" style="color: red; display: none;">영문/숫자/특수문자를 사용하여, 8자리이상 20자리 이하로 입력해주세요.</div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="fieldset">
+                                    <legend class="legend">비밀번호 확인</legend>
+                                    <div class="input-group">
+                                        <div class="tedu-inputset">
+                                            <input type="password" id="rePwd" name="rePwd" class="tedu-input lightmode" placeholder="비밀번호를 다시 한번 입력해주세요." aria-label="비밀번호 다시 한번 입력" required>
+                                            <div id="pwdCheckError" style="color: red; display: none;">입력한 비밀번호와 일치하지 않습니다.</div>
+                                        </div>
+                                    </div>
+                                    <p class="description"> 영문/숫자/특수문자를 포함하여 입력해주세요.</p>
+                                </fieldset>
+                                <div class="form-footer btn-box">
+                                    <button class="tedu-btn tedu-btn-light btn-mono" type="reset">취소</button>
+                                    <button class="tedu-btn tedu-btn-light btn-link" type="submit" onclick="return updatePwd()">변경</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="form-wrap">
+                        <div class="form-body" id="delete" style="display: none;">
+                            <form th:action="@{/member/ming/delete}" method="post" style="text-align: center;">
+                                <div class="form-check">
+                                    <p>탈퇴 후 회원정보 및 개인형 서비스 이용기록은 모두 삭제됩니다.</p><br>
+                                    <p>탈퇴 후에도 게시판형 서비스에 등록한 게시물은 그대로 남아 있습니다.</p><br>
+                                    <p>회원정보 및 결제내역, 이용기록은 모두 삭제되며, 삭제된 데이터는 복구되지 않습니다.</p><br>
+                                    <div class="mb-4" style="color: red;">
+                                        <p>탈퇴 후에는 아이디 (<span th:text="${dto.id}"></span>)의 데이터는 복구할 수 없습니다.</p><br>
+                                    </div>
+
+                                    <div class="checkset" style="justify-content: center;">
+                                        <input id="checkset-all" name="chk" class="checkset-input input-round" type="checkbox" value="">
+                                        <label class="checkset-label" for="checkset-all"></label>
+                                        <!--<label class="form-check-label">
+                                            안내 사항을 모두 확인하였으며, 이에 동의합니다.
+                                        </label>-->
+                                        <span class="checkset-text">안내 사항을 모두 확인하였으며, 이에 동의합니다.</span>
+                                    </div>
+
+                                    <!--<p>
+                                        <input class="form-check-input" type="checkbox" name="chk" id="proOffers" style="margin-left: 3px;">&nbsp;
+                                        <label class="form-check-label" for="proOffers">
+                                            안내 사항을 모두 확인하였으며, 이에 동의합니다.
+                                        </label>
+                                    </p>-->
+                                    <!--<div class="d-flex justify-content-center">
+                                        <div class="col-md-8 col-lg-9 col-xl-5">
+                                            <div class="input-group mb-3 align-items-center">
+                                                <input type="password" class="form-control" name="pw" placeholder="비밀번호 입력" aria-label="pw" aria-describedby="button-addon2">
+                                                &lt;!&ndash;<button class="btn btn-primary" type="submit" id="pwdButton" onclick="return boxcheck()">탈퇴</button>&ndash;&gt;
+                                                <button class="tedu-btn tedu-btn-light btn-link" type="submit" id="pwdButton" onclick="return boxcheck()">탈퇴</button>
+                                            </div>
+                                        </div>
+                                    </div>-->
+
+                                </div>
+                                <div class="form-footer btn-box" >
+                                    <input type="password" name="pw" placeholder="비밀번호 입력" aria-label="pw" aria-describedby="button-addon2" style="width: 30%;">
+                                    <button class="tedu-btn tedu-btn-light btn-link" type="submit" id="pwdButton" onclick="return boxcheck()" style="width: 20%;">탈퇴</button>
+                                </div>
+
                             </form>
                         </div>
                     </div>
@@ -127,9 +208,10 @@
     <h1 th:text="|${memberId} 회원님 반갑습니다.|"></h1>
 </div>
 
-
-<script type="text/javascript" th:src="@{/security/js/updateInfo.js}"></script>
 <script type="text/javascript" th:src="@{/security/js/imageUpload.js}"></script>
+<script type="text/javascript" th:src="@{/security/js/updateInfo.js}"></script>
+<script type="text/javascript" th:src="@{/security/js/updatePwd.js}"></script>
+<script type="text/javascript" th:src="@{/security/js/deleteCheck.js}"></script>
 
 
 <div class="tedu-N17" data-bid="fjlxiC75U0">

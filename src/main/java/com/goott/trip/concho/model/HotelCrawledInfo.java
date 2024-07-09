@@ -13,4 +13,9 @@ public class HotelCrawledInfo {
     private String crFacility;
     private String crFacilityInfo;
     private String crContent;
+    private String crRoomInfo;
+    private String crReview;
+    private String crRule;
+    private String crHotelNameKo;
+    private String crHotelStars;
 }

@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/security/css/memberInfo.css}">
+<link rel="stylesheet" th:href="@{/security/css/vip.css}">
+<link rel="stylesheet" th:href="@{/security/css/vipImfo.css}">
 
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <body>
@@ -13,7 +16,7 @@
             <div class="content-container">
                 <section class="myedu-wrap">
                     <div class="title-wrap">
-                        <h3 class="cont-title">vip 등급</h3>
+                        <h3 class="cont-title">VIP 등급</h3>
                     </div>
                     <div class="tab-menu-wrap">
                         <div class="tab-menu active">
@@ -32,68 +35,109 @@
                             </a>
                         </div>
                     </div>
-                    <div class="myedu-cont-wrap">
-                        <div class="myedu-area">
-                            <div class="myedu-cont">
-                                <div class="img-area">
-                                    <img src="../resources/images/img_edu_01.png" alt="이미지">
-                                </div>
-                                <div class="text-area">
-                                    <strong class="cate">수강중</strong>
-                                    <span>40% 진행</span>
-                                    <div class="title">역대급 가성비 온라인 교육 디자인 툴 마스터 클래스</div>
-                                </div>
+
+                    <div class="vip-container">
+                        <!--<span class="vip-badge">VIP Member</span>-->
+
+                        <div class="vip-tier">
+                            <h3>내 등급: <span id="vip-level">Silver</span></h3>
+                            <p>현재 결제 완료 건수: <span id="completed-bookings">3</span></p>
+                            <div class="vip-bar-container">
+                                <div class="vip-bar" id="vip-bar"></div>
+                                <div class="vip-star-marker" style="left: 0;" title="Bronze">&#9733;</div>
+                                <div class="vip-star-marker" style="left: 20%;" title="Silver">&#9733;</div>
+                                <div class="vip-star-marker" style="left: 50%;" title="Gold">&#9733;</div>
+                                <div class="vip-star-marker" style="left: 100%;" title="Platinum">&#9733;</div>
                             </div>
-                            <button type="button" class="tedu-btn tedu-btn-dark btn-link">
-                                <i></i>
-                                <span>교육 시청하기</span>
-                            </button>
-                        </div>
-                        <div class="myedu-area">
-                            <div class="myedu-cont">
-                                <div class="img-area">
-                                    <img src="../resources/images/img_edu_02.png" alt="이미지">
-                                </div>
-                                <div class="text-area">
-                                    <strong class="cate">수강중</strong>
-                                    <span>68% 진행</span>
-                                    <div class="title">한 번에 끝내는 UX / UI 디자인 실무 디자인 패키지 제공</div>
-                                </div>
+                            <div class="vip-tier-labels">
+                                <span class="vip-tier-label" style="left: 0;">Bronze</span>
+                                <span class="vip-tier-label" style="left: 20%;">Silver</span>
+                                <span class="vip-tier-label" style="left: 50%;">Gold</span>
+                                <span class="vip-tier-label" style="left: 100%;">Platinum</span>
                             </div>
-                            <button type="button" class="tedu-btn tedu-btn-dark btn-link">
-                                <i></i>
-                                <span>교육 시청하기</span>
-                            </button>
                         </div>
-                        <div class="myedu-area">
-                            <div class="myedu-cont">
-                                <div class="img-area">
-                                    <img src="../resources/images/img_edu_03.png" alt="이미지">
-                                </div>
-                                <div class="text-area">
-                                    <strong class="cate">수강예정</strong>
-                                    <span>0% 진행</span>
-                                    <div class="title">쉽게 배우는 웹 퍼블리싱</div>
-                                </div>
-                            </div>
-                            <button type="button" class="tedu-btn tedu-btn-dark btn-link">
-                                <i></i>
-                                <span>교육 시청하기</span>
-                            </button>
-                        </div>
+
+                        <ul class="vip-benefits">
+                            <li>독점 할인 혜택</li>
+                            <li>우선 고객 서비스</li>
+                            <li>조기 판매 접근</li>
+                        </ul>
+
+                        <a th:href="@{/flight/search_flight}" class="vip-button">예약하러 가기</a>
                     </div>
+
+                    <br><br><br>
+
+                    <!--등급 설명-->
+                    <div class="explain-container">
+                        <span class="explain-badge">VIP</span>
+
+                        <div class="explain-tier">
+                            <h3>Bronze</h3>
+                            <p>기본 회원 및 최근 2년 동안 1건의 예약 완료</p>
+                            <div class="explain-bar-container">
+                                <div class="explain-bar explain-Bronze"></div>
+                            </div>
+                            <ul class="explain-benefits">
+                                <li>베스트 요금 보장</li>
+                                <li>회원 특가 혜택</li>
+                            </ul>
+                        </div>
+
+                        <div class="explain-tier">
+                            <h3>Silver</h3>
+                            <p>최근 2년 동안 2건 이상 예약 완료</p>
+                            <div class="explain-bar-container">
+                                <div class="explain-bar explain-silver"></div>
+                            </div>
+                            <ul class="explain-benefits">
+                                <li>베스트 요금 보장</li>
+                                <li>회원 특가 혜택</li>
+                                <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                            </ul>
+                        </div>
+
+                        <div class="explain-tier">
+                            <h3>Gold</h3>
+                            <p>최근 2년 동안 5건 이상 예약 완료</p>
+                            <div class="explain-bar-container">
+                                <div class="explain-bar explain-gold"></div>
+                            </div>
+                            <ul class="explain-benefits">
+                                <li>베스트 요금 보장</li>
+                                <li>회원 특가 혜택</li>
+                                <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                                <li>VIP 특가 혜택 - 최대 18% 할인</li>
+                            </ul>
+                        </div>
+
+                        <div class="explain-tier">
+                            <h3>Platinum</h3>
+                            <p>최근 2년 동안 10건 이상 예약 완료한 최고 회원을 위한 독점 혜택</p>
+                            <div class="explain-bar-container">
+                                <div class="explain-bar explain-platinum"></div>
+                            </div>
+                            <ul class="explain-benefits">
+                                <li>베스트 요금 보장</li>
+                                <li>회원 특가 혜택</li>
+                                <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                                <li>VIP 특가 혜택 - 최대 18% 할인</li>
+                                <li>VIP 특가 혜택 - 최대 25% 할인</li>
+                                <li>일부 숙소 이용 시 무료 조식 및 기타 혜택 제공</li>
+                            </ul>
+                        </div>
+
+                        <a href="#" class="vip-button">예약하러 가기</a>
+                    </div>
+
+
                 </section>
             </div>
         </div>
     </div>
 </main>
-<div>
-    member 페이지
-    <h1 th:text="|${memberId} 회원님 반갑습니다.|"></h1>
-</div>
 
-
-<script type="text/javascript" th:src="@{/security/js/pwdCheck.js}"></script>
+<script type="text/javascript" th:src="@{/security/js/vip.js}"></script>
 
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>

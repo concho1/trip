@@ -2,10 +2,11 @@ package com.goott.trip.jhm.service;
 
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
-import com.goott.trip.hamster.model.shoppingCart;
+import com.goott.trip.hamster.model.ShoppingCart;
+import com.goott.trip.jhm.mapper.FlightMapper;
+
 import com.goott.trip.jhm.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -96,6 +97,7 @@ public class FlightService {
                 ddto.setId(durId);
                 String airIATA = list[i].getItineraries()[j].getSegments()[0].getCarrierCode();
                 ddto.setAirline(airIATA);
+                ddto.setAirlineKor(this.mapper.findAirlineKor(airIATA));
                 String airICAO = this.mapper.findIcaoByIata(airIATA);
                 String logo = "https:" + this.mapper.findImgByIcao(airICAO);
                 ddto.setAirlineImg(logo);
@@ -115,6 +117,7 @@ public class FlightService {
                     sdto.setDuration(list[i].getItineraries()[j].getSegments()[k].getDuration());
                     sdto.setCarrierCode(list[i].getItineraries()[j].getSegments()[k].getCarrierCode());
                     sdto.setCarrierNum(list[i].getItineraries()[j].getSegments()[k].getNumber());
+                    sdto.setAirlineKor(this.mapper.findAirlineKor(list[i].getItineraries()[j].getSegments()[k].getCarrierCode()));
                     String segId = "seg" + iCode + j + k;
                     System.out.println("segId : "+segId);
                     sdto.setId(segId);
@@ -158,7 +161,16 @@ public class FlightService {
 
     public List<APIItinerary> findItineraryForView(String str) { return this.mapper.findItineraryForView(str); }
     public List<APIPricing> findPricingForView(String str) { return this.mapper.findPricingForView(str); }
-    public List<APISegment> findSegmentForView(String str) { return this.mapper.findSegmentForView(str); }
+    public List<APISegment> findSegmentForView(String str) {
+        List<APISegment> sList = this.mapper.findSegmentForView(str);
+
+        for(APISegment sdto : sList) {
+            sdto.setDepartureIata(this.findAirportByIATA(sdto.getDepartureIata()));
+            sdto.setArrivalIata(this.findAirportByIATA(sdto.getArrivalIata()));
+        }
+
+        return sList;
+    }
     public List<APIDuration> findDurationForView(String str) { return this.mapper.findDurationForView(str); }
 
     public void uploadAirport(MultipartFile file) throws IOException {this.module.uploadAirport(file);}
@@ -168,7 +180,7 @@ public class FlightService {
     public String findAirportByIATA(String iata) { return this.mapper.findAirportByIATA(iata); }
 
     public List<Airport> findAirportByKor(String kor) { return this.mapper.findAirportByKor(kor); }
-    public void insertShoppingCart(shoppingCart cart) { this.mapper.insertShoppingCart(cart); }
+    public void insertShoppingCart(ShoppingCart cart) { this.mapper.insertShoppingCart(cart); }
     public void insertCartPricing(CartPricing cp) { this.mapper.insertCartPricing(cp); }
     public void insertCartSegment(CartSegment cs) { this.mapper.insertCartSegment(cs); }
     public void insertCartDuration(CartDuration cd) { this.mapper.insertCartDuration(cd); }

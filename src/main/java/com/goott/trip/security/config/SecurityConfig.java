@@ -42,14 +42,14 @@ public class SecurityConfig {
                 )
                 .formLogin(
                         (form) -> form
-                                .loginPage("/user/con/log-in").permitAll()
-                                .defaultSuccessUrl("/member/con/myPage", true)
+                                .loginPage("/user/ming/log-in").permitAll()
+                                .defaultSuccessUrl("/member/ming/myPage", true)
                                 .usernameParameter("id")
                                 .passwordParameter("pw")
                 )
                 .logout(
                         (logout) -> logout
-                                .logoutUrl("/user/con/log-out")
+                                .logoutUrl("/member/ming/log-out")
                                 .logoutSuccessUrl("/").permitAll()
                 )
                 .addFilterBefore(visitorCountFilter, UsernamePasswordAuthenticationFilter.class)
@@ -81,7 +81,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new SimpleUrlAuthenticationFailureHandler("/user/con/log-in?error=true");
+        return new SimpleUrlAuthenticationFailureHandler("/user/ming/log-in?error=true");
     }
 
     @Bean

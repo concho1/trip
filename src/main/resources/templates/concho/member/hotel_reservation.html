@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>호텔 예약 폼</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        form { max-width: 600px; margin: auto; }
+        label { display: block; margin: 10px 0 5px; }
+        input, select { width: 100%; padding: 8px; margin-bottom: 10px; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+<h1>호텔 예약 폼</h1>
+<form id="bookingForm">
+    <label for="title">호칭:</label>
+    <select id="title" name="title">
+        <option value="MR">Mr</option>
+        <option value="MRS">Mrs</option>
+        <option value="MS">Ms</option>
+    </select>
+
+    <label for="firstName">이름:</label>
+    <input type="text" id="firstName" name="firstName" required>
+
+    <label for="lastName">성:</label>
+    <input type="text" id="lastName" name="lastName" required>
+
+    <label for="phone">전화번호:</label>
+    <input type="tel" id="phone" name="phone" required>
+
+    <label for="email">이메일:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="hotelOfferId">호텔 오퍼 ID:</label>
+    <input type="text" id="hotelOfferId" name="hotelOfferId" required>
+
+    <label for="cardVendor">신용카드 종류:</label>
+    <select id="cardVendor" name="cardVendor">
+        <option value="VI">Visa</option>
+        <option value="MC">MasterCard</option>
+        <option value="AX">American Express</option>
+    </select>
+
+    <label for="cardNumber">신용카드 번호:</label>
+    <input type="text" id="cardNumber" name="cardNumber" required>
+
+    <label for="expiryDate">유효기간:</label>
+    <input type="month" id="expiryDate" name="expiryDate" required>
+
+    <label for="cardHolderName">카드 소유자 이름:</label>
+    <input type="text" id="cardHolderName" name="cardHolderName" required>
+
+    <button type="submit">예약 제출</button>
+</form>
+</body>
+</html>

@@ -15,4 +15,5 @@ public class APISegment {
     private String duration;
     private String carrierCode;
     private String carrierNum;
+    private String airlineKor;
 }

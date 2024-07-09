@@ -24,18 +24,18 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("user/con")
+@RequestMapping("user/ming")
 public class UserRestController {
 
     private final MemberService memberService;
     private final ImageService imageService;
     private final EmailService emailService;
 
-    @GetMapping("test")
+    /*@GetMapping("test")
     public ModelAndView getTest(){
         return new ModelAndView("security/user/user_page");
     }
-
+*/
     // 회원가입
     @GetMapping("check")
     public ModelAndView getSingInCheck(){
@@ -82,12 +82,12 @@ public class UserRestController {
         Boolean result = this.memberService.checkDupId(id);
         return result;
     }
-    // 비밀번호 중복 체크
+    /*// 비밀번호 중복 체크
     @PostMapping("pwdDupPwd")
     public Boolean checkDupPwd(@RequestParam("pw") String pw) {
         Boolean result = this.memberService.checkDupPwd(pw);
         return result;
-    }
+    }*/
 
     // 이메일 인증
     @PostMapping("sendEmail")
@@ -173,8 +173,8 @@ public class UserRestController {
         return "redirect:user/con/log-in";
     }*/
 
-    // 로그아웃
+    /*// 로그아웃
     @GetMapping("log-out")
-    public ModelAndView logOut(){return new ModelAndView("security/user/user_login_page");}
+    public ModelAndView logOut(){return new ModelAndView("security/user/user_login_page");}*/
 
 }

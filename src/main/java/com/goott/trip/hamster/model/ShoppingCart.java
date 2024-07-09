@@ -3,7 +3,7 @@ package com.goott.trip.hamster.model;
 import lombok.Data;
 
 @Data
-public class shoppingCart {
+public class ShoppingCart {
 
     private String memberId;
     private String airKey;

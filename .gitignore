@@ -37,5 +37,3 @@ out/
 .vscode/
 ### Exclude application.properties ###
 src/main/resources/application.properties
-### Exclude application.properties ###
-src/main/resources/application.properties

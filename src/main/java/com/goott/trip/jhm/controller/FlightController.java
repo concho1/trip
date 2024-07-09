@@ -2,7 +2,7 @@ package com.goott.trip.jhm.controller;
 
 
 import com.amadeus.exceptions.ResponseException;
-import com.goott.trip.hamster.model.shoppingCart;
+import com.goott.trip.hamster.model.ShoppingCart;
 import com.goott.trip.jhm.model.*;
 import com.goott.trip.jhm.service.FlightService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
+@RequestMapping("flight")
 public class FlightController {
 
     @Autowired
@@ -32,6 +33,9 @@ public class FlightController {
 
     @RequestMapping("search_flight")
     public ModelAndView searchFlight() { return new ModelAndView("jhm/search_flight"); }
+
+    @RequestMapping("upload")
+    public ModelAndView upload() { return new ModelAndView("jhm/upload"); }
 
     @PostMapping("test")
     public ModelAndView search(Flight flight, Principal principal) throws ResponseException {
@@ -148,8 +152,8 @@ public class FlightController {
                     json.append("\"").append(dto.getKorCountry()).append("\"");
                     json.append(",");
 
-                    json.append("\"engCity\" : ");
-                    json.append("\"").append(dto.getEngCity()).append("\"");
+                    json.append("\"korCity\" : ");
+                    json.append("\"").append(dto.getKorCity()).append("\"");
                     json.append("}, ");
                 }
             }
@@ -179,10 +183,10 @@ public class FlightController {
         String[] ffvHead = {"ffvId", "totalBase", "totalPrice", "apiPricings", "apiSegments", "apiDurations"};
         String[] pricingHead = {"id", "itineraryCode", "flightCode", "type", "base", "total"};
         String[] segmentHead = {"id", "itineraryCode", "flightCode", "depOrComb", "departureIata", "departureAt", "arrivalIata",
-                                    "arrivalAt", "duration", "carrierCode", "carrierNum"};
-        String[] durationHead = {"id", "itineraryCode", "flightCode", "depOrComb", "duration", "airline", "airlineImg"};
+                                    "arrivalAt", "duration", "carrierCode", "carrierNum", "airlineKor"};
+        String[] durationHead = {"id", "itineraryCode", "flightCode", "depOrComb", "duration", "airline", "airlineKor", "airlineImg"};
 
-        shoppingCart cart = new shoppingCart();
+        ShoppingCart cart = new ShoppingCart();
         cart.setMemberId(memberId);
         cart.setAirKey(ffvId);
 
@@ -349,6 +353,9 @@ public class FlightController {
                                     case "carrierNum" :
                                         cs.setCarrierNum(fins[1]);
                                         break;
+                                    case "airlineKor" :
+                                        cs.setAirlineKor(fins[1]);
+                                        break;
                                 }
                             }
                             this.service.insertCartSegment(cs);
@@ -406,6 +413,9 @@ public class FlightController {
                                         break;
                                     case "airline" :
                                         cd.setAirline(fins[1]);
+                                        break;
+                                    case "airlineKor" :
+                                        cd.setAirlineKor(fins[1]);
                                         break;
                                     case "airlineImg" :
                                         cd.setAirlineImg(fins[1]);

@@ -37,17 +37,12 @@ public class HotelCrawlingService {
     }
     
     // 동시성 오류 방지용
-    private synchronized void saveHotelData(String hotelId, HotelCrawledInfo hotelCrawledInfo, List<HotelCrawledImg> hotelCrawledImgList, List<HotelCrawledRoom> hotelCrawledRoomList) {
+    private synchronized void saveHotelData(String hotelId, HotelCrawledInfo hotelCrawledInfo, List<HotelCrawledImg> hotelCrawledImgList) {
         // 저장이 안되있을때만 저장
         if (!hotelCrawledMapper.existsHotelInAllTables(hotelId)) {
             for (HotelCrawledImg img : hotelCrawledImgList) {
                 hotelCrawledMapper.insertHotelCrawledImg(img);
             }
-
-            for (HotelCrawledRoom room : hotelCrawledRoomList) {
-                hotelCrawledMapper.insertHotelCrawledRoom(room);
-            }
-
             hotelCrawledMapper.insertHotelCrawledInfo(hotelCrawledInfo);
         }
     }
@@ -79,6 +74,12 @@ public class HotelCrawlingService {
             if(imgCnt > 10) break;
         }
 
+
+        // eb2c6a4f4b bbafac9fc9 호텔 설명 - TEXT
+
+
+        // data-testid="property-description-location-score-trans" - 호텔 간략 설명 + 점수
+
         // 2. 편의시설 블록 - 1개
         Elements blockElements1 = hotelCharsElements.select(".hp--bh_stripe-container-fix.js-k2-hp--block .da2b81213f.f598d65660.ba88e720cd.d8bb4e22d2.c6381d692a.c202c6890d");
         for (Element block : blockElements1) {
@@ -96,21 +97,44 @@ public class HotelCrawlingService {
         for (Element textElement : textElements) {
             hotelCrawledInfo.setCrContent(textElement.text());
         }
-
-        // 5. 객실별 정보 - 여러개
-        Elements blockElements3 = hotelCharsElements.select(".page-section.js-k2-hp--block .da2b81213f.f598d65660.bf38bcbedd.c6381d692a.da1088d585.caa4366310");
+        //page-section js-k2-hp--block k2-hp--rt
+        // 5. 객실별 정보 - 한개
+        Elements blockElements3 = hotelCharsElements.select("#maxotelRoomArea");
         for (Element block : blockElements3) {
-            HotelCrawledRoom hotelCrawledRoom = new HotelCrawledRoom();
-            hotelCrawledRoom.setCrHotelId(hotelId);
-            hotelCrawledRoom.setCrRoomInfo(block.outerHtml());
-            hotelCrawledRoomList.add(hotelCrawledRoom);
+            hotelCrawledInfo.setCrRoomInfo(block.outerHtml());
+            break;
         }
 
+        // 6. 후기
+        Elements blockElement4 = hotelCharsElements.select("[data-testid=PropertyReviewsRegionBlock]");
+        for (Element block : blockElement4) {
+            hotelCrawledInfo.setCrReview(block.outerHtml());
+            break;
+        }
+
+        // aceeb7ecbc pp-header__title => 호텔 이름
+        Elements blockElements5 = hotelCharsElements.select(".aceeb7ecbc.pp-header__title");
+        for (Element block : blockElements5) {
+            hotelCrawledInfo.setCrHotelNameKo(block.outerHtml());
+            break;
+        }
+        //f5113518a6 b49dbf078f 별점
+        Elements blockElements6 = hotelCharsElements.select(".f5113518a6.b49dbf078f");
+        for (Element block : blockElements6) {
+            hotelCrawledInfo.setCrHotelStars(block.outerHtml());
+            break;
+        }
+        // page-section js-k2-hp--block k2-hp--facilities_and_policies => 이용수칙
+        Elements blockElements7 = hotelCharsElements.select(".page-section.js-k2-hp--block.k2-hp--facilities_and_policies");
+        for (Element block : blockElements7) {
+            hotelCrawledInfo.setCrRule(block.outerHtml());
+            break;
+        }
         // 호텔 ID 설정
         hotelCrawledInfo.setCrHotelId(hotelId);
 
         // 데이터베이스에 저장
-        saveHotelData(hotelId, hotelCrawledInfo, hotelCrawledImgList, hotelCrawledRoomList);
+        saveHotelData(hotelId, hotelCrawledInfo, hotelCrawledImgList);
     }
 
 
@@ -189,8 +213,10 @@ public class HotelCrawlingService {
                 if(crawlingHotelName == null || crawlingHotelInfoLink == null){
                     //System.out.println("크롤링 일치하는 결과 없음 ....");
                 }else{
+                    crawlingHotelInfoLink = crawlingHotelInfoLink.replaceAll(".html", ".ko.html");
                     // 이때만 결과가 있음
-                    System.out.println(crawlingHotelName+ " 호텔 크롤링 완료");
+                    System.out.println(crawlingHotelName+ " 호텔 크롤링 완료 : ");
+                    System.out.println(crawlingHotelInfoLink);
                     hotelDetailsByUrl(crawlingHotelInfoLink, hotelId);
                     result = true;
                 }
@@ -227,6 +253,18 @@ public class HotelCrawlingService {
             Optional<Image> imageOp = imageService.findImageByKey(hotelCrawledImg.getCrImgKey());
             if(imageOp.isPresent()){
                 result.add(imageOp.get().getUrl());
+            }
+        }
+        return result;
+    }
+
+    public List<String> getHotelCrawledImgKeyList(String hotelId){
+        List<String> result = new ArrayList<>();
+        List<HotelCrawledImg> hotelCrawledImgList = hotelCrawledMapper.findHotelCrawledImgByHotelId(hotelId);
+        for(HotelCrawledImg hotelCrawledImg : hotelCrawledImgList){
+            Optional<Image> imageOp = imageService.findImageByKey(hotelCrawledImg.getCrImgKey());
+            if(imageOp.isPresent()){
+                result.add(imageOp.get().getImgKey());
             }
         }
         return result;
