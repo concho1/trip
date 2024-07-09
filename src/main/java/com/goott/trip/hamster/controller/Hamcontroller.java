@@ -215,18 +215,20 @@ public class Hamcontroller {
     @GetMapping("/success")
     public ModelAndView PaymentSuccess(@RequestParam String airKey, @RequestParam String email,
                                        @RequestParam String UUID, @RequestParam String paymentType, @RequestParam String orderId,
-                                       @RequestParam String paymentKey, @RequestParam("paymentInfo") String paymentInfo) throws UnsupportedEncodingException, MessagingException {
+                                       @RequestParam String paymentKey, @RequestParam("paymentInfo") String paymentInfo,Principal principal) throws UnsupportedEncodingException, MessagingException {
 
         String newAirKey = airKey.replaceAll("[{}]","");
         String newEmail = email.replaceAll("[{}]","");
         String newUUID = UUID.replaceAll("[{}]","");
+        String memberId = principal.getName();
 
         String decodedPaymentInfo = URLDecoder.decode(paymentInfo, "UTF-8");
-
         Gson gson = new Gson();
         Payment payment = gson.fromJson(decodedPaymentInfo, Payment.class);
 
-        System.out.println(payment);
+        payment.setMemberId(memberId);
+        payment.setOrderUuid(newUUID);
+        payment.setAirKey(airKey);
 
         List<CartFlight> airInfo = this.airservice.getAirInfo(newAirKey);
         List<CartDuration> DepDur = this.airservice.getDepDur(newAirKey);
@@ -236,13 +238,21 @@ public class Hamcontroller {
         List<CartPricing> price = this.airservice.getPricing(newAirKey);
 
         this.emailService.sendAirplaneEmail(newEmail,newUUID,payment,airInfo,DepDur,CombDur,segDep,segComb,price);
+        int check =this.paymentservice.airplanePay(payment);
+
 
         ModelAndView modelAndView = new ModelAndView("Hamster/airplanePaymentSuccess");
-        modelAndView.addObject("paymentKey", paymentKey)
-                .addObject("orderId", orderId)
-                .addObject("email", newEmail);
 
-        return modelAndView;
+        if(check > 0){
+            modelAndView.addObject("paymentKey", paymentKey)
+                    .addObject("orderId", orderId)
+                    .addObject("email", newEmail);
+
+            return modelAndView;
+        }else{
+            return modelAndView;
+        }
+
     }
 
     @GetMapping("/shoppingCart")
