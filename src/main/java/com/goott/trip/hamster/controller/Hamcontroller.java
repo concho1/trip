@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.goott.trip.common.model.Alarm;
+import com.goott.trip.hamster.model.HotelShoppingCartDTO;
 import com.goott.trip.hamster.model.Testproduct;
 import com.goott.trip.hamster.model.AirplaneInfo;
 import com.goott.trip.hamster.model.Payment;
@@ -130,15 +131,18 @@ public class Hamcontroller {
 
     }
 
-    @GetMapping("hotel/shoppingCart")
-    public ModelAndView hotelShoppingCart(@RequestParam("hotelIdKey")String hotelIdKey,
-                                          @RequestParam("hotelContKey")String hotelContKey,
-                                          @RequestParam("crImgKey")String crImgKey,
-                                          Principal principal){
+    @RequestMapping("hotel/shoppingCart-put")
+    public Map<String, String> hotelShoppingCart(
+            @ModelAttribute HotelShoppingCartDTO hotelShoppingCart){
+        System.out.println(hotelShoppingCart.toString());
+        // DB 저장하는 코드 작성
 
-        System.out.println(hotelIdKey+hotelContKey+crImgKey);
 
-        return null;
+        // 호텔 쇼핑카트 url 넘겨주기
+
+        return new HashMap<>(Map.of(
+                "result", "ok",
+                "url", "/member/hamster/ 넘겨줄 url 작성"));
     }
 
     @GetMapping("airplane/shoppingCart")

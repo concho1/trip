@@ -171,7 +171,7 @@ public class HotelSearchService {
                 Boolean available = hotelOffer.isAvailable();
                 for(HotelOfferSearch.Offer offer : hotelOffer.getOffers()){
                     ConchoHotelOffer conchoHotelOffer = new ConchoHotelOffer();
-                    conchoHotelOffer.setIdKey(UUID.randomUUID().toString());
+                    conchoHotelOffer.setIdKey(offer.getId());
                     conchoHotelOffer.setAvailable(available);
                     conchoHotelOffer.setStartDate(offer.getCheckInDate());
                     conchoHotelOffer.setEndDate(offer.getCheckOutDate());
