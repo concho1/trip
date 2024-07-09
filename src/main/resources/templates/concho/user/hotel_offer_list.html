@@ -795,9 +795,18 @@
 
                     <div class="my-btn-box" style="display: flex">
                         <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; background-color: #4a8557; display: flex;"
-                                class="tedu-btn tedu-btn-light add-cart" onclick="alert('클릭')">예약하기</button>
+                                class="tedu-btn tedu-btn-light add-cart"
+                                th:idKey="${hotelOffer.getIdKey()}" th:onclick="makeReservation(this.getAttribute('idKey'))" >예약하기</button>
                         <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; display: flex"
-                                class="tedu-btn tedu-btn-light add-cart" onclick="alert('클릭')">장바구니</button>
+                                class="tedu-btn tedu-btn-light add-cart"
+                                th:attr="data-memberId=${memberId}, data-hotelName=${hotel.getName()}, data-personCnt=${hotelOffer.getPersonCnt()}, data-totalPrice=${hotelOffer.getTotalPrice()}, data-checkIn=${hotelOffer.getStartDate()}, data-checkOut=${hotelOffer.getEndDate()}, data-roomName=${hotelOffer.getCategory()}"
+                                th:onclick="|putShoppingCart(
+                                this.getAttribute('data-memberId'), this.getAttribute('data-hotelName'),
+                                this.getAttribute('data-personCnt'), this.getAttribute('data-totalPrice'),
+                                this.getAttribute('data-checkIn'), this.getAttribute('data-checkOut'),
+                                this.getAttribute('data-roomName')
+                                )|">장바구니
+                        </button>
                     </div>
 
                 </section>
@@ -1034,8 +1043,11 @@
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
 </div>
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-<script>
+<script th:inline="javascript">
+    let memberId = /*[[${memberId}]]*/ null;
+    let imageKeyList = /*[[${imgKeyList}]]*/ null;
     $(document).ready(function () {
         let $offerList = $('#offer-list');
         let $commentList = $('#comment-list');
@@ -1102,5 +1114,53 @@
             nextArrow: '<button type="button" class="slick-next">Next</button>'
         });
     });
+    function makeReservation(idKey){
+        if(memberId == null) {
+            alert('회원만 이용할 수 있는 서비스입니다.');
+        }else{
+            location.href="/member/concho/service/hotel-reservation?idKey=" + idKey;
+        }
+    }
+    function putShoppingCart(memberId, hotelName, personCnt, totalPrice, checkIn, checkOut, roomName){
+        if(memberId == null) {
+            alert('회원만 이용할 수 있는 서비스입니다.');
+        }else{
+            let formData = new FormData();
+            formData.append("cartKey", uuid.v4());   formData.append("memberId", memberId);
+            formData.append("personCnt", personCnt);   formData.append("imageKey", imageKeyList[0]);
+            formData.append("hotelName", hotelName);   formData.append("roomName", roomName);
+            formData.append("totalPrice", totalPrice);   formData.append("checkIn", checkIn);
+            formData.append("checkOut",checkOut );
+            console.log(formData);
+            ajaxGo('/member/hamster/hotel/shoppingCart-put', formData, function (response){
+                if(response.result === 'ok'){
+                    alert('장바구니 추가 성공!');
+                }
+            });
+        }
+    }
+
+    function ajaxGo(url, formData, callback){
+        let responseResult = null;
+        let baseUrl = window.location.origin;
+        $.ajax({
+            url: baseUrl + url,
+            type: 'POST',
+            data: formData,
+            async: true,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (callback) {
+                    callback(response);
+                }
+            },
+            error: function(error) {
+                console.log(error);
+                alert('통신 오류: ' + error);
+            }
+        });
+        return responseResult;
+    }
 </script>
 </body>
