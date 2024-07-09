@@ -1,6 +1,7 @@
 package com.goott.trip.hamster.service;
 
 import com.goott.trip.hamster.mapper.paymentMapper;
+import com.goott.trip.hamster.model.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,5 +11,5 @@ public class paymentService {
     @Autowired
     private paymentMapper mapper;
 
-    /*public int insertPayment(String memberId, payment payment){return this.mapper.insertPayment(memberId,payment); }*/
+    public int airplanePay(Payment payment) {return this.mapper.airplanePay(payment); }
 }
