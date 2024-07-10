@@ -16,4 +16,10 @@ public class GlobeService {
     public List<ESHConchoHotel> getAllHotelData() {
         return mapper.selectAllHotels();
     }
+
+    public ESHConchoHotel getHotelById(String hotelIdKey, String hotelId) {
+        return mapper.selectHotelById(hotelIdKey, hotelId);
+    }
+
+
 }

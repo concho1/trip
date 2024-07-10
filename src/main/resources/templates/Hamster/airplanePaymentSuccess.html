@@ -19,11 +19,6 @@
             </h2>
             <p class="textset-desc" th:text="'전자영수증은 '+${email} +'로 발송됩니다.'"></p>
 
-            <div class="textset-tit">여정 확인</div>
-            <p class="textset-desc" th:text="${cont.getAirplaneDepart() + ' -> ' + cont.getAirplaneArrive()}"></p>
-            <p class="textset-desc" id="airTime" th:text="${cont.getAirplaneDepartTime().toString().substring(5,16) + ' ~ ' + cont.getAirplaneArriveTime().toString().substring(5,16)}"></p>
-            <p class="textset-desc" th:text="${cont.getAirplaneName()}"></p>
-            <p class="textset-desc" th:text="${amount}"></p>
           </div>
           <div class="btn-box">
             <a class="tedu-btn tedu-btn-dark btn-link" th:href="@{/}">메인으로 이동</a>

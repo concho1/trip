@@ -5,7 +5,13 @@
 <mapper namespace="com.goott.trip.esh.mapper.GlobeMapper">
     <select id="selectAllHotels" resultType="com.goott.trip.esh.model.ESHConchoHotel">
         SELECT name, latitude, longitude FROM hotels
-        LIMIT 20
+        LIMIT 40
+    </select>
+
+    <select id="selectHotelById" parameterType="map" resultType="com.goott.trip.esh.model.ESHConchoHotel">
+        select id_key, hotel_id, '0' as start_date,
+        '0' as end_date, '0' as person_cnt
+        from hotels where id_key = #{hotelIdKey} and hotel_id = #{hotelId}
     </select>
 
 

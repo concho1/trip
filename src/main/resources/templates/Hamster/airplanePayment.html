@@ -30,26 +30,26 @@
               <div class="payment-cont">
                 <fieldset class="fieldset">
                   <p class="title" style="margin-bottom: 8px;">연락처 정보</p>
-                  <div class="input-group">
+                  <div class="input-group" style="border: 1px solid lightgray; padding: 10px;">
                     <div class="tedu-inputset">
                       <img th:src="@{/common/images/callHuman.png}" style="width: 18px;">
                       <legend class="stitle" th:text="${payment.getCallFirstName()}+' '+${payment.getCallLastName()}"></legend>
+                      <p class="desc" th:text="${payment.getCallEmail()}"></p>
+                      <p class="desc" th:text="${payment.getCallCountry()}+${payment.getCallNumber()}" style="margin-bottom: 40px;"></p>
                     </div>
                   </div>
-                  <p class="desc" th:text="${payment.getCallEmail()}"></p>
-                  <p class="desc" th:text="${payment.getCallCountry()}+${payment.getCallNumber()}" style="margin-bottom: 40px;"></p>
                 </fieldset>
 
                 <fieldset class="fieldset">
-                    <p class="title" style="margin-bottom: 8px;">탑승객 정보</p>
+                    <p class="title" style="margin-bottom: 8px; margin-top: 8px;">탑승객 정보</p>
                     <th:block th:each="i, iterStat : ${#numbers.sequence(0, payment.rideFirstName.length - 1)}">
-                      <div class="input-group">
+                      <div class="input-group" style="border: 1px solid lightgray; padding: 10px;">
                         <div class="tedu-inputset">
                           <img th:src="@{/common/images/human.png}" style="width: 26px;">
                           <legend class="stitle" th:text="${payment.rideFirstName[i]} + ' ' + ${payment.rideLastName[i]}"></legend>
+                          <p class="desc" th:text="'여권번호: ' + ${payment.ridePassport[i]}" style="margin-bottom: 20px;"></p>
                         </div>
                       </div>
-                      <p class="desc" th:text="'여권번호: ' + ${payment.ridePassport[i]}" style="margin-bottom: 20px;"></p>
                     </th:block>
                   </fieldset>
               </div>
@@ -157,11 +157,9 @@
 <script th:src="@{/jhm/jhm.js}"></script>
 <script th:inline="javascript">
 
-  let paymentInfo = /*[[${payment}]]*/ null;
+  let payment = /*[[${payment}]]*/ null;
+  console.log(payment);
 
-  console.log(paymentInfo.rideBirth[0]);
-  console.log(paymentInfo.rideBirth[1]);
-  console.log(paymentInfo.callEmail);
   const button = document.getElementById("payment-button");
   const coupon = document.getElementById("coupon-box").value;
   const airPrice = document.getElementById("airPrice");
@@ -221,17 +219,21 @@
 
   if(coupon)
 
-  button.addEventListener("click", function () {
-    paymentWidget.requestPayment({
-      orderId: UUID.value,
-      orderName: airName.value,
-      successUrl:window.location.origin +"/member/hamster/success?"+"airKey={"+airKey+"}&email={"+email+"}&UUID={"+UUID.value+"}&paymentInfo={"+paymentInfo+"}&",
-      failUrl: window.location.origin +"/member/hamster/fail",
-      customerEmail: email,
-      customerName: customerName,
-      customerMobilePhone: customerPhone,
+    button.addEventListener("click", function () {
+      const encodedPaymentInfo = encodeURIComponent(JSON.stringify(payment));
+      const successUrl = `${window.location.origin}/member/hamster/success?airKey=${airKey}&email=${email}&UUID=${UUID.value}&paymentInfo=${encodedPaymentInfo}`;
+      const failUrl = `${window.location.origin}/member/hamster/fail`;
+
+      paymentWidget.requestPayment({
+        orderId: UUID.value,
+        orderName: airName.value,
+        successUrl: successUrl,
+        failUrl: failUrl,
+        customerEmail: email,
+        customerName: customerName,
+        customerMobilePhone: customerPhone,
+      });
     });
-  });
 </script>
 <div class="tedu-N17" data-bid="fjlxiC75U0">
   <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>

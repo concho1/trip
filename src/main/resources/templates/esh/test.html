@@ -51,13 +51,21 @@
 <p id="convertedAmount"></p>
 
 <script th:inline="javascript">
+    async function fetchConvertedAmount(fromCurrency, toCurrency, amount) {
+        const response = await fetch(`http://localhost:8787/proxy?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&amount=${amount}`);
+        if(!response.ok) { //요철 실패
+            throw new Error('Network response was not successful');
+        }
+        return response.text();
+    }
+
+
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault(); // 폼 제출 기본 동작을 막음
 
         const fromCurrency = document.querySelector('select[name="fromCurrency"]').value;
         const toCurrency = document.querySelector('select[name="toCurrency"]').value;
         const amount = document.querySelector('input[name="amount"]').value;
-
 
         fetch(`/user/esh/doConvert?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&amount=${amount}`)
             .then(response => response.text())
@@ -69,6 +77,4 @@
 </script>
 
 </body>
-
-
 </html>
