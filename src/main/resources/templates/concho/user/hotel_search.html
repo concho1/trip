@@ -170,6 +170,7 @@
             </div>
             <button id="search-btn" type="button">검색하기</button>
         </form>
+        <button type="button" th:href>외않되?</button>
     </div>
 </main>
 
@@ -197,7 +198,7 @@
 
         $(document).click(function(event) {
             if (!$(event.target).closest('#location').length) {
-                if(!$(event.target).closest('.destination-item').length){
+                if(!$(event.target).closest('.destination-item').length) {
                     $searchListDiv.hide();
                 }
             }
@@ -258,13 +259,11 @@
                     let iataCodeList = response.result;
                     iataCodeList.forEach(function (iataCode, index) {
                         $searchListDiv.append(
-                            `
-                            <div class="destination-item">
+                            `<div class="destination-item">
                                 <span class="iata">${iataCode.iataCode}</span><span> / </span>
                                 <span class="contry-ko">${iataCode.countryKo}</span><span> / </span>
                                 <span class="city">${iataCode.cityKo}</span>
-                            </div>
-                            `
+                            </div>`
                         );
                     });
                 });
