@@ -1,9 +1,14 @@
 package com.goott.trip.hamster.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
+@NoArgsConstructor
 @Data
 public class Payment {
+
     private String memberId;
     private String orderUuid;
 
@@ -29,5 +34,7 @@ public class Payment {
     private String guestFirstName;
     private String guestLastName;
     private String guestCountry;
+
+    private Timestamp orderTime;
 
 }

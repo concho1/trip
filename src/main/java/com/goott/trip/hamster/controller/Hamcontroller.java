@@ -1,6 +1,12 @@
 package com.goott.trip.hamster.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.goott.trip.common.model.Alarm;
+import com.goott.trip.hamster.model.HotelShoppingCartDTO;
 import com.goott.trip.hamster.model.Testproduct;
 import com.goott.trip.hamster.model.AirplaneInfo;
 import com.goott.trip.hamster.model.Payment;
@@ -19,6 +25,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.security.Principal;
 import java.util.*;
 
@@ -41,6 +49,11 @@ public class Hamcontroller {
         List<Testproduct> list =  this.airservice.airplaneList();
 
         return new ModelAndView("Hamster/testAirplaneList").addObject("list",list);
+    }
+
+    @GetMapping("airplane/table")
+    public ModelAndView table(){
+        return new ModelAndView("Hamster/table");
     }
 
     @GetMapping("airplane/airplaneInfoList")
@@ -118,15 +131,18 @@ public class Hamcontroller {
 
     }
 
-    @GetMapping("hotel/shoppingCart")
-    public ModelAndView hotelShoppingCart(@RequestParam("hotelIdKey")String hotelIdKey,
-                                          @RequestParam("hotelContKey")String hotelContKey,
-                                          @RequestParam("crImgKey")String crImgKey,
-                                          Principal principal){
+    @RequestMapping("hotel/shoppingCart-put")
+    public Map<String, String> hotelShoppingCart(
+            @ModelAttribute HotelShoppingCartDTO hotelShoppingCart){
+        System.out.println(hotelShoppingCart.toString());
+        // DB 저장하는 코드 작성
 
-        System.out.println(hotelIdKey+hotelContKey+crImgKey);
 
-        return null;
+        // 호텔 쇼핑카트 url 넘겨주기
+
+        return new HashMap<>(Map.of(
+                "result", "ok",
+                "url", "/member/hamster/ 넘겨줄 url 작성"));
     }
 
     @GetMapping("airplane/shoppingCart")
@@ -201,28 +217,46 @@ public class Hamcontroller {
     }
 
     @GetMapping("/success")
-    public ModelAndView PaymentSuccess(
-            @RequestParam String airKey,
-            @RequestParam String email,
-            @RequestParam String UUID,
-            @RequestParam String paymentType,
-            @RequestParam String orderId,
-            @RequestParam String paymentKey) throws MessagingException {
+    public ModelAndView PaymentSuccess(@RequestParam String airKey, @RequestParam String email,
+                                       @RequestParam String UUID, @RequestParam String paymentType, @RequestParam String orderId,
+                                       @RequestParam String paymentKey, @RequestParam("paymentInfo") String paymentInfo,Principal principal) throws UnsupportedEncodingException, MessagingException {
 
         String newAirKey = airKey.replaceAll("[{}]","");
         String newEmail = email.replaceAll("[{}]","");
         String newUUID = UUID.replaceAll("[{}]","");
+        String memberId = principal.getName();
 
-        Testproduct cont = this.airservice.airplaneCont(newAirKey);
-        this.emailService.sendAirplaneEmail(newEmail,newUUID,cont);
+        String decodedPaymentInfo = URLDecoder.decode(paymentInfo, "UTF-8");
+        Gson gson = new Gson();
+        Payment payment = gson.fromJson(decodedPaymentInfo, Payment.class);
+
+        payment.setMemberId(memberId);
+        payment.setOrderUuid(newUUID);
+        payment.setAirKey(airKey);
+
+        List<CartFlight> airInfo = this.airservice.getAirInfo(newAirKey);
+        List<CartDuration> DepDur = this.airservice.getDepDur(newAirKey);
+        List<CartDuration> CombDur = this.airservice.getCombDur(newAirKey);
+        List<CartSegment> segDep = this.airservice.getDep(newAirKey);
+        List<CartSegment> segComb = this.airservice.getComb(newAirKey);
+        List<CartPricing> price = this.airservice.getPricing(newAirKey);
+
+        this.emailService.sendAirplaneEmail(newEmail,newUUID,payment,airInfo,DepDur,CombDur,segDep,segComb,price);
+        int check =this.paymentservice.airplanePay(payment);
+
 
         ModelAndView modelAndView = new ModelAndView("Hamster/airplanePaymentSuccess");
-        modelAndView.addObject("paymentKey", paymentKey)
-                .addObject("orderId", orderId)
-                .addObject("email", newEmail)
-                .addObject("amount", cont.getAirplanePrice()).addObject("cont",cont);
 
-        return modelAndView;
+        if(check > 0){
+            modelAndView.addObject("paymentKey", paymentKey)
+                    .addObject("orderId", orderId)
+                    .addObject("email", newEmail);
+
+            return modelAndView;
+        }else{
+            return modelAndView;
+        }
+
     }
 
     @GetMapping("/shoppingCart")

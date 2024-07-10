@@ -157,11 +157,9 @@
 <script th:src="@{/jhm/jhm.js}"></script>
 <script th:inline="javascript">
 
-  let paymentInfo = /*[[${payment}]]*/ null;
+  let payment = /*[[${payment}]]*/ null;
+  console.log(payment);
 
-  console.log(paymentInfo.rideBirth[0]);
-  console.log(paymentInfo.rideBirth[1]);
-  console.log(paymentInfo.callEmail);
   const button = document.getElementById("payment-button");
   const coupon = document.getElementById("coupon-box").value;
   const airPrice = document.getElementById("airPrice");
@@ -221,17 +219,21 @@
 
   if(coupon)
 
-  button.addEventListener("click", function () {
-    paymentWidget.requestPayment({
-      orderId: UUID.value,
-      orderName: airName.value,
-      successUrl:window.location.origin +"/member/hamster/success?"+"airKey={"+airKey+"}&email={"+email+"}&UUID={"+UUID.value+"}&paymentInfo={"+paymentInfo+"}&",
-      failUrl: window.location.origin +"/member/hamster/fail",
-      customerEmail: email,
-      customerName: customerName,
-      customerMobilePhone: customerPhone,
+    button.addEventListener("click", function () {
+      const encodedPaymentInfo = encodeURIComponent(JSON.stringify(payment));
+      const successUrl = `${window.location.origin}/member/hamster/success?airKey=${airKey}&email=${email}&UUID=${UUID.value}&paymentInfo=${encodedPaymentInfo}`;
+      const failUrl = `${window.location.origin}/member/hamster/fail`;
+
+      paymentWidget.requestPayment({
+        orderId: UUID.value,
+        orderName: airName.value,
+        successUrl: successUrl,
+        failUrl: failUrl,
+        customerEmail: email,
+        customerName: customerName,
+        customerMobilePhone: customerPhone,
+      });
     });
-  });
 </script>
 <div class="tedu-N17" data-bid="fjlxiC75U0">
   <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>

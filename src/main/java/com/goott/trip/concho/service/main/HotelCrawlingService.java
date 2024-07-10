@@ -258,6 +258,18 @@ public class HotelCrawlingService {
         return result;
     }
 
+    public List<String> getHotelCrawledImgKeyList(String hotelId){
+        List<String> result = new ArrayList<>();
+        List<HotelCrawledImg> hotelCrawledImgList = hotelCrawledMapper.findHotelCrawledImgByHotelId(hotelId);
+        for(HotelCrawledImg hotelCrawledImg : hotelCrawledImgList){
+            Optional<Image> imageOp = imageService.findImageByKey(hotelCrawledImg.getCrImgKey());
+            if(imageOp.isPresent()){
+                result.add(imageOp.get().getImgKey());
+            }
+        }
+        return result;
+    }
+
     public List<HotelCrawledRoom> getHotelCrawledRoomList(String hotelId){
         return hotelCrawledMapper.findHotelCrawledRoomByHotelId(hotelId);
     }
