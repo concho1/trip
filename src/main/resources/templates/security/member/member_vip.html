@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-<link rel="stylesheet" th:href="@{/security/css/memberInfo.css}">
+<link rel="stylesheet" th:href="@{/security/css/member.css}">
 <link rel="stylesheet" th:href="@{/security/css/vip.css}">
-<link rel="stylesheet" th:href="@{/security/css/vipImfo.css}">
+<link rel="stylesheet" th:href="@{/security/css/vipInfo.css}">
 
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <body>
@@ -16,27 +16,31 @@
             <div class="content-container">
                 <section class="myedu-wrap">
                     <div class="title-wrap">
-                        <h3 class="cont-title">VIP 등급</h3>
+                        <a th:href="@{info}" id="info" class="cont-title">회원 정보</a>
+                        <span class="separator">/</span>
+                        <a th:href="@{reservation}" id="reservation" class="cont-title">예약</a>
+                        <span class="separator">/</span>
+                        <a th:href="@{vip}" id="vip" class="cont-title">VIP</a>
                     </div>
                     <div class="tab-menu-wrap">
-                        <div class="tab-menu active">
-                            <a th:href="@{vip}">
+                        <div class="tab-menu active" id="tab-myVIP">
+                            <a href="#myVIP">
                                 <span>VIP</span>
                             </a>
                         </div>
-                        <div class="tab-menu">
-                            <a th:href="@{reservation}">
-                                <span>내 예약</span>
+                        <div class="tab-menu" id="tab-vipE">
+                            <a href="#vipE">
+                                <span>VIP 란?</span>
                             </a>
                         </div>
-                        <div class="tab-menu">
-                            <a th:href="@{info}">
-                                <span>회원 정보</span>
+                       <!-- <div class="tab-menu active">
+                            <a th:href="@{vip}">
+                                <span>VIP</span>
                             </a>
-                        </div>
+                        </div>-->
                     </div>
 
-                    <div class="vip-container">
+                    <div class="vip-container" id="myVIP">
                         <!--<span class="vip-badge">VIP Member</span>-->
 
                         <div class="vip-tier">
@@ -44,16 +48,16 @@
                             <p>현재 결제 완료 건수: <span id="completed-bookings">3</span></p>
                             <div class="vip-bar-container">
                                 <div class="vip-bar" id="vip-bar"></div>
-                                <div class="vip-star-marker" style="left: 0;" title="Bronze">&#9733;</div>
+                                <div class="vip-star-marker" style="left: 1%;" title="Bronze">&#9733;</div>
                                 <div class="vip-star-marker" style="left: 20%;" title="Silver">&#9733;</div>
                                 <div class="vip-star-marker" style="left: 50%;" title="Gold">&#9733;</div>
-                                <div class="vip-star-marker" style="left: 100%;" title="Platinum">&#9733;</div>
+                                <div class="vip-star-marker" style="left: 99%;" title="Platinum">&#9733;</div>
                             </div>
                             <div class="vip-tier-labels">
-                                <span class="vip-tier-label" style="left: 0;">Bronze</span>
+                                <span class="vip-tier-label" style="left: 1%;">Bronze</span>
                                 <span class="vip-tier-label" style="left: 20%;">Silver</span>
                                 <span class="vip-tier-label" style="left: 50%;">Gold</span>
-                                <span class="vip-tier-label" style="left: 100%;">Platinum</span>
+                                <span class="vip-tier-label" style="left: 99%;">Platinum</span>
                             </div>
                         </div>
 
@@ -66,10 +70,8 @@
                         <a th:href="@{/flight/search_flight}" class="vip-button">예약하러 가기</a>
                     </div>
 
-                    <br><br><br>
-
                     <!--등급 설명-->
-                    <div class="explain-container">
+                    <div class="vip-container" id="vipE" style="display: none;">
                         <span class="explain-badge">VIP</span>
 
                         <div class="explain-tier">
@@ -127,7 +129,7 @@
                             </ul>
                         </div>
 
-                        <a href="#" class="vip-button">예약하러 가기</a>
+                        <a th:href="@{/flight/search_flight}" class="vip-button">예약하러 가기</a>
                     </div>
 
 
@@ -138,6 +140,8 @@
 </main>
 
 <script type="text/javascript" th:src="@{/security/js/vip.js}"></script>
+<script type="text/javascript" th:src="@{/security/js/vipInfo.js}"></script>
+<script type="text/javascript" th:src="@{/security/js/myInfo.js}"></script>
 
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
