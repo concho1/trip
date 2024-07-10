@@ -10,5 +10,10 @@ import lombok.NoArgsConstructor;
 public class ESHConchoHotel {
     private String name;           // name
     private Double latitude;       // latitude
-    private Double longitude;      // longitude
+    private Double longitude;
+    private String startDate;
+    private String endDate;
+    private int personCnt;
+    private String idKey;
+    private String HotelId;
 }
