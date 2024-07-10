@@ -30,26 +30,26 @@
               <div class="payment-cont">
                 <fieldset class="fieldset">
                   <p class="title" style="margin-bottom: 8px;">연락처 정보</p>
-                  <div class="input-group">
+                  <div class="input-group" style="border: 1px solid lightgray; padding: 10px;">
                     <div class="tedu-inputset">
                       <img th:src="@{/common/images/callHuman.png}" style="width: 18px;">
                       <legend class="stitle" th:text="${payment.getCallFirstName()}+' '+${payment.getCallLastName()}"></legend>
+                      <p class="desc" th:text="${payment.getCallEmail()}"></p>
+                      <p class="desc" th:text="${payment.getCallCountry()}+${payment.getCallNumber()}" style="margin-bottom: 40px;"></p>
                     </div>
                   </div>
-                  <p class="desc" th:text="${payment.getCallEmail()}"></p>
-                  <p class="desc" th:text="${payment.getCallCountry()}+${payment.getCallNumber()}" style="margin-bottom: 40px;"></p>
                 </fieldset>
 
                 <fieldset class="fieldset">
-                    <p class="title" style="margin-bottom: 8px;">탑승객 정보</p>
+                    <p class="title" style="margin-bottom: 8px; margin-top: 8px;">탑승객 정보</p>
                     <th:block th:each="i, iterStat : ${#numbers.sequence(0, payment.rideFirstName.length - 1)}">
-                      <div class="input-group">
+                      <div class="input-group" style="border: 1px solid lightgray; padding: 10px;">
                         <div class="tedu-inputset">
                           <img th:src="@{/common/images/human.png}" style="width: 26px;">
                           <legend class="stitle" th:text="${payment.rideFirstName[i]} + ' ' + ${payment.rideLastName[i]}"></legend>
+                          <p class="desc" th:text="'여권번호: ' + ${payment.ridePassport[i]}" style="margin-bottom: 20px;"></p>
                         </div>
                       </div>
-                      <p class="desc" th:text="'여권번호: ' + ${payment.ridePassport[i]}" style="margin-bottom: 20px;"></p>
                     </th:block>
                   </fieldset>
               </div>

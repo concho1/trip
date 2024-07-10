@@ -4,6 +4,10 @@
 
 <mapper namespace="com.goott.trip.hamster.mapper.shoppingCartMapper">
 
+    <select id="shoppingCartAirplane" parameterType="String" resultType="String">
+        select air_key from shoppingCart where member_id = #{memId}
+    </select>
+
     <select id="checkDup" parameterType="String" resultType="shoppingCart">
         select * from shoppingCart where member_Id = #{memId}
     </select>
