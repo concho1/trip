@@ -13,6 +13,8 @@ public class shoppingCartService {
     @Autowired
     private shoppingCartMapper mapper;
 
+    public List<String> shoppingCartAirplane(String memId){return this.mapper.shoppingCartAirplane(memId);}
+
     public List<ShoppingCart> checkDup(String memId){return this.mapper.checkDup(memId);}
 
     public int insertCart(String memId,String key){return this.mapper.insertCart(memId,key); }
