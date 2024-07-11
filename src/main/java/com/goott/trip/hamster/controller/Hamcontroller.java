@@ -233,6 +233,7 @@ public class Hamcontroller {
 
         payment.setMemberId(memberId);
         payment.setOrderUuid(newUUID);
+        payment.setPaymentKey(paymentKey);
         payment.setAirKey(airKey);
 
 
