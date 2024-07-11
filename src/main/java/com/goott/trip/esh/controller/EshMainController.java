@@ -4,7 +4,7 @@ import com.goott.trip.common.model.Alarm;
 import com.goott.trip.concho.model.ConchoHotel;
 import com.goott.trip.concho.service.main.HotelCrawlingService;
 import com.goott.trip.concho.service.main.HotelSearchService;
-import com.goott.trip.esh.model.ESHConchoHotel;
+import com.goott.trip.esh.model.ConHotel;
 import com.goott.trip.esh.service.ExchangeService;
 import com.goott.trip.esh.service.GlobeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class EshMainController {
     public String showMap(
             Model model,
             Principal principal,
-            @RequestParam(value = "iataCode", defaultValue = "ICN") String iataCode) {
+            @RequestParam(value = "iataFk", defaultValue = "ICN") String iataCode) {
         Alarm alarm = new Alarm(model);
         String memberId = principal != null ? principal.getName() : null;
         Optional<List<ConchoHotel>> conchoHotels = hotelSearchService.getHotelListByIataCode(iataCode, memberId);
@@ -57,7 +57,7 @@ public class EshMainController {
                     conchoHotelListResult.add(conchoHotel);
                 }
             }
-            /*System.out.println(conchoHotels.get().size());*/
+            System.out.println(conchoHotels.get().size());
             model.addAttribute("hotels", conchoHotelListResult);
             return "esh/map";
         } else {
@@ -68,10 +68,10 @@ public class EshMainController {
 
     @GetMapping("/user/concho/service/hotel-info")
     @ResponseBody
-    public ESHConchoHotel showHotelInfo(
+    public ConHotel showHotelInfo(
             @RequestParam("hotelIdKey") String hotelIdKey,
             @RequestParam("hotelId") String hotelId) {
-        ESHConchoHotel hotel = globeService.getHotelById(hotelIdKey, hotelId);
+        ConHotel hotel = globeService.getHotelById(hotelIdKey, hotelId);
         if (hotel != null) {
             return hotel;
         } else {
