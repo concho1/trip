@@ -1,25 +1,22 @@
-package com.goott.trip.concho.service.module;
+package com.goott.trip.concho.service.component;
 
 import com.amadeus.Amadeus;
 import com.amadeus.Params;
 import com.amadeus.exceptions.ResponseException;
-import com.amadeus.referencedata.Locations;
 import com.amadeus.resources.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 /*
  * 1) 검색 요청시 검색 정보와 api 요청 결과를 DB에 저장하기
  * 2) 1시간 이내에 동일한 요청 => api 요청 X
  * 3) DB 에 저장한 정보를 다시 리턴
  * 4) api key 사용량 카운트 하기
  */
+
 @Component
-public class AmadeusApiModuleService {
+public class AmadeusApiComponent {
     @Value("${concho.amadeus.key}")
     private String amadeusKey;
     @Value("${concho.amadeus.seq-key}")

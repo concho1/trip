@@ -169,6 +169,7 @@
                 if(endHotelLoadingCnt === hotelReqCnt){
                     $('#message-my').hide();
                     isLoading = false;
+                    console.log('??');
                 }
                 if (response.result === 'ok') {
                     hotelLoadingTrueCnt++;
@@ -177,8 +178,9 @@
                     $img.attr('src', response.imgUrl);
                     $box.show();
                     $hotelCnt.text(Number($hotelCnt.text()) + 1);
-                    //console.log(hotel.name + " 호텔 로딩 완료 " + response.hotelId);
+                    console.log(hotel.name + " 호텔 로딩 완료 " + response.hotelId);
                 } else {
+                    console.log('???');
                     //console.log(`#${hotel.hotelId}`);
                     //let $box = $viewBox.find(`#${response.hotelId}`);
                     //$box.hide();
@@ -256,7 +258,7 @@
                 }
             },
             error: function(error) {
-                //alert('통신 오류: ' + error);
+                alert('통신 오류: ' + error);
             }
         });
         return responseResult;

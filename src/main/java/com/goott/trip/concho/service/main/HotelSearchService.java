@@ -7,7 +7,7 @@ import com.goott.trip.concho.mapper.HotelMapper;
 import com.goott.trip.concho.model.ConchoHotel;
 import com.goott.trip.concho.model.ConchoHotelOffer;
 import com.goott.trip.concho.model.HotelSearch;
-import com.goott.trip.concho.service.module.AmadeusApiModuleService;
+import com.goott.trip.concho.service.component.AmadeusApiComponent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,13 +16,12 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class HotelSearchService {
     private final HotelMapper hotelMapper;
-    private final AmadeusApiModuleService amadeusApiModuleService;
+    private final AmadeusApiComponent amadeusApiModuleService;
     private final HotelCrawlingService crawlingModuleService;
 
     public boolean checkAndUpdateUsage(String usageCate, int usageLimit) {
