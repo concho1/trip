@@ -18,7 +18,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -152,7 +155,7 @@ public class MemberRestController {
     }
 
     @PostMapping("updatePwd")
-    public ModelAndView postPwd(Principal principal, Model model, Member member,
+    public ModelAndView postPwd(Principal principal, Model model,
                                 @RequestParam("pw") String pw, @RequestParam("newPw") String newPw) {
         Alarm alarm = new Alarm(model);
         String memberId = principal.getName();
@@ -219,16 +222,115 @@ public class MemberRestController {
         return new ModelAndView(alarm.getMessagePage());
     }*/
 
+    /*@GetMapping("vip")
+    public ModelAndView getVip(Principal principal) {
+
+        String memberId = principal.getName();
+        LocalDate today = LocalDate.now();
+        List<String> ffvList = this.memberService.getFfvId(memberId);
+
+        for(String ffv : ffvList) {
+            String dep = this.memberService.getDeparture(ffv);
+            LocalDate depDate = LocalDate.parse(dep, DateTimeFormatter.ISO_DATE);
+            boolean d = today.isBefore(dep);
+            if(!d){
+                this.memberService.assignVipRank(memberId);
+            }
+
+            if(this.memberService.getComback(ffv) !=) {
+                String comb = this.memberService.getComback(ffv);
+                LocalDate combDate = LocalDate.parse(dep, DateTimeFormatter.ISO_DATE);
+                boolean c = today.isBefore(comb);
+            }
+        }
+
+        memberService.assignVipRank(memberId); // VIP 등급 부여
+
+        // 회원의 VIP 등급 가져오기
+        Member member = memberService.getMemberById(memberId);
+        String vipLevel = member.getRank();
+
+        // 회원의 정보를 뷰로 전달
+        ModelAndView modelAndView = new ModelAndView("security/member/member_vip");
+        modelAndView.addObject("memberId", memberId);
+        modelAndView.addObject("completedBookings", memberService.countCompletedPayments(memberId));
+        modelAndView.addObject("vipLevel", vipLevel);
+
+
+
+        return modelAndView;
+    }*/
+
     @GetMapping("vip")
-    public ModelAndView getVip(Principal principal, Member member) {
-        /*ModelAndView modelAndView = new ModelAndView("security/member/member_vip");
-        setCommonAttributes(principal, modelAndView);
-        return modelAndView;*/
-        /*String memberId = principal.getName();          //getName 이 member Id 임*/
-        ModelAndView modelAndView = new ModelAndView("security/member/member_vip");/*
-        modelAndView.addObject("memberId",memberId);*/
+    public ModelAndView getVip(Principal principal) {
+        String memberId = principal.getName();
+        LocalDate today = LocalDate.now();
+        List<String> airKeyList = memberService.getAirKeyList(memberId);
+
+        for (String airKey : airKeyList) {
+            String dep = memberService.getDeparture(airKey);
+            LocalDate depDate = LocalDate.parse(dep, DateTimeFormatter.ISO_DATE);
+            boolean d = today.isAfter(depDate);
+            if (!d) {
+                memberService.updatePaymentAndAssignVip(airKey, memberId);  // 결제 상태 업데이트 및 VIP 등급 부여
+            }
+
+            String comb = memberService.getComeback(airKey);
+            if (comb != null && !comb.isEmpty()) {
+                LocalDate combDate = LocalDate.parse(comb, DateTimeFormatter.ISO_DATE);
+                boolean c = today.isAfter(combDate);
+                if (!c) {
+                    memberService.updatePaymentAndAssignVip(airKey, memberId);  // 결제 상태 업데이트 및 VIP 등급 부여
+                }
+            }
+        }
+
+        // 회원 정보 조회
+        Member member = memberService.getMemberById(memberId);
+
+        // ModelAndView 설정
+        ModelAndView modelAndView = new ModelAndView("security/member/member_vip");
+        modelAndView.addObject("memberId", memberId);
+        modelAndView.addObject("completedBookings", memberService.countCompletedPayments(memberId));
+        modelAndView.addObject("vipLevel", member.getRank());
+
         return modelAndView;
     }
+    /*
+    public ModelAndView getVip(Principal principal) {
+        String memberId = principal.getName();
+        LocalDate today = LocalDate.now();
+        List<String> airKeyList = this.memberService.getAirKeyList(memberId);
+
+        for (String airKey : airKeyList) {
+            String dep = this.memberService.getDeparture(airKey);
+            LocalDate depDate = LocalDate.parse(dep, DateTimeFormatter.ISO_DATE);
+            boolean d = today.isAfter(depDate);
+            if (!d) {
+                this.memberService.updatePaymentStatus(airKey);  // 결제 상태 업데이트
+                this.memberService.assignVipRank(memberId);  // VIP 등급 부여
+            }
+
+            String comb = this.memberService.getComeback(airKey);
+            if (comb != null && !comb.isEmpty()) {
+                LocalDate combDate = LocalDate.parse(comb, DateTimeFormatter.ISO_DATE);
+                boolean c = today.isAfter(combDate);
+                if (!c) {
+                    this.memberService.updatePaymentStatus(airKey);  // 결제 상태 업데이트
+                    this.memberService.assignVipRank(memberId);  // VIP 등급 부여
+                }
+            }
+        }
+
+        // 회원의 정보를 뷰로 전달
+        Member member = memberService.getMemberById(memberId);
+        ModelAndView modelAndView = new ModelAndView("security/member/member_vip");
+        modelAndView.addObject("memberId", memberId);
+        modelAndView.addObject("completedBookings", memberService.countCompletedPayments(memberId));
+        modelAndView.addObject("vipLevel", member.getRank());
+
+        return modelAndView;
+    }*/
 
     // 로그아웃
     @GetMapping("log-out")

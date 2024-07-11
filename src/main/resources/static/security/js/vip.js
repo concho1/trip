@@ -44,47 +44,47 @@ document.addEventListener("DOMContentLoaded", function() {
     if (completedBookings === 0 ) {
         vipLevel = "Bronze";
         vipWidth = "0";
-        vipColor = "#ffd700";
+        vipColor = "#cf7d4e";
     } else if (completedBookings === 1 ) {
         vipLevel = "Bronze";
         vipWidth = "10%";
-        vipColor = "#ffd700";
+        vipColor = "#cf7d4e";
     }else if (completedBookings === 2 ) {
         vipLevel = "Silver";
         vipWidth = "20%";
-        vipColor = "#ffd700";
+        vipColor = "#bec2c9";
     } else if (completedBookings === 3 ) {
         vipLevel = "Silver";
         vipWidth = "30%";
-        vipColor = "#ffd700";
+        vipColor = "#bec2c9";
     } else if (completedBookings === 4 ) {
         vipLevel = "Silver";
         vipWidth = "30%";
-        vipColor = "#ffd700";
+        vipColor = "#bec2c9";
     } else if (completedBookings === 5 ) {
         vipLevel = "Gold";
         vipWidth = "50%";
-        vipColor = "#ffd700";
+        vipColor = "#ecc43a";
     } else if (completedBookings === 6 ) {
         vipLevel = "Gold";
         vipWidth = "60%";
-        vipColor = "#ffd700";
+        vipColor = "#ecc43a";
     } else if (completedBookings === 7 ) {
         vipLevel = "Gold";
         vipWidth = "70%";
-        vipColor = "#ffd700";
+        vipColor = "#ecc43a";
     } else if (completedBookings === 8 ) {
         vipLevel = "Gold";
         vipWidth = "80%";
-        vipColor = "#ffd700";
+        vipColor = "#ecc43a";
     } else if (completedBookings === 9 ) {
         vipLevel = "Gold";
         vipWidth = "90%";
-        vipColor = "#ffd700";
+        vipColor = "#ecc43a";
     } else {
         vipLevel = "Platinum";
         vipWidth = "100%";
-        vipColor = "#ffd700";
+        vipColor = "#3cabce";
     }
 
     vipLevelElement.textContent = vipLevel;
