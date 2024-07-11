@@ -3,6 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.goott.trip.esh.mapper.GlobeMapper">
+    <!--
     <select id="selectAllHotels" resultType="com.goott.trip.esh.model.ConHotel">
         SELECT name, latitude, longitude FROM hotels
         LIMIT 40
@@ -14,5 +15,5 @@
         from hotels where id_key = #{hotelIdKey} and hotel_id = #{hotelId}
     </select>
 
-
+-->
 </mapper>

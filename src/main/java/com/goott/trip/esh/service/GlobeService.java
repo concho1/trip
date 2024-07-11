@@ -1,21 +1,10 @@
 package com.goott.trip.esh.service;
 
-import com.amadeus.exceptions.ClientException;
-import com.amadeus.resources.Hotel;
-import com.goott.trip.concho.mapper.HotelMapper;
-import com.goott.trip.concho.model.ConchoHotel;
-import com.goott.trip.concho.model.HotelSearch;
+import com.goott.trip.concho.service.component.AmadeusApiComponent;
 import com.goott.trip.concho.service.main.HotelSearchService;
-import com.goott.trip.concho.service.module.AmadeusApiModuleService;
 import com.goott.trip.esh.mapper.GlobeMapper;
-import com.goott.trip.esh.model.ConHotel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GlobeService {
@@ -25,8 +14,8 @@ public class GlobeService {
     @Autowired
     HotelSearchService hotelSearchService;
     @Autowired
-    private AmadeusApiModuleService amadeusApiModuleService;
-
+    private AmadeusApiComponent amadeusApiModuleService;
+    /*
     public List<ConHotel> getAllHotelData() {
         return mapper.selectAllHotels();
     }
@@ -62,7 +51,7 @@ public class GlobeService {
             mapper.insertHotelsSearch(hotelSearch);
             int searchNum = hotelSearch.getSearchNum();
 
-            Hotel[] hotels = amadeusApiModuleService.getHotelListByIataCode(iataFk);
+            Hotel[] hotels = amadeusApiModuleService.getHotelListByIata(iataFk);
             for(Hotel hotel : hotels) {
                 ConHotel conHotel = new ConHotel(hotel, searchNum);
 
@@ -77,6 +66,6 @@ public class GlobeService {
         }
         return Optional.ofNullable(hotelList);
     }
-
+*/
 
 }
