@@ -10,8 +10,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConImage64 {
-  private UUID uuid;
-  private UUID hotelUuid;
+  private String uuid;
+  private String hotelUuid;
   private String base64;
   private java.sql.Timestamp createdAt;
 }

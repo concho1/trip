@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConHotel {
-  private UUID uuid;
+  private String uuid;
   private String iataFk;
   private String hotelAdId;
   private String hotelName;
@@ -21,7 +21,7 @@ public class ConHotel {
   private java.sql.Timestamp createdAt;
 
   public ConHotel(Hotel adHotel, String iataFk){
-    this.uuid = UUID.randomUUID();
+    this.uuid = UUID.randomUUID().toString();
     this.iataFk = iataFk;
     this.hotelAdId = adHotel.getHotelId();
     this.hotelName = adHotel.getName();

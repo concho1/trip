@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,6 +15,7 @@ public class HotelResult {
     private ConState conState;
     private List<ConHotel> conHotelList;
     public HotelResult (ConState conState){
+        this.conHotelList = new ArrayList<>();
         this.conState = conState;
     }
 }

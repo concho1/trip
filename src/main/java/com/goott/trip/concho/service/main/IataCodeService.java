@@ -23,6 +23,7 @@ public class IataCodeService {
     private final IataCodeMapper iataCodeMapper;
 
     public List<IataCode> findIataCodeBySearchStr(String searchStr){
+
         return iataCodeMapper.findIataCodeBySearchStr(searchStr);
     }
 
