@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.ConHotelMapper">
+
+    <!-- 호텔 정보 IATA 코드로 조회 -->
+    <select id="findHotelListByIataCode" resultType="ConHotel">
+        SELECT uuid, iata_fk, hotel_ad_id, hotel_name, sample_image, latitude, longitude, created_at
+        FROM con_hotel
+        WHERE iata_fk = #{iataCode}
+    </select>
+
+    <!-- IATA 코드로 아마데우스 API에서 받아온 호텔 리스트 저장 -->
+    <insert id="saveHotelList">
+        INSERT INTO con_hotel (uuid, iata_fk, hotel_ad_id, hotel_name, sample_image, latitude, longitude, created_at)
+        VALUES
+        <foreach collection="list" item="hotel" separator=",">
+            (#{hotel.uuid}, #{hotel.iataFk}, #{hotel.hotelAdId}, #{hotel.hotelName}, #{hotel.sampleImage}, #{hotel.latitude}, #{hotel.longitude}, NOW())
+        </foreach>
+    </insert>
+
+    <!-- 구글에서 크롤링한 이미지 리스트 이미지64 테이블에 저장 -->
+    <insert id="saveImage64List">
+        INSERT INTO con_image64 (uuid, hotel_uuid, base64, created_at)
+        VALUES
+        <foreach collection="list" item="image" separator=",">
+            (#{image.uuid}, #{image.hotelUuid}, #{image.base64}, #{image.createdAt})
+        </foreach>
+    </insert>
+
+    <!-- api 사용량 생성 및 업데이트 -->
+    <update id="updateOrSaveApiUsage">
+        INSERT INTO con_api_usage (category, cnt, use_date)
+        VALUES (#{category}, 1, CURDATE())
+        ON DUPLICATE KEY UPDATE
+            cnt = cnt + 1
+    </update>
+
+
+    <!-- IATA 코드로 조회하여 exist를 true로 설정 -->
+    <update id="updateExistToTrueByIataCode">
+        UPDATE con_iata_code
+        SET exist = true
+        WHERE iata_code = #{iataCode}
+    </update>
+
+</mapper>

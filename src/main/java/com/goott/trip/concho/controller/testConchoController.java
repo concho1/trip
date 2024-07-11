@@ -4,32 +4,45 @@ import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.Hotel;
 import com.amadeus.resources.HotelOfferSearch;
 import com.amadeus.resources.HotelSentiment;
-import com.goott.trip.concho.service.module.AmadeusApiModuleService;
+import com.goott.trip.concho.service.component.AmadeusApiComponent;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.RequiredArgsConstructor;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequiredArgsConstructor
 public class testConchoController {
-    private final AmadeusApiModuleService amadeusApiModuleService;
+    private final AmadeusApiComponent amadeusApiModuleService;
 
     @GetMapping("test")
     public ModelAndView test() {
+        ModelAndView mv = new ModelAndView("concho/user/test");
+        var baseImgList = new ArrayList<String>();
+        // WebDriverManager를 사용하여 최신 ChromeDriver 설정
+        WebDriverManager.chromedriver().driverVersion("126.0.6478.127").setup();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless"); // 브라우저 창을 표시하지 않음
+        WebDriver driver = new ChromeDriver(options);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
         try {
-            Hotel[] hotels = amadeusApiModuleService.getHotelListByIataCode("LON");
-            String url = "https://www.tripadvisor.com/Search?q=DOUBLETREE+LONDON+EALING&geo=1&ssrc=h&searchNearby=false";
-            String filePath = "tripadvisor_reviews.txt";
+            Hotel[] hotels = amadeusApiModuleService.getHotelListByIataCode("ICN");
+            String baseUrl = "https://www.google.com/search?q=";
+            String query = "&tbm=isch";
             int i = 0;
+
             for (Hotel hotel : hotels) {
                 i++;
                 if (i > 2) break;
@@ -38,32 +51,36 @@ public class testConchoController {
                 try {
                     HotelOfferSearch[] hotelOfferSearches = amadeusApiModuleService.getHotelRoomById(hotel.getHotelId(), 2, "2024-08-12", "2024-08-17");
                     HotelSentiment hotelSentiment = amadeusApiModuleService.getHotelRatingByHotelId(hotel.getHotelId());
+                    String url = baseUrl + hotel.getName() + query;
 
-                    // Connect to the website and get the document with a custom User-Agent
-                    Document document = Jsoup.connect(url)
-                            .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-                            .get();
+                    // Selenium으로 페이지 로드
+                    driver.get(url);
+                    Thread.sleep(500); // 페이지가 로드될 시간을 기다립니다.
 
-                    // Get the entire HTML of the document
-                    String fullDocument = document.outerHtml();
+                    System.out.println(url);
 
-                    // Write the full document to a file
-                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                        writer.write(fullDocument);
+                    // Extract image URLs with class 'YQ4gaf'
+                    List<WebElement> imageElements = driver.findElements(By.className("YQ4gaf"));
+                    int imgCnt = 0;
+                    for (WebElement imgElement : imageElements.subList(imageElements.size() < 5 ? 0 : 5,imageElements.size())) {
+                        String src = imgElement.getAttribute("src");
+                        System.out.println(src.substring(11,22));
+                        if(src.startsWith("jpeg;base64", 11)){
+                            baseImgList.add(src);
+                            imgCnt++;
+                            if(imgCnt >= 15) break;
+                        }
                     }
-
-                    System.out.println("Full document saved to " + filePath);
-
-
                     System.out.println("호텔 객실 제안 목록================");
                     for (HotelOfferSearch hotelOfferSearch : hotelOfferSearches) {
-                        //System.out.println(hotelOfferSearchToString(hotelOfferSearch));
+                        // System.out.println(hotelOfferSearchToString(hotelOfferSearch));
                     }
                     System.out.println("호텔 평가================");
                     System.out.println(hotelSentimentToString(hotelSentiment));
+                    break;
                 } catch (ResponseException e) {
                     if (e.getResponse().getStatusCode() == 400) {
-                        //System.out.println("Error: Minimum stay required for hotel ID: " + hotel.getHotelId());
+                        // System.out.println("Error: Minimum stay required for hotel ID: " + hotel.getHotelId());
                     } else {
                         e.printStackTrace();
                     }
@@ -71,8 +88,11 @@ public class testConchoController {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            driver.quit(); // 드라이버 종료
         }
-        return null;
+        mv.addObject("baseImgList",baseImgList);
+        return mv;
     }
 
     private String hotelToString(Hotel hotel) {

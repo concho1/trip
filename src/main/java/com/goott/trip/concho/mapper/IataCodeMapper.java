@@ -30,7 +30,4 @@ public interface IataCodeMapper {
                         @Param("destination") String destination,
                         @Param("airlineAlliance") String airlineAlliance,
                         @Param("logo") String logo);
-
-
-
 }
