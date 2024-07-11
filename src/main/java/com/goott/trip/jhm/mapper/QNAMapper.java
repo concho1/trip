@@ -15,5 +15,13 @@ public interface QNAMapper {
     public int getQNACount();
     public List<QNA> getQNAList(Page pdto);
     public int insertQNA(QNA qdto);
+    public String findRole(String id);
+    public QNA getQNAContent(int num);
+    public int modQNA(QNA qdto);
+    public int delQNA(int no);
+    public void updateSeq(int no);
+    public int answerQNA(QNA qdto);
+    public void changeStatus(int no);
+    public String getAnswer(int no);
 
 }

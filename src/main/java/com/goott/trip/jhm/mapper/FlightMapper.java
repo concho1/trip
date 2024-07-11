@@ -1,6 +1,6 @@
 package com.goott.trip.jhm.mapper;
 
-import com.goott.trip.hamster.model.shoppingCart;
+import com.goott.trip.hamster.model.ShoppingCart;
 import com.goott.trip.jhm.model.*;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -29,8 +29,8 @@ public interface FlightMapper {
     public List<Airport> findAirportByKor(String kor);
     public String findAirlineKor(String str);
     public String findIcaoByIata(String str);
-    public String findImgByIcao(String str);
-    public void insertShoppingCart(shoppingCart cart);
+    public String findImgByIata(String str);
+    public void insertShoppingCart(ShoppingCart cart);
     public void insertCartPricing(CartPricing cp);
     public void insertCartSegment(CartSegment cs);
     public void insertCartDuration(CartDuration cd);

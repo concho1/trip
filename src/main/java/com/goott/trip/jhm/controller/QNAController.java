@@ -6,7 +6,6 @@ import com.goott.trip.jhm.model.Page;
 import com.goott.trip.jhm.model.QNA;
 import com.goott.trip.jhm.service.QNAService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,19 +14,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("customer")
-public class QNAConroller {
+public class QNAController {
 
-    private final int rowsize = 10;
+    private final int rowsize =5;
 
     private int totalRecord = 0;
 
@@ -35,17 +33,19 @@ public class QNAConroller {
     private QNAService service;
 
     @RequestMapping("faq")
-    public ModelAndView faq() {
+    public ModelAndView faq(Principal principal) {
 
         ModelAndView mav = new ModelAndView("jhm/FAQ");
 
         List<FAQ> faqList;
 
         String div = "flight";
+        String role = this.service.findRole(principal.getName());
 
         faqList = this.service.getFAQByDiv(div);
 
         mav.addObject("faqList", faqList);
+        mav.addObject("role", role);
 
         return mav;
     }
@@ -101,7 +101,9 @@ public class QNAConroller {
             alarm.setMessageAndRedirect("회원가입 후 이용하실 수 있습니다.", "/user/ming/log-in");
             mav.setViewName(alarm.getMessagePage());
         }else {
+            String role = this.service.findRole(principal.getName());
             mav.addObject("ID", principal.getName());
+            mav.addObject("Role", role);
         }
 
         int page;
@@ -116,16 +118,19 @@ public class QNAConroller {
 
         Page pdto = new Page(page, rowsize, totalRecord);
 
+        List<Integer> pagList = IntStream.rangeClosed(pdto.getStartBlock(), pdto.getEndBlock()).boxed().toList();
+
         List<QNA> qList = this.service.getQNAList(pdto);
 
         mav.addObject("qList", qList);
         mav.addObject("paging", pdto);
+        mav.addObject("pagList", pagList);
 
         return mav;
     }
 
     @RequestMapping("insert_qna")
-    public ModelAndView insertQNA() { return new ModelAndView("jhm/QNA_write"); }
+    public ModelAndView insertQNA() { return new ModelAndView("jhm/QNAWrite"); }
 
     @PostMapping("insert_qna_Ok")
     public ModelAndView insertQNAOk(Model model, Principal principal, QNA qdto) {
@@ -143,6 +148,101 @@ public class QNAConroller {
             alarm.setMessageAndRedirect("질문 등록에 실패했습니다.", "");
             mav.setViewName(alarm.getMessagePage());
         }
+        return mav;
+    }
+
+    @RequestMapping("qna_content")
+    public ModelAndView qnaContent(@RequestParam("no") int num, @RequestParam("page") int page,
+                                   Principal principal, Model model) {
+        ModelAndView mav = new ModelAndView("jhm/QNAContent");
+        Alarm alarm = new Alarm(model);
+
+        QNA cont = this.service.getQNAContent(num);
+
+        String id = principal.getName();
+        String role = this.service.findRole(id);
+        String answer = "";
+
+        if(!id.equals(cont.getMemberId()) && !role.equals("ADMIN")) {
+            alarm.setMessageAndRedirect("비정상적인 접근 방식입니다.", "");
+            mav.setViewName(alarm.getMessagePage());
+            return mav;
+        }
+
+        if(cont.getStatus() == 1) {
+            answer = this.service.getAnswer(num);
+        }
+
+        mav.addObject("QNA", cont);
+        mav.addObject("page", page);
+        mav.addObject("role", role);
+        mav.addObject("id", id);
+        mav.addObject("answer", answer);
+
+        return mav;
+    }
+
+    @RequestMapping("qna_modify")
+    public ModelAndView qnaModify(Model model, @RequestParam("no") int no, @RequestParam("page") int page) {
+        ModelAndView mav = new ModelAndView("jhm/QNAModify");
+        QNA cont = this.service.getQNAContent(no);
+        mav.addObject("QNA", cont);
+        mav.addObject("page", page);
+        return mav;
+    }
+
+    @PostMapping("modify_qna_Ok")
+    public ModelAndView QNAModOk(QNA qdto, Model model, @RequestParam("page") int page) {
+        ModelAndView mav = new ModelAndView();
+        Alarm alarm = new Alarm(model);
+
+        int res = this.service.modQNA(qdto);
+
+        if(res > 0) {
+            alarm.setMessageAndRedirect("질문이 수정되었습니다.", "qna_content?no="+qdto.getNum()+"&page="+page);
+            mav.setViewName(alarm.getMessagePage());
+        }else {
+            alarm.setMessageAndRedirect("질문 수정에 실패하였습니다.", "");
+            mav.setViewName(alarm.getMessagePage());
+        }
+        return mav;
+    }
+
+    @RequestMapping("qna_delete")
+    public ModelAndView qnaDelete(Model model, @RequestParam("no") int no, @RequestParam("page") int page) {
+        ModelAndView mav = new ModelAndView();
+        Alarm alarm = new Alarm(model);
+
+        int res = this.service.delQNA(no);
+
+        if(res > 0) {
+            alarm.setMessageAndRedirect("질문이 삭제되었습니다.", "qna?page="+page);
+            mav.setViewName(alarm.getMessagePage());
+        }else {
+            alarm.setMessageAndRedirect("질문 삭제에 실패하였습니다.", "");
+            mav.setViewName(alarm.getMessagePage());
+        }
+        return mav;
+    }
+
+    @PostMapping("qna_answer")
+    public ModelAndView qnaAnswer(Model model, QNA qdto, @RequestParam("page") int page) {
+        ModelAndView mav = new ModelAndView();
+        Alarm alarm = new Alarm(model);
+
+        qdto.setTitle("문의에 대한 답변입니다.");
+
+        int res = this.service.answerQNA(qdto);
+
+        if(res > 0) {
+            this.service.changeStatus(qdto.getQnaGroup());
+            alarm.setMessageAndRedirect("답변이 등록되었습니다.", "qna?page="+page);
+            mav.setViewName(alarm.getMessagePage());
+        }else {
+            alarm.setMessageAndRedirect("답변 등록에 실패하였습니다.", "");
+            mav.setViewName(alarm.getMessagePage());
+        }
+
         return mav;
     }
 

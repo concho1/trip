@@ -2,7 +2,7 @@ package com.goott.trip.jhm.service;
 
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
-import com.goott.trip.hamster.model.shoppingCart;
+import com.goott.trip.hamster.model.ShoppingCart;
 import com.goott.trip.jhm.mapper.FlightMapper;
 
 import com.goott.trip.jhm.model.*;
@@ -98,8 +98,8 @@ public class FlightService {
                 String airIATA = list[i].getItineraries()[j].getSegments()[0].getCarrierCode();
                 ddto.setAirline(airIATA);
                 ddto.setAirlineKor(this.mapper.findAirlineKor(airIATA));
-                String airICAO = this.mapper.findIcaoByIata(airIATA);
-                String logo = "https:" + this.mapper.findImgByIcao(airICAO);
+                String logo = this.mapper.findImgByIata(airIATA);
+                System.out.println("logo : "+logo);
                 ddto.setAirlineImg(logo);
                 this.insertAPIDuration(ddto);
                 durCount ++;
@@ -119,7 +119,6 @@ public class FlightService {
                     sdto.setCarrierNum(list[i].getItineraries()[j].getSegments()[k].getNumber());
                     sdto.setAirlineKor(this.mapper.findAirlineKor(list[i].getItineraries()[j].getSegments()[k].getCarrierCode()));
                     String segId = "seg" + iCode + j + k;
-                    System.out.println("segId : "+segId);
                     sdto.setId(segId);
                     this.insertAPISegment(sdto);
                     segCount ++;
