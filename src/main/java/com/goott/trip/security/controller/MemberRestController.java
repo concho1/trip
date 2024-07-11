@@ -225,8 +225,7 @@ public class MemberRestController {
         setCommonAttributes(principal, modelAndView);
         return modelAndView;*/
         /*String memberId = principal.getName();          //getName 이 member Id 임*/
-        ModelAndView modelAndView = new ModelAndView("security/member/member_vip");/*
-        modelAndView.addObject("memberId",memberId);*/
+        ModelAndView modelAndView = new ModelAndView("security/member/member_vip");
         return modelAndView;
     }
 
