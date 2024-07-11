@@ -45,11 +45,6 @@ public class MemberService {
         Member member = memberMapper.findById(id);
         return passwordEncoder.matches(pw, member.getPw());
     }
-    /*// 비밀번호 변경
-    public int updatePwd(String id, String newPw) {
-        String encodedPwd = passwordEncoder.encode(newPw);
-        return this.memberMapper.updatePwd(id, encodedPwd);
-    }*/
     // 비밀번호 변경 메서드
     public int updatePwd(String id, String pw, String newPw) {
         // 기존 비밀번호 확인
@@ -66,9 +61,6 @@ public class MemberService {
         String encodedPwd = passwordEncoder.encode(newPw);
         return memberMapper.updatePwd(id, encodedPwd); // 업데이트 결과 반환
     }
-
-    /*// 회원 탈퇴
-    public int deleteMem(String id) {return this.memberMapper.deleteMem(id);}*/
 
     // 회원 탈퇴
     public int deleteMem(String id, String pw) {
@@ -97,7 +89,7 @@ public class MemberService {
         String departure = getDeparture(airKey);
         String comeback = getComeback(airKey);
 
-        if (departure == null || comeback == null) {
+        if (departure == null) {
             return false;  // 해당 airKey에 대한 정보가 없으면 업데이트 실패
         }
 
