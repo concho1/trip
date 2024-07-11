@@ -83,7 +83,7 @@
     function initMap() {
         const map = new google.maps.Map(document.getElementById('map'), {
             zoom: 9,
-            center: {lat: -34.397, lng: 150.644}  // 기본 위치
+            center: {lat: 42.3314, lng: -83.0458}  // 기본 위치
         });
 
         let hotels = /*[[${hotels}]]*/ '[]';
@@ -109,12 +109,12 @@
                         // html로 표시될 인포 윈도우의 내용
                         infowindow.setContent(
                             `<div class="info-window">
-                                    <h5>${hotels[index].name}</h5>
+                                    <h5>${hotels[index].hotelName}</h5>
                                     <button type="button" class="btn-link"
-                                        data-hotel-id-key="${hotels[index].idKey}"
-                                        data-hotel-id="${hotels[index].hotelId}"
-                                        data-iata-code="${hotels[index].iataCode}">더 보기</button>
-                                    <img src="${hotels[index].countryCode}" alt="호텔 이미지">
+                                        data-hotel-id-key="${hotels[index].uuid}"
+                                        data-hotel-id="${hotels[index].hotelAdId}"
+                                        data-iata-code="${hotels[index].iataFk}">더 보기</button>
+                                   <img src="${hotels[index].sampleImage}" alt="호텔 이미지">
                             </div>`
                         );
 
