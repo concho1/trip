@@ -61,6 +61,7 @@ public class ConchoRestController {
 
         List<ConchoHotel> hotelList = hotelListOp.get();
         System.out.println("총 호텔 수 : " + hotelList.size());
+
         iataCodeService.updateHotelListToKoByIataCode(hotelList);
         mv.addObject("hotelList", hotelList);
         mv.addObject("iataCode", iataCode);

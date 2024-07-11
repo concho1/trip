@@ -1,6 +1,140 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .background {
+    background-image: url('/common/images/back_img.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .search-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .search-form .input-group {
+    display: flex;
+    gap: 20px;
+  }
+
+  .search-form input[type="text"], .search-form input[type="date"], .search-form select {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 100%;
+  }
+
+  .date-picker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .date-picker span {
+    font-size: 14px;
+    color: #777;
+    margin-top: 5px;
+  }
+
+  .search-form button {
+    width: 20%;
+    padding: 15px 30px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: flex-end;
+  }
+
+  .search-form button:hover {
+    background-color: #0056b3;
+  }
+
+  .destination {
+    position: relative;
+    display: inline-block;
+  }
+
+  .destination-list {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    margin-top: 55px;
+    width: 45%;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .destination input:focus + .destination-list {
+    display: block;
+  }
+  .destination-item {
+    padding: 10px;
+    cursor: pointer;
+  }
+  .destination-item:hover {
+    background-color: #f0f0f0;
+  }
+  @media (max-width: 1300px) {
+    .destination-list {
+      width: 60%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .destination-list {
+      width: 80%;
+    }
+    .search-form {
+      width: 90%;
+      padding: 20px;
+    }
+
+    .search-form .input-group {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .search-form input[type="text"], .search-form input[type="date"], .search-form select {
+      font-size: 16px;
+    }
+
+    .search-form button {
+      width: 100%;
+      font-size: 16px;
+    }
+    #footer{
+      display: none;
+    }
+  }
+</style>
+<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
 <body>
   <div th:replace="~{common/head :: head-fragment}"></div>
 
@@ -9,72 +143,239 @@
     <!-- [S]tedu-N7 -->
     <div class="tedu-N7" data-bid="LRlXiC74YQ">
       <div class="visual-inner">
-        <div class="visual-container">
-          <div class="visual-container">
-            <div class="visual-swiper">
-              <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                  <a href="javascript:void(0)" class="banner-box">
-                    <div class="img-wrap">
-                      <div class="img-box">
-                        <img class="visual-bg visual-pc" th:src="@{/asset/images/img_N7_pcvisual_01.png}" alt="메인배너-1">
-                        <img class="visual-bg visual-mo" th:src="@{/asset/images/img_N7_movisual_01.png}" alt="모바일 메인배너-1">
-                      </div>
-                    </div>
-                    <div class="visual-text-box">
-                      <h2 class="visual-title" data-swiper-parallax="-700"> 지금 인기있는 강의 듣고, <br>디자인시스템 패키지 받자! </h2>
-                      <div class="visual-subtitle" data-swiper-parallax="-1000">
-                        <span class="br">선착순 한정 패키지와 프로모션 혜택까지</span> 받을 수 있는 기회
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div class="swiper-slide btype">
-                  <a href="javascript:void(0)" class="banner-box">
-                    <div class="img-wrap">
-                      <div class="img-box">
-                        <img class="visual-bg visual-pc" th:src="@{/asset/images/img_N7_pcvisual_02.png}" alt="메인배너-2">
-                        <img class="visual-bg visual-mo" th:src="@{/asset/images/img_N7_movisual_02.png}" alt="모바일 메인배너-2">
-                      </div>
-                    </div>
-                    <div class="visual-text-box">
-                      <h2 class="visual-title" data-swiper-parallax="-700"> 지금 인기있는 강의 듣고, <br>디자인시스템 패키지 받자! </h2>
-                      <div class="visual-subtitle" data-swiper-parallax="-1000">
-                        <span class="br">선착순 한정 패키지와 프로모션 혜택까지</span> 받을 수 있는 기회
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div class="swiper-slide">
-                  <a href="javascript:void(0)" class="banner-box">
-                    <div class="img-wrap">
-                      <div class="img-box">
-                        <img class="visual-bg visual-pc" th:src="@{/asset/images/img_N7_pcvisual_03.png}" alt="메인배너-3">
-                        <img class="visual-bg visual-mo" th:src="@{/asset/images/img_N7_movisual_03.png}" alt="모바일 메인배너-3">
-                      </div>
-                    </div>
-                    <div class="visual-text-box">
-                      <h2 class="visual-title" data-swiper-parallax="-700"> 지금 인기있는 강의 듣고, <br>디자인시스템 패키지 받자! </h2>
-                      <div class="visual-subtitle" data-swiper-parallax="-1000">
-                        <span class="br">선착순 한정 패키지와 프로모션 혜택까지</span> 받을 수 있는 기회
-                      </div>
-                    </div>
-                  </a>
+        <div class="background">
+          <div class="title-wrap">
+            <label class="custom-radio">
+              <input name="radioset-a" type="radio" id="hotel-btn" checked>
+              <span class="button-style">숙소 검색</span>
+            </label>
+
+            <label class="custom-radio">
+              <input name="radioset-a" type="radio" id="air-btn">
+              <span class="button-style">항공권 검색</span>
+            </label>
+          </div>
+          <!-- 호텔 -->
+          <form class="search-form" action="/user/concho/service/hotel-list-iata" method="get" id="hotelList">
+            <input name="iataCode" id="location" type="text" placeholder="어디로 떠나시나요?" class="destination" value="" autocomplete="off">
+            <div class="destination-list" id="search-list">
+              <div class="destination-item">
+                <span>검색어를 입력해주세요!</span>
+              </div>
+            </div>
+            <div class="input-group">
+              <div class="date-picker" id="start-date-picker">
+                <input name="startDate" id="start-date" type="date" placeholder="연도-월-일">
+                <span>체크인 날짜</span>
+              </div>
+              <div id="end-date" class="date-picker">
+                <input name="endDate" id="end-date-input" type="date" placeholder="연도-월-일">
+                <span>체크아웃 날짜</span>
+              </div>
+              <div id="person-cnt" class="date-picker">
+                <select name="personCnt">
+                  <option value="1">성인 1명</option>
+                  <option value="2">성인 2명</option>
+                  <option value="3">성인 3명</option>
+                  <option value="4">성인 4명</option>
+                  <option value="5">성인 5명</option>
+                  <option value="-1">단체</option>
+                </select>
+                <span>인원 선택</span>
+              </div>
+            </div>
+            <button id="search-btn" type="button">검색하기</button>
+          </form>
+          <!-- 호텔 END -->
+
+          <!-- 항공권 -->
+          <form class="search-form" action="test" method="post" id="airList">
+            <div class="input-group">
+              <div class="radio-group" style="display: flex; align-items: center; justify-content: space-between;">
+                <label class="custom-radio">
+                  <input name="radioset-a" type="radio" value="true" checked>
+                  <span class="button-style">편도</span>
+                </label>
+
+                <label class="custom-radio">
+                  <input name="radioset-a" type="radio" value="false">
+                  <span class="button-style">왕복</span>
+                </label>
+              </div>
+              <div style="margin-left: auto;">
+                <input id="checkbox1" type="checkbox" name="nonStop" value="true">
+                <label for="checkbox1" style="font-weight: bold;">직항만 검색</label>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <input type="text" placeholder="출발지 입력" id="origin" name="origin" aria-label="출발" autocomplete="off">
+              <div id="originModal" class="modal">
+                <div class="modal-content">
+                  <span class="close" id="orgClose">&times;</span>
+                  <input name="org" id="modalOrigin">
+                  <hr>
+                  <div id="originModalBody"></div>
                 </div>
               </div>
-              <div class="control-wrap">
-                <div class="control-bottom">
-                  <div class="swiper-pagination"></div>
-                  <div class="swiper-button-pause">
-                    <img th:src="@{/resources/icons/ico_pause.svg}" alt="스와이퍼 멈춤버튼">
+              <img src="/asset/icons/changed.svg" class="changeImg" th:onclick="changeTo()">
+              <input type="text" placeholder="도착지 입력" id="destination" name="destination" aria-label="도착" autocomplete="off">
+              <div id="desModal" class="modal">
+                <div class="modal-content">
+                  <span class="close" id="desClose">&times;</span>
+                  <input name="des" id="modalDes">
+                  <hr>
+                  <div id="desModalBody"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <div class="date-picker">
+                <input type="text" name="departure" id="depDate" placeholder="가는 날" autocomplete="off">
+                <div id="depCalendarContainer" class="hidden">
+                  <div id="dep-wrapper">
+                    <header>
+                      <div id="dep-nav">
+                        <button type="button" id="dep-shang">◀</button>
+                        <p id="dep-currentDate"></p>
+                        <button type="button" id="dep-xia">▶</button>
+                      </div>
+                    </header>
+                    <div id="dep-calendar">
+                      <ul id="dep-weeks">
+                        <li>Sun</li>
+                        <li>Mon</li>
+                        <li>Tue</li>
+                        <li>Wed</li>
+                        <li>Thu</li>
+                        <li>Fri</li>
+                        <li>Sat</li>
+                      </ul>
+                      <ul id="dep-days">
+
+                      </ul>
+                    </div>
                   </div>
-                  <div class="swiper-button-play">
-                    <img th:src="@{/resources/icons/ico_play.svg}" alt="스와이퍼 재생버튼">
+                </div>
+              </div>
+              <div id="comb-field" class="date-picker hidden">
+                <input type="text" name="comeback" id="combDate" placeholder="오는 날" autocomplete="off">
+                <div id="combCalendarContainer" class="hidden">
+                  <div id="comb-wrapper">
+                    <header>
+                      <div id="comb-nav">
+                        <button type="button" id="comb-shang">◀</button>
+                        <p id="comb-currentDate"></p>
+                        <button type="button" id="comb-xia">▶</button>
+                      </div>
+                    </header>
+                    <div id="comb-calendar">
+                      <ul id="comb-weeks">
+                        <li>Sun</li>
+                        <li>Mon</li>
+                        <li>Tue</li>
+                        <li>Wed</li>
+                        <li>Thu</li>
+                        <li>Fri</li>
+                        <li>Sat</li>
+                      </ul>
+                      <ul id="comb-days">
+
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="person-cnt" class="date-picker">
+                <input type="text" id="peopleAndClass" placeholder="인원 & 좌석" readonly>
+                <div id="peopleModal" class="modal">
+                  <div class="modal-content">
+                    <span class="close" id="peopleClose">&times;</span>
+                    <p>인원</p>
+                    <div class="input-group">
+                      <div>
+                        <span>성인</span>
+                        <select name="adults">
+                          <option value="0">0</option>
+                          <option value="1" selected>1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <span>아동</span>
+                        <select name="children">
+                          <option value="0">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <span>유아</span>
+                        <select name="infants">
+                          <option value="0">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                        </select>
+                      </div>
+                    </div>
+                    <hr>
+                    <p>좌석</p>
+                    <br>
+                    <div class="input-group">
+                      <div class="radio-group">
+                        <label class="custom-radio">
+                          <input name="airplaneClass" type="radio" value="" checked>
+                          <span class="button-style">선택 안 함</span>
+                        </label>
+                        <label class="custom-radio">
+                          <input type="radio" name="airplaneClass" value="ECONOMY">
+                          <span class="button-style">이코노미</span>
+                        </label>
+                        <label class="custom-radio">
+                          <input type="radio" name="airplaneClass" value="PREMIUM_ECONOMY">
+                          <span class="button-style">프리미엄 이코노미</span>
+                        </label>
+                        <label class="custom-radio">
+                          <input type="radio" name="airplaneClass" value="BUSINESS">
+                          <span class="button-style">비지니스</span>
+                        </label>
+                        <label class="custom-radio">
+                          <input type="radio" name="airplaneClass" value="FIRST">
+                          <span class="button-style">퍼스트</span>
+                        </label>
+                      </div>
+                    </div>
+                    <br> <br>
+                    <button type="button" id="peopleSubmitBtn">완료</button>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+            <button type="submit">검색하기</button>
+          </form>
+          <!-- 항공권 END -->
+          <button type="button" th:href>외않되?</button>
         </div>
       </div>
     </div>
@@ -369,4 +670,166 @@
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
   </div>
   <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+  <script th:inline="javascript">
+    $(document).ready(function () {
+      let $searchListDiv = $('#search-list');
+      let $location = $('#location');
+      let $beforeSelect = null;
+
+      $('#search-btn').click(function(){
+        // 영어 문자인지 확인하는 정규 표현식
+        let isEnglish = /^[A-Za-z\s]+$/.test($location.val());
+        if (!isEnglish || $location.val().length !== 3) {
+          alert('검색창 아래의 지역 코드를 선택해 주세요.');
+          return false;
+        }else{
+          $('.search-form').submit();
+        }
+
+      });
+
+      $(document).click(function(event) {
+        if (!$(event.target).closest('#location').length) {
+          if(!$(event.target).closest('.destination-item').length) {
+            $searchListDiv.hide();
+          }
+        }
+      });
+
+      $(document).on('click', '.destination-item', function (){
+        if($beforeSelect != null){
+          $beforeSelect.find('.iata').css('color', 'black');
+          $beforeSelect.find('.contry-ko').css('color', 'black');
+          $beforeSelect.find('.city').css('color', 'black');
+        }else{
+          $searchListDiv.children().first().find('.iata').css('color', 'black');
+          $searchListDiv.children().first().find('.contry-ko').css('color', 'black');
+          $searchListDiv.children().first().find('.city').css('color', 'black');
+        }
+        $beforeSelect = $(this);
+        let $iata = $(this).find('.iata');
+        let $con = $(this).find('.contry-ko');
+        let $city = $(this).find('.city');
+        $iata.css('color', 'blue');
+        $city.css('color', 'blue');
+        $con.css('color', 'blue');
+        $location.val($iata.text());
+      });
+      $location.click(function() {
+        $searchListDiv.show();
+      });
+      $location.keydown(function (event) {
+        if (event.keyCode === 13) { // 엔터 키가 눌렸는지 확인
+          event.preventDefault(); // 기본 동작(폼 제출) 방지
+        }
+      });
+      $location.keyup(function (event) {
+        let str = $(this).val();
+        if (event.keyCode === 13) { // 엔터 키가 눌렸는지 확인
+          event.preventDefault();
+          // 영어 문자인지 확인하는 정규 표현식
+          let isEnglish = /^[A-Za-z\s]+$/.test($location.val());
+          if (!isEnglish || $location.val().length !== 3) {
+            alert('검색창 아래의 지역 코드를 선택해 주세요.');
+            return false;
+          }else{
+            $('.search-form').submit();
+          }
+        }
+
+        $searchListDiv.show();
+        if(str == null){
+          console.log('실패');
+          return;
+        }
+        if(str.length > 0){
+          console.log(str);
+          let formData = new FormData();
+          formData.append("searchStr", str);
+          ajaxGo('/user/concho/search-iatacode', formData, function (response) {
+            $searchListDiv.empty();
+            let iataCodeList = response.result;
+            iataCodeList.forEach(function (iataCode, index) {
+              $searchListDiv.append(
+                      `<div class="destination-item">
+                                <span class="iata">${iataCode.iataCode}</span><span> / </span>
+                                <span class="contry-ko">${iataCode.countryKo}</span><span> / </span>
+                                <span class="city">${iataCode.cityKo}</span>
+                            </div>`
+              );
+            });
+          });
+        }
+      });
+
+      // 현재 날짜와 다음 날짜를 포맷에 맞게 가져옴
+      let today = new Date();
+      let tomorrow = new Date();
+      tomorrow.setDate(today.getDate() + 1);
+
+      let formattedToday = today.toISOString().split('T')[0];
+      let formattedTomorrow = tomorrow.toISOString().split('T')[0];
+
+      // 현재 날짜와 다음 날짜를 각 input 요소에 설정
+      $('#start-date').val(formattedToday);
+      $('#end-date-input').val(formattedTomorrow);
+
+    });
+    function ajaxGo(url, formData, callback){
+      let responseResult = null;
+      let baseUrl = window.location.origin;
+      $.ajax({
+        url: baseUrl + url,
+        type: 'POST',
+        data: formData,
+        async: true,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+          if (callback) {
+            callback(response);
+          }
+        },
+        error: function(error) {
+          //alert('통신 오류: ' + error);
+        }
+      });
+      return responseResult;
+    }
+
+    $(document).ready(function () {
+
+      let $hotelList = $('#hotelList');
+      let $airList = $('#airList');
+
+      $airList.hide();
+
+      function hideAllSections(callback) {
+        $airList.fadeOut('slow');
+        $hotelList.fadeOut('slow', callback);
+      }
+
+      function showAirList() {
+        hideAllSections(function() {
+          $airList.fadeIn('slow');
+        });
+      }
+
+      function showHotelList() {
+        hideAllSections(function() {
+          $hotelList.fadeIn('slow');
+        });
+      }
+
+      $('#air-btn').click(function () {
+        showAirList();
+      });
+
+      $('#hotel-btn').click(function () {
+        showHotelList();
+      });
+
+    });
+  </script>
+  <script th:src="@{/jhm/jhm.js}"></script>
 </body>

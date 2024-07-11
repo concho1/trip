@@ -26,6 +26,7 @@ public class IataCodeService {
     private final ImageService imageService;
 
     public List<IataCode> findIataCodeBySearchStr(String searchStr){
+
         return iataCodeMapper.findIataCodeBySearchStr(searchStr);
     }
 

@@ -99,7 +99,7 @@ public class Hamcontroller {
         ModelAndView modelAndView = new ModelAndView("Hamster/airplaneReservation");
         String memId = principal.getName();
 
-        String AirKey = "ffv/597df322-582e-40b5-9ebc-8ed0de9bc4d3";
+        String AirKey = "ffv/4d7e127f-7452-44d7-9386-25522abe8f00";
         List<CartDuration> DurationInfo = this.airservice.getDurationInfo(AirKey);
         List<CartDuration> DepDur = this.airservice.getDepDur(AirKey);
         List<CartDuration> CombDur = this.airservice.getCombDur(AirKey);
@@ -116,18 +116,18 @@ public class Hamcontroller {
             CombDur.get(i).setAirlineImg(imageService.findImageByKey(CombDur.get(i).getAirlineImg()).get().getUrl());
         }
 
-        return modelAndView
-                .addObject("country",country)
-                .addObject("AirKey",AirKey)
-                .addObject("airInfo",airInfo)
-                .addObject("airSeg",airSeg)
-                .addObject("segDep",segDep)
-                .addObject("segComb",segComb)
-                .addObject("duration", DurationInfo)
-                .addObject("DepDur",DepDur)
-                .addObject("CombDur",CombDur)
-                .addObject("price",price)
-                .addObject("OnlyCountry",OnlyCountry);
+            return modelAndView
+                    .addObject("country",country)
+                    .addObject("AirKey",AirKey)
+                    .addObject("airInfo",airInfo)
+                    .addObject("airSeg",airSeg)
+                    .addObject("segDep",segDep)
+                    .addObject("segComb",segComb)
+                    .addObject("duration", DurationInfo)
+                    .addObject("DepDur",DepDur)
+                    .addObject("CombDur",CombDur)
+                    .addObject("price",price)
+                    .addObject("OnlyCountry",OnlyCountry);
 
 
     }
@@ -166,6 +166,9 @@ public class Hamcontroller {
             DepDur.addAll(this.airservice.getDepDur(airKey.get(i)));
             CombDur.addAll(this.airservice.getCombDur(airKey.get(i)));
         }
+
+        System.out.println(DepDur);
+        System.out.println(CombDur);
 
         for(int i = 0; i < DepDur.size(); i ++){
             DepDur.get(i).setAirlineImg(imageService.findImageByKey(DepDur.get(i).getAirlineImg()).get().getUrl());
@@ -212,6 +215,7 @@ public class Hamcontroller {
         }
 
         UUID uuid = UUID.randomUUID();
+
 
         return new ModelAndView("Hamster/airplanePayment")
                 .addObject("airInfo",airInfo)
