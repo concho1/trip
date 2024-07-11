@@ -82,7 +82,7 @@ public class Hamcontroller {
             return new ModelAndView("Hamster/airplaneReservation").addObject("cont",cont).
                     addObject("country",country);
         }else {
-            ModelAndView modelAndView = new ModelAndView("Hamster/PlaneReservation");
+            ModelAndView modelAndView = new ModelAndView("Hamster/airplaneReservation");
             for(int i = 0; i < key.size(); i++){
 
                 Testproduct cont = this.airservice.airplaneCont(key.get(i));
@@ -111,19 +111,23 @@ public class Hamcontroller {
         List<CartSegment> segComb = this.airservice.getComb(AirKey);
         List<CartPricing> price = this.airservice.getPricing(AirKey);
 
+        for(int i = 0; i < DepDur.size(); i ++){
+            DepDur.get(i).setAirlineImg(imageService.findImageByKey(DepDur.get(i).getAirlineImg()).get().getUrl());
+            CombDur.get(i).setAirlineImg(imageService.findImageByKey(CombDur.get(i).getAirlineImg()).get().getUrl());
+        }
 
-            return modelAndView
-                    .addObject("country",country)
-                    .addObject("AirKey",AirKey)
-                    .addObject("airInfo",airInfo)
-                    .addObject("airSeg",airSeg)
-                    .addObject("segDep",segDep)
-                    .addObject("segComb",segComb)
-                    .addObject("duration", DurationInfo)
-                    .addObject("DepDur",DepDur)
-                    .addObject("CombDur",CombDur)
-                    .addObject("price",price)
-                    .addObject("OnlyCountry",OnlyCountry);
+        return modelAndView
+                .addObject("country",country)
+                .addObject("AirKey",AirKey)
+                .addObject("airInfo",airInfo)
+                .addObject("airSeg",airSeg)
+                .addObject("segDep",segDep)
+                .addObject("segComb",segComb)
+                .addObject("duration", DurationInfo)
+                .addObject("DepDur",DepDur)
+                .addObject("CombDur",CombDur)
+                .addObject("price",price)
+                .addObject("OnlyCountry",OnlyCountry);
 
 
     }
@@ -202,9 +206,12 @@ public class Hamcontroller {
         List<CartSegment> segDep = this.airservice.getDep(AirKey);
         List<CartSegment> segComb = this.airservice.getComb(AirKey);
 
-        UUID uuid = UUID.randomUUID();
+        for(int i = 0; i < DepDur.size(); i ++){
+            DepDur.get(i).setAirlineImg(imageService.findImageByKey(DepDur.get(i).getAirlineImg()).get().getUrl());
+            CombDur.get(i).setAirlineImg(imageService.findImageByKey(CombDur.get(i).getAirlineImg()).get().getUrl());
+        }
 
-        payment.setStatus("ready");
+        UUID uuid = UUID.randomUUID();
 
         return new ModelAndView("Hamster/airplanePayment")
                 .addObject("airInfo",airInfo)

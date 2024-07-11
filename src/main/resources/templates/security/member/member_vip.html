@@ -54,11 +54,28 @@
                                 <span class="vip-tier-label" style="left: 99%;">Platinum</span>
                             </div>
                         </div>
-
-                        <ul class="vip-benefits">
-                            <li>독점 할인 혜택</li>
-                            <li>우선 고객 서비스</li>
-                            <li>조기 판매 접근</li>
+                        <ul class="vip-benefits" th:if="${vipLevel}=='Bronze'">
+                            <li>베스트 요금 보장</li>
+                            <li>회원 특가 혜택</li>
+                        </ul>
+                        <ul class="vip-benefits" th:if="${vipLevel}=='Silver'">
+                            <li>베스트 요금 보장</li>
+                            <li>회원 특가 혜택</li>
+                            <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                        </ul>
+                        <ul class="vip-benefits" th:if="${vipLevel}=='Gold'">
+                            <li>베스트 요금 보장</li>
+                            <li>회원 특가 혜택</li>
+                            <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                            <li>VIP 특가 혜택 - 최대 18% 할인</li>
+                        </ul>
+                        <ul class="vip-benefits" th:if="${vipLevel}=='Platinum'">
+                            <li>베스트 요금 보장</li>
+                            <li>회원 특가 혜택</li>
+                            <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                            <li>VIP 특가 혜택 - 최대 18% 할인</li>
+                            <li>VIP 특가 혜택 - 최대 25% 할인</li>
+                            <li>일부 숙소 이용 시 무료 조식 및 기타 혜택 제공</li>
                         </ul>
 
                         <a th:href="@{/flight/search_flight}" class="vip-button">예약하러 가기</a>

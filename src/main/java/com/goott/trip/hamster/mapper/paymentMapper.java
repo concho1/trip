@@ -8,8 +8,4 @@ public interface paymentMapper {
 
     int airplanePay(Payment payment);
 
-    int updatePaymentStatus(String orderUuid, String status);
-
-    int countCompletedPayments(String memberId);
-
 }

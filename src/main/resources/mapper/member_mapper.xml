@@ -55,7 +55,7 @@
                 CASE
                     WHEN #{completedCount} = 0 THEN 'Bronze'
                     WHEN #{completedCount} = 1 THEN 'Bronze'
-                    WHEN #{completedCount} BETWEEN 2 AND 4 THEN 'Sliver'
+                    WHEN #{completedCount} BETWEEN 2 AND 4 THEN 'Silver'
                     WHEN #{completedCount} BETWEEN 5 AND 9 THEN 'Gold'
                     ELSE 'Platinum'
                     END
@@ -67,4 +67,42 @@
         SET member.rank = #{vipRank}
         WHERE id = #{memberId}
     </update>
+
+    <update id="updatePaymentStatus" parameterType="Map">
+        UPDATE trip.payment
+        SET status = #{status}
+        WHERE air_key = #{airKey}
+    </update>
+
+    <select id="countCompletedPayments" resultType="int">
+        SELECT COUNT(*)
+        FROM trip.payment
+        WHERE member_id = #{memberId} AND status = 'completed'
+          AND order_time >= DATE_SUB(NOW(), INTERVAL 2 YEAR)
+    </select>
+
+    <select id="getAirKeyList" parameterType="String" resultType="CartFlight">
+        SELECT * FROM trip.cartFlight WHERE ffvId = #{airKey}
+    </select>
+
+    <select id="getDeparture" parameterType="String" resultType="String">
+        SELECT departure
+        FROM trip.cartFlight
+        WHERE ffvId = #{airKey}
+    </select>
+
+    <select id="getComeback" parameterType="String" resultType="String">
+        SELECT comeback
+        FROM trip.cartFlight
+        WHERE ffvId = #{airKey}
+    </select>
+
+    <!-- memberId로 예약한 항공편의 airKey 리스트 가져오기 -->
+    <!--<select id="getAirKeyList" parameterType="String" resultType="String">
+        SELECT air_key
+        FROM trip.payment
+        WHERE member_id = #{memberId} AND status = 'completed';
+    </select>-->
+
+
 </mapper>

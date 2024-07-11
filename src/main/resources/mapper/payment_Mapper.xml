@@ -11,17 +11,5 @@
                 #{rideLastNameStr},#{rideBirthStr},#{rideCountryStr},#{ridePassportStr},#{ridePassportCountryStr},#{ridePassportExdateStr},Now(),#{status},#{paymentKey})
     </insert>
 
-    <update id="updatePaymentStatus">
-        UPDATE payment
-        SET status = #{status}
-        WHERE order_uuid = #{orderUuid}
-    </update>
-
-    <select id="countCompletedPayments" resultType="int">
-        SELECT COUNT(*)
-        FROM payment
-        WHERE member_id = #{memberId} AND status = 'completed'
-          AND order_time >= DATE_SUB(NOW(), INTERVAL 2 YEAR)
-    </select>
 
 </mapper>
