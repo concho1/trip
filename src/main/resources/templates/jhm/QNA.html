@@ -31,17 +31,23 @@
                 </thead>
                 <tbody>
                     <tr th:each="qna : ${qList}">
-                        <td th:attr="colspan=${qna.memberId != ID} ? 4 : 1">
-                            <span th:if="${qna.memberId == ID}"><a href=# th:text="${qna.title}"></a></span>
-                            <span th:if="${qna.memberId != ID}" th:text="비밀글입니다."></span>
+                        <td th:attr="colspan=${(qna.memberId != ID && !Role.equals('ADMIN')) || qna.status == 2} ? 4 : 1">
+                            <span th:if="${(qna.memberId == ID || Role.equals('ADMIN')) && qna.status != 2}">
+                                <a th:href="|qna_content?no=${qna.num}&page=${paging.page}|" th:text="${qna.title}" class="go-qna-cont"></a>
+                            </span>
+                            <span th:if="${(qna.memberId == ID || Role.equals('ADMIN')) && qna.status == 2}">&nbsp;&nbsp;&nbsp;<img th:src="@{/asset/icons/arrow-down-left.svg}" class="titleImg" alt="화살표표">
+                                <a th:href="|qna_content?no=${qna.num}&page=${paging.page}|" th:text="${qna.title}" class="go-qna-cont"></a>
+                            </span>
+                            <span th:if="${qna.memberId != ID && !Role.equals('ADMIN')}"><img th:src="@{/asset/icons/lock.svg}" class="titleImg" alt="자물쇠">비밀글입니다.</span>
                         </td>
-                        <td th:if="${qna.memberId == ID}">
+                        <td th:if="${(qna.memberId == ID || Role.equals('ADMIN')) && qna.status != 2}">
                             <span th:text="${qna.memberId}"></span>
                         </td>
-                        <td th:if="${qna.memberId == ID}">
-                            <span th:if="${qna.status == 0}" th:text="답변대기"></span>
+                        <td th:if="${(qna.memberId == ID || Role.equals('ADMIN')) && qna.status != 2}">
+                            <span th:if="${qna.status == 0}" th:text="답변대기" class="waitAnswer"></span>
+                            <span th:if="${qna.status == 1}" th:text="답변완료" class="finAnswer"></span>
                         </td>
-                        <td th:if="${qna.memberId == ID}">
+                        <td th:if="${(qna.memberId == ID || Role.equals('ADMIN')) && qna.status != 2}">
                             <span th:text="${qna.createdAt.toString().substring(5, 10)}"></span>
                         </td>
                     </tr>
@@ -49,6 +55,26 @@
             </table>
 
             <!-- 페이징 처리 -->
+            <div class="page-wrapper">
+                <div th:if="${paging.page > paging.block}">
+                    <a th:href="|qna?page=1|"><span><b>[처음으로]</b></span></a>
+                    <a th:href="|qna?page=${paging.startBlock -1}|"><img th:src="@{/asset/icons/preBlock.svg}" alt="이전 블록" class="pagingImg"></a>
+                </div>
+
+                <div>
+                    <a th:if="${paging.page > 1}" th:href="|qna?page=${paging.page - 1}|"><img th:src="@{/asset/icons/prePage.svg}" alt="이전 페이지" class="pagingImg"></a>
+                    <a th:each="pag : ${pagList}" th:href="|qna?page=${pag}|" class="pag-list">
+                        <span th:text="${pag}" th:classappend="${pag == paging.page} ? 'pag-now' : ''"></span>
+                    </a>
+                    <a th:if="${paging.page < paging.allPage}" th:href="|qna?page=${paging.page + 1}|"><img th:src="@{/asset/icons/nextPage.svg}" alt="다음 페이지" class="pagingImg"></a>
+                </div>
+
+                <div th:if="${paging.endBlock < paging.allPage}">
+                    <a th:href="|qna?page=${paging.endBlock +1}|"><img th:src="@{/asset/icons/nextBlock.svg}" alt="다음 블록" class="pagingImg"></a>
+                    <a th:href="|qna?page=${paging.allPage}|"><span><b>[끝으로]</b></span></a>
+                </div>
+            </div>
+
             <button type="button" class="qna-insert-btn" onclick="location.href='insert_qna'">질문하기</button>
         </div>
 

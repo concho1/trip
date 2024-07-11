@@ -41,7 +41,7 @@ public class MemberRestController {
     // 이미지
     private String handleImageUpload(String memberId, MultipartFile file) {
 
-        String baseImgKey = "trip/f0fcf1b5-42c6-4a49-a9d1-7dadf703c35a";
+        String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
         Optional<Image> uploadedImage = imageService.insertFile(file);
 
         if (uploadedImage.isPresent()) {
@@ -62,7 +62,7 @@ public class MemberRestController {
             modelAndView.addObject("memberId",memberId);
             return modelAndView;
         }*/
-    @GetMapping("myPage")
+    /*@GetMapping("myPage")
     public ModelAndView getMyPage(Principal principal) {
         ModelAndView modelAndView = new ModelAndView("security/member/member_page");
         String memberId = principal.getName(); // 로그인된 사용자의 ID getName 이 member Id 임
@@ -70,7 +70,7 @@ public class MemberRestController {
         modelAndView.addObject("memberId", memberId);
 
         return modelAndView;
-    }
+    }*/
     @GetMapping("reservation")
     public ModelAndView getReservation(Principal principal, Member member) {
         /*ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");
@@ -88,8 +88,9 @@ public class MemberRestController {
         ModelAndView modelAndView = new ModelAndView("security/member/member_info");
 
         String memberId = principal.getName();
+        System.out.println("memberId : " + memberId);
 
-        String baseImgKey = "trip/f0fcf1b5-42c6-4a49-a9d1-7dadf703c35a";
+        String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
         imageService.findImageByKey(baseImgKey).ifPresent(image ->
                 modelAndView.addObject("baseImgUrl", image.getUrl())
         );
@@ -112,7 +113,7 @@ public class MemberRestController {
         String memberId = principal.getName();
         System.out.println("memberId : " + memberId);
 
-        String baseImgKey = "trip/f0fcf1b5-42c6-4a49-a9d1-7dadf703c35a";
+        String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
 
         // 새 이미지 업로드 시도
         Optional<Image> uploadedImage = imageService.insertFile(file);
@@ -174,26 +175,6 @@ public class MemberRestController {
         return new ModelAndView(alarm.getMessagePage());
     }
 
-    /*// 회원 탈퇴
-    @PostMapping("delete")
-    public ModelAndView delOk(Principal principal, @RequestParam("pw") String pw, Model model) {
-        Alarm alarm = new Alarm(model);
-        String memberId = principal.getName();
-        Member cont = this.memberService.getMemberById(memberId);
-
-        if(pw.equals(cont.getPw())){
-            int check = this.memberService.deleteMem(memberId, pw);
-            if(check > 0){
-                alarm.setMessageAndRedirect("탈퇴 성공했습니다.","user/con/log-in");
-            }else{
-                alarm.setMessageAndRedirect("탈퇴 실패, 다시 시도해주세요.","");
-            }
-            return new ModelAndView(alarm.getMessagePage());
-        }else {
-            alarm.setMessageAndRedirect("비밀번호가 틀렸습니다.","");
-        }
-        return new ModelAndView(alarm.getMessagePage());
-    }*/
     // 회원 탈퇴
     @PostMapping("delete")
     public ModelAndView delOk(Principal principal, @RequestParam("pw") String pw, Model model) {

@@ -84,10 +84,10 @@ public class EmailService {
 
         Date currentDate = new Date();
 
-        // 원하는 형식으로 출력하기
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date = dateFormat.format(currentDate);
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        String date = dateFormat.format(currentDate);
 
         String[] rideFirstName = paymentInfo.getRideFirstName();
         String[] rideLastName = paymentInfo.getRideLastName();
@@ -96,7 +96,7 @@ public class EmailService {
         String[] ridePassport = paymentInfo.getRidePassport();
         String[] ridePassportCountry = paymentInfo.getRidePassportCountry();
         String[] ridePassportExdate = paymentInfo.getRidePassportExdate();
-        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+
 
         message.addRecipients(Message.RecipientType.TO,email);
         message.setSubject("[tripHamsic]"+email+"고객님 전자 영수증입니다.");

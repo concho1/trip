@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface paymentMapper {
 
     public int airplanePay(Payment payment);
+
 }

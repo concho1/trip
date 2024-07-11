@@ -34,7 +34,7 @@
                 </div>
 
             </div>
-            <input type="button" onclick="insertFaq()" value="추가">
+            <input type="button" onclick="insertFaq()" th:if="${role.equals('ADMIN')}" value="추가">
             <div id="faqModal" class="modal">
                 <div class="modal-content">
                     <span class="close" id="faqClose">&times;</span>
