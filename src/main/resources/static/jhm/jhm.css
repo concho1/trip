@@ -584,6 +584,8 @@ input[type="checkbox"]:checked + label:after {
     align-items: stretch;
     width: 100%;
     max-width: 1000px;
+    max-height: 700px;
+    overflow: auto;
 }
 
 .qna-insert-btn {
@@ -631,11 +633,86 @@ input[type="checkbox"]:checked + label:after {
     width: 15%;
 }
 
-.qna-list a {
+.go-qna-cont {
     color: blue;
     font-style: italic;
 }
 
-.qna-list a:hover {
+.go-qna-cont:hover {
     text-decoration: underline;
+}
+
+.page-wrapper {
+    align-self: center;
+    align-items: center;
+    display: flex;
+}
+
+.pagingImg {
+    width: 20px;
+    height: 20px;
+}
+
+.page-wrapper a {
+    margin: 0 10px;
+}
+
+.pag-now {
+    font-weight: bold;
+}
+
+.qna-cont-label {
+    margin-bottom: 10px;
+    cursor: default;
+}
+
+.qna-ta {
+    cursor: default;
+}
+
+.button-wrapper {
+    align-self: center;
+    width: 100%;
+    display: flex;
+}
+
+.qna-button {
+    display: inline-block;
+    width: 150px;
+    max-width: 4000px;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: white;
+    border: 1px solid dimgray;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+}
+
+.qna-button:hover {
+    border: 2px solid royalblue;
+    background-color: rgba(0, 86, 179, 0.5);
+    color: white;
+}
+
+.titleImg {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.waitAnswer {
+    background-color: black;
+    color: white;
+    font-size: 13px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.finAnswer {
+    background-color: green;
+    color: white;
+    font-size: 13px;
+    padding: 10px;
+    border-radius: 10px;
 }

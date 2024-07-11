@@ -113,11 +113,11 @@
         select icao from trip.airline where iata like concat('%', #{str}, '%') and model not like '%Cargo%' limit 1
     </select>
 
-    <select id="findImgByIcao" parameterType="String" resultType="String">
-        select logo from trip.airplaneInfo where icao_code like concat('%', #{str}, '%')
+    <select id="findImgByIata" parameterType="String" resultType="String">
+        select url from trip.image where img_key = (select logo from trip.airplaneInfo where iata_code like concat('%', #{str}, '%') limit 1)
     </select>
 
-    <insert id="insertShoppingCart" parameterType="shoppingCart">
+    <insert id="insertShoppingCart" parameterType="ShoppingCart">
         insert into trip.shoppingCart(member_id, air_key) values(#{memberId}, #{airKey})
     </insert>
 
