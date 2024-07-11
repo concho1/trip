@@ -38,8 +38,8 @@
                     <div class="vip-container" id="myVIP">
 
                         <div class="vip-tier">
-                            <h3>내 등급: <span id="vip-level">Silver</span></h3>
-                            <p>현재 결제 완료 건수: <span id="completed-bookings">3</span></p>
+                            <h3>내 등급: <span th:text="${vipLevel}"></span></h3>
+                            <p>현재 결제 완료 건수: <span th:text="${completedBookings}"></span></p>
                             <div class="vip-bar-container">
                                 <div class="vip-bar" id="vip-bar"></div>
                                 <div class="vip-star-marker" style="left: 1%;" title="Bronze">&#9733;</div>

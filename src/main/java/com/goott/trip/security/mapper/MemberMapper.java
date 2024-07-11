@@ -15,4 +15,7 @@ public interface MemberMapper {
     int updatePwd(String id, String pw); // 비밀번호 변경
     int deleteMem(String id); // 회원 삭제(탈퇴)
 
+    // 예약 완료 건수를 기반으로 회원의 VIP 등급을 업데이트하는 메서드
+    void updateMemberVipRank(String memberId, String vipRank);
+
 }

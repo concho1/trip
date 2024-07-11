@@ -152,7 +152,7 @@ public class MemberRestController {
     }
 
     @PostMapping("updatePwd")
-    public ModelAndView postPwd(Principal principal, Model model, Member member,
+    public ModelAndView postPwd(Principal principal, Model model,
                                 @RequestParam("pw") String pw, @RequestParam("newPw") String newPw) {
         Alarm alarm = new Alarm(model);
         String memberId = principal.getName();
@@ -220,12 +220,20 @@ public class MemberRestController {
     }*/
 
     @GetMapping("vip")
-    public ModelAndView getVip(Principal principal, Member member) {
-        /*ModelAndView modelAndView = new ModelAndView("security/member/member_vip");
-        setCommonAttributes(principal, modelAndView);
-        return modelAndView;*/
-        /*String memberId = principal.getName();          //getName 이 member Id 임*/
+    public ModelAndView getVip(Principal principal) {
+        String memberId = principal.getName();
+        memberService.assignVipRank(memberId); // VIP 등급 부여
+
+        // 회원의 VIP 등급 가져오기
+        Member member = memberService.getMemberById(memberId);
+        String vipLevel = member.getRank();
+
+        // 회원의 정보를 뷰로 전달
         ModelAndView modelAndView = new ModelAndView("security/member/member_vip");
+        modelAndView.addObject("memberId", memberId);
+        modelAndView.addObject("completedBookings", memberService.countCompletedPayments(memberId));
+        modelAndView.addObject("vipLevel", vipLevel);
+
         return modelAndView;
     }
 

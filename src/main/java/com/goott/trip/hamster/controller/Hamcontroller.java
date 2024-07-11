@@ -204,6 +204,7 @@ public class Hamcontroller {
 
         UUID uuid = UUID.randomUUID();
 
+        payment.setStatus("ready");
 
         return new ModelAndView("Hamster/airplanePayment")
                 .addObject("airInfo",airInfo)

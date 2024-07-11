@@ -1,5 +1,6 @@
 package com.goott.trip.security.service;
 
+import com.goott.trip.hamster.mapper.paymentMapper;
 import com.goott.trip.security.mapper.MemberMapper;
 import com.goott.trip.security.model.Member;
 import com.goott.trip.security.model.Role;
@@ -14,10 +15,45 @@ import java.util.HashMap;
 public class MemberService {
     private final MemberMapper memberMapper;
     private final PasswordEncoder passwordEncoder;
+    private final paymentMapper paymentMapper;
+
+    public int countCompletedPayments(String memberId) {
+        // 회원의 2년간 완료된 결제 건수 조회
+        return this.paymentMapper.countCompletedPayments(memberId);
+    }
+
+    public void assignVipRank(String memberId) {
+        // 회원의 2년간 completed 건수 조회
+        int completedCount = this.paymentMapper.countCompletedPayments(memberId);
+
+        // 회원의 VIP 등급 설정
+        String vipRank = determineVipRank(completedCount);
+
+        // 회원 정보 업데이트
+        Member member = memberMapper.findById(memberId);
+        member.setRank(vipRank);
+        memberMapper.updateMem(member);
+
+        // VIP 등급을 MemberMapper를 통해 업데이트
+        memberMapper.updateMemberVipRank(memberId, vipRank);
+    }
+
+    private String determineVipRank(int completedCount) {
+        if (completedCount >= 10) {
+            return "Platinum";
+        } else if (completedCount >= 5) {
+            return "Gold";
+        } else if (completedCount >= 2) {
+            return "Silver";
+        } else {
+            return "Bronze";
+        }
+    }
 
     public void saveMember(Member member){
         member.setRole(Role.MEMBER); //MEMBER 역할 부여
         member.setPw(passwordEncoder.encode(member.getPw()));
+        member.setRank("Bronze");
         memberMapper.save(member);
     }
 

@@ -6,6 +6,10 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface paymentMapper {
 
-    public int airplanePay(Payment payment);
+    int airplanePay(Payment payment);
+
+    int updatePaymentStatus(String orderUuid, String status);
+
+    int countCompletedPayments(String memberId);
 
 }
