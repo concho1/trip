@@ -1,7 +1,3 @@
-/*.form-footer.btn-box {
-    display: flex;
-    justify-content: center;
-}*/
 .form-footer {
     padding-top: 4rem;
     text-align: center;
@@ -21,14 +17,16 @@
     transition: 0.3s;
     margin-left: 3px;
     margin-right: 3px;
-
 }
-.tab-menu-wrap {
+button#deleteButton {
+    height: 4.8rem;
+}
+/*.tab-menu-wrap {
     display: flex;
     margin: 4rem 0;
     position: relative;
     justify-content: space-between;
-}
+}*/
 .form-wrap{
     display: flex;
     justify-content: center;
@@ -40,4 +38,30 @@
 
 .fieldset{
     margin-bottom: 3rem;
+}
+
+/* 기본 스타일 */
+.cont-title {
+    display: inline-block;
+    margin-right: 20px;
+    text-decoration: none;
+    color: grey; /* 기본 색상은 회색 */
+    font-size: 16px;
+}
+
+/* 링크에 마우스를 올렸을 때 스타일링 */
+.cont-title:hover {
+     text-decoration: underline;  /* 호버 시 밑줄 추가 */
+}
+
+/* 선택된 상태 스타일링 */
+.cont-title.select {
+    color: black; /* 선택된 링크의 색상 */
+}
+
+/* 구분자 스타일링 */
+.separator {
+    margin-right: 20px;
+    color: black;
+    font-size: 3.2rem;
 }

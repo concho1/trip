@@ -114,12 +114,18 @@ public class ConchoRestController {
         }
         // 크롤링했던 데이터들 가져오기
         List<String> imgUrlList = hotelCrawlingService.getHotelCrawledImgUrlList(hotelId);
+        List<String> imgKeyList = hotelCrawlingService.getHotelCrawledImgKeyList(hotelId);
         List<HotelCrawledRoom> hotelCrawledRoomList = hotelCrawlingService.getHotelCrawledRoomList(hotelId);
         List<HotelCrawledInfo> hotelCrawledInfoList = hotelCrawlingService.getHotelCrawledInfo(hotelId);
+        mv.addObject("imgKeyList", imgKeyList);
         mv.addObject("imgUrlList", imgUrlList);
+        mv.addObject("personCnt", personCnt);
         mv.addObject("hotelCrawledRoomList", hotelCrawledRoomList);
         mv.addObject("hotelCrawledInfoList", hotelCrawledInfoList);
+        mv.addObject("memberId", principal != null ? principal.getName() : null);
         mv.setViewName("concho/user/hotel_offer_list");
         return mv;
     }
+
+
 }

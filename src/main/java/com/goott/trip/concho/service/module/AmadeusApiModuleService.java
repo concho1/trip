@@ -4,9 +4,7 @@ import com.amadeus.Amadeus;
 import com.amadeus.Params;
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.referencedata.Locations;
-import com.amadeus.resources.Hotel;
-import com.amadeus.resources.HotelOfferSearch;
-import com.amadeus.resources.Location;
+import com.amadeus.resources.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -38,7 +36,6 @@ public class AmadeusApiModuleService {
         Hotel[] hotels = amadeus.referenceData.locations.hotels.byCity.get(
                 Params.with("cityCode", iataCode).and("radius", 40)
         );
-
         return hotels;
     }
     /*
@@ -62,8 +59,14 @@ public class AmadeusApiModuleService {
                 .and("checkOutDate", endDate)
                 .and("roomQuantity", 1)
                 .and("paymentPolicy", "NONE")
-                .and("bestRateOnly", false));
-        //System.out.println(Arrays.toString(offers));
+                .and("bestRateOnly", false)
+                .and("currency","KRW"));
         return offers;
+    }
+
+    public HotelSentiment getHotelRatingByHotelId(String hotelId) throws Exception {
+        // Hotel Ratings / Sentiments
+        HotelSentiment[] hotelSentiments = amadeus.ereputation.hotelSentiments.get(Params.with("hotelIds", hotelId));
+        return hotelSentiments[0];
     }
 }
