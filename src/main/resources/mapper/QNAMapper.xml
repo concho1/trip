@@ -31,4 +31,36 @@
 
     </insert>
 
+    <select id="findRole" parameterType="String" resultType="String">
+        select role from trip.member where id = #{id}
+    </select>
+
+    <select id="getQNAContent" parameterType="int" resultType="QNA">
+        select * from trip.qna where num = #{num}
+    </select>
+
+    <update id="modQNA" parameterType="QNA">
+        update trip.qna set title = #{title}, cont = #{cont}, updated_at = now() where num = #{num}
+    </update>
+
+    <delete id="delQNA" parameterType="int">
+        delete from trip.qna where qna_group = #{no}
+    </delete>
+
+    <insert id="answerQNA" parameterType="QNA">
+        <selectKey resultType="int" keyProperty="num" order="BEFORE">
+            select coalesce(max(num), 0) + 1 from trip.qna
+        </selectKey>
+
+            insert into trip.qna values(#{num}, #{memberId}, #{title}, #{cont}, now(), default, 2, #{qnaGroup}, 1)
+    </insert>
+
+    <update id="changeStatus" parameterType="int">
+        update trip.qna set status = 1 where num = #{no} and step = 0
+    </update>
+
+    <select id="getAnswer" parameterType="int" resultType="String">
+        select cont from trip.qna where qna_group = #{no} and status = 2
+    </select>
+
 </mapper>
