@@ -8,22 +8,13 @@ import com.goott.trip.security.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -66,24 +57,25 @@ public class MemberRestController {
             return modelAndView;
         }*/
     @GetMapping("info")
-    public ModelAndView getInfo(Principal principal, HttpSession session) {
+    public ModelAndView getInfo(Principal principal) {
+        /*HttpSession session = request.getSession();*/
         ModelAndView modelAndView = new ModelAndView("security/member/member_info");
 
         String memberId = principal.getName();
         System.out.println("memberId : " + memberId);
 
-        /*String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
+        String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
         imageService.findImageByKey(baseImgKey).ifPresent(image ->
                 modelAndView.addObject("baseImgUrl", image.getUrl())
-        );*/
-        String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
-        Optional<Image> imageOp = imageService.findImageByKey(baseImgKey);
+        );
+        /*String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
+        Optional<Image> imageOp = imageService.findImageByKey(baseImgKey);*/
 
         Member member = memberService.getMemberById(memberId);
         modelAndView.addObject("dto", member);
         modelAndView.addObject("memberId", memberId);
         /*session.setAttribute("userImgUrl", member.getImgKey());*/
-        modelAndView.addObject("baseUrl", imageOp.get().getUrl());
+        /*modelAndView.addObject("baseUrl", imageOp.get().getUrl());*/
 
         return modelAndView;
     }
@@ -203,44 +195,6 @@ public class MemberRestController {
         return new ModelAndView(alarm.getMessagePage());
     }*/
 
-    /*@GetMapping("vip")
-    public ModelAndView getVip(Principal principal) {
-
-        String memberId = principal.getName();
-        LocalDate today = LocalDate.now();
-        List<String> ffvList = this.memberService.getFfvId(memberId);
-
-        for(String ffv : ffvList) {
-            String dep = this.memberService.getDeparture(ffv);
-            LocalDate depDate = LocalDate.parse(dep, DateTimeFormatter.ISO_DATE);
-            boolean d = today.isBefore(dep);
-            if(!d){
-                this.memberService.assignVipRank(memberId);
-            }
-
-            if(this.memberService.getComback(ffv) !=) {
-                String comb = this.memberService.getComback(ffv);
-                LocalDate combDate = LocalDate.parse(dep, DateTimeFormatter.ISO_DATE);
-                boolean c = today.isBefore(comb);
-            }
-        }
-
-        memberService.assignVipRank(memberId); // VIP 등급 부여
-
-        // 회원의 VIP 등급 가져오기
-        Member member = memberService.getMemberById(memberId);
-        String vipLevel = member.getRank();
-
-        // 회원의 정보를 뷰로 전달
-        ModelAndView modelAndView = new ModelAndView("security/member/member_vip");
-        modelAndView.addObject("memberId", memberId);
-        modelAndView.addObject("completedBookings", memberService.countCompletedPayments(memberId));
-        modelAndView.addObject("vipLevel", vipLevel);
-
-
-
-        return modelAndView;
-    }*/
     @GetMapping("vip")
     public ModelAndView getVip(Principal principal) {
         String memberId = principal.getName();
