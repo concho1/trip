@@ -33,19 +33,13 @@
                                 <span>VIP 란?</span>
                             </a>
                         </div>
-                       <!-- <div class="tab-menu active">
-                            <a th:href="@{vip}">
-                                <span>VIP</span>
-                            </a>
-                        </div>-->
                     </div>
 
                     <div class="vip-container" id="myVIP">
-                        <!--<span class="vip-badge">VIP Member</span>-->
 
                         <div class="vip-tier">
-                            <h3>내 등급: <span id="vip-level">Silver</span></h3>
-                            <p>현재 결제 완료 건수: <span id="completed-bookings">3</span></p>
+                            <h3>내 등급: <span th:text="${vipLevel}"></span></h3>
+                            <p>현재 결제 완료 건수: <span th:text="${completedBookings}"></span></p>
                             <div class="vip-bar-container">
                                 <div class="vip-bar" id="vip-bar"></div>
                                 <div class="vip-star-marker" style="left: 1%;" title="Bronze">&#9733;</div>
@@ -60,11 +54,28 @@
                                 <span class="vip-tier-label" style="left: 99%;">Platinum</span>
                             </div>
                         </div>
-
-                        <ul class="vip-benefits">
-                            <li>독점 할인 혜택</li>
-                            <li>우선 고객 서비스</li>
-                            <li>조기 판매 접근</li>
+                        <ul class="vip-benefits" th:if="${vipLevel}=='Bronze'">
+                            <li>베스트 요금 보장</li>
+                            <li>회원 특가 혜택</li>
+                        </ul>
+                        <ul class="vip-benefits" th:if="${vipLevel}=='Silver'">
+                            <li>베스트 요금 보장</li>
+                            <li>회원 특가 혜택</li>
+                            <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                        </ul>
+                        <ul class="vip-benefits" th:if="${vipLevel}=='Gold'">
+                            <li>베스트 요금 보장</li>
+                            <li>회원 특가 혜택</li>
+                            <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                            <li>VIP 특가 혜택 - 최대 18% 할인</li>
+                        </ul>
+                        <ul class="vip-benefits" th:if="${vipLevel}=='Platinum'">
+                            <li>베스트 요금 보장</li>
+                            <li>회원 특가 혜택</li>
+                            <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                            <li>VIP 특가 혜택 - 최대 18% 할인</li>
+                            <li>VIP 특가 혜택 - 최대 25% 할인</li>
+                            <li>일부 숙소 이용 시 무료 조식 및 기타 혜택 제공</li>
                         </ul>
 
                         <a th:href="@{/flight/search_flight}" class="vip-button">예약하러 가기</a>
@@ -72,7 +83,6 @@
 
                     <!--등급 설명-->
                     <div class="vip-container" id="vipE" style="display: none;">
-                        <span class="explain-badge">VIP</span>
 
                         <div class="explain-tier">
                             <h3>Bronze</h3>
@@ -128,11 +138,8 @@
                                 <li>일부 숙소 이용 시 무료 조식 및 기타 혜택 제공</li>
                             </ul>
                         </div>
-
                         <a th:href="@{/flight/search_flight}" class="vip-button">예약하러 가기</a>
                     </div>
-
-
                 </section>
             </div>
         </div>

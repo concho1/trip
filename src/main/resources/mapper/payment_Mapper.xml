@@ -3,18 +3,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.goott.trip.hamster.mapper.paymentMapper">
-    <!--
 
-
-
-    -->
     <insert id="airplanePay" parameterType="Payment">
         INSERT INTO payment (order_uuid, member_id, air_key, call_first_name, call_last_name, call_country, call_email, call_number,ride_first_name,
                              ride_last_name,ride_birth,ride_country,ride_passport,ride_passport_country,ride_passport_exdate, order_time,status,payment_key)
         VALUES (#{orderUuid}, #{memberId}, #{airKey}, #{callFirstName}, #{callLastName}, #{callCountry}, #{callEmail}, #{callNumber},#{rideFirstNameStr},
                 #{rideLastNameStr},#{rideBirthStr},#{rideCountryStr},#{ridePassportStr},#{ridePassportCountryStr},#{ridePassportExdateStr},Now(),#{status},#{paymentKey})
     </insert>
-
 
 
 </mapper>
