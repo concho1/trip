@@ -2,9 +2,7 @@ package com.goott.trip.esh.controller;
 
 import com.goott.trip.common.model.Alarm;
 import com.goott.trip.concho.model.hotel.ConHotelAndIata;
-import com.goott.trip.concho.service.main.HotelCrawlingService;
 import com.goott.trip.concho.service.main.HotelListService;
-import com.goott.trip.concho.service.main.HotelSearchService;
 import com.goott.trip.esh.service.ExchangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +22,7 @@ public class EshMainController {
     @Autowired
     private HotelListService hotelListService;
 
-    @GetMapping("/exchangeRate")
+    @GetMapping("/exchange-rate")
     public String exchangeData(Model model) {
         List<Map<String, Object>> exchangeRates = exchangeService.getExchangeData();
         model.addAttribute("exchangeRates", exchangeRates);

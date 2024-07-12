@@ -25,24 +25,24 @@
 <h2>Exchange Currency</h2>
 <form action="user/esh/doConvert" method="get">
     <th:block>
-    <label>From Currency:</label>
+        <label for="fromCurrency">From Currency:</label>
+        <select id="fromCurrency" name="fromCurrency">
+            <option th:each="rate : ${exchangeRates}"
+                    th:value="${rate['cur_unit']}"
+                    th:text="${rate['cur_nm']} + '(' + ${rate['cur_unit']} + ')'"></option>
+        </select><br>
 
-    <select name="fromCurrency">
-        <option th:each="rate : ${exchangeRates}"
-                th:value="${rate['cur_unit']}"
-                th:text="${rate['cur_nm']} + '(' + ${rate['cur_unit']} + ')'"></option>
-    </select><br>
+        <label for="toCurrency">To Currency:</label>
+        <select id="toCurrency" name="toCurrency">
+            <option th:each="rate : ${exchangeRates}"
+                    th:value="${rate['cur_unit']}"
+                    th:text="${rate['cur_nm']} + '(' + ${rate['cur_unit']} + ')'"></option>
+        </select><br>
 
-    <label>To Currency:</label>
-    <select name="toCurrency">
-        <option th:each="rate : ${exchangeRates}"
-                th:value="${rate['cur_unit']}"
-                th:text="${rate['cur_nm']} + '(' + ${rate['cur_unit']} + ')'"></option>
-    </select><br>
-    <label>금액을 입력하세요</label>
-    <input type="text" name="amount"><br>
+        <label for="amount">금액을 입력하세요:</label>
+        <input type="text" id="amount" name="amount"><br>
 
-    <input type="submit" value="Convert">
+        <input type="submit" value="Convert">
     </th:block>
 </form>
 
@@ -51,14 +51,6 @@
 <p id="convertedAmount"></p>
 
 <script th:inline="javascript">
-    async function fetchConvertedAmount(fromCurrency, toCurrency, amount) {
-        const response = await fetch(`http://localhost:8787/proxy?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&amount=${amount}`);
-        if(!response.ok) { //요철 실패
-            throw new Error('Network response was not successful');
-        }
-        return response.text();
-    }
-
 
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault(); // 폼 제출 기본 동작을 막음
