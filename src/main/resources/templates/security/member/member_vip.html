@@ -39,7 +39,7 @@
 
                         <div class="vip-tier">
                             <h3>내 등급: <span th:text="${vipLevel}"></span></h3>
-                            <p>현재 결제 완료 건수: <span th:text="${completedBookings}"></span></p>
+                            <p>현재 결제 완료 금액: <span th:text="${totalSpent}"></span></p>
                             <div class="vip-bar-container">
                                 <div class="vip-bar" id="vip-bar"></div>
                                 <div class="vip-star-marker" style="left: 1%;" title="Bronze">&#9733;</div>
@@ -61,20 +61,17 @@
                         <ul class="vip-benefits" th:if="${vipLevel}=='Silver'">
                             <li>베스트 요금 보장</li>
                             <li>회원 특가 혜택</li>
-                            <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                            <li>Silver 특가 혜택 - 최대 12% 할인</li>
                         </ul>
                         <ul class="vip-benefits" th:if="${vipLevel}=='Gold'">
                             <li>베스트 요금 보장</li>
                             <li>회원 특가 혜택</li>
-                            <li>VIP 특가 혜택 - 최대 12% 할인</li>
-                            <li>VIP 특가 혜택 - 최대 18% 할인</li>
+                            <li>Gold 특가 혜택 - 최대 12% 할인</li>
                         </ul>
                         <ul class="vip-benefits" th:if="${vipLevel}=='Platinum'">
                             <li>베스트 요금 보장</li>
                             <li>회원 특가 혜택</li>
-                            <li>VIP 특가 혜택 - 최대 12% 할인</li>
-                            <li>VIP 특가 혜택 - 최대 18% 할인</li>
-                            <li>VIP 특가 혜택 - 최대 25% 할인</li>
+                            <li>Platinum 특가 혜택 - 최대 12% 할인</li>
                             <li>일부 숙소 이용 시 무료 조식 및 기타 혜택 제공</li>
                         </ul>
 
@@ -86,7 +83,7 @@
 
                         <div class="explain-tier">
                             <h3>Bronze</h3>
-                            <p>기본 회원 및 최근 2년 동안 1건의 예약 완료</p>
+                            <p>기본 회원 및 총액 100만원 미만의 금액 예약 완료</p>
                             <div class="explain-bar-container">
                                 <div class="explain-bar explain-Bronze"></div>
                             </div>
@@ -98,7 +95,7 @@
 
                         <div class="explain-tier">
                             <h3>Silver</h3>
-                            <p>최근 2년 동안 2건 이상 예약 완료</p>
+                            <p>총액 100만원 이상 금액 예약 완료</p>
                             <div class="explain-bar-container">
                                 <div class="explain-bar explain-silver"></div>
                             </div>
@@ -111,7 +108,7 @@
 
                         <div class="explain-tier">
                             <h3>Gold</h3>
-                            <p>최근 2년 동안 5건 이상 예약 완료</p>
+                            <p>총액 300만원 이상 금액 예약 완료</p>
                             <div class="explain-bar-container">
                                 <div class="explain-bar explain-gold"></div>
                             </div>
@@ -125,7 +122,7 @@
 
                         <div class="explain-tier">
                             <h3>Platinum</h3>
-                            <p>최근 2년 동안 10건 이상 예약 완료한 최고 회원을 위한 독점 혜택</p>
+                            <p>총액 500만원 이상 금액 예약 완료한 최고 회원을 위한 독점 혜택</p>
                             <div class="explain-bar-container">
                                 <div class="explain-bar explain-platinum"></div>
                             </div>
@@ -149,6 +146,11 @@
 <script type="text/javascript" th:src="@{/security/js/vip.js}"></script>
 <script type="text/javascript" th:src="@{/security/js/vipInfo.js}"></script>
 <script type="text/javascript" th:src="@{/security/js/myInfo.js}"></script>
+<!--
+<script th:inline="javascript">
+
+</script>
+-->
 
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>

@@ -11,5 +11,23 @@
                 #{rideLastNameStr},#{rideBirthStr},#{rideCountryStr},#{ridePassportStr},#{ridePassportCountryStr},#{ridePassportExdateStr},Now(),#{status},#{paymentKey})
     </insert>
 
+    <select id="findByMemberIdAndStatus" parameterType="map" resultType="Payment">
+        SELECT * FROM payment
+        WHERE member_id = #{memberId} AND status = #{status}
+    </select>
+
+    <update id="updateTicketStatus">
+        UPDATE payment
+        SET status = #{status}
+        WHERE air_key = #{airKey}
+    </update>
+
+
+    <!--<select id="getTotalSpentByMember" resultType="double" parameterType="String">
+        SELECT SUM(cf.total_price) AS total_spent
+        FROM payment p
+                 JOIN cartFlight cf ON p.air_key = cf.ffvId
+        WHERE p.member_id = #{memberId} AND p.status = 'completed'
+    </select>-->
 
 </mapper>
