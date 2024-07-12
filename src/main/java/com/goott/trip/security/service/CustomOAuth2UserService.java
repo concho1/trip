@@ -63,6 +63,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         member.setRole(Role.MEMBER);
         /*member.setName((String) attributes.get("name"));*/
         /*member.setName("");*/
+        member.setVip("Bronze");
         member.setImgKey((String) attributes.get("picture"));
         member.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
@@ -119,6 +120,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         member.setId(email);
         member.setRole(Role.MEMBER);
         /*member.setName("이름등록필요 이름등록필요");*/
+        member.setVip("Bronze");
         member.setImgKey(profileImage);
         member.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 

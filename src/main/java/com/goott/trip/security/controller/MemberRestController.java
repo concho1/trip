@@ -65,44 +65,25 @@ public class MemberRestController {
             modelAndView.addObject("memberId",memberId);
             return modelAndView;
         }*/
-    /*@GetMapping("myPage")
-    public ModelAndView getMyPage(Principal principal) {
-        ModelAndView modelAndView = new ModelAndView("security/member/member_page");
-        String memberId = principal.getName(); // 로그인된 사용자의 ID getName 이 member Id 임
-        System.out.println("memberId : " + memberId);
-        modelAndView.addObject("memberId", memberId);
-
-        return modelAndView;
-    }*/
-    @GetMapping("reservation")
-    public ModelAndView getReservation(Principal principal, Member member) {
-        /*ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");
-        setCommonAttributes(principal, modelAndView);
-        return modelAndView;*/
-        /*String memberId = principal.getName();          //getName 이 member Id 임
-        System.out.println("memberId : " + memberId);*/
-        ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");
-        /*modelAndView.addObject("memberId",memberId);*/
-        return modelAndView;
-    }
-
     @GetMapping("info")
-    public ModelAndView getInfo(Principal principal) {
+    public ModelAndView getInfo(Principal principal, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("security/member/member_info");
 
         String memberId = principal.getName();
         System.out.println("memberId : " + memberId);
 
-        String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
+        /*String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
         imageService.findImageByKey(baseImgKey).ifPresent(image ->
                 modelAndView.addObject("baseImgUrl", image.getUrl())
-        );
+        );*/
+        String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
+        Optional<Image> imageOp = imageService.findImageByKey(baseImgKey);
 
-        if (memberId != null) {
-            Member member = memberService.getMemberById(memberId);
-            modelAndView.addObject("dto", member);
-            modelAndView.addObject("memberId", memberId);
-        }
+        Member member = memberService.getMemberById(memberId);
+        modelAndView.addObject("dto", member);
+        modelAndView.addObject("memberId", memberId);
+        /*session.setAttribute("userImgUrl", member.getImgKey());*/
+        modelAndView.addObject("baseUrl", imageOp.get().getUrl());
 
         return modelAndView;
     }
@@ -199,7 +180,7 @@ public class MemberRestController {
 
         return new ModelAndView(alarm.getMessagePage());
     }
-/*
+    /*
 
     // 카카오 회원 탈퇴
     @PostMapping("deleteNull")
@@ -260,30 +241,15 @@ public class MemberRestController {
 
         return modelAndView;
     }*/
-
     @GetMapping("vip")
     public ModelAndView getVip(Principal principal) {
         String memberId = principal.getName();
-        LocalDate today = LocalDate.now();
-        List<String> airKeyList = memberService.getAirKeyList(memberId);
 
-        for (String airKey : airKeyList) {
-            String dep = memberService.getDeparture(airKey);
-            LocalDate depDate = LocalDate.parse(dep, DateTimeFormatter.ISO_DATE);
-            boolean d = today.isAfter(depDate);
-            if (!d) {
-                memberService.updatePaymentAndAssignVip(airKey, memberId);  // 결제 상태 업데이트 및 VIP 등급 부여
-            }
+        // 총 소비 금액 업데이트
+        memberService.updateTotalSpentByMember(memberId);
 
-            String comb = memberService.getComeback(airKey);
-            if (comb != null && !comb.isEmpty()) {
-                LocalDate combDate = LocalDate.parse(comb, DateTimeFormatter.ISO_DATE);
-                boolean c = today.isAfter(combDate);
-                if (!c) {
-                    memberService.updatePaymentAndAssignVip(airKey, memberId);  // 결제 상태 업데이트 및 VIP 등급 부여
-                }
-            }
-        }
+        // VIP 등급 업데이트
+        memberService.updateVIPStatus(memberId);
 
         // 회원 정보 조회
         Member member = memberService.getMemberById(memberId);
@@ -291,8 +257,8 @@ public class MemberRestController {
         // ModelAndView 설정
         ModelAndView modelAndView = new ModelAndView("security/member/member_vip");
         modelAndView.addObject("memberId", memberId);
-        modelAndView.addObject("completedBookings", memberService.countCompletedPayments(memberId));
-        modelAndView.addObject("vipLevel", member.getRank());
+        modelAndView.addObject("totalSpent", member.getTotal()); // 총 소비 금액은 Member 객체에서 가져옵니다
+        modelAndView.addObject("vipLevel", member.getVip());
 
         return modelAndView;
     }
@@ -331,6 +297,18 @@ public class MemberRestController {
 
         return modelAndView;
     }*/
+
+    @GetMapping("reservation")
+    public ModelAndView getReservation(Principal principal, Member member) {
+        /*ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");
+        setCommonAttributes(principal, modelAndView);
+        return modelAndView;*/
+        /*String memberId = principal.getName();          //getName 이 member Id 임
+        System.out.println("memberId : " + memberId);*/
+        ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");
+        /*modelAndView.addObject("memberId",memberId);*/
+        return modelAndView;
+    }
 
     // 로그아웃
     @GetMapping("log-out")
