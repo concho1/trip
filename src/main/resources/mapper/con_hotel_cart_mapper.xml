@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.goott.trip.hamster.mapper.ConHotelCartMapper">
+    <select id="findConHotelCartByMemberIdAndOfferUuid" parameterType="String" resultType="ConHotelCart">
+        SELECT * FROM con_hotel_cart
+        WHERE
+            member_id = #{memberId}
+          AND offer_uuid = #{offerUuid}
+    </select>
+    <insert id="saveConHotelCart" parameterType="ConHotelCart">
+        INSERT INTO con_hotel_cart
+        VALUES (#{uuid}, NOW(), #{memberId}, #{hotelUuid}, #{iataCode}, #{offerUuid}, #{orderUuid})
+    </insert>
+    <!-- member_id로 ConHotelCart List 를 조회하는 쿼리 -->
+    <select id="getConHotelCartAllByMemberId" resultMap="ConHotelCartMap" parameterType="String">
+        SELECT
+            con_hotel_cart.uuid, con_hotel_cart.created_at,
+            member.*,
+            con_hotel.*,
+            con_iata_code.*,
+            con_hotel_offer.*,
+            payment.*
+        FROM
+            con_hotel_cart
+                LEFT JOIN member ON con_hotel_cart.member_id = member.id
+                LEFT JOIN con_hotel ON con_hotel_cart.hotel_uuid = con_hotel.uuid
+                LEFT JOIN con_iata_code ON con_hotel_cart.iata_code = con_iata_code.iata_code
+                LEFT JOIN con_hotel_offer ON con_hotel_cart.offer_uuid = con_hotel_offer.uuid
+                LEFT JOIN payment ON con_hotel_cart.order_uuid = payment.order_uuid
+        WHERE
+            con_hotel_cart.member_id = #{memberId}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Result Map 설정 -->
+    <resultMap id="ConHotelCartMap" type="ConHotelCartAll">
+        <id property="uuid" column="uuid" />
+        <result property="createdAt" column="created_at"/>
+        <association property="memberObj" javaType="Member">
+            <id property="id" column="member_id" />
+            <result property="pw" column="pw" />
+            <result property="role" column="role" />
+            <result property="name" column="name" />
+            <result property="phone" column="phone" />
+            <result property="vip" column="vip" />
+            <result property="total" column="total" />
+            <result property="imgKey" column="img_key" />
+            <result property="createdAt" column="created_at" />
+        </association>
+
+        <association property="hotelObj" javaType="ConHotel">
+            <id property="uuid" column="hotel_uuid" />
+            <result property="iataFk" column="iata_fk" />
+            <result property="hotelAdId" column="hotel_ad_id" />
+            <result property="hotelName" column="hotel_name" />
+            <result property="sampleImage" column="sample_image" />
+            <result property="latitude" column="latitude" />
+            <result property="longitude" column="longitude" />
+            <result property="createdAt" column="hotel_created_at" />
+        </association>
+
+        <association property="iataCodeObj" javaType="ConIataCode">
+            <id property="iataCode" column="iata_code" />
+            <result property="city" column="city" />
+            <result property="cityKo" column="city_ko" />
+            <result property="country" column="country" />
+            <result property="countryKo" column="country_ko" />
+            <result property="exist" column="exist" />
+        </association>
+
+        <association property="offerObj" javaType="ConHotelOffer">
+            <id property="uuid" column="offer_uuid" />
+            <result property="searchNum" column="search_num" />
+            <result property="hotelAdId" column="offer_hotel_ad_id" />
+            <result property="offerId" column="offer_id" />
+            <result property="hotelType" column="hotel_type" />
+            <result property="available" column="available" />
+            <result property="checkIn" column="check_in" />
+            <result property="checkOut" column="check_out" />
+            <result property="category" column="category" />
+            <result property="bedCnt" column="bed_cnt" />
+            <result property="bedCategory" column="bed_category" />
+            <result property="roomComment" column="room_comment" />
+            <result property="adultCnt" column="adult_cnt" />
+            <result property="currency" column="currency" />
+            <result property="totalCost" column="total_cost" />
+            <result property="perNightCost" column="per_night_cost" />
+        </association>
+
+        <association property="paymentObj" javaType="ConPayment">
+            <result property="memberId" column="payment_member_id" />
+            <result property="orderUuid" column="order_uuid" />
+            <result property="airKey" column="air_key" />
+            <result property="hotelIdKey" column="hotel_id_key" />
+            <result property="hotelContKey" column="hotel_cont_key" />
+            <result property="crImgKey" column="cr_img_key" />
+            <result property="callFirstName" column="call_first_name" />
+            <result property="callLastName" column="call_last_name" />
+            <result property="callCountry" column="call_country" />
+            <result property="callNumber" column="call_number" />
+            <result property="callEmail" column="call_email" />
+            <result property="rideFirstName" column="ride_first_name" />
+            <result property="rideLastName" column="ride_last_name" />
+            <result property="rideBirth" column="ride_birth" />
+            <result property="rideCountry" column="ride_country" />
+            <result property="ridePassport" column="ride_passport" />
+            <result property="ridePassportCountry" column="ride_passport_country" />
+            <result property="ridePassportExdate" column="ride_passport_exdate" />
+            <result property="guestFirstName" column="guest_first_name" />
+            <result property="guestLastName" column="guest_last_name" />
+            <result property="guestCountry" column="guest_country" />
+            <result property="orderTime" column="order_time" />
+            <result property="status" column="status" />
+            <result property="paymentKey" column="payment_key" />
+            <result property="rideFirstNameStr" column="ride_first_name_str" />
+            <result property="rideLastNameStr" column="ride_last_name_str" />
+            <result property="rideBirthStr" column="ride_birth_str" />
+            <result property="rideCountryStr" column="ride_country_str" />
+            <result property="ridePassportStr" column="ride_passport_str" />
+            <result property="ridePassportCountryStr" column="ride_passport_country_str" />
+            <result property="ridePassportExdateStr" column="ride_passport_exdate_str" />
+        </association>
+    </resultMap>
+</mapper>
