@@ -48,7 +48,7 @@ public class HotelCrawlingService {
     }
     private void hotelDetailsByUrl(String url, String hotelId) throws Exception {
         Document doc = Jsoup.connect(url).get();
-
+        System.out.println("호텔 크롤링 시작");
         // hotelchars 클래스 내부의 요소들을 선택
         Elements hotelCharsElements = doc.select(".hotelchars");
 
@@ -142,7 +142,7 @@ public class HotelCrawlingService {
         boolean result = false;
         // 이미 크롤링 한 호텔이면 return ( 모든 정보가 잘 들어가 있는 경우)
         if(hotelCrawledMapper.existsHotelInAllTables(hotelId)){
-            //System.out.println("이미 크롤링 한 호텔");
+            System.out.println("이미 크롤링 한 호텔");
             return true;
         }
         try {
@@ -174,17 +174,21 @@ public class HotelCrawlingService {
             url.append("?ss=").append(URLEncoder.encode(ss, StandardCharsets.UTF_8));
             url.append("&dest_id=").append(URLEncoder.encode(dest_id, StandardCharsets.UTF_8));
             url.append(otherParams);
-
+            System.out.println(url);
             String[] hotelStrArr = hotelName.toUpperCase().split(" ");
 
             Document doc = Jsoup.connect(url.toString()).get();
+            System.out.println(doc.html());
             Elements hotelElements = doc.select(".fa298e29e2.b74446e476.e40c0c68b1.ea1d0cfcb7.d8991ab7ae.e8b7755ec7.ad0e783e41");
             String crawlingHotelName = null;
             String crawlingHotelInfoLink = null;
+            System.out.println(hotelElements.text());
             int maxNum = hotelStrArr.length/2 + 1;
             for (Element hotelElement : hotelElements) {
                 Elements names = hotelElement.select(".fa4a3a8221.b121bc708f");
                 Elements links = hotelElement.select(".eba3d3a8df");
+                System.out.println("name : " + names.first().text());
+                System.out.println("links : " + links.first().text());
 
                 if (!names.isEmpty() && !links.isEmpty()) {
                     String hotelNameText = (names.first() != null) ? names.first().text() : null;
@@ -208,10 +212,10 @@ public class HotelCrawlingService {
                 }
             }
             if(maxNum == 0){
-                //System.out.println("크롤링 일치하는 결과 없음 ....");
+                System.out.println("크롤링 일치하는 결과 없음 ......");
             }else{
                 if(crawlingHotelName == null || crawlingHotelInfoLink == null){
-                    //System.out.println("크롤링 일치하는 결과 없음 ....");
+                    System.out.println("크롤링 일치하는 결과 없음 ....");
                 }else{
                     crawlingHotelInfoLink = crawlingHotelInfoLink.replaceAll(".html", ".ko.html");
                     // 이때만 결과가 있음
@@ -223,7 +227,7 @@ public class HotelCrawlingService {
             }
 
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             // 뭔가 오류가 나도 없는거로 처리
             //System.out.println("크롤링 일치하는 결과 없음 ....");
         }

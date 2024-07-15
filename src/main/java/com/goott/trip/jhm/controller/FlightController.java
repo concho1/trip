@@ -101,6 +101,9 @@ public class FlightController {
             ffv.setApiSegments(this.service.findSegmentForView(iCode));
             ffv.setApiDurations(this.service.findDurationForView(iCode));
             ffvList.add(ffv);
+            for(int j=0; j<ffv.getApiDurations().size(); j++) {
+                System.out.println("img : "+ffv.getApiDurations().get(j).getAirlineImg());
+            }
             ffvCount ++;
         }
 

@@ -16,7 +16,8 @@ public class Member {
     private Role role;
     private String name;
     private String phone;
-    private String rank;
+    private String vip;
+    private double total;
     private String imgKey;
     private Timestamp createdAt;
 

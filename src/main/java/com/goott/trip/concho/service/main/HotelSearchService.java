@@ -7,7 +7,7 @@ import com.goott.trip.concho.mapper.HotelMapper;
 import com.goott.trip.concho.model.ConchoHotel;
 import com.goott.trip.concho.model.ConchoHotelOffer;
 import com.goott.trip.concho.model.HotelSearch;
-import com.goott.trip.concho.service.module.AmadeusApiModuleService;
+import com.goott.trip.concho.service.component.AmadeusApiComponent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,16 +16,15 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class HotelSearchService {
     private final HotelMapper hotelMapper;
-    private final AmadeusApiModuleService amadeusApiModuleService;
+    private final AmadeusApiComponent amadeusApiModuleService;
     private final HotelCrawlingService crawlingModuleService;
 
-    public boolean checkAndUpdateUsage(String usageCate, int usageLimit){
+    public boolean checkAndUpdateUsage(String usageCate, int usageLimit) {
         // key 사용량 확인 후 갱신
         boolean result = false;
         Integer usageCnt = hotelMapper.getUsageCntByCate(usageCate);
@@ -33,7 +32,7 @@ public class HotelSearchService {
             hotelMapper.insertHotelApiUsageByCate(usageCate, usageLimit);
         }else{
             // 사용량 초과됬으면
-            if((hotelMapper.getUsageLimitByCate(usageCate)-100) <= usageCnt){
+            if((hotelMapper.getUsageLimitByCate(usageCate)-100) <= usageCnt) {
                 System.out.println("api "+usageCate+" 사용량 초과");
             }else{
                 // 아니면 + 1

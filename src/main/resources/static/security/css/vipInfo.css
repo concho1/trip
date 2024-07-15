@@ -1,15 +1,5 @@
-/* VIP 섹션의 컨테이너 스타일 */
-.explain-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* VIP 배지 스타일 */
+/*
+!* VIP 배지 스타일 *!
 .explain-badge {
     display: inline-block;
     padding: 10px 20px;
@@ -19,6 +9,7 @@
     font-weight: bold;
     border-radius: 4px;
 }
+*/
 
 /* VIP 등급 스타일 */
 .explain-tier {
@@ -73,7 +64,7 @@
 
 .explain-gold {
     width: 50%;
-    background-color: #ecc43a;;
+    background-color: #ecc43a;
 }
 
 .explain-platinum {
@@ -100,19 +91,3 @@
     left: 0;
     color: #ffcc00;
 }
-
-/* 버튼 스타일 */
-.explain-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-
-/*
-.vip-button:hover {
-    background-color: #0056b3;
-}*/

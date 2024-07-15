@@ -1,5 +1,7 @@
 package com.goott.trip.concho.service.main;
 
+import com.goott.trip.common.model.Image;
+import com.goott.trip.common.service.ImageService;
 import com.goott.trip.concho.mapper.IataCodeMapper;
 import com.goott.trip.concho.model.ConchoHotel;
 import com.goott.trip.concho.model.IataCode;
@@ -21,8 +23,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class IataCodeService {
     private final IataCodeMapper iataCodeMapper;
+    private final ImageService imageService;
 
     public List<IataCode> findIataCodeBySearchStr(String searchStr){
+
         return iataCodeMapper.findIataCodeBySearchStr(searchStr);
     }
 
@@ -97,8 +101,9 @@ public class IataCodeService {
                     String airplane = data[5].trim();
                     String destination = data[6].trim();
                     String airlineAlliance = data[7].trim();
-                    String logo = data[8].trim();
-
+                    String logo = "https:"+data[8].trim();
+                    Optional<Image> imageOp = imageService.insertImageUrl(logo);
+                    logo = imageOp.get().getImgKey();
                     System.out.println(airplaneName);
                     iataCodeMapper.insertAirplaneInfo(country, airplaneName, iataCode, icaoCode, hubAirport,
                             airplane, destination, airlineAlliance, logo);

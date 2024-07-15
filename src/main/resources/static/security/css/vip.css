@@ -7,7 +7,6 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    /*text-align: center;*/
 }
 
 /* VIP 배지 스타일 */
@@ -130,7 +129,7 @@
 .vip-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #5a6783;
     color: #fff;
     text-decoration: none;
     border-radius: 4px;
@@ -138,5 +137,5 @@
 }
 
 .vip-button:hover {
-    background-color: #0056b3;
+    background-color: #454e63;
 }

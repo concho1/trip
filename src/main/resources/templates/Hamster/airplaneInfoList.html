@@ -19,9 +19,9 @@
                     <div class="myedu-cont-wrap" th:each="cont : ${list}">
                         <div class="myedu-area">
                             <div class="myedu-cont">
-                                <img th:src="'https:'+${cont.getLogo()}"  alt="이미지" width="150px;" height="150px;">
+                                <img th:src="${cont.getLogo()}"  alt="이미지" width="150px;" height="150px;">
                                 <div class="text-area">
-                                    <span>국가 <img th:src="'https:'+${cont.getCountry()}"  alt="이미지" width="60px;" height="40px;"></span>
+                                    <span>국가 <img th:src="${cont.getCountry()}"  alt="이미지" width="60px;" height="40px;"></span>
                                     <div class="title" th:text="${cont.getAirplaneName()}"></div>
                                 </div>
                             </div>

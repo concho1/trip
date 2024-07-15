@@ -10,14 +10,10 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -45,7 +41,7 @@ public class UserRestController {
     public ModelAndView getSignInPage(){
         ModelAndView modelAndView = new ModelAndView("security/user/user_signIn_page");
 
-        String baseImgKey = "trip/f0fcf1b5-42c6-4a49-a9d1-7dadf703c35a";
+        String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
         Optional<Image> imageOp = imageService.findImageByKey(baseImgKey);
 
         if(imageOp.isPresent()){
@@ -59,7 +55,7 @@ public class UserRestController {
 
         Optional<Image> imageOp = imageService.insertFile(file);
         if (imageOp.isEmpty()) {
-            String baseImgKey = "trip/f0fcf1b5-42c6-4a49-a9d1-7dadf703c35a";
+            String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
             member.setImgKey(baseImgKey);
         } else {
             member.setImgKey(imageOp.get().getImgKey());

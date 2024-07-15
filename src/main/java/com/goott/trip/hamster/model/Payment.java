@@ -1,12 +1,11 @@
 package com.goott.trip.hamster.model;
 
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
+@NoArgsConstructor
 @Data
 public class Payment {
 
@@ -24,6 +23,8 @@ public class Payment {
     private String callNumber;
     private String callEmail;
 
+
+
     private String[] rideFirstName;
     private String[] rideLastName;
     private String[] rideBirth;
@@ -38,54 +39,25 @@ public class Payment {
 
     private Timestamp orderTime;
 
-    public Payment() {
-    }
+    private String status;
+    private String paymentKey;
 
+    private String rideFirstNameStr;
+    private String rideLastNameStr;
+    private String rideBirthStr;
+    private String rideCountryStr;
+    private String ridePassportStr;
+    private String ridePassportCountryStr;
+    private String ridePassportExdateStr;
 
-    @JsonCreator
-    public Payment(@JsonProperty("memberId") String memberId,
-                   @JsonProperty("orderUuid") String orderUuid,
-                   @JsonProperty("airKey") String airKey,
-                   @JsonProperty("hotelIdKey") String hotelIdKey,
-                   @JsonProperty("hotelContKey") String hotelContKey,
-                   @JsonProperty("crImgKey") String crImgKey,
-                   @JsonProperty("callFirstName") String callFirstName,
-                   @JsonProperty("callLastName") String callLastName,
-                   @JsonProperty("callCountry") String callCountry,
-                   @JsonProperty("callNumber") String callNumber,
-                   @JsonProperty("callEmail") String callEmail,
-                   @JsonProperty("rideFirstName") String[] rideFirstName,
-                   @JsonProperty("rideLastName") String[] rideLastName,
-                   @JsonProperty("rideBirth") String[] rideBirth,
-                   @JsonProperty("rideCountry") String[] rideCountry,
-                   @JsonProperty("ridePassport") String[] ridePassport,
-                   @JsonProperty("ridePassportCountry") String[] ridePassportCountry,
-                   @JsonProperty("ridePassportExdate") String[] ridePassportExdate,
-                   @JsonProperty("guestFirstName") String guestFirstName,
-                   @JsonProperty("guestLastName") String guestLastName,
-                   @JsonProperty("guestCountry") String guestCountry,
-                   @JsonProperty("orderTime") Timestamp orderTime) {
-        this.memberId = memberId;
-        this.orderUuid = orderUuid;
-        this.airKey = airKey;
-        this.hotelIdKey = hotelIdKey;
-        this.hotelContKey = hotelContKey;
-        this.crImgKey = crImgKey;
-        this.callFirstName = callFirstName;
-        this.callLastName = callLastName;
-        this.callCountry = callCountry;
-        this.callNumber = callNumber;
-        this.callEmail = callEmail;
-        this.rideFirstName = rideFirstName;
-        this.rideLastName = rideLastName;
-        this.rideBirth = rideBirth;
-        this.rideCountry = rideCountry;
-        this.ridePassport = ridePassport;
-        this.ridePassportCountry = ridePassportCountry;
-        this.ridePassportExdate = ridePassportExdate;
-        this.guestFirstName = guestFirstName;
-        this.guestLastName = guestLastName;
-        this.guestCountry = guestCountry;
-        this.orderTime = orderTime;
+    public void AllArrayToStr(){
+        rideFirstNameStr = String.join(",",this.rideFirstName);
+        rideLastNameStr = String.join(",",this.rideLastName);
+        rideBirthStr = String.join(",",this.rideBirth);
+        rideCountryStr = String.join(",",this.rideCountry);
+        ridePassportStr = String.join(",",this.ridePassport);
+        ridePassportCountryStr = String.join(",",this.ridePassportCountry);
+        ridePassportExdateStr = String.join(",",this.ridePassportExdate);
+
     }
 }
