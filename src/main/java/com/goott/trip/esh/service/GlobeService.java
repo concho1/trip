@@ -1,7 +1,6 @@
 package com.goott.trip.esh.service;
 
 import com.goott.trip.concho.service.component.AmadeusApiComponent;
-import com.goott.trip.concho.service.main.HotelSearchService;
 import com.goott.trip.esh.mapper.GlobeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +10,6 @@ public class GlobeService {
 
     @Autowired
     private GlobeMapper mapper;
-    @Autowired
-    HotelSearchService hotelSearchService;
     @Autowired
     private AmadeusApiComponent amadeusApiModuleService;
     /*
