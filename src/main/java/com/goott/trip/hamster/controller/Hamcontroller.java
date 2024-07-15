@@ -147,7 +147,6 @@ public class Hamcontroller {
 
     @GetMapping("airplane/shoppingCart")
     public ModelAndView airShoppingCart(@RequestParam("key")String key, Principal principal, Model model){
-
         Alarm alarm = new Alarm(model);
         String memberId = principal.getName();
         List<ShoppingCart> dbVal = this.shoppingCartService.checkDup(memberId);
@@ -251,6 +250,4 @@ public class Hamcontroller {
 
     @GetMapping("/shoppingCart")
     public ModelAndView shoppingCart() {return new ModelAndView("Hamster/shoppingCart");}
-
-
 }

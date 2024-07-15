@@ -1,4 +1,4 @@
-package com.goott.trip.concho.service.main;
+package com.goott.trip.concho.service.con_main;
 
 import com.goott.trip.concho.mapper.ConHotelMapper;
 import com.goott.trip.concho.model.hotel.ConHotel;

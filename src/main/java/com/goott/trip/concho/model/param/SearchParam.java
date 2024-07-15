@@ -9,8 +9,11 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SearchParam {
+    private String hotelUuid;
+    private String hotelAdId;
     private String iataCode;
-    private Date startDate;
-    private Date endDate;
+    private Date checkIn;
+    private Date checkOut;
     private Integer personCnt;
+    private String memberId;
 }

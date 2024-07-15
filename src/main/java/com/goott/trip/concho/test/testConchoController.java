@@ -1,4 +1,4 @@
-package com.goott.trip.concho.controller;
+package com.goott.trip.concho.test;
 
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.Hotel;
@@ -30,13 +30,14 @@ public class testConchoController {
     public ModelAndView test() {
         ModelAndView mv = new ModelAndView("concho/user/test");
         var baseImgList = new ArrayList<String>();
+        /*
         // WebDriverManager를 사용하여 최신 ChromeDriver 설정
         WebDriverManager.chromedriver().driverVersion("126.0.6478.127").setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless"); // 브라우저 창을 표시하지 않음
         WebDriver driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
+        */
         try {
             Hotel[] hotels = amadeusApiModuleService.getHotelListByIataCode("ICN");
             String baseUrl = "https://www.google.com/search?q=";
@@ -54,12 +55,13 @@ public class testConchoController {
                     String url = baseUrl + hotel.getName() + query;
 
                     // Selenium으로 페이지 로드
-                    driver.get(url);
+                    //driver.get(url);
                     Thread.sleep(500); // 페이지가 로드될 시간을 기다립니다.
 
                     System.out.println(url);
 
                     // Extract image URLs with class 'YQ4gaf'
+                    /*
                     List<WebElement> imageElements = driver.findElements(By.className("YQ4gaf"));
                     int imgCnt = 0;
                     for (WebElement imgElement : imageElements.subList(imageElements.size() < 5 ? 0 : 5,imageElements.size())) {
@@ -71,9 +73,10 @@ public class testConchoController {
                             if(imgCnt >= 15) break;
                         }
                     }
+                    */
                     System.out.println("호텔 객실 제안 목록================");
                     for (HotelOfferSearch hotelOfferSearch : hotelOfferSearches) {
-                        // System.out.println(hotelOfferSearchToString(hotelOfferSearch));
+                        System.out.println(hotelOfferSearchToString(hotelOfferSearch));
                     }
                     System.out.println("호텔 평가================");
                     System.out.println(hotelSentimentToString(hotelSentiment));
@@ -89,7 +92,7 @@ public class testConchoController {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            driver.quit(); // 드라이버 종료
+            //driver.quit(); // 드라이버 종료
         }
         mv.addObject("baseImgList",baseImgList);
         return mv;
