@@ -2,6 +2,7 @@ package com.goott.trip.jhm.service;
 
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
+import com.goott.trip.common.service.ImageService;
 import com.goott.trip.hamster.model.ShoppingCart;
 import com.goott.trip.jhm.mapper.FlightMapper;
 
@@ -21,6 +22,9 @@ public class FlightService {
 
     @Autowired
     private FlightModuleService module;
+
+    @Autowired
+    private ImageService img;
 
     @Autowired
     private FlightMapper mapper;
@@ -99,8 +103,11 @@ public class FlightService {
                 ddto.setAirline(airIATA);
                 ddto.setAirlineKor(this.mapper.findAirlineKor(airIATA));
                 String logo = this.mapper.findImgByIata(airIATA);
-                System.out.println("logo : "+logo);
-                ddto.setAirlineImg(logo);
+                String imgKey = null;
+                if(logo != null){
+                    imgKey = this.img.findImageByKey(logo).get().getUrl();
+                }
+                ddto.setAirlineImg(imgKey);
                 this.insertAPIDuration(ddto);
                 durCount ++;
 

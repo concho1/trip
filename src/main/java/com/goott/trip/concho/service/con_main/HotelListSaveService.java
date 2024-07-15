@@ -1,4 +1,4 @@
-package com.goott.trip.concho.service.main;
+package com.goott.trip.concho.service.con_main;
 
 import com.amadeus.resources.Hotel;
 import com.goott.trip.concho.mapper.ConHotelMapper;
@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
-public class SaveHotelListService {
+public class HotelListSaveService {
     private final AmadeusApiComponent amadeusApiComponent;
     private final GoogleCrawlingComponent googleCrawlingComponent;
     private final ConHotelMapper conHotelMapper;
@@ -32,8 +32,8 @@ public class SaveHotelListService {
         HotelResult result = new HotelResult(ConState.OK);
         try{
             Hotel[] hotels = amadeusApiComponent.getHotelListByIataCode(iataCode);
-            // 여기서 api 사용량 업데이트
-            conHotelMapper.updateOrSaveApiUsage(ApiCategory.HOTEL_LIST_IATA.toString());
+            // 여기서 api 사용량 업데이트 => 아마데우스 컨포넌트로 바뀜
+            //conHotelMapper.updateOrSaveApiUsage(ApiCategory.HOTEL_LIST_IATA.toString());
 
             if(hotels.length == 0){
                 result.setConState(ConState.NOT_FOUND);

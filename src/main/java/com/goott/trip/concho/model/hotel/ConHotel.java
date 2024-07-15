@@ -20,7 +20,7 @@ public class ConHotel {
   private double longitude;
   private java.sql.Timestamp createdAt;
 
-  public ConHotel(Hotel adHotel, String iataFk){
+  public ConHotel(Hotel adHotel, String iataFk) {
     this.uuid = UUID.randomUUID().toString();
     this.iataFk = iataFk;
     this.hotelAdId = adHotel.getHotelId();

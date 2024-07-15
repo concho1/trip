@@ -25,7 +25,7 @@ import java.util.stream.IntStream;
 @RequestMapping("customer")
 public class QNAController {
 
-    private final int rowsize =5;
+    private final int rowsize =6;
 
     private int totalRecord = 0;
 

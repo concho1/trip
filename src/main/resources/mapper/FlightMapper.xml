@@ -114,7 +114,7 @@
     </select>
 
     <select id="findImgByIata" parameterType="String" resultType="String">
-        select url from trip.image where img_key = (select logo from trip.airplaneInfo where iata_code like concat('%', #{str}, '%') limit 1)
+        select logo from trip.airplaneInfo where iata_code like concat('%', #{str}, '%') limit 1
     </select>
 
     <insert id="insertShoppingCart" parameterType="ShoppingCart">

@@ -13,14 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class EshMainRestController {
     private final ExchangeService exchangeService;
 
-    @GetMapping("/doConvert")
+    @GetMapping("/do-convert")
     public String convertCurrency(@RequestParam("fromCurrency") String fromCurrency,
                                   @RequestParam("toCurrency") String toCurrency,
                                   @RequestParam("amount") double amount) {
         double convertedAmount = exchangeService.convertCurrency(fromCurrency, toCurrency, amount);
         return String.valueOf(convertedAmount); // 결과를 문자열로 반환
     }
-
-
-
 }
