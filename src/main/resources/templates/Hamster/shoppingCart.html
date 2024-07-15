@@ -52,8 +52,7 @@
                                     <legend class="legend" th:text="${segDep.get(iterStat.index).getAirlineKor()}"></legend>
                                     <legend class="legend hotelKey" th:id="'airKey_'+${iterStat.index}"
                                             th:value="${airInfo.getOrigin()}" th:text="${segDep.get(iterStat.index).getDepartureIata()}+ ' -> ' +${segDep.get(iterStat.index).getArrivalIata()}"></legend>
-                                    <!--<legend class="legend" th:text="${segDep.get(iterStat.index).getDepartureAt().substring(0,10)} +' ~ '+${segComb.get(iterStat.index).getArrivalAt().substring(6,10)}"></legend>-->
-                                    <legend class="legend" th:text="${segDep.get(iterStat.index).getDepartureAt()} +' ~ '+${segComb.get(iterStat.index).getArrivalAt()}"></legend>
+                                    <legend class="legend" th:text="${segDep.get(iterStat.index).getDepartureAt().substring(0,10)} +' ~ '+${segComb.get(iterStat.index).getArrivalAt().substring(6,10)}"></legend>
                                     <legend class="legend" th:text="${#numbers.formatInteger(airInfo.getTotalPrice(), 3, 'COMMA') + '원'}"></legend>
                                 </div>
                             </div>
@@ -75,8 +74,7 @@
                                         <legend class="legend" th:text="${segDep.get(0).getAirlineKor()}"></legend>
                                         <legend class="legend hotelKey" th:id="'hotelKey_'+${iterStat.index}"
                                                 th:value="${airInfo.getOrigin()}" th:text="${segDep.get(0).getDepartureIata()}+ ' -> ' +${segDep.get(0).getArrivalIata()}"></legend>
-                                        <!--<legend class="legend" th:text="${segDep.get(0).getDepartureAt().substring(0,10)} +' ~ '+${segComb.get(0).getArrivalAt().substring(6,10)}"></legend>-->
-                                        <legend class="legend" th:text="${segDep.get(0).getDepartureAt()} +' ~ '+${segComb.get(0).getArrivalAt()}"></legend>
+                                        <legend class="legend" th:text="${segDep.get(0).getDepartureAt().substring(0,10)} +' ~ '+${segComb.get(0).getArrivalAt().substring(6,10)}"></legend>
                                     </div>
                                 </div>
                                 <div class="contents-checkset d-flex justify-content-start">
