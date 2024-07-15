@@ -29,7 +29,7 @@ public interface FlightMapper {
     public List<Airport> findAirportByKor(String kor);
     public String findAirlineKor(String str);
     public String findIcaoByIata(String str);
-    public String findImgByIcao(String str);
+    public String findImgByIata(String str);
     public void insertShoppingCart(ShoppingCart cart);
     public void insertCartPricing(CartPricing cp);
     public void insertCartSegment(CartSegment cs);

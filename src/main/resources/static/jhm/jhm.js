@@ -11,6 +11,11 @@ function insertFaq() {
     $('#faqModal').show();
 }
 
+function answerModal() {
+    $('#answer_cont').val('');
+    $('#qnaModal').show();
+}
+
 $(document).ready(function() {
     const orgModal = $("#originModal");
     const desModal = $("#desModal");
@@ -28,9 +33,17 @@ $(document).ready(function() {
         $('#faqModal').hide();
     })
 
+    $('#qnaClose').click(function() {
+        $('#qnaModal').hide();
+    })
+
     $(window).on('click', function(event) {
         if ($(event.target).is('#faqModal')) {
             $('#faqModal').hide();
+        }
+
+        if ($(event.target).is('#qnaModal')) {
+            $('#qnaModal').hide();
         }
     })
 

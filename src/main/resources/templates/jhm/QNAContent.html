@@ -1,0 +1,109 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
+<body>
+<div th:replace="~{common/head :: head-fragment}"></div>
+
+<main class="th-layout-main ">
+
+    <div class="background">
+        <div class="qna-insert-list">
+            <div class="title-wrap">
+                <h3 class="cont-title" th:text="${QNA.title}"></h3>
+            </div>
+
+            <div>
+                <div>
+                    <label for="qna-cont-title" class="qna-cont-label">제목 : </label>
+                    <span th:text="${QNA.title}" id="qna-cont-title"></span>
+                </div>
+
+                <div>
+                    <label for="qna-cont-id" class="qna-cont-label">작성자 ID : </label>
+                    <span id="qna-cont-id">
+                        <span th:if="${QNA.status != 2}" th:text="${QNA.memberId}"></span>
+                        <span th:if="${QNA.status == 2}">운영자</span>
+                    </span>
+                </div>
+
+                <div>
+                    <label for="qna-cont-status" class="qna-cont-label">상태 : </label>
+                    <span id="qna-cont-status">
+                        <span th:if="${QNA.status == 0}" class="waitAnswer">답변대기</span>
+                        <span th:if="${QNA.status == 1}" class="finAnswer">답변완료</span>
+                        <span th:if="${QNA.status == 2}">답변</span>
+                    </span>
+                </div>
+
+                <div>
+                    <label for="qna-cont-createdAt" class="qna-cont-label">등록일 : </label>
+                    <span th:text="${QNA.createdAt.toString().substring(0, 10)}" id="qna-cont-createdAt"></span>
+                </div>
+
+                <div th:if="${QNA.updatedAt != null}">
+                    <label for="qna-cont-updatedAt" class="qna-cont-label">수정일 : </label>
+                    <span th:text="${QNA.updatedAt.toString().substring(0, 10)}" id="qna-cont-updatedAt"></span>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <label for="qna-cont-cont" class="qna-cont-label">내용</label>
+                <textarea id="qna-cont-cont" class="qna-ta" rows="7" cols="10" readonly th:text="${QNA.cont}"></textarea>
+            </div>
+
+            <div th:if="${QNA.status == 1}">
+                <hr>
+                <div>
+                    <label for="qna-cont-answer" class="qna-cont-label">답변</label>
+                    <textarea id="qna-cont-answer" class="qna-ta" rows="7" cols="10" readonly th:text="${answer}"></textarea>
+                </div>
+            </div>
+
+            <div class="button-wrapper" th:if="${QNA.status != 2}">
+                <button type="button" class="qna-button" th:onclick="|location.href='qna?page=${page}'|">목록으로</button>
+                <button type="button" class="qna-button" th:if="${QNA.memberId == id && QNA.status != 1}" th:onclick="|location.href='qna_modify?no=${QNA.num}&page=${page}'|">수정하기</button>
+                <button type="button" class="qna-button" th:onclick="|if(confirm('정말로 삭제하시겠습니까?')) {
+                                                                            location.href='qna_delete?no=${QNA.num}&page=${page}'
+                                                                        }else {return; }|">삭제하기</button>
+                <button type="button" class="qna-button" th:if="${role.equals('ADMIN') && QNA.status != 1}" onclick="answerModal()">답변하기</button>
+            </div>
+
+            <div class="button-wrapper" th:if="${QNA.status == 2}">
+                <button type="button" class="qna-button" th:onclick="|location.href='qna?page=${page}'|">목록으로</button>
+                <button type="button" class="qna-button" th:if="${role.equals('ADMIN')}" th:onclick="|location.href='qna_modify?no=${QNA.num}&page=${page}'|">수정하기</button>
+                <button type="button" class="qna-button" th:if="${role.equals('ADMIN')}" th:onclick="|if(confirm('정말로 삭제하시겠습니까?')) {
+                                                                            location.href='qna_delete?no=${QNA.num}&page=${page}'
+                                                                        }else {return; }|">삭제하기</button>
+            </div>
+
+            <div id="qnaModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="qnaClose">&times;</span>
+                    <form method="post" action="qna_answer">
+                        <input type="hidden" name="memberId" th:value="${QNA.memberId}">
+                        <input type="hidden" name="qnaGroup" th:value="${QNA.num}">
+                        <input type="hidden" name="page" th:value="${page}">
+                        <span>답변 입력</span>
+                        <hr>
+                        <div id="faqModalBody">
+                            <label for="answer_cont">답변</label> <br>
+                            <textarea id="answer_cont" name="cont" rows="6"></textarea>
+                        </div>
+                        <button type="submit" class="button-style">답변</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<script th:src="@{/jhm/jhm.js}"></script>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+</body>

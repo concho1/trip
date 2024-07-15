@@ -1,66 +1,178 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head>
-    <title>Map Display</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5karXGpFD8tez3DjhrO5Y1np5TONtJl0"></script>
-    <script th:inline="javascript">
-        function initMap() {
-            const map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 9,
-                center: {lat: -34.397, lng: 150.644}  // 기본 위치
-            });
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5karXGpFD8tez3DjhrO5Y1np5TONtJl0"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<head th:replace="~{common/head-top :: head-top-fragment}">
+    <title>trip-감자</title>
+</head>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
 
-            let hotels = /*[[${hotels}]]*/ '[]';
-            //인포윈도우
-            let infowindow = new google.maps.InfoWindow();
-            let marker;
-            hotels.forEach(function (hotel, index) {
-                // 첫 번째 호텔의 위치로 마커를 표시
-                if (hotels.length > 0) {
-                    marker = new google.maps.Marker({
-                        position: {lat: hotel.latitude, lng: hotel.longitude},
-                        map: map,
-                        title: hotel.name
-                    });
-                    if(index === 0) {
-                        // 지도의 중심을 첫 번째 호텔 위치로 이동
-                        map.setCenter({lat: hotel.latitude, lng: hotel.longitude});
-                    }
+    .main-header {
+        background-color: #007BFF;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+    }
 
-                    google.maps.event.addListener(marker, 'click', (function(marker, index) {
-                        return function() {
-                            //html로 표시될 인포 윈도우의 내용
-                            infowindow.setContent(
-                                hotels[index].name + '<br>' + "<img src='" +`${hotels[index].countryCode}`+"'" +">"
-                            );
+    .main-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+    }
 
-                            //인포윈도우가 표시될 위치
-                            infowindow.open(map, marker);
-                        }
-                    })
-                        (marker, index));
+    #map {
+        height: 500px;
+        width: 80%;
+        margin: 20px 0;
+        border: 2px solid #007BFF;
+        border-radius: 10px;
+    }
 
-                    if (marker) {
-                        marker.addListener('click', function() {
+    .info-window h5 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+    }
 
-                            //중심 위치를 클릭된 마커의 위치로 변경
-                            map.setCenter(this.getPosition());
+    .info-window button {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
 
-                            //마커 클릭 시의 줌 변화
-                            map.setZoom(14);
-                        });
-                    }
-                } else {
-                    console.error("No hotels data available");
+    .info-window button:hover {
+        background-color: #0056b3;
+    }
+
+    .info-window img {
+        width: 100%;
+        height: auto;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+</style>
+<body onload="initMap()">
+<div th:replace="~{common/head :: head-fragment}"></div>
+
+<div class="main-header">꽁꽁 얼어붙은 한강 위로 고양이가 걸어다닙니다.</div>
+
+<main class="main-content">
+    <div id="map"></div>
+</main>
+
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+
+<script th:inline="javascript">
+    function initMap() {
+        const map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 9,
+            center: {lat: 42.3314, lng: -83.0458}  // 기본 위치
+        });
+
+        let hotels = /*[[${hotels}]]*/ '[]';
+        // 인포윈도우
+        let infowindow = new google.maps.InfoWindow(); /* 인포윈도우 사용을 위한 초기화 */
+        let marker; /* 마커 사용을 위한 초기화 */
+        hotels.forEach(function (hotel, index) {
+            // 첫 번째 호텔의 위치로 마커를 표시
+            if (hotels.length > 0) {
+                marker = new google.maps.Marker({
+                    position: {lat: hotel.latitude, lng: hotel.longitude},
+                    map: map,
+                    title: hotel.name
+                });
+                if(index === 0) {
+                    // 지도의 중심을 첫 번째 호텔 위치로 이동
+                    map.setCenter({lat: hotel.latitude, lng: hotel.longitude});
                 }
 
+                google.maps.event.addListener(marker, 'click', (function(marker, index) {
+                    return function() {
+                        /*console.log('??');*/
+                        // html로 표시될 인포 윈도우의 내용
+                        infowindow.setContent(
+                            `<div class="info-window">
+                                    <h5>${hotels[index].hotelName}</h5>
+                                    <button type="button" class="btn-link"
+                                        data-hotel-id-key="${hotels[index].uuid}"
+                                        data-hotel-id="${hotels[index].hotelAdId}"
+                                        data-iata-code="${hotels[index].iataFk}">더 보기</button>
+                                   <img src="${hotels[index].sampleImage}" alt="호텔 이미지">
+                            </div>`
+                        );
 
-            })
-            /*console.log(hotels);*/
-        }
-    </script>
-</head>
-<body onload="initMap()">
-    <div id="map" style="height: 500px; width: 60%;"></div>
+                        // 인포윈도우가 표시될 위치
+                        infowindow.open(map, marker);
+                    }
+                })(marker, index));
+
+                marker.addListener('click', function() {
+                    // 중심 위치를 클릭된 마커의 위치로 변경
+                    map.setCenter(this.getPosition());
+                    // 마커 클릭 시의 줌 변화
+                    map.setZoom(14);
+                });
+
+            } else {
+                console.error("No hotels data available");
+            }
+        });
+        /*console.log(hotels);*/
+    }
+
+    $(document).on('click', '.btn-link', function () {
+        let hotelIdKey = $(this).data('hotel-id-key');
+        let hotelId = $(this).data('hotel-id');
+        let iataCode = $(this).data('iata-code');
+        let startDate = '2024-07-09';
+        let endDate = '2024-07-10';
+        let personCnt = '1';
+        // 동적으로 form 생성
+        let form = $('<form></form>');
+        form.attr("method", "post");
+        form.attr("action", "/user/concho/service/hotel-info");
+        // 호텔 ID를 hidden input으로 추가
+        let hiddenField =
+            $('<input></input>').attr("type", "hidden").attr("name", "hotelIdKey").attr("value", hotelIdKey);
+        let hiddenField1 =
+            $('<input></input>').attr("type", "hidden").attr("name", "hotelId").attr("value", hotelId);
+        let hiddenField2 =
+            $('<input></input>').attr("type", "hidden").attr("name", "iataCode").attr("value", iataCode);
+        let hiddenField3 =
+            $('<input></input>').attr("type", "hidden").attr("name", "startDate").attr("value", startDate);
+        let hiddenField4 =
+            $('<input></input>').attr("type", "hidden").attr("name", "endDate").attr("value", endDate);
+        let hiddenField5 =
+            $('<input></input>').attr("type", "hidden").attr("name", "personCnt").attr("value", personCnt);
+
+        form.append(hiddenField);
+        form.append(hiddenField1);
+        form.append(hiddenField2);
+        form.append(hiddenField3);
+        form.append(hiddenField4);
+        form.append(hiddenField5);
+
+        // form을 body에 추가하고 제출
+        $(document.body).append(form);
+        form.submit();
+    });
+</script>
 </body>
 </html>

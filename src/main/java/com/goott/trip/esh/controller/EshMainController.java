@@ -19,10 +19,8 @@ public class EshMainController {
 
     @Autowired
     private ExchangeService exchangeService;
-    @Autowired
-    private GlobeService globeService;
 
-    @GetMapping("/exchangeRate")
+    @GetMapping("/exchange-rate")
     public String exchangeData(Model model) {
         List<Map<String, Object>> exchangeRates = exchangeService.getExchangeData();
         model.addAttribute("exchangeRates", exchangeRates);

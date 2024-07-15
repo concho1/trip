@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -83,10 +84,10 @@ public class EmailService {
 
         Date currentDate = new Date();
 
-        // 원하는 형식으로 출력하기
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date = dateFormat.format(currentDate);
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        String date = dateFormat.format(currentDate);
 
         String[] rideFirstName = paymentInfo.getRideFirstName();
         String[] rideLastName = paymentInfo.getRideLastName();
@@ -96,157 +97,92 @@ public class EmailService {
         String[] ridePassportCountry = paymentInfo.getRidePassportCountry();
         String[] ridePassportExdate = paymentInfo.getRidePassportExdate();
 
+
         message.addRecipients(Message.RecipientType.TO,email);
         message.setSubject("[tripHamsic]"+email+"고객님 전자 영수증입니다.");
 
+
         String msgg = "";
+
         msgg += "<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;line-height:1.5;color:#444;\">";
         msgg += "<tbody><tr><td align=\"center\">";
-
         msgg += "<div style=\"max-width:600px; margin:0 auto;\">";
         msgg += "<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;margin:0;padding:0;border:1px solid #ddd;\">";
-        msgg += "<tbody><tr><td height=\"38\" style=\"vertical-align:top;text-align:left;\">";
-        msgg += "</td></tr><tr><td style=\"padding:0 30px\">";
+        msgg += "<tbody><tr><td height=\"38\" style=\"vertical-align:top;text-align:left;\"></td></tr>";
+        msgg += "<tr><td style=\"padding:0 30px\">";
         msgg += "<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;margin:0;padding:0;\">";
-        msgg += "<tbody><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\"></td></tr><tr><td height=\"40\"></td></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "<p style=\"margin:0;font-size:23px;line-height:33px;color:#444;font-weight:bold;\">";
-        msgg += "항공권 구매가 완료되었습니다.";
-        msgg += "</p>";
-        msgg += "</td></tr><tr><td height=\"50\"></td></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
+        msgg += "<tbody><tr><td></td></tr>";
+        msgg += "<tr><td height=\"40\"></td></tr><tr><td>";
+        msgg += "<p style=\"margin:0;font-size:23px;line-height:33px;color:#444;font-weight:bold;\">항공권 구매가 완료되었습니다.</p>";
+        msgg += "</td></tr><tr><td height=\"50\"></td></tr><tr><td>";
         msgg += "<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;margin:0;border-top:2px solid #666;border-bottom:1px solid #ddd;text-align:left;\">";
         msgg += "<colgroup><col style=\"width:30%\"><col style=\"width:auto\"></colgroup>";
-        msgg += "<tbody><tr><td colspan=\"2\" height=\"20\">";
-        msgg += "</td></tr><tr><th align=\"left\" colspan=\"1\" rowspan=\"1\" scope=\"row\" height=\"30\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">예약번호</th><td align=\"left\" height=\"30\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\"><span style=\"font-weight:bold;color:#ab7d55;\">"+UUID+"</span></td></tr><tr><th align=\"left\" colspan=\"1\" rowspan=\"1\" scope=\"row\" height=\"30\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">예약일자(GMT)</th><td align=\"left\" height=\"30\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">"+date+"</td></tr><tr><td colspan=\"2\" height=\"20\">";
-        msgg += "</td></tr></tbody></table>";
-        msgg += "</td></tr><tr><td height=\"30\"></td></tr><tr><td align=\"center\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "</td></tr><tr><td height=\"30\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\"></td></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
+        msgg += "<tbody><tr><td colspan=\"2\" height=\"20\"></td></tr>";
+        msgg += "<tr><th align=\"left\" colspan=\"1\" rowspan=\"1\" scope=\"row\" height=\"30\">예약번호</th><td align=\"left\" height=\"30\"><span style=\"font-weight:bold;color:#ab7d55;\">"+UUID+"</span></td></tr>";
+        msgg += "<tr><th align=\"left\" colspan=\"1\" rowspan=\"1\" scope=\"row\" height=\"30\">예약일자(GMT)</th><td align=\"left\" height=\"30\">"+date+"</td></tr>";
+        msgg += "<tr><td colspan=\"2\" height=\"20\"></td></tr></tbody></table>";
+        msgg += "</td></tr><tr><td height=\"30\"></td></tr><tr><td align=\"center\"></td></tr><tr><td height=\"30\"></td></tr><tr><td>";
+        msgg += "</td></tr><tr><td height=\"20\"></td></tr><tr></tr><tr><td>";
+        msgg += "<p style=\"margin:0;font-size:18px;\"><strong>탑승객 정보</strong></p>";
 
-        msgg += "</td></tr><tr><td height=\"20\"></td></tr><tr></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "<p style=\"margin:0;font-size:18px;\">";
-        msgg += "<strong>탑승객 정보</strong>";
-        msgg += "</p>";
+
         msgg += "<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;border-top:2px solid #666;text-align:left;\">";
         msgg += "<colgroup><col style=\"width:35%\"><col style=\"width:auto\"></colgroup>";
-
-        for (int i = 0; i < paymentInfo.getRideLastName().length; i ++) {
-            msgg += "<tbody><tr><td align=\"left\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;vertical-align:middle;padding:25px 15px;border-right:1px solid #ddd;word-break:break-all;\">";
-            msgg += "<p style=\"margin:0;padding:0;color:#555;\">" + price.get(i).getType() + "</p>";
-            msgg += "<p style=\"margin:0;padding:0;color:#555;font-weight:bold;font-size:15px;\">" + rideLastName[i] + " / " + rideFirstName[i] + "</p>";
-            msgg += "</td><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;padding:15px 0 15px 15px;\">";
-            msgg += "<p style=\"margin:0;padding:0;\">항공권 번호</p>";
-            msgg += "<p style=\"margin:0;padding-bottom:5px;color:#d60815;font-weight:bold;font-size:15px;\">" + ridePassport[i] + "</p>";
-            msgg += "</td></tr><tr><td colspan=\"2\" height=\"1\" style=\"background-color:#ddd;\">";
+        for(int i = 0; i < paymentInfo.getRideLastName().length; i++){
+            msgg += "<tbody><tr><td align=\"left\" style=\"padding:25px 15px;border-right:1px solid #ddd;\"><p style=\"margin:0;color:#555;\">"+
+                    price.get(i).getType()+"</p><p style=\"margin:0;font-weight:bold;font-size:15px;color:#555;\">" +
+                    rideLastName[i]+" "+rideFirstName[i]+"</p></td><td style=\"padding:15px 0 15px 15px;\"><p style=\"margin:0;\">" +
+                    ridePassport[i] +"</p><p style=\"margin:0;padding-bottom:5px;font-weight:bold;font-size:15px;color:#d60815;\">9882480107273</p></td></tr>";
+            msgg += "<tr><td colspan=\"2\" height=\"1\" style=\"background-color:#ddd;\"></td></tr></tbody>";
         }
-            msgg += "</td></tr></tbody></table>";
-            msgg += "</td></tr><tr><td height=\"20\"></td></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
+        msgg += "</table></td></tr><tr><td height=\"20\"></td></tr><tr><td>";
 
 
-        msgg += "</td></tr><tr><td height=\"60\"></td></tr><tr><td valign=\"top\" height=\"40\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "<p style=\"margin:0;font-size:18px;\">";
-        msgg += "<strong>예약 여정</strong>";
-        msgg += "</p>";
+        msgg += "<p style=\"margin:0;font-size:18px;\"><strong>예약 여정</strong></p>";
+        msgg += "</td></tr><tr><td height=\"40\"></td></tr><tr><td valign=\"top\" style=\"text-align:left;\">";
+
+
+       for(int i = 0; i < segDep.size(); i ++){
+           msgg += "<p style=\"margin:0;font-size:16px;\">가는편 "+(i+1)+ " 번째 여정</p>";
+           msgg += "</td></tr><tr><td height=\"10\"></td></tr><tr><td>";
+           msgg += "<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;border-top:2px solid #666;text-align:left;\">";
+           msgg += "<colgroup><col style=\"width:35%\"><col style=\"width:auto\"></colgroup>";
+           msgg += "<tbody><tr><td align=\"left\" style=\"padding:15px;border-right:1px solid #ddd;\"><p style=\"margin:0;\">출발</p></td><td style=\"padding:15px;\"><p style=\"margin:0;font-weight:bold;\">" +
+                   segDep.get(i).getDepartureIata()+"</p><p style=\"margin:0;\">"+segDep.get(i).getDepartureAt().substring(0,10)+" "+segDep.get(i).getDepartureAt().substring(11,16)+"</p></td></tr>";
+           msgg += "<tr><td colspan=\"2\" height=\"1\" style=\"background-color:#ddd;\"></td></tr><tr><td align=\"left\" style=\"padding:15px;border-right:1px solid #ddd;\"><p style=\"margin:0;\">도착</p></td><td style=\"padding:15px;\"><p style=\"margin:0;font-weight:bold;\">" +
+                   segDep.get(i).getArrivalIata()+"</p><p style=\"margin:0;\">"+segDep.get(i).getArrivalAt().substring(0,10)+" "+segDep.get(i).getArrivalAt().substring(11,16)+"</p></td></tr>";
+           msgg += "<tr><td colspan=\"2\" height=\"1\" style=\"background-color:#ddd;\"></td></tr></tbody></table>";
+           msgg += "</td></tr><tr><td height=\"30\"></td></tr><tr><td valign=\"top\" style=\"text-align:left;\">";
+       }
+
 
         for(int i = 0; i < segDep.size(); i ++){
-            msgg += "<p style=\"margin:10px 0 0 0;font-size:16px;\">";
-            msgg += "가는편 "+(i+1)+" 번째 여정";
-            msgg += "</p>";
-            msgg += "</td></tr><tr><td height=\"10\">";
-            msgg += "</td></tr><tr></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
+            msgg += "<p style=\"margin:0;font-size:16px;\">오는편 "+(i+1)+ " 번째 여정</p>";
+            msgg += "</td></tr><tr><td height=\"10\"></td></tr><tr><td>";
             msgg += "<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;border-top:2px solid #666;text-align:left;\">";
             msgg += "<colgroup><col style=\"width:35%\"><col style=\"width:auto\"></colgroup>";
-            msgg += "<tbody><tr><td align=\"left\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;vertical-align:middle;padding:25px 15px;border-right:1px solid #ddd;word-break:break-all;\">";
-            msgg += "<p style=\"margin:0;padding:0;\">출발지</p>";
-            msgg += "</td><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;padding:15px 0 15px 15px;\">";
-            msgg += "<p style=\"margin:0;padding:0;\">"+segDep.get(i).getDepartureIata()+"</p>";
-            msgg += "<p style=\"margin:0;padding-bottom:5px;color:#d60815;font-weight:bold;font-size:15px;\">"+
-                    segDep.get(i).getDepartureAt().substring(5,10) +" "+ segDep.get(i).getDepartureAt().substring(11,16)+"</p>";
-            msgg += "</td></tr><tr><td colspan=\"2\" height=\"1\" style=\"background-color:#ddd;\">";
+            msgg += "<tbody><tr><td align=\"left\" style=\"padding:15px;border-right:1px solid #ddd;\"><p style=\"margin:0;\">출발</p></td><td style=\"padding:15px;\"><p style=\"margin:0;font-weight:bold;\">" +
+                    segComb.get(i).getDepartureIata()+"</p><p style=\"margin:0;\">"+segComb.get(i).getDepartureAt().substring(0,10)+" "+segComb.get(i).getDepartureAt().substring(11,16)+"</p></td></tr>";
+            msgg += "<tr><td colspan=\"2\" height=\"1\" style=\"background-color:#ddd;\"></td></tr><tr><td align=\"left\" style=\"padding:15px;border-right:1px solid #ddd;\"><p style=\"margin:0;\">도착</p></td><td style=\"padding:15px;\"><p style=\"margin:0;font-weight:bold;\">" +
+                    segComb.get(i).getArrivalIata()+"</p><p style=\"margin:0;\">"+segComb.get(i).getArrivalAt().substring(0,10)+" "+segComb.get(i).getArrivalAt().substring(11,16)+"</p></td></tr>";
+            msgg += "<tr><td colspan=\"2\" height=\"1\" style=\"background-color:#ddd;\"></td></tr></tbody></table>";
+            msgg += "</td></tr><tr><td height=\"30\"></td></tr><tr><td valign=\"top\" style=\"text-align:left;\">";
         }
 
-        msgg += "</td></tr></tbody></table>";
-        msgg += "</td></tr><tr><td height=\"20\"></td></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
 
-        msgg += "</td></tr><tr><td height=\"60\"></td></tr><tr><td valign=\"top\" height=\"40\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "<p style=\"margin:0;font-size:18px;\">";
-        msgg += "항공편 정보";
-        msgg += "</p>";
-        msgg += "<p style=\"margin:10px 0 0 0;font-size:16px;\">";
-        msgg += "추가 미정";
-        msgg += "</p>";
-        msgg += "</td></tr><tr><td height=\"10\">";
-        msgg += "</td></tr><tr></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;border-top:2px solid #666;text-align:left;\">";
-        msgg += "<colgroup><col style=\"width:35%\"><col style=\"width:auto\"></colgroup>";
-        msgg += "<tbody><tr><td align=\"left\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;vertical-align:middle;padding:25px 15px;border-right:1px solid #ddd;word-break:break-all;\">";
-        msgg += "<p style=\"margin:0;padding:0;color:#555;\">출발일</p>";
-        msgg += "<p style=\"margin:0;padding:0;color:#555;font-weight:bold;font-size:15px;\">2020-01-22 20:20:00</p>";
-        msgg += "</td><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;padding:15px 0 15px 15px;\">";
-        msgg += "<p style=\"margin:0;padding:0;\">도착일</p>";
-        msgg += "<p style=\"margin:0;padding-bottom:5px;color:#d60815;font-weight:bold;font-size:15px;\">2020-01-23 00:00:00</p>";
-        msgg += "</td></tr><tr><td colspan=\"2\" height=\"1\" style=\"background-color:#ddd;\">";
-        msgg += "</td></tr></tbody></table>";
-        msgg += "</td></tr><tr><td height=\"20\"></td></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "</td></tr><tr><td height=\"60\"></td></tr><tr><td valign=\"top\" height=\"40\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "<p style=\"margin:0;font-size:18px;\">";
-        msgg += "결제 정보";
-        msgg += "</p>";
-        msgg += "<p style=\"margin:10px 0 0 0;font-size:16px;\">";
-        msgg += "추가 미정";
-        msgg += "</p>";
-        msgg += "</td></tr><tr><td height=\"10\">";
-        msgg += "</td></tr><tr></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;border-top:2px solid #666;text-align:left;\">";
-        msgg += "<colgroup><col style=\"width:35%\"><col style=\"width:auto\"></colgroup>";
-        msgg += "<tbody><tr><td align=\"left\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;vertical-align:middle;padding:25px 15px;border-right:1px solid #ddd;word-break:break-all;\">";
-        msgg += "<p style=\"margin:0;padding:0;color:#555;\">결제금액</p>";
-        msgg += "<p style=\"margin:0;padding:0;color:#555;font-weight:bold;font-size:15px;\">USD 800.00</p>";
-        msgg += "</td><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;padding:15px 0 15px 15px;\">";
-        msgg += "<p style=\"margin:0;padding:0;\">결제방식</p>";
-        msgg += "<p style=\"margin:0;padding-bottom:5px;color:#d60815;font-weight:bold;font-size:15px;\">신용카드</p>";
-        msgg += "</td></tr><tr><td colspan=\"2\" height=\"1\" style=\"background-color:#ddd;\">";
-        msgg += "</td></tr></tbody></table>";
-        msgg += "</td></tr><tr><td height=\"20\"></td></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "</td></tr><tr><td height=\"60\"></td></tr><tr><td valign=\"top\" height=\"40\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "<p style=\"margin:0;font-size:18px;\">";
-        msgg += "이메일로 항공권 수령";
-        msgg += "</p>";
-        msgg += "<p style=\"margin:10px 0 0 0;font-size:16px;\">";
-        msgg += "예약 확인을 위해 항공권이 이메일로 발송됩니다. 항공권 및 예약 관련 문의가 있으시면 ";
-        msgg += "</p>";
-        msgg += "</td></tr><tr><td height=\"10\">";
-        msgg += "</td></tr><tr></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;border-top:2px solid #666;text-align:left;\">";
-        msgg += "<colgroup><col style=\"width:35%\"><col style=\"width:auto\"></colgroup>";
-        msgg += "<tbody><tr><td align=\"left\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;vertical-align:middle;padding:25px 15px;border-right:1px solid #ddd;word-break:break-all;\">";
-        msgg += "<p style=\"margin:0;padding:0;color:#555;\">연락처</p>";
-        msgg += "<p style=\"margin:0;padding:0;color:#555;font-weight:bold;font-size:15px;\">010-0000-0000</p>";
-        msgg += "</td><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;padding:15px 0 15px 15px;\">";
-        msgg += "<p style=\"margin:0;padding:0;\">이메일</p>";
-        msgg += "<p style=\"margin:0;padding-bottom:5px;color:#d60815;font-weight:bold;font-size:15px;\">example@example.com</p>";
-        msgg += "</td></tr><tr><td colspan=\"2\" height=\"1\" style=\"background-color:#ddd;\">";
-        msgg += "</td></tr></tbody></table>";
-        msgg += "</td></tr><tr><td height=\"20\"></td></tr><tr><td style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "</td></tr><tr><td height=\"60\"></td></tr><tr><td valign=\"top\" height=\"40\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;\">";
-        msgg += "<p style=\"margin:0;font-size:18px;\">";
-        msgg += "기타 안내 사항";
-        msgg += "</p>";
-        msgg += "<p style=\"margin:10px 0 0 0;font-size:16px;\">";
-        msgg += "예약을 취소하려면 홈페이지에서 바로 처리해주시거나 연락처로 문의해 주세요.";
-        msgg += "</p>";
-        msgg += "</td></tr></tbody></table>";
-        msgg += "</div>";
-        msgg += "</div>";
-        msgg += "</td></tr><tr><td align=\"center\" style=\"font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;font-size:13px;color:#777;\">";
-        msgg += "<p style=\"margin:0;padding:0;\">© 2024 myApp.com | ";
-        msgg += "<a href=\"#\" style=\"color:#777;text-decoration:none;\">개인정보처리방침</a> ";
-        msgg += "| ";
-        msgg += "<a href=\"#\" style=\"color:#777;text-decoration:none;\">서비스이용약관</a> | ";
-        msgg += "<a href=\"#\" style=\"color:#777;text-decoration:none;\">이메일수집거부</a>";
-        msgg += "</p>";
-        msgg += "</td></tr></tbody></table>";
-        msgg += "</td></tr></tbody></table>";
-        msgg += "</td></tr></tbody></table>";
-        msgg += "</body></html>";
+        msgg += "<p style=\"margin:0;font-size:18px;\"><strong>결제 내역</strong></p>";
+        msgg += "</td></tr><tr><td height=\"10\"></td></tr><tr><td style=\"background:#f0f0f0;padding:20px;\">";
+        msgg += "<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%;margin:0;padding:0;\">";
+        msgg += "<tbody><tr><th align=\"left\" colspan=\"1\" rowspan=\"1\" scope=\"row\">총 지불금액 (결제완료)</th><td align=\"right\"><p style=\"padding:0;margin:0;color:#d60815;\">" +
+                "<strong>KRW <span style=\"font-size:23px;\">"+" "+ decimalFormat.format(airInfo.get(0).getTotalPrice())+"</span></strong></p></td></tr></tbody></table>";
+        msgg += "</td></tr><tr><td height=\"20\"></td></tr><tr><td style=\"text-align:left;\">";
+        msgg += "본 예약은 항공권 구입이 완료된 건으로, 구매한 항공권에 대한 예약 변경 및 환불 시 운임규정에 따른 예약 변경 수수료 (재발행 수수료) 및 환불 위약금 또는 환불 수수료가 징수될 수 있습니다. 자세한 내용은 운임 규정을 확인하시기 바랍니다.";
+        msgg += "</td></tr><tr><td height=\"60\"></td></tr><tr><td style=\"text-align:left;\">";
+        msgg += "</td></tr><tr><td height=\"20\"></td></tr><tr><td style=\"text-align:left;\">";
+        msgg += "</td></tr><tr><td height=\"20\"></td></tr><tr><td style=\"text-align:left;\">";
+        msgg += "</td></tr></tbody></table></div></td></tr></tbody></table>";
+
+
 
         message.setText(msgg,"UTF-8","HTML");
         javaMailSender.send(message);

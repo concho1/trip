@@ -20,5 +20,13 @@ public class QNAService {
     public int getQNACount() { return this.mapper.getQNACount(); }
     public List<QNA> getQNAList(Page pdto) { return this.mapper.getQNAList(pdto); }
     public int insertQNA(QNA qdto) { return this.mapper.insertQNA(qdto); }
+    public String findRole(String id) { return this.mapper.findRole(id); }
+    public QNA getQNAContent(int num) { return this.mapper.getQNAContent(num); }
+    public int modQNA(QNA qdto) { return this.mapper.modQNA(qdto); }
+    public int delQNA(int no) { return this.mapper.delQNA(no); }
+    public void updateSeq(int no) { this.mapper.updateSeq(no); }
+    public int answerQNA(QNA qdto) { return this.mapper.answerQNA(qdto); }
+    public void changeStatus(int no) { this.mapper.changeStatus(no); }
+    public String getAnswer(int no) { return this.mapper.getAnswer(no); }
 
 }

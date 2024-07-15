@@ -1,5 +1,9 @@
 package com.goott.trip.security.service;
 
+import com.goott.trip.hamster.mapper.AirplaneMapper;
+import com.goott.trip.hamster.mapper.paymentMapper;
+import com.goott.trip.hamster.model.Payment;
+import com.goott.trip.jhm.model.CartFlight;
 import com.goott.trip.security.mapper.MemberMapper;
 import com.goott.trip.security.model.Member;
 import com.goott.trip.security.model.Role;
@@ -7,17 +11,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberMapper memberMapper;
     private final PasswordEncoder passwordEncoder;
+    private final paymentMapper paymentMapper;
+    private final AirplaneMapper airplaneMapper;
 
     public void saveMember(Member member){
         member.setRole(Role.MEMBER); //MEMBER 역할 부여
         member.setPw(passwordEncoder.encode(member.getPw()));
+        member.setVip("Bronze");
         memberMapper.save(member);
     }
 
@@ -39,11 +49,6 @@ public class MemberService {
         Member member = memberMapper.findById(id);
         return passwordEncoder.matches(pw, member.getPw());
     }
-    /*// 비밀번호 변경
-    public int updatePwd(String id, String newPw) {
-        String encodedPwd = passwordEncoder.encode(newPw);
-        return this.memberMapper.updatePwd(id, encodedPwd);
-    }*/
     // 비밀번호 변경 메서드
     public int updatePwd(String id, String pw, String newPw) {
         // 기존 비밀번호 확인
@@ -61,9 +66,6 @@ public class MemberService {
         return memberMapper.updatePwd(id, encodedPwd); // 업데이트 결과 반환
     }
 
-    /*// 회원 탈퇴
-    public int deleteMem(String id) {return this.memberMapper.deleteMem(id);}*/
-
     // 회원 탈퇴
     public int deleteMem(String id, String pw) {
         // 기존 비밀번호 확인
@@ -73,4 +75,103 @@ public class MemberService {
         // 회원 탈퇴 처리
         return memberMapper.deleteMem(id); // 탈퇴 결과 반환
     }
+
+    // VIP
+    /*public void updateVIPStatus(String memberId) {
+        Member member = memberMapper.findById(memberId);
+        if (member == null) {
+            throw new RuntimeException("Member not found");
+        }
+
+        double totalSpent = member.getTotal(); // 이미 DB에 저장된 총 소비 금액을 가져옴
+
+        if (totalSpent >= 5000000) {
+            member.setVip("Platinum");
+        } else if (totalSpent >= 3000000) {
+            member.setVip("Gold");
+        } else if (totalSpent >= 1000000) {
+            member.setVip("Silver");
+        } else {
+            member.setVip("Bronze");
+        }
+
+        memberMapper.updateVIP(member);
+    }
+
+    public void updateTotalSpentByMember(String memberId) {
+        List<Payment> completedPayments = paymentMapper.findByMemberIdAndStatus(memberId, "completed");
+
+        double totalSpent = 0.0;
+
+        // Iterate through completed payments
+        for (Payment payment : completedPayments) {
+            List<CartFlight> cartFlights = airplaneMapper.getAirInfo(payment.getAirKey());
+            if (cartFlights != null && !cartFlights.isEmpty()) {
+                CartFlight cartFlight = cartFlights.get(0);
+                // Example: comeback date stored as "yyyy-MM-dd"
+                LocalDate comebackDate = LocalDate.parse(cartFlight.getComeback(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                // Check if comeback date is before today
+                if (comebackDate.isBefore(LocalDate.now())) {
+                    totalSpent += cartFlight.getTotalPrice();
+                }
+            }
+        }
+
+        // Update total spent in member table
+        Member member = memberMapper.findById(memberId);
+        member.setTotal(totalSpent);
+        memberMapper.updateTotalSpentByMember(member);
+    }*/
+    // VIP 등급 업데이트
+    public void updateVIPStatus(String memberId) {
+        Member member = memberMapper.findById(memberId);
+        if (member == null) {
+            throw new RuntimeException("Member not found");
+        }
+
+        double totalSpent = member.getTotal(); // 이미 DB에 저장된 총 소비 금액을 가져옴
+
+        if (totalSpent >= 5000000) {
+            member.setVip("Platinum");
+        } else if (totalSpent >= 3000000) {
+            member.setVip("Gold");
+        } else if (totalSpent >= 1000000) {
+            member.setVip("Silver");
+        } else {
+            member.setVip("Bronze");
+        }
+
+        memberMapper.updateVIP(member);
+    }
+
+    // 총 소비 금액 업데이트 및 티켓 상태 업데이트
+    public void updateTotalSpentByMember(String memberId) {
+        List<Payment> completedPayments = paymentMapper.findByMemberIdAndStatus(memberId, "completed");
+
+        double totalSpent = 0.0;
+
+        // Iterate through completed payments
+        for (Payment payment : completedPayments) {
+            List<CartFlight> cartFlights = airplaneMapper.getAirInfo(payment.getAirKey());
+            if (cartFlights != null && !cartFlights.isEmpty()) {
+                CartFlight cartFlight = cartFlights.get(0);
+                LocalDate comebackDate = LocalDate.parse(cartFlight.getComeback(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                // 티켓의 예약 날짜가 오늘 날짜보다 이전일 경우 상태를 completed로 변경
+                if (comebackDate.isBefore(LocalDate.now())) {
+                    totalSpent += cartFlight.getTotalPrice();
+
+                    // 티켓 상태를 completed로 업데이트
+                    paymentMapper.updateTicketStatus(payment.getAirKey(), "completed");
+                }
+            }
+        }
+
+        // Update total spent in member table
+        Member member = memberMapper.findById(memberId);
+        member.setTotal(totalSpent);
+        memberMapper.updateTotalSpentByMember(member);
+    }
+
 }
+
