@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.goott.trip.jhm.mapper.AdminMapper">
+
+    <insert id="countBot" parameterType="String">
+        insert into trip.peopleCnt values(#{str}, 0, 0, 1) on duplicate key update bot = bot + 1
+    </insert>
+
+    <insert id="countGuest">
+        insert into trip.peopleCnt values(#{str}, 1, 0, 0) on duplicate key update guest = guest + 1
+    </insert>
+
+    <update id="countUser" parameterType="String">
+        update trip.peopleCnt set guest = guest - 1, user = user + 1 where created_at = #{str}
+    </update>
+
+    <select id="getMemberCount" resultType="int">
+        select count(*) from trip.member where role = 'MEMBER'
+    </select>
+
+    <select id="getMembers" parameterType="Page" resultType="Member">
+        <![CDATA[
+        select * from (select row_number() over (order by created_at desc) rnum, m.* from trip.member m where role = 'MEMBER' order by created_at desc) as `rm.*` where rnum >= #{startNo} and rnum <= #{endNo}
+        ]]>
+    </select>
+
+</mapper>
