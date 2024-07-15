@@ -72,11 +72,99 @@
         WHERE iata_code = #{iataCode}
     </update>
 
-    <select id="findIataCodeBySearchStr" parameterType="String" resultType="IataCode">
+    <select id="findIataCodeBySearchStr" parameterType="String" resultType="ConIataCode">
         SELECT * FROM con_iata_code
         WHERE city_ko LIKE CONCAT('%', #{searchStr}, '%')
            OR country_ko LIKE CONCAT('%', #{searchStr}, '%')
            OR iata_code LIKE CONCAT('%', #{searchStr}, '%')
     </select>
 
+    <!-- con_offer_search => searchParam 으로 검색 (1시간 이내, 가장 최근 하나만) -->
+    <select id="findOfferSearchBySearchParam" parameterType="SearchParam" resultType="ConOfferSearch">
+        SELECT * FROM con_offer_search
+        WHERE hotel_ad_id = #{hotelAdId}
+          AND check_in = #{checkIn}
+          AND check_out = #{checkOut}
+          AND guest_cnt = #{personCnt}
+          AND search_at >= NOW() - INTERVAL 1 HOUR
+        ORDER BY search_at DESC
+        LIMIT 1
+    </select>
+
+    <!-- 호텔 정보 꺼내기 -->
+    <select id="findHotelByHotelUuid" parameterType="String" resultType="ConHotel">
+        SELECT * FROM con_hotel WHERE uuid = #{hotelUuid}
+    </select>
+    <!-- 호텔 평점 꺼내기 -->
+    <select id="findHotelLevelByHotelUuid" parameterType="String" resultType="ConHotelLevel">
+        SELECT * FROM con_hotel_level WHERE hotel_uuid = #{hotelUuid}
+    </select>
+    <!-- 호텔 이미지 list 꺼내기 -->
+    <select id="findImage64ListByHotelUuid" parameterType="String" resultType="ConImage64">
+        SELECT * FROM con_image64 WHERE hotel_uuid = #{hotelUuid}
+    </select>
+
+    <!-- 호텔 offer list 꺼내기 -->
+    <select id="findOfferListBySearchNum" parameterType="Integer" resultType="ConHotelOffer">
+        SELECT * FROM con_hotel_offer WHERE search_num = #{searchNum}
+    </select>
+
+
+    <!-- offer Search 저장 -->
+    <insert id="saveOfferSearch" parameterType="ConOfferSearch">
+        <selectKey resultType="int" keyProperty="num" order="BEFORE">
+            SELECT IFNULL(max(num), 0) + 1 FROM con_offer_search
+        </selectKey>
+        INSERT INTO con_offer_search
+        VALUES (
+        #{num}, #{hotelUuid}, #{hotelAdId},
+        #{checkIn}, #{checkOut}, #{guestCnt},
+        #{memberId}, NOW()
+        )
+    </insert>
+
+    <!-- 현제시간 기준 hour 이후 데이터 삭제 -->
+    <delete id="deleteOfferSearchByHour" parameterType="int">
+        DELETE FROM con_offer_search
+        WHERE NOW() - INTERVAL #{hour} HOUR >= search_at
+    </delete>
+    <!-- id 로 삭제 -->
+    <delete id="deleteOfferSearchByNum" parameterType="int">
+        DELETE FROM con_offer_search
+        WHERE num = #{num}
+    </delete>
+
+    <!-- offer list 저장 -->
+    <insert id="saveOfferList" parameterType="ConHotelOffer">
+        INSERT INTO con_hotel_offer
+        VALUES
+        <foreach collection="list" item="offer" separator=",">
+            (
+            #{offer.uuid}, #{offer.searchNum}, #{offer.hotelAdId}, #{offer.offerId}, #{offer.hotelType}, #{offer.available},
+            #{offer.checkIn}, #{offer.checkOut}, #{offer.category}, #{offer.bedCnt}, #{offer.bedCategory}, #{offer.roomComment},
+            #{offer.adultCnt}, #{offer.currency}, #{offer.totalCost}, #{offer.perNightCost}
+            )
+        </foreach>
+    </insert>
+    <!-- hotel level 저장 -->
+    <insert id="saveHotelLevel" parameterType="ConHotelLevel">
+        INSERT IGNORE INTO con_hotel_level
+        VALUES (
+                   #{hotelUuid}, #{hotelAdId}, #{overall}, #{staff}, #{location}, #{service}, #{comforts},
+                   #{sleep}, #{pool}, #{money}, #{facilities}, #{meal}, #{nearAttraction}
+               )
+        ON DUPLICATE KEY UPDATE
+             hotel_ad_id = VALUES(hotel_ad_id),
+             overall = VALUES(overall),
+             staff = VALUES(staff),
+             location = VALUES(location),
+             service = VALUES(service),
+             comforts = VALUES(comforts),
+             sleep = VALUES(sleep),
+             pool = VALUES(pool),
+             money = VALUES(money),
+             facilities = VALUES(facilities),
+             meal = VALUES(meal),
+             near_attraction = VALUES(near_attraction)
+    </insert>
 </mapper>
