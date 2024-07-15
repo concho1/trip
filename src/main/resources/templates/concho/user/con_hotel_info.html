@@ -158,8 +158,8 @@
                             ? allHotelInfo.getHotelOfferList().get(0).getPerNightCost() : '정보 없음'}" class="discount"></span>
                         </p>
                         <div class="price-box">
-                            <div class="price-text">
-                                <strong class="per" th:text="|${allHotelInfo.getHotelOfferList().get(0).getCurrency()}|"></strong>
+                            <div class="price-text my-price-box">
+                                <strong class="per currency" th:text="|${allHotelInfo.getHotelOfferList().get(0).getCurrency()}|"></strong>
                                 <strong class="price" th:text="${allHotelInfo.getHotelOfferList().get(0).getTotalCost()}"></strong>
                             </div>
                             <p class="price-info">* 12개월 무이자 할부 시 할인 불가</p>
@@ -237,13 +237,13 @@
                                 (hotelOffer.getAvailable() ? '예약 가능' : '예약 불가')
                                 : '정보 없음'}"></th:block>
                         </p>
-                        <div class="price-text" style="margin-top: 1.3rem; margin-bottom: 1.3rem">
+                        <div class="price-text my-price-box" style="margin-top: 1.3rem; margin-bottom: 1.3rem">
                             <strong style="font-size: large" class="per">total 가격 : </strong>
                             &nbsp;&nbsp;
                             <strong style="font-size: x-large; color: #4B00FF" class="price"
                                     th:text="${hotelOffer.getTotalCost()}"></strong>
                             &nbsp;&nbsp;
-                            <strong style="font-size: x-large; color: #4B00FF" class="price"
+                            <strong style="font-size: x-large; color: #4B00FF" class="currency"
                                     th:text="${hotelOffer.getCurrency()}"></strong>
                         </div>
                     </div>
@@ -640,6 +640,20 @@
             dots: true,
             centerMode: true,
             focusOnSelect: true
+        });
+
+        const $myPriceBoxList = $('.my-price-box');
+        $myPriceBoxList.each(function(index, priceBox) {
+            let price = $(priceBox).find('.price');
+            let currency = $(priceBox).find('.currency');
+            console.log(price.text());
+            console.log(currency.text());
+            // ajax 환전 정보 가져옴
+
+
+
+            price.text('200000');
+            currency.text('원화');
         });
     });
 

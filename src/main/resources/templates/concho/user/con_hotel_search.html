@@ -140,7 +140,7 @@
 <main class="th-layout-main ">
 
     <div class="background">
-        <form class="search-form" action="/con/hotel-list" method="get">
+        <form class="search-form" action="/con/hotel-list" method="get" id="search-form">
             <input name="iataCode" id="location" type="text" placeholder="어디로 떠나시나요?" class="destination" value="" autocomplete="off">
             <div class="destination-list" id="search-list">
                 <div class="destination-item">
@@ -170,7 +170,10 @@
                     <span>인원 선택</span>
                 </div>
             </div>
-            <button id="search-btn" type="button">검색하기</button>
+            <div style="display: flex;">
+                <button id="search-btn-map" type="button" style="margin-right: 2rem; margin-left: auto">지도 검색</button>
+                <button id="search-btn" type="button">검색하기</button>
+            </div>
         </form>
     </div>
 </main>
@@ -184,8 +187,9 @@
         let $searchListDiv = $('#search-list');
         let $location = $('#location');
         let $beforeSelect = null;
+        let $searchForm = $('#search-form');
 
-        $('#search-btn').click(function(){
+        function mySubnit(){
             // 영어 문자인지 확인하는 정규 표현식
             let isEnglish = /^[A-Za-z\s]+$/.test($location.val());
             if (!isEnglish || $location.val().length !== 3) {
@@ -195,6 +199,15 @@
                 $('.search-form').submit();
             }
 
+        }
+
+        $('#search-btn-map').click(function() {
+            $searchForm.attr('action', '/map');
+            mySubnit();
+        })
+
+        $('#search-btn').click(function(){
+            mySubnit();
         });
 
         $(document).click(function(event) {
