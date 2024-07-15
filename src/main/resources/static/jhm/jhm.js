@@ -340,7 +340,7 @@ $(document).ready(function() {
                 success: function () {
                     let form = $('<form>', {
                         'method' : 'POST',
-                        'action' : 'member/hamster/airplane/ticketing'
+                        'action' : '../member/hamster/airplane/ticketing'
                     });
 
                     let key = $('<input>', {

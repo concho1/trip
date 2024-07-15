@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .formLogin(
                         (form) -> form
                                 .loginPage("/user/ming/log-in").permitAll()
-                                .defaultSuccessUrl("/member/ming/info", true)
+                                .successHandler(customAuthenticationSuccessHandler)
                                 .usernameParameter("id")
                                 .passwordParameter("pw")
                 )
