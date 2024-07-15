@@ -64,12 +64,34 @@
         margin-top: 10px;
         border-radius: 5px;
     }
+    #loading {
+        /*팝업 배경*/
+        display: none; /*평소에는 보이지 않도록*/
+        position: fixed; /*화면 전체를 가리도록*/
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        background: rgba(0,0,0,0.5);
+        z-index: 9999; /*다른 요소들보다 위에 오도록 설정*/
+    }
+
+    #loading img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.3);
+    }
 </style>
 <body onload="initMap()">
 <div th:replace="~{common/head :: head-fragment}"></div>
-
+<!--
 <div class="main-header">꽁꽁 얼어붙은 한강 위로 고양이가 걸어다닙니다.</div>
-
+-->
+<div id="loading">
+    <img th:src="@{/asset/videos/grey-9026.gif}" alt=".">
+</div>
 <main class="main-content">
     <div id="map"></div>
 </main>
@@ -80,6 +102,7 @@
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
 
 <script th:inline="javascript">
+    const $loading = $('#loading');
     function initMap() {
         const map = new google.maps.Map(document.getElementById('map'), {
             zoom: 9,
@@ -138,27 +161,30 @@
     }
 
     $(document).on('click', '.btn-link', function () {
-        let hotelIdKey = $(this).data('hotel-id-key');
-        let hotelId = $(this).data('hotel-id');
+        let hotelUuid = $(this).data('hotel-id-key');
+        let hotelAdId = $(this).data('hotel-id');
         let iataCode = $(this).data('iata-code');
-        let startDate = '2024-07-09';
-        let endDate = '2024-07-10';
-        let personCnt = '1';
+        //let checkIn = prompt('체크인 날짜를 입력해 주세요 ex) 2024-08-08');
+        //let checkOut = prompt('체크아웃 날짜를 입력해 주세요 ex) 2024-08-08');
+        //let personCnt = prompt('인원을 입력해주세요 ex) 1');
+        let checkIn = '2024-07-22';
+        let checkOut = '2024-07-23';
+        let personCnt = '2';
         // 동적으로 form 생성
         let form = $('<form></form>');
-        form.attr("method", "post");
-        form.attr("action", "/user/concho/service/hotel-info");
+        form.attr("method", "get");
+        form.attr("action", "/con/hotel-info");
         // 호텔 ID를 hidden input으로 추가
         let hiddenField =
-            $('<input></input>').attr("type", "hidden").attr("name", "hotelIdKey").attr("value", hotelIdKey);
+            $('<input></input>').attr("type", "hidden").attr("name", "hotelUuid").attr("value", hotelUuid);
         let hiddenField1 =
-            $('<input></input>').attr("type", "hidden").attr("name", "hotelId").attr("value", hotelId);
+            $('<input></input>').attr("type", "hidden").attr("name", "hotelAdId").attr("value", hotelAdId);
         let hiddenField2 =
             $('<input></input>').attr("type", "hidden").attr("name", "iataCode").attr("value", iataCode);
         let hiddenField3 =
-            $('<input></input>').attr("type", "hidden").attr("name", "startDate").attr("value", startDate);
+            $('<input></input>').attr("type", "hidden").attr("name", "checkIn").attr("value", checkIn);
         let hiddenField4 =
-            $('<input></input>').attr("type", "hidden").attr("name", "endDate").attr("value", endDate);
+            $('<input></input>').attr("type", "hidden").attr("name", "checkOut").attr("value", checkOut);
         let hiddenField5 =
             $('<input></input>').attr("type", "hidden").attr("name", "personCnt").attr("value", personCnt);
 
@@ -168,7 +194,7 @@
         form.append(hiddenField3);
         form.append(hiddenField4);
         form.append(hiddenField5);
-
+        $loading.css('display', 'block');
         // form을 body에 추가하고 제출
         $(document.body).append(form);
         form.submit();
