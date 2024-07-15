@@ -148,7 +148,7 @@ public class Hamcontroller {
 
     @GetMapping("/shoppingCart")
     public ModelAndView airShoppingCart(Principal principal, Model model){
-
+        long startTime = System.currentTimeMillis(); // 시작 시간 측정
         Alarm alarm = new Alarm(model);
         String memberId = principal.getName();
 
@@ -171,10 +171,18 @@ public class Hamcontroller {
         System.out.println(CombDur);
 
         for(int i = 0; i < DepDur.size(); i ++){
-            DepDur.get(i).setAirlineImg(imageService.findImageByKey(DepDur.get(i).getAirlineImg()).get().getUrl());
-            CombDur.get(i).setAirlineImg(imageService.findImageByKey(CombDur.get(i).getAirlineImg()).get().getUrl());
+            DepDur.get(i).setAirlineImg(
+                    imageService.findImageByKey(DepDur.get(i).getAirlineImg())
+                            .map(Image::getUrl).orElse("/common/images/air.png")
+            );
+            CombDur.get(i).setAirlineImg(
+                    imageService.findImageByKey(CombDur.get(i).getAirlineImg())
+                            .map(Image::getUrl).orElse("/common/images/air.png")
+            );
         }
-
+        long endTime = System.currentTimeMillis(); // 종료 시간 측정
+        long duration = endTime - startTime; // 걸린 시간 계산
+        System.out.println("Method airShoppingCart execution time: " + duration + " ms");
         return new ModelAndView("Hamster/shoppingCart")
                 .addObject("airInfo",airInfo)
                 .addObject("segDep",segDep)
