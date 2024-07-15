@@ -10,8 +10,8 @@
     </select>
 
     <insert id="save">
-        INSERT INTO trip.member(id, pw, role, name, member.rank, img_key, created_at)
-        VALUES (#{id},#{pw},#{role},#{name},#{rank},#{imgKey},now())
+        INSERT INTO trip.member(id, pw, role, name, vip, total, img_key, created_at)
+        VALUES (#{id},#{pw},#{role},#{name},#{vip},#{total},#{imgKey},now())
     </insert>
 
     <select id="checkDupId" parameterType="String" resultType="boolean">
@@ -49,60 +49,17 @@
         WHERE id=#{id}
     </delete>
 
-    <update id="updateMemberRank" parameterType="Map">
+    <!--VIP-->
+    <update id="updateVIP" parameterType="Member">
         UPDATE trip.member
-        SET member.rank =
-                CASE
-                    WHEN #{completedCount} = 0 THEN 'Bronze'
-                    WHEN #{completedCount} = 1 THEN 'Bronze'
-                    WHEN #{completedCount} BETWEEN 2 AND 4 THEN 'Silver'
-                    WHEN #{completedCount} BETWEEN 5 AND 9 THEN 'Gold'
-                    ELSE 'Platinum'
-                    END
-        WHERE id = #{memberId}
+        SET vip = #{vip}
+        WHERE id = #{id}
     </update>
 
-    <update id="updateMemberVipRank" parameterType="String">
-        UPDATE trip.member
-        SET member.rank = #{vipRank}
-        WHERE id = #{memberId}
+    <update id="updateTotalSpentByMember" parameterType="Member">
+        UPDATE member
+        SET total = #{total}
+        WHERE id = #{id}
     </update>
-
-    <update id="updatePaymentStatus" parameterType="Map">
-        UPDATE trip.payment
-        SET status = #{status}
-        WHERE air_key = #{airKey}
-    </update>
-
-    <select id="countCompletedPayments" resultType="int">
-        SELECT COUNT(*)
-        FROM trip.payment
-        WHERE member_id = #{memberId} AND status = 'completed'
-          AND order_time >= DATE_SUB(NOW(), INTERVAL 2 YEAR)
-    </select>
-
-    <select id="getAirKeyList" parameterType="String" resultType="CartFlight">
-        SELECT * FROM trip.cartFlight WHERE ffvId = #{airKey}
-    </select>
-
-    <select id="getDeparture" parameterType="String" resultType="String">
-        SELECT departure
-        FROM trip.cartFlight
-        WHERE ffvId = #{airKey}
-    </select>
-
-    <select id="getComeback" parameterType="String" resultType="String">
-        SELECT comeback
-        FROM trip.cartFlight
-        WHERE ffvId = #{airKey}
-    </select>
-
-    <!-- memberId로 예약한 항공편의 airKey 리스트 가져오기 -->
-    <!--<select id="getAirKeyList" parameterType="String" resultType="String">
-        SELECT air_key
-        FROM trip.payment
-        WHERE member_id = #{memberId} AND status = 'completed';
-    </select>-->
-
 
 </mapper>

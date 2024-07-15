@@ -1,6 +1,8 @@
 package com.goott.trip.security.service;
 
+import com.goott.trip.hamster.mapper.AirplaneMapper;
 import com.goott.trip.hamster.mapper.paymentMapper;
+import com.goott.trip.hamster.model.Payment;
 import com.goott.trip.jhm.model.CartFlight;
 import com.goott.trip.security.mapper.MemberMapper;
 import com.goott.trip.security.model.Member;
@@ -19,11 +21,13 @@ import java.util.List;
 public class MemberService {
     private final MemberMapper memberMapper;
     private final PasswordEncoder passwordEncoder;
+    private final paymentMapper paymentMapper;
+    private final AirplaneMapper airplaneMapper;
 
     public void saveMember(Member member){
         member.setRole(Role.MEMBER); //MEMBER 역할 부여
         member.setPw(passwordEncoder.encode(member.getPw()));
-        member.setRank("Bronze");
+        member.setVip("Bronze");
         memberMapper.save(member);
     }
 
@@ -72,78 +76,102 @@ public class MemberService {
         return memberMapper.deleteMem(id); // 탈퇴 결과 반환
     }
 
-    //VIP
-    // 결제 상태 업데이트 및 VIP 등급 부여
-    public void updatePaymentAndAssignVip(String airKey, String memberId) {
-        // 결제 상태 업데이트
-        boolean updated = updatePaymentStatus(airKey);
-
-        // VIP 등급 부여
-        if (updated) {
-            assignVipRank(memberId);
-        }
-    }
-
-    // 결제 상태 업데이트 메서드
-    public boolean updatePaymentStatus(String airKey) {
-        String departure = getDeparture(airKey);
-        String comeback = getComeback(airKey);
-
-        if (departure == null) {
-            return false;  // 해당 airKey에 대한 정보가 없으면 업데이트 실패
+    // VIP
+    /*public void updateVIPStatus(String memberId) {
+        Member member = memberMapper.findById(memberId);
+        if (member == null) {
+            throw new RuntimeException("Member not found");
         }
 
-        LocalDate now = LocalDate.now();
-        LocalDate departureDate = LocalDate.parse(departure, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        LocalDate comebackDate = LocalDate.parse(comeback, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        double totalSpent = member.getTotal(); // 이미 DB에 저장된 총 소비 금액을 가져옴
 
-        String status = (now.isAfter(departureDate) && now.isAfter(comebackDate)) ? "completed" : "ready";
-
-        return memberMapper.updatePaymentStatus(airKey, status) > 0;
-    }
-
-    // 완료된 결제 건수 조회
-    public int countCompletedPayments(String memberId) {
-        return memberMapper.countCompletedPayments(memberId);
-    }
-
-    // VIP 등급 부여 메서드
-    public void assignVipRank(String memberId) {
-        int completedCount = countCompletedPayments(memberId);
-        String vipRank = determineVipRank(completedCount);
-
-        Member member = getMemberById(memberId);
-        member.setRank(vipRank);
-        memberMapper.updateMemberVipRank(memberId, vipRank);
-    }
-
-    // 출발지 조회 메서드
-    public String getDeparture(String airKey) {
-        return memberMapper.getDeparture(airKey);
-    }
-
-    // 도착지 조회 메서드
-    public String getComeback(String airKey) {
-        return memberMapper.getComeback(airKey);
-    }
-
-    // 회원이 예약한 항공편의 airKey 리스트 조회 메서드
-    public List<String> getAirKeyList(String memberId) {
-        return memberMapper.getAirKeyList(memberId);
-    }
-
-    // VIP 등급 결정 메서드
-    private String determineVipRank(int completedCount) {
-        if (completedCount >= 10) {
-            return "Platinum";
-        } else if (completedCount >= 5) {
-            return "Gold";
-        } else if (completedCount >= 2) {
-            return "Silver";
+        if (totalSpent >= 5000000) {
+            member.setVip("Platinum");
+        } else if (totalSpent >= 3000000) {
+            member.setVip("Gold");
+        } else if (totalSpent >= 1000000) {
+            member.setVip("Silver");
         } else {
-            return "Bronze";
+            member.setVip("Bronze");
         }
+
+        memberMapper.updateVIP(member);
     }
 
+    public void updateTotalSpentByMember(String memberId) {
+        List<Payment> completedPayments = paymentMapper.findByMemberIdAndStatus(memberId, "completed");
+
+        double totalSpent = 0.0;
+
+        // Iterate through completed payments
+        for (Payment payment : completedPayments) {
+            List<CartFlight> cartFlights = airplaneMapper.getAirInfo(payment.getAirKey());
+            if (cartFlights != null && !cartFlights.isEmpty()) {
+                CartFlight cartFlight = cartFlights.get(0);
+                // Example: comeback date stored as "yyyy-MM-dd"
+                LocalDate comebackDate = LocalDate.parse(cartFlight.getComeback(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                // Check if comeback date is before today
+                if (comebackDate.isBefore(LocalDate.now())) {
+                    totalSpent += cartFlight.getTotalPrice();
+                }
+            }
+        }
+
+        // Update total spent in member table
+        Member member = memberMapper.findById(memberId);
+        member.setTotal(totalSpent);
+        memberMapper.updateTotalSpentByMember(member);
+    }*/
+    // VIP 등급 업데이트
+    public void updateVIPStatus(String memberId) {
+        Member member = memberMapper.findById(memberId);
+        if (member == null) {
+            throw new RuntimeException("Member not found");
+        }
+
+        double totalSpent = member.getTotal(); // 이미 DB에 저장된 총 소비 금액을 가져옴
+
+        if (totalSpent >= 5000000) {
+            member.setVip("Platinum");
+        } else if (totalSpent >= 3000000) {
+            member.setVip("Gold");
+        } else if (totalSpent >= 1000000) {
+            member.setVip("Silver");
+        } else {
+            member.setVip("Bronze");
+        }
+
+        memberMapper.updateVIP(member);
+    }
+
+    // 총 소비 금액 업데이트 및 티켓 상태 업데이트
+    public void updateTotalSpentByMember(String memberId) {
+        List<Payment> completedPayments = paymentMapper.findByMemberIdAndStatus(memberId, "completed");
+
+        double totalSpent = 0.0;
+
+        // Iterate through completed payments
+        for (Payment payment : completedPayments) {
+            List<CartFlight> cartFlights = airplaneMapper.getAirInfo(payment.getAirKey());
+            if (cartFlights != null && !cartFlights.isEmpty()) {
+                CartFlight cartFlight = cartFlights.get(0);
+                LocalDate comebackDate = LocalDate.parse(cartFlight.getComeback(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                // 티켓의 예약 날짜가 오늘 날짜보다 이전일 경우 상태를 completed로 변경
+                if (comebackDate.isBefore(LocalDate.now())) {
+                    totalSpent += cartFlight.getTotalPrice();
+
+                    // 티켓 상태를 completed로 업데이트
+                    paymentMapper.updateTicketStatus(payment.getAirKey(), "completed");
+                }
+            }
+        }
+
+        // Update total spent in member table
+        Member member = memberMapper.findById(memberId);
+        member.setTotal(totalSpent);
+        memberMapper.updateTotalSpentByMember(member);
+    }
 
 }
+
