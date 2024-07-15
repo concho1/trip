@@ -1,0 +1,116 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<body>
+<div th:replace="~{common/head :: head-fragment}"></div>
+
+<main class="th-layout-main ">
+
+    <div class="background">
+        <div class="admin-main">
+            <div class="title-wrap">
+                <h3 class="cont-title">관리자 페이지</h3>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="chart-container">
+                    <div class="card-admin">
+
+                        <div class="card-title">
+                            <span>접속자 현황</span>
+                        </div>
+                        <div class="card-body" id="peopleChart"></div>
+                    </div>
+
+                    <div class="card-admin">
+
+                        <div class="card-title">
+                            <span>API 이용 현황</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-body" id="hotelChart"></div>
+                            <div class="card-body" id="flightChart"></div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card-qna">
+                        <div class="card-title">
+                            <span>Q&A 관리</span>
+                        </div>
+                        <div class="card-body">
+                            <table style="width: 600px;">
+                                <tr>
+                                    <th>작성자</th> <th>제목</th>
+                                    <th>상태</th> <th>답변하기</th>
+                                </tr>
+                                <tr th:each="qna : ${qnaList}">
+                                    <td><span th:text="${qna.memberId}"></span></td>
+                                    <td><span th:text="${qna.title}"></span></td>
+                                    <td>
+                                        <span th:if="${qna.status == 0}" th:text="답변대기" class="waitAnswer"></span>
+                                        <span th:if="${qna.status == 1}" th:text="답변완료" class="finAnswer"></span>
+                                    </td>
+                                    <td><span><button type="button">답변하기</button> </span></td>
+                                </tr>
+                            </table>
+                            <!-- 페이징 처리 -->
+                            <div class="page-wrapper">
+                                <div th:if="${qnaPaging.page > qnaPaging.block}">
+                                    <a th:href="|dashboard?qnaPage=1|"><span><b>[처음으로]</b></span></a>
+                                    <a th:href="|dashboard?qnaPage=${qnaPaging.startBlock -1}|"><img th:src="@{/asset/icons/preBlock.svg}" alt="이전 블록" class="pagingImg"></a>
+                                </div>
+
+                                <div>
+                                    <a th:if="${qnaPaging.page > 1}" th:href="|dashboard?qnaPage=${qnaPaging.page - 1}|"><img th:src="@{/asset/icons/prePage.svg}" alt="이전 페이지" class="pagingImg"></a>
+                                    <a th:each="qnaPag : ${qnaPagList}" th:href="|dashboard?qnaPage=${qnaPag}|" class="pag-list">
+                                        <span th:text="${qnaPag}" th:classappend="${qnaPag == qnaPaging.page} ? 'pag-now' : ''"></span>
+                                    </a>
+                                    <a th:if="${qnaPaging.page < qnaPaging.allPage}" th:href="|dashboard?qnaPage=${qnaPaging.page + 1}|"><img th:src="@{/asset/icons/nextPage.svg}" alt="다음 페이지" class="pagingImg"></a>
+                                </div>
+
+                                <div th:if="${qnaPaging.endBlock < qnaPaging.allPage}">
+                                    <a th:href="|dashboard?qnaPage=${qnaPaging.endBlock +1}|"><img th:src="@{/asset/icons/nextBlock.svg}" alt="다음 블록" class="pagingImg"></a>
+                                    <a th:href="|dashboard?qnaPage=${qnaPaging.allPage}|"><span><b>[끝으로]</b></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card-qna">
+                        <div class="card-title">
+                            <span>회원 관리</span>
+                        </div>
+                        <div class="card-body">
+                            <table>
+                                <tr>
+                                    <th>가입일</th> <th>아이디</th>
+                                    <th>이름</th> <th>회원등급</th>
+                                    <th>총 결제금액</th> <th>회원강퇴</th>
+                                </tr>
+                                <tr th:each="member : ${members}">
+                                    <td><span th:text="${member.createdAt.toString().substring(0, 10)}"></span></td>
+                                    <td><span th:text="${member.id}"></span></td>
+                                    <td><span th:text="${member.name}"></span></td>
+                                    <td><span th:text="${member.role}"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<script th:src="@{/jhm/jhm.js}"></script>
+<script th:src="@{/jhm/chart.js}"></script>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+</body>

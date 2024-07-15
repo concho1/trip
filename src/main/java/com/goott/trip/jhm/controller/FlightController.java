@@ -2,6 +2,7 @@ package com.goott.trip.jhm.controller;
 
 
 import com.amadeus.exceptions.ResponseException;
+import com.goott.trip.common.service.ImageService;
 import com.goott.trip.hamster.model.ShoppingCart;
 import com.goott.trip.jhm.model.*;
 import com.goott.trip.jhm.service.FlightService;
@@ -26,7 +27,7 @@ public class FlightController {
     @Autowired
     private FlightService service;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 0 1 * ?")
     public void resetSerCount() {
         this.service.resetSerCount();
     }
@@ -101,9 +102,7 @@ public class FlightController {
             ffv.setApiSegments(this.service.findSegmentForView(iCode));
             ffv.setApiDurations(this.service.findDurationForView(iCode));
             ffvList.add(ffv);
-            for(int j=0; j<ffv.getApiDurations().size(); j++) {
-                System.out.println("img : "+ffv.getApiDurations().get(j).getAirlineImg());
-            }
+
             ffvCount ++;
         }
 

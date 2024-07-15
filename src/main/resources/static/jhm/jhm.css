@@ -238,8 +238,45 @@ body, html {
     margin-bottom: 20px; /* 아래쪽 여백 설정 */
 }
 
+.chart-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card-admin {
+    width: 500px;
+    max-width: 1000px;
+    height : 50%;
+    background-color: #fff;
+    border: 2px solid rgba(195, 9, 9, 0.6);
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 20px;
+}
+
+.card-qna {
+    width: 100%;
+    max-width: 1000px;
+    height : 50%;
+    background-color: #fff;
+    border: 2px solid rgba(195, 9, 9, 0.6);
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 20px;
+}
+
 .card-body {
     padding: 20px;
+}
+
+.card-title {
+    font-weight: bold;
 }
 
 .hidden {
@@ -495,7 +532,7 @@ input[type="checkbox"]:checked + label:after {
     font-size: 13px;
 }
 
-.faq-list, .qna-list {
+.faq-list, .qna-list, .admin-main {
     background-color: white;
     padding: 30px;
     border-radius: 10px;
@@ -506,6 +543,8 @@ input[type="checkbox"]:checked + label:after {
     align-items: stretch;
     width: 100%;
     max-width: 1500px;
+    max-height: 100%;
+    overflow: auto;
 }
 
 .faq-list input[type="text"] {
