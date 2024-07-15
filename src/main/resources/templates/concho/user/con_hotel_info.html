@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+<style>
+    .tedu-N18 .profile-box {
+        width: 95%; /* 양옆으로 조금 더 넓힘 */
+        margin: auto;
+        position: relative;
+        z-index: 1; /* z-index 추가 */
+    }
+    .tedu-N18 .slider-for img {
+        width: 100%;
+        height: 35rem; /* 위아래로 조금 더 넓힘 */
+        padding-right: 0.5rem; /* 패딩 줄임 */
+        padding-left: 0.5rem; /* 패딩 줄임 */
+    }
+    .tedu-N18 .slider-nav img {
+        margin-top: 2rem;
+        width: 100%;
+        height: 10rem; /* 세로 길이를 고정 */
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+        object-fit: cover; /* 이미지를 동일 크기로 맞춤 */
+    }
+    .tedu-N18 .slider-for .slick-prev, .tedu-N18 .slider-for .slick-next,
+    .tedu-N18 .slider-nav .slick-prev, .tedu-N18 .slider-nav .slick-next {
+        display: none !important; /* 모든 화살표 버튼 제거 */
+    }
+    .tedu-N18 .my-btn-box {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .tedu-N18 .my-btn-box ul {
+        display: flex;
+        flex-wrap: wrap;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    .tedu-N18 .my-btn-box li {
+        flex: 1 1 calc(33.333% - 10px); /* 3 columns */
+        margin: 5px;
+        box-sizing: border-box;
+    }
+    .tedu-N18 .bf33709ee1 {
+        display: none;
+    }
+    .tedu-N18 .content-inner {
+        padding-top: 1.3rem;
+    }
+    .tedu-N18 .my-btn-box {
+        display: flex;
+        gap: 10px; /* Adjust the gap between buttons as needed */
+    }
+    .tedu-N18 .add-cart {
+        width: 45%;
+    }
+    .tedu-N18 .text-wrap-1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+        margin-bottom: 1.3rem;
+    }
+    .tedu-N18 .title {
+        margin-bottom: 2rem;
+        margin-left: 1rem;
+    }
+    .tedu-N18 .back-button {
+        border-radius: 3rem;
+        width: 80px;
+        background-color: #009EFF;
+    }
+    .tedu-N18 .my-img {
+        border-radius: 3rem 3rem 3rem 3rem;
+    }
+    #comment-list, #inquiry {
+        display: none; /* Initially hide both sections */
+    }
+    @media (max-width: 768px) {
+        .tedu-N18 .my-btn-box li {
+            flex: 1 1 calc(50% - 10px); /* 2 columns on tablet */
+        }
+        .tedu-N18 .add-cart {
+            width: 95%;
+        }
+    }
+    @media (max-width: 480px) {
+        .tedu-N18 .my-btn-box li {
+            flex: 1 1 100%; /* 1 column on mobile */
+        }
+    }
+    .tedu-N18 button {
+        z-index: 10;
+    }
+</style>
+
+<body>
+<div th:replace="~{common/head :: head-fragment}"></div>
+<!-- [E]tedu-N3 -->
+<main class="th-layout-main ">
+    <!-- [S]tedu-N18 -->
+    <div class="tedu-N18" data-bid="JsLXmnn4Nl">
+        <div class="content-inner">
+            <div class="content-container">
+                <section class="subvisual">
+                    <div class="text-wrap-1">
+                        <h1 style="margin-bottom: 2rem; margin-left: 1rem" class="title" th:text="${allHotelInfo.getHotel().getHotelName()}">
+                        </h1>
+                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; width: 80px; height: 40px; background-color: #009EFF"
+                                class="tedu-btn tedu-btn-light add-cart" onclick="history.back()">뒤로가기</button>
+                    </div>
+                    <div class="profile-box">
+                        <div class="slider slider-for">
+                            <div th:each="image64 : ${allHotelInfo.getImage64List()}">
+                                <img th:src="${image64.getBase64()}" alt="" class="my-img">
+                            </div>
+                        </div>
+                        <div class="slider slider-nav">
+                            <div th:each="image64 : ${allHotelInfo.getImage64List()}">
+                                <img th:src="${image64.getBase64()}" alt="" class="my-img">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- [E]tedu-N18 -->
+    <!-- [S]tedu-N20 -->
+    <div class="tedu-N20" data-bid="nflxmnn4ye" style="z-index: 0; margin-top: 1px">
+        <div class="content-container">
+            <div class="sidebar">
+                <div class="text-warp">
+                    <div class="cate-area">
+                        <div class="tbox-list">
+                            <span class="tbox" >최저가</span>
+                            <span style="margin-left: 1.3rem; background-color: #009EFF; color: white; cursor: pointer" class="tbox" id="back-my">뒤로가기</span>
+                        </div>
+                        <button type="button" class="ico-bookmark">
+                            <em></em>
+                            <span>북마크</span>
+                        </button>
+                    </div>
+                    <div class="title-area">
+                        <h3 class="title" th:text="${allHotelInfo.getHotelOfferList().get(0).getCategory()}"></h3>
+                        <span>사이즈 : </span><span class="text" th:text="${allHotelInfo.getHotelOfferList().get(0).getBedCategory()}"></span><br>
+                        <span>침대 수 : </span><span class="text" th:text="${allHotelInfo.getHotelOfferList().get(0).getBedCnt()}"></span>
+                    </div>
+                    <div class="price-area">
+                        <p class="sale-box">
+                            <span>1박당 가격</span>
+                            <span th:text="${
+                            allHotelInfo.getHotelOfferList().get(0).getPerNightCost() != null
+                            ? allHotelInfo.getHotelOfferList().get(0).getPerNightCost() : '정보 없음'}" class="discount"></span>
+                        </p>
+                        <div class="price-box">
+                            <div class="price-text my-price-box">
+                                <strong class="per currency" th:text="|${allHotelInfo.getHotelOfferList().get(0).getCurrency()}|"></strong>
+                                <strong class="price" th:text="${allHotelInfo.getHotelOfferList().get(0).getTotalCost()}"></strong>
+                            </div>
+                            <p class="price-info">* 12개월 무이자 할부 시 할인 불가</p>
+                        </div>
+                    </div>
+                    <button type="button" class="tedu-btn tedu-btn-light add-cart" onclick="alert('클릭')">예약하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N20 -->
+    <!-- [S]tedu-N22 -->
+    <div class="tedu-N22" data-bid="gClXmnN54I">
+        <div class="content-inner">
+            <div class="content-container">
+                <div class="tab-menu-wrap">
+                    <div class="tab-menu active" id="offer-btn">
+                        <a href="javascript:void(0)">
+                            <span>객실 목록</span>
+                            <strong th:text="${allHotelInfo.getHotelOfferList().size()}"></strong>
+                        </a>
+                    </div>
+                    <div class="tab-menu" id="comment-btn">
+                        <a href="javascript:void(0)">
+                            <span>호텔 평점</span>
+                            <strong></strong>
+                        </a>
+                    </div>
+                    <div class="tab-menu" id="inquiry-btn">
+                        <a href="javascript:void(0)">
+                            <span>문의사항</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N23 -->
+    <div class="tedu-N23" data-bid="tolxmNN5c7" id="offer-list">
+        <div class="content-inner">
+            <div class="content-container" th:each="hotelOffer : ${allHotelInfo.getHotelOfferList()}">
+                <section class="intro-wrap"
+                         style="border: 1px solid #dedede; padding: 1rem 1rem 1rem 1rem; border-radius: 3rem 3rem 3rem 3rem;
+                         margin-bottom: 2rem;">
+                    <div class="text-wrap" style="margin-left: 1.3rem; margin-top: 1.3rem">
+                        <div class="title"
+                             th:text="${hotelOffer.getCategory()}"></div>
+                        <p class="text"
+                           th:text="${(hotelOffer.getRoomComment() != null && !hotelOffer.getRoomComment().equals('null')) ? hotelOffer.getRoomComment() : '설명 없음'}"></p>
+                    </div>
+                    <div class="text-wrap" style="margin-left: 1.3rem;">
+                        <p class="text">
+                            입실 날짜 : <th:block
+                                th:text="${hotelOffer.getCheckIn()}"></th:block>&nbsp;&nbsp;~&nbsp;&nbsp;
+                            퇴실 날짜 : <th:block
+                                th:text="${hotelOffer.getCheckOut()}"></th:block>
+                            <br>
+                            가격 : <th:block
+                                th:text="${hotelOffer.getTotalCost() - hotelOffer.getTotalCost()*0.03}"></th:block>
+                            <br>
+                            세금 포함 가격 : <th:block
+                                th:text="${hotelOffer.getTotalCost()}"></th:block>
+                            <br>
+                            방 카테고리 : <th:block
+                                th:text="${hotelOffer.getCategory()}"></th:block>
+                            <br>
+                            침대 사이즈 : <th:block
+                                th:text="${hotelOffer.getBedCategory()}"></th:block>
+                            <br>
+                            침대 개수 : <th:block
+                                th:text="${hotelOffer.getBedCnt()}"></th:block>
+                            <br>
+                            예약 가능 여부 : <th:block
+                                th:text="${hotelOffer.getAvailable() != null ?
+                                (hotelOffer.getAvailable() ? '예약 가능' : '예약 불가')
+                                : '정보 없음'}"></th:block>
+                        </p>
+                        <div class="price-text my-price-box" style="margin-top: 1.3rem; margin-bottom: 1.3rem">
+                            <strong style="font-size: large" class="per">total 가격 : </strong>
+                            &nbsp;&nbsp;
+                            <strong style="font-size: x-large; color: #4B00FF" class="price"
+                                    th:text="${hotelOffer.getTotalCost()}"></strong>
+                            &nbsp;&nbsp;
+                            <strong style="font-size: x-large; color: #4B00FF" class="currency"
+                                    th:text="${hotelOffer.getCurrency()}"></strong>
+                        </div>
+                    </div>
+                    <div class="my-btn-box" style="display: flex">
+                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; background-color: #4a8557; display: flex;"
+                                class="tedu-btn tedu-btn-light add-cart">예약하기</button>
+                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; display: flex"
+                                class="tedu-btn tedu-btn-light add-cart">장바구니
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- [S]tedu-N27 -->
+    <div class="tedu-N27" data-bid="JKlXMNn5oI" id="comment-list">
+        <div class="content-inner">
+            <div class="content-container">
+                <div class="review-wrap">
+                    <div class="text-wrap" style="margin-bottom: 2rem;">
+                        <div class="title">편의시설</div>
+                    </div>
+                    <div class="review-area">
+                        <div class="reveiw-component">
+
+                            <div class="num" th:text="${allHotelInfo.getHotelLevel().getOverall()}" style="margin-bottom: 0; padding-bottom: 0;"></div>
+                            <p class="text" th:text="|총점 : ${allHotelInfo.getHotelLevel().getOverall()}|" style="margin-bottom: 2rem; margin-top: 0"></p>
+                            <div class="rating-box">
+                                <div class="rating">
+                                    <th:block th:with="overall=${allHotelInfo.getHotelLevel().getOverall()}">
+                                        <span class="star" th:each="i : ${#numbers.sequence(1, T(java.lang.Math).round(overall / 20.0))}"></span>
+                                    </th:block>
+                                </div>
+                            </div>
+                            <p class="text" th:text="${allHotelInfo.getHotelLevel().getPool() == 0 ? '수영장 없음' : '수영장 있음'}"></p>
+                        </div>
+                        <div class="reveiw-list">
+                            <div class="review-swiper">
+                                <div class="swiper-wrapper">
+                                    <!--1,2 평점 -->
+                                    <div class="swiper-slide">
+                                        <div class="card-wrap">
+                                            <a href="javascript:void(0)">
+                                                <div class="card-area">
+                                                    <div class="card-title-area">
+                                                        <div class="profile-box" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                        </div>
+                                                        <div class="review-list-rating">
+                                                            <p class="name"><strong>직원 친절 점수</strong></p>
+                                                            <div class="rating-box">
+                                                                <div class="rating">
+                                                                    <th:block th:with="score=${allHotelInfo.getHotelLevel().getStaff()}">
+                                                                        <span class="star"
+                                                                              th:each="i :
+                                                                              ${#numbers.sequence(
+                                                                                1, T(java.lang.Math).round(score / 20.0)
+                                                                              )}">
+                                                                        </span>
+                                                                    </th:block>
+                                                                </div>
+                                                            </div>
+                                                            <p class="name" th:text="|점수 : ${allHotelInfo.getHotelLevel().getStaff()}|"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)" style="margin-top: 1rem;">
+                                                <th:block th:with="score=${allHotelInfo.getHotelLevel().getLocation()}">
+                                                <div class="card-area">
+                                                    <div class="card-title-area">
+                                                        <div class="profile-box" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                        </div>
+                                                        <div class="review-list-rating">
+                                                            <p class="name"><strong>위치 점수</strong></p>
+                                                            <div class="rating-box">
+                                                                <div class="rating">
+                                                                    <span class="star"
+                                                                          th:each="i :
+                                                                          ${#numbers.sequence(
+                                                                            1, T(java.lang.Math).round(score / 20.0)
+                                                                          )}">
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <p class="name" th:text="|점수 : ${score}|"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </th:block>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!--3,4 평점 -->
+                                    <div class="swiper-slide">
+                                        <div class="card-wrap">
+                                            <a href="javascript:void(0)" style="margin-top: 1rem;">
+                                                <th:block th:with="score=${allHotelInfo.getHotelLevel().getService()}">
+                                                <div class="card-area">
+                                                    <div class="card-title-area">
+                                                        <div class="profile-box" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                        </div>
+                                                        <div class="review-list-rating">
+                                                            <p class="name"><strong>서비스 점수</strong></p>
+                                                            <div class="rating-box">
+                                                                <div class="rating">
+                                                                    <span class="star"
+                                                                          th:each="i :
+                                                                          ${#numbers.sequence(
+                                                                            1, T(java.lang.Math).round(score / 20.0)
+                                                                          )}">
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <p class="name" th:text="|점수 : ${score}|"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </th:block>
+                                            </a>
+
+                                            <a href="javascript:void(0)" style="margin-top: 1rem;">
+                                                <th:block th:with="score=${allHotelInfo.getHotelLevel().getComforts()}">
+                                                    <div class="card-area">
+                                                        <div class="card-title-area">
+                                                            <div class="profile-box" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                        </div>
+                                                            <div class="review-list-rating">
+                                                                <p class="name"><strong>편안함 점수</strong></p>
+                                                                <div class="rating-box">
+                                                                    <div class="rating">
+                                                                    <span class="star"
+                                                                          th:each="i :
+                                                                          ${#numbers.sequence(
+                                                                            1, T(java.lang.Math).round(score / 20.0)
+                                                                          )}">
+                                                                    </span>
+                                                                    </div>
+                                                                </div>
+                                                                <p class="name" th:text="|점수 : ${score}|"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </th:block>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!--5,6 평점 -->
+                                    <div class="swiper-slide">
+                                        <div class="card-wrap">
+                                            <a href="javascript:void(0)" style="margin-top: 1rem;">
+                                                <th:block th:with="score=${allHotelInfo.getHotelLevel().getSleep()}">
+                                                <div class="card-area">
+                                                    <div class="card-title-area">
+                                                        <div class="profile-box" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                        </div>
+                                                        <div class="review-list-rating">
+                                                            <p class="name"><strong>편안한 잠자리 점수</strong></p>
+                                                            <div class="rating-box">
+                                                                <div class="rating">
+                                                                    <span class="star"
+                                                                          th:each="i :
+                                                                          ${#numbers.sequence(
+                                                                            1, T(java.lang.Math).round(score / 20.0)
+                                                                          )}">
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <p class="name" th:text="|점수 : ${score}|"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </th:block>
+                                            </a>
+
+                                            <a href="javascript:void(0)" style="margin-top: 1rem;">
+                                                <th:block th:with="score=${allHotelInfo.getHotelLevel().getPool()}">
+                                                    <div class="card-area">
+                                                        <div class="card-title-area">
+                                                            <div class="profile-box" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                        </div>
+                                                            <div class="review-list-rating">
+                                                                <p class="name"><strong>수영장 점수</strong></p>
+                                                                <div class="rating-box">
+                                                                    <div class="rating">
+                                                                    <span class="star"
+                                                                          th:each="i :
+                                                                          ${#numbers.sequence(
+                                                                            1, T(java.lang.Math).round(score / 20.0)
+                                                                          )}">
+                                                                    </span>
+                                                                    </div>
+                                                                </div>
+                                                                <p class="name" th:text="|점수 : ${score}|"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </th:block>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!--7,8 평점 -->
+                                    <div class="swiper-slide">
+                                        <div class="card-wrap">
+                                            <a href="javascript:void(0)" style="margin-top: 1rem;">
+                                                <th:block th:with="score=${allHotelInfo.getHotelLevel().getMoney()}">
+                                                <div class="card-area">
+                                                    <div class="card-title-area">
+                                                        <div class="profile-box" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                        </div>
+                                                        <div class="review-list-rating">
+                                                            <p class="name"><strong>가성비 점수</strong></p>
+                                                            <div class="rating-box">
+                                                                <div class="rating">
+                                                                    <span class="star"
+                                                                          th:each="i :
+                                                                          ${#numbers.sequence(
+                                                                            1, T(java.lang.Math).round(score / 20.0)
+                                                                          )}">
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <p class="name" th:text="|점수 : ${score}|"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </th:block>
+                                            </a>
+
+                                            <a href="javascript:void(0)" style="margin-top: 1rem;">
+                                                <th:block th:with="score=${allHotelInfo.getHotelLevel().getFacilities()}">
+                                                    <div class="card-area">
+                                                        <div class="card-title-area">
+                                                            <div class="profile-box" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                        </div>
+                                                            <div class="review-list-rating">
+                                                                <p class="name"><strong>시설 점수</strong></p>
+                                                                <div class="rating-box">
+                                                                    <div class="rating">
+                                                                    <span class="star"
+                                                                          th:each="i :
+                                                                          ${#numbers.sequence(
+                                                                            1, T(java.lang.Math).round(score / 20.0)
+                                                                          )}">
+                                                                    </span>
+                                                                    </div>
+                                                                </div>
+                                                                <p class="name" th:text="|점수 : ${score}|"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </th:block>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <!--9,10 평점 -->
+                                    <div class="swiper-slide">
+                                        <div class="card-wrap">
+                                            <a href="javascript:void(0)" style="margin-top: 1rem;">
+                                                <th:block th:with="score=${allHotelInfo.getHotelLevel().getMeal()}">
+                                                <div class="card-area">
+                                                    <div class="card-title-area">
+                                                        <div class="profile-box" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                        </div>
+                                                        <div class="review-list-rating">
+                                                            <p class="name"><strong>조식 및 식사 점수</strong></p>
+                                                            <div class="rating-box">
+                                                                <div class="rating">
+                                                                    <span class="star"
+                                                                          th:each="i :
+                                                                          ${#numbers.sequence(
+                                                                            1, T(java.lang.Math).round(score / 20.0)
+                                                                          )}">
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <p class="name" th:text="|점수 : ${score}|"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </th:block>
+                                            </a>
+
+                                            <a href="javascript:void(0)" style="margin-top: 1rem;">
+                                                <th:block th:with="score=${allHotelInfo.getHotelLevel().getNearAttraction()}">
+                                                    <div class="card-area">
+                                                        <div class="card-title-area">
+                                                            <div class="profile-box" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지" style="width: 100px; height: 100px; margin-right: 2rem;">
+                                                        </div>
+                                                            <div class="review-list-rating">
+                                                                <p class="name"><strong>주변 관광지 접근성 점수</strong></p>
+                                                                <div class="rating-box">
+                                                                    <div class="rating">
+                                                                    <span class="star"
+                                                                          th:each="i :
+                                                                          ${#numbers.sequence(
+                                                                            1, T(java.lang.Math).round(score / 20.0)
+                                                                          )}">
+                                                                    </span>
+                                                                    </div>
+                                                                </div>
+                                                                <p class="name" th:text="|점수 : ${score}|"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </th:block>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="control-wrap">
+                                    <div class="swiper-button-prev"></div>
+                                    <div class="swiper-button-next"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N27 -->
+    <!-- [S]tedu-N29 -->
+    <div class="tedu-N29" data-bid="UnLxmNn5uh" id="inquiry">
+        <div class="content-inner">
+            <div class="content-container">
+                <section class="faq-wrap">
+                    <div class="text-wrap">
+                        <div class="title">문의사항</div>
+                    </div>
+                    <div class="acc-wrap">
+                        <div class="my-btn-box">
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- [E]tedu-N29 -->
+</main>
+
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+</body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script th:inline="javascript">
+    let $offerList = $('#offer-list');
+    let $commentList = $('#comment-list');
+    let $inquiry = $('#inquiry');
+    //let $reply = $('#reply');
+
+    $(document).ready(function () {
+        $('#offer-btn').click(function () {
+            showOfferList();
+        });
+        $('#comment-btn').click(function () {
+            showCommentList();
+        });
+        $('#inquiry-btn').click(function () {
+            showInquiry();
+        });
+        $('#back-my').click(function () {
+            history.back();
+        });
+
+        $('.slider-for').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: true,
+            fade: true,
+            asNavFor: '.slider-nav'
+        });
+
+        $('.slider-nav').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            asNavFor: '.slider-for',
+            dots: true,
+            centerMode: true,
+            focusOnSelect: true
+        });
+
+        const $myPriceBoxList = $('.my-price-box');
+        $myPriceBoxList.each(function(index, priceBox) {
+            let price = $(priceBox).find('.price');
+            let currency = $(priceBox).find('.currency');
+            console.log(price.text());
+            console.log(currency.text());
+            // ajax 환전 정보 가져옴
+
+
+
+            price.text('200000');
+            currency.text('원화');
+        });
+    });
+
+    function hideAllSections(callback) {
+        $offerList.fadeOut('slow');
+        $commentList.fadeOut('slow');
+        $inquiry.fadeOut('slow', callback);
+        //$reply.fadeOut('slow', callback); // Ensure the last fadeOut calls the callback
+    }
+
+    function showOfferList() {
+        hideAllSections(function() {
+            $offerList.fadeIn('slow');
+        });
+    }
+
+    function showCommentList() {
+        hideAllSections(function() {
+            $commentList.fadeIn('slow');
+        });
+    }
+
+    function showInquiry() {
+        hideAllSections(function() {
+            $inquiry.fadeIn('slow');
+        });
+    }
+
+
+</script>
+</html>

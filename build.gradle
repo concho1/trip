@@ -40,7 +40,15 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.11.0'
     implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'org.apache.commons', name: 'commons-csv', version: '1.9.0'
-    implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.3'
+
+    // https://mvnrepository.com/artifact/org.jsoup/jsoup
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.17.2'
+    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.22.0'
+    // https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager
+    implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '5.9.1'
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.3'
+    implementation 'org.apache.httpcomponents.core5:httpcore5:5.2.3'
 
 
 

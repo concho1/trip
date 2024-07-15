@@ -1,3 +1,4 @@
+/*
 document.addEventListener("DOMContentLoaded", function() {
     const links = document.querySelectorAll('.cont-title');
 
@@ -29,3 +30,4 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+*/

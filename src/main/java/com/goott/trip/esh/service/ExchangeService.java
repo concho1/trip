@@ -19,7 +19,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-
 @Service
 public class ExchangeService {
 
@@ -128,10 +127,6 @@ public class ExchangeService {
 
         return result;
     }
-
-
-
-
 }
 
 

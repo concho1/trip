@@ -11,5 +11,10 @@ public class paymentService {
     @Autowired
     private paymentMapper mapper;
 
-    public int airplanePay(Payment payment) {payment.AllArrayToStr(); return this.mapper.airplanePay(payment); }
+    public int airplanePay(Payment payment) {
+        payment.AllArrayToStr();
+        payment.setStatus("ready");
+        return this.mapper.airplanePay(payment);
+    }
+
 }

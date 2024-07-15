@@ -39,6 +39,9 @@ public class Payment {
 
     private Timestamp orderTime;
 
+    private String status;
+    private String paymentKey;
+
     private String rideFirstNameStr;
     private String rideLastNameStr;
     private String rideBirthStr;
