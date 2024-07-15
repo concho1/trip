@@ -37,8 +37,6 @@ public interface HotelMapper {
     public Optional<Integer> findOfferSearchNumByOfferId(
             String offerId);
 
-
-
     // key 사용량
     public void insertHotelApiUsageByCate(String usageCate, Integer usageLimit);
     public Integer getUsageCntByCate(String usageCate);
