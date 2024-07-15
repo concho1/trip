@@ -161,7 +161,8 @@ public class ImageService {
             }
             resultImage = Optional.of(image);
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            resultImage = Optional.empty();
         }
         return resultImage;
     }
