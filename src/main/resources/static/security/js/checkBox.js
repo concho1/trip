@@ -1,16 +1,25 @@
 $(document).ready(function() {
     $("#checkset-all").click(function() {
+        selectAll()
+    });
+
+    $("#check-all").click(function() {
+        selectAll()
+    });
+
+    function selectAll(){
+
         if($("#checkset-all").is(":checked")) {
             $("input[name=check2], input[name=check3], input[name=check4], input[name=check5], input[name=sns]").prop("checked", true);
         } else {
             $("input[name=check2], input[name=check3], input[name=check4], input[name=check5], input[name=sns]").prop("checked", false);
         }
         checkAllSelected();
-    });
 
-    $("input[name=check2], input[name=check3], input[name=check4], input[name=check5], input[name=sns]").click(function() {
-        checkAllSelected();
-    });
+        $("input[name=check2], input[name=check3], input[name=check4], input[name=check5], input[name=sns]").click(function() {
+            checkAllSelected();
+        });
+    }
 
     function checkAllSelected() {
         const total = $("input[name='check2'], input[name='check3'], input[name='check4'], input[name='check5'], input[name='sns']").length;
