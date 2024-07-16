@@ -1,17 +1,17 @@
 function deleteAir(num) {
 
-    var AirKeyVal = $('#hotelKey_'+num).val();
+    var AirKeyVal = $('#airKey_'+num).val();
 
     alert(AirKeyVal);
 
-    /*$.ajax({
-        url: '/member/hamster/airplane/cartHotelDelete',
+    $.ajax({
+        url: '/member/hamster/airplane/cartAirDelete',
         method: 'POST',
-        data: { hotelKeyVal: hotelKeyVal},
+        data: { AirKeyVal: AirKeyVal},
         dataType: 'json',
         success: function(data) {
             if (data.success) {
-                $('#hotelList').find('#hotelKey_'+num).closest('.myedu-area').remove();
+                $('#airList').find('#airKey_'+num).closest('.myedu-area').remove();
             } else {
                 alert('장바구니 삭제 중 오류 발생' + data.message);
             }
@@ -20,7 +20,7 @@ function deleteAir(num) {
             console.error(error);
             alert('AJAX 오류 발생: ' + error);
         }
-    });*/
+    });
 }
 
 function deleteHotel(num) {

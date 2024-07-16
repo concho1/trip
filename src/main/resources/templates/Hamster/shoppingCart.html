@@ -58,7 +58,7 @@
                                 </div>
                             </div>
                             <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
-                                <span>결제하기</span>
+                                <span th:onclick="|location.href='@{/member/hamster/airplane/ticketing(key=${airInfo.getFfvId()})}'|">결제하기</span>
                             </button>
                                 <img th:src="@{/common/images/xButton.png}" class="top-right-image" style="height: 40px; width: 40px;"
                                      th:onclick="'deleteAir(' + ${iterStat.index} + ')'">
@@ -79,6 +79,7 @@
                                         <legend class="legend" th:text="'('+${hotelList.get(iterStat.index).getIataCodeObj().getCountryKo()}+')'+ ${hotelList.get(iterStat.index).getIataCodeObj().getCityKo()}"></legend>
                                         <legend class="legend hotelKey" th:id="'hotelKey_'+${iterStat.index}"
                                                  th:text="${hotelList.get(iterStat.index).getOfferObj().getCheckIn()}+ ' ~ ' +${hotelList.get(iterStat.index).getOfferObj().getCheckOut()}"></legend>
+                                        <legend class="legend" th:text="${#numbers.formatInteger(hotelList.get(iterStat.index).getOfferObj().getTotalCost(), 3, 'COMMA') + '원'}"></legend>
                                     </div>
                                 </div>
                                 <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">

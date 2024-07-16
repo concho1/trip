@@ -21,5 +21,7 @@ public class shoppingCartService {
 
     public int deleteHotel(String uuid,String memId){return this.mapper.deleteHotel(uuid,memId);}
 
+    public int deleteAir(String airKey,String memId){return this.mapper.deleteAir(airKey,memId); }
+
     public String getAirKey(String memId){return this.mapper.getAirKey(memId); }
 }
