@@ -129,6 +129,7 @@ public class MemberService {
         member.setTotal(totalSpent);
         memberMapper.updateTotalSpentByMember(member);
     }*/
+
     // VIP 등급 업데이트
     public void updateVIPStatus(String memberId) {
         Member member = memberMapper.findById(memberId);
