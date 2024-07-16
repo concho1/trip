@@ -36,4 +36,8 @@
         select coalesce(sum(cnt), 0) from trip.flight_api_usages where use_date like concat('%', #{month}, '%')
     </select>
 
+    <delete id="deleteUser" parameterType="String">
+        delete from trip.member where id = #{id}
+    </delete>
+
 </mapper>

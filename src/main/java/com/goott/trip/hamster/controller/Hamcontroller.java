@@ -77,6 +77,7 @@ public class Hamcontroller {
 
         if(key.size() == 1){
             Testproduct cont = this.airservice.airplaneCont(key.get(0));
+            System.out.println(cont);
             return new ModelAndView("Hamster/airplaneReservation").addObject("cont",cont).
                     addObject("country",country);
         }else {

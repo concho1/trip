@@ -17,4 +17,5 @@ public interface AdminMapper {
     List<PeopleCnt> getPeopleCnt(int n);
     int countHotelAPI(Map<String, String> map);
     int countFlightAPI(String month);
+    int deleteUser(String id);
 }
