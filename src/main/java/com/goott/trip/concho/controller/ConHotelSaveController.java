@@ -3,7 +3,7 @@ package com.goott.trip.concho.controller;
 import com.goott.trip.common.model.Alarm;
 import com.goott.trip.concho.model.param.HotelResult;
 import com.goott.trip.concho.model.param.Image64Result;
-import com.goott.trip.concho.service.main.SaveHotelListService;
+import com.goott.trip.concho.service.con_main.HotelListSaveService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("con")
 @RequiredArgsConstructor
 public class ConHotelSaveController {
-    private final SaveHotelListService hotelListService;
+    private final HotelListSaveService hotelListSaveService;
 
     //http://localhost:8787/con/save-hotel-list?iataCode=ICN
     @GetMapping("save-hotel-list")
@@ -27,7 +27,7 @@ public class ConHotelSaveController {
         Alarm alarm = new Alarm(model);
         // api
         HotelResult hotelResult =
-                hotelListService.saveHotelListToDataBaseByIataCode(iataCode);
+                hotelListSaveService.saveHotelListToDataBaseByIataCode(iataCode);
 
         switch (hotelResult.getConState()){
             case OK ->{
@@ -38,21 +38,30 @@ public class ConHotelSaveController {
                 );
                 // 크롤링
                 Image64Result image64Result =
-                        hotelListService.crawlingHotelImageInGoogle(
+                        hotelListSaveService.crawlingHotelImageInGoogle(
                                 hotelResult.getConHotelList()
                         );
                 switch (image64Result.getConState()){
-                    case OK ->
+                    case OK ->{
+                        System.out.println(
+                                "저장 성공! 저장한 호텔 수: " + hotelResult.getConHotelList().size()+
+                                "이미지 크롤링 성공한 호텔 수 : " + image64Result.getSuccessHotelCnt()
+                        );
                         alarm.setMessageAndRedirect(
                                 "저장 성공! 저장한 호텔 수: " + hotelResult.getConHotelList().size()+
                                         "이미지 크롤링 성공한 호텔 수 : " + image64Result.getSuccessHotelCnt(),
                                 ""
                         );
-                    case SEVER_ERROR ->
+                    }
+                    case SEVER_ERROR ->{
+                        System.out.println(
+                                "이미지 저장 실패 ㅠㅠ!"
+                        );
                         alarm.setMessageAndRedirect(
                                 "이미지 저장 실패 ㅠㅠ!",
                                 ""
                         );
+                    }
                 }
 
             }

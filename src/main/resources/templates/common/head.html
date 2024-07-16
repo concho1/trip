@@ -17,7 +17,13 @@
                         </em>
                         <span>로그인</span>
                     </a>
-                    <a sec:authorize="isAuthenticated()" th:href="@{/member/ming/info}">
+                    <a sec:authorize="!hasRole('ADMIN') && isAuthenticated()" th:href="@{/member/ming/info}">
+                        <em class="ico">
+                            <img th:src="@{/resources/icons/ico_member.svg}" alt="마이페이지 아이콘">
+                        </em>
+                        <span>마이페이지</span>
+                    </a>
+                    <a sec:authorize="hasRole('ADMIN') && isAuthenticated()" th:href="@{/admin/dashboard}">
                         <em class="ico">
                             <img th:src="@{/resources/icons/ico_member.svg}" alt="마이페이지 아이콘">
                         </em>
@@ -62,7 +68,7 @@
                         <a th:href="@{/flight/search_flight}"><img th:src="@{/asset/icons/head_flight.svg}" style="width: 20px; height: 20px; margin-right: 5px; margin-bottom: 3px;" alt="항공">항공</a>
                     </div>
                     <div class="gnb-list">
-                        <a th:href="@{/user/concho/service/search}"><img th:src="@{/asset/icons/head_hotel.png}" style="width: 20px; height: 20px; margin-right: 5px; margin-bottom: 3px;" alt="숙소">숙소</a>
+                        <a th:href="@{/con/hotel-search}"><img th:src="@{/asset/icons/head_hotel.png}" style="width: 20px; height: 20px; margin-right: 5px; margin-bottom: 3px;" alt="숙소">숙소</a>
                     </div>
                     <div class="gnb-list">
                         <a th:href="@{/customer/faq}"><img th:src="@{/asset/icons/head_qna.png}" style="width: 20px; height: 20px; margin-right: 5px; margin-bottom: 3px;" alt="고센">고객센터</a>

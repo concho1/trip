@@ -2,6 +2,7 @@ package com.goott.trip.jhm.service;
 
 import com.amadeus.exceptions.ResponseException;
 import com.amadeus.resources.FlightOfferSearch;
+import com.goott.trip.common.service.ImageService;
 import com.goott.trip.hamster.model.ShoppingCart;
 import com.goott.trip.jhm.mapper.FlightMapper;
 
@@ -17,21 +18,14 @@ import java.util.List;
 @Service
 public class FlightService {
 
-    private int serCount = 0;
-
     @Autowired
     private FlightModuleService module;
 
     @Autowired
+    private ImageService img;
+
+    @Autowired
     private FlightMapper mapper;
-
-    public int getSerCount() {
-        return serCount;
-    }
-
-    public void resetSerCount() {
-        serCount = 0;
-    }
 
     public List<APIItinerary> getSearch(String sb, Flight flight) throws ResponseException {
         int itiCount = 0;
@@ -100,7 +94,11 @@ public class FlightService {
                 ddto.setAirlineKor(this.mapper.findAirlineKor(airIATA));
                 String logo = this.mapper.findImgByIata(airIATA);
                 System.out.println("logo : "+logo);
-                ddto.setAirlineImg(logo);
+                String imgKey = null;
+                if(logo != null){
+                    imgKey = this.img.findImageByKey(logo).get().getUrl();
+                }
+                ddto.setAirlineImg(imgKey);
                 this.insertAPIDuration(ddto);
                 durCount ++;
 
@@ -131,7 +129,7 @@ public class FlightService {
         System.out.println("총 " + segCount + "개의 APISegment 저장 완료");
         System.out.println("총 " + durCount + "개의 APIDuration 저장 완료");
 
-        serCount ++;
+        this.mapper.updateUsages();
 
         return iList;
     }
@@ -182,6 +180,7 @@ public class FlightService {
     public void insertShoppingCart(ShoppingCart cart) { this.mapper.insertShoppingCart(cart); }
     public void insertCartPricing(CartPricing cp) { this.mapper.insertCartPricing(cp); }
     public void insertCartSegment(CartSegment cs) { this.mapper.insertCartSegment(cs); }
+    public String findKeyByUrl(String url) { return this.mapper.findKeyByUrl(url); }
     public void insertCartDuration(CartDuration cd) { this.mapper.insertCartDuration(cd); }
     public void insertCartFlight(CartFlight cf) { this.mapper.insertCartFlight(cf); }
 

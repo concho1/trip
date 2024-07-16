@@ -8,11 +8,8 @@ import com.google.gson.Gson;
 import com.goott.trip.common.model.Alarm;
 import com.goott.trip.common.model.Image;
 import com.goott.trip.common.service.ImageService;
-import com.goott.trip.hamster.model.HotelShoppingCartDTO;
-import com.goott.trip.hamster.model.Testproduct;
-import com.goott.trip.hamster.model.AirplaneInfo;
-import com.goott.trip.hamster.model.Payment;
-import com.goott.trip.hamster.model.ShoppingCart;
+import com.goott.trip.hamster.model.*;
+import com.goott.trip.hamster.service.ConHotelCartService;
 import com.goott.trip.hamster.service.airplaneService;
 import com.goott.trip.hamster.service.paymentService;
 import com.goott.trip.hamster.service.shoppingCartService;
@@ -46,7 +43,8 @@ public class Hamcontroller {
     private paymentService paymentservice;
     @Autowired
     private ImageService imageService;
-
+    @Autowired
+    private ConHotelCartService hotelCartService;
     @GetMapping("airplane/list")
     public ModelAndView list() {
 
@@ -111,9 +109,23 @@ public class Hamcontroller {
         List<CartSegment> segComb = this.airservice.getComb(AirKey);
         List<CartPricing> price = this.airservice.getPricing(AirKey);
 
-        for(int i = 0; i < DepDur.size(); i ++){
-            DepDur.get(i).setAirlineImg(imageService.findImageByKey(DepDur.get(i).getAirlineImg()).get().getUrl());
-            CombDur.get(i).setAirlineImg(imageService.findImageByKey(CombDur.get(i).getAirlineImg()).get().getUrl());
+        System.out.println(DepDur.get(0).getAirlineImg());
+
+        // DepDur 리스트 처리 Optional 이용 null 처리했습니당
+        for (CartDuration depDur : DepDur) {
+            depDur.setAirlineImg(
+                    imageService.findImageByKey(depDur.getAirlineImg())
+                            .map(Image::getUrl)
+                            .orElse("/common/images/air.png")
+            );
+        }
+        // CombDur 리스트 처리
+        for (CartDuration combDur : CombDur) {
+            combDur.setAirlineImg(
+                    imageService.findImageByKey(combDur.getAirlineImg())
+                            .map(Image::getUrl)
+                            .orElse("/common/images/air.png")
+            );
         }
 
             return modelAndView
@@ -147,12 +159,13 @@ public class Hamcontroller {
     }
 
     @GetMapping("/shoppingCart")
-    public ModelAndView airShoppingCart(Principal principal, Model model){
+    public ModelAndView ShoppingCart(Principal principal, Model model){
 
-        Alarm alarm = new Alarm(model);
         String memberId = principal.getName();
 
         List<String> airKey = this.shoppingCartService.shoppingCartAirplane(memberId);
+
+
         List<CartFlight> airInfo = new ArrayList<>();
         List<CartSegment> segDep = new ArrayList<>();
         List<CartSegment> segComb = new ArrayList<>();
@@ -166,13 +179,33 @@ public class Hamcontroller {
             DepDur.addAll(this.airservice.getDepDur(airKey.get(i)));
             CombDur.addAll(this.airservice.getCombDur(airKey.get(i)));
         }
-
         System.out.println(DepDur);
         System.out.println(CombDur);
-
-        for(int i = 0; i < DepDur.size(); i ++){
-            DepDur.get(i).setAirlineImg(imageService.findImageByKey(DepDur.get(i).getAirlineImg()).get().getUrl());
-            CombDur.get(i).setAirlineImg(imageService.findImageByKey(CombDur.get(i).getAirlineImg()).get().getUrl());
+        // DepDur 리스트 처리 Optional 이용 null 처리했습니당
+        for (CartDuration depDur : DepDur) {
+            depDur.setAirlineImg(
+                    imageService.findImageByKey(depDur.getAirlineImg())
+                            .map(Image::getUrl)
+                            .orElse("/common/images/air.png")
+            );
+        }
+        // CombDur 리스트 처리
+        for (CartDuration combDur : CombDur) {
+            combDur.setAirlineImg(
+                    imageService.findImageByKey(combDur.getAirlineImg())
+                            .map(Image::getUrl)
+                            .orElse("/common/images/air.png")
+            );
+        }
+        // 여기서 호텔 리스트 받아오는거 추가
+        List<ConHotelCartAll> hotelCartAllList
+                = hotelCartService.getConHotelCartAllByMemberId(memberId);
+        // 테스트용 offer 가 방, hotel 은 호텔
+        if(!hotelCartAllList.isEmpty()){
+            for(ConHotelCartAll hotelCartAll : hotelCartAllList){
+                System.out.println(hotelCartAll.getHotelObj().getHotelName());
+                System.out.println(hotelCartAll.getOfferObj().getCategory());
+            }
         }
 
         return new ModelAndView("Hamster/shoppingCart")
@@ -180,12 +213,15 @@ public class Hamcontroller {
                 .addObject("segDep",segDep)
                 .addObject("segComb",segComb)
                 .addObject("DepDur",DepDur)
-                .addObject("CombDur",CombDur);
+                .addObject("CombDur",CombDur)
+                .addObject("hotelList",hotelCartAllList);
     }
 
-    @PostMapping("airplane/categoryDelete")
+    @PostMapping("airplane/cartHotelDelete")
     @ResponseBody
     public Map<String,Object> categoryDelete(@RequestParam("hotelKeyVal")String hotelKeyVal, Principal principal){
+
+        System.out.println(hotelKeyVal);
 
         Map<String, Object> response = new HashMap<>();
         try{
