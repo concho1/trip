@@ -97,7 +97,7 @@ public class Hamcontroller {
         ModelAndView modelAndView = new ModelAndView("Hamster/airplaneReservation");
         String memId = principal.getName();
 
-        String AirKey = "ffv/4d7e127f-7452-44d7-9386-25522abe8f00";
+        String AirKey = "ffv/422ea369-3eb7-4c5d-b32e-a513b8c25488";
         List<CartDuration> DurationInfo = this.airservice.getDurationInfo(AirKey);
         List<CartDuration> DepDur = this.airservice.getDepDur(AirKey);
         List<CartDuration> CombDur = this.airservice.getCombDur(AirKey);
@@ -109,9 +109,23 @@ public class Hamcontroller {
         List<CartSegment> segComb = this.airservice.getComb(AirKey);
         List<CartPricing> price = this.airservice.getPricing(AirKey);
 
-        for(int i = 0; i < DepDur.size(); i ++){
-            DepDur.get(i).setAirlineImg(imageService.findImageByKey(DepDur.get(i).getAirlineImg()).get().getUrl());
-            CombDur.get(i).setAirlineImg(imageService.findImageByKey(CombDur.get(i).getAirlineImg()).get().getUrl());
+        System.out.println(DepDur.get(0).getAirlineImg());
+
+        // DepDur 리스트 처리 Optional 이용 null 처리했습니당
+        for (CartDuration depDur : DepDur) {
+            depDur.setAirlineImg(
+                    imageService.findImageByKey(depDur.getAirlineImg())
+                            .map(Image::getUrl)
+                            .orElse("/common/images/air.png")
+            );
+        }
+        // CombDur 리스트 처리
+        for (CartDuration combDur : CombDur) {
+            combDur.setAirlineImg(
+                    imageService.findImageByKey(combDur.getAirlineImg())
+                            .map(Image::getUrl)
+                            .orElse("/common/images/air.png")
+            );
         }
 
             return modelAndView
@@ -145,12 +159,13 @@ public class Hamcontroller {
     }
 
     @GetMapping("/shoppingCart")
-    public ModelAndView airShoppingCart(Principal principal, Model model){
+    public ModelAndView ShoppingCart(Principal principal, Model model){
 
-        Alarm alarm = new Alarm(model);
         String memberId = principal.getName();
 
         List<String> airKey = this.shoppingCartService.shoppingCartAirplane(memberId);
+
+
         List<CartFlight> airInfo = new ArrayList<>();
         List<CartSegment> segDep = new ArrayList<>();
         List<CartSegment> segComb = new ArrayList<>();
@@ -198,12 +213,15 @@ public class Hamcontroller {
                 .addObject("segDep",segDep)
                 .addObject("segComb",segComb)
                 .addObject("DepDur",DepDur)
-                .addObject("CombDur",CombDur);
+                .addObject("CombDur",CombDur)
+                .addObject("hotelList",hotelCartAllList);
     }
 
-    @PostMapping("airplane/categoryDelete")
+    @PostMapping("airplane/cartHotelDelete")
     @ResponseBody
     public Map<String,Object> categoryDelete(@RequestParam("hotelKeyVal")String hotelKeyVal, Principal principal){
+
+        System.out.println(hotelKeyVal);
 
         Map<String, Object> response = new HashMap<>();
         try{

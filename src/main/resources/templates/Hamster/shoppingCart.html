@@ -10,6 +10,7 @@
         right: 0;
         margin: 10px;
         cursor: pointer;
+
     }
 </style>
 <body>
@@ -49,9 +50,9 @@
                             <div class="myedu-cont">
                                 <img th:src="${DepDur.get(iterStat.index).getAirlineImg()}" style="width: 150px;" alt="이미지">
                                 <div class="text-area">
+                                    <input type="hidden" th:value="${airInfo.getFfvId()}" th:id="'airKey_'+${iterStat.index}">
                                     <legend class="legend" th:text="${segDep.get(iterStat.index).getAirlineKor()}"></legend>
-                                    <legend class="legend hotelKey" th:id="'airKey_'+${iterStat.index}"
-                                            th:value="${airInfo.getOrigin()}" th:text="${segDep.get(iterStat.index).getDepartureIata()}+ ' -> ' +${segDep.get(iterStat.index).getArrivalIata()}"></legend>
+                                    <legend class="legend airKey" th:id="'airKey_'+${iterStat.index}" th:text="${segDep.get(iterStat.index).getDepartureIata()}+ ' -> ' +${segDep.get(iterStat.index).getArrivalIata()}"></legend>
                                     <legend class="legend" th:text="${segDep.get(iterStat.index).getDepartureAt().substring(0,10)} +' ~ '+${segComb.get(iterStat.index).getArrivalAt().substring(6,10)}"></legend>
                                     <legend class="legend" th:text="${#numbers.formatInteger(airInfo.getTotalPrice(), 3, 'COMMA') + '원'}"></legend>
                                 </div>
@@ -60,43 +61,36 @@
                                 <span>결제하기</span>
                             </button>
                                 <img th:src="@{/common/images/xButton.png}" class="top-right-image" style="height: 40px; width: 40px;"
-                                     th:onclick="'deleteItem(' + ${iterStat.index} + ')'">
+                                     th:onclick="'deleteAir(' + ${iterStat.index} + ')'">
                         </div>
                     </th:block>
                     </div>
 
+                    <div>&nbsp;&nbsp;</div>
+
                     <div class="myedu-cont-wrap" id="hotelList">
-                        <th:block th:if="${airInfo != null}" th:each="airInfo, iterStat : ${airInfo}">
-                            <div class="myedu-area" style="position: relative;" th:if="${airInfo.getOrigin() != null}">
-                                <div class="myedu-cont">
-                                    <img th:src="@{/common/images/test.webp}" alt="이미지">
+                        <th:block th:if="${hotelList != null}" th:each="hotel, iterStat : ${hotelList}">
+                            <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${hotelList.get(iterStat.index).getUuid() != null}">
+                                <div class="myedu-cont" style="width: 507px; height: 124px;">
+                                    <img th:src="${hotelList.get(iterStat.index).getHotelObj().getSampleImage()}" style="width: 150px; height: 120px;" alt="이미지">
                                     <div class="text-area">
-                                        <legend class="legend" th:text="${segDep.get(0).getAirlineKor()}"></legend>
+                                        <input type="hidden" th:value="${hotelList.get(iterStat.index).getUuid()}" th:id="'hotelKey_'+${iterStat.index}">
+                                        <legend class="legend" th:text="${hotelList.get(iterStat.index).getHotelObj().getHotelName()}"></legend>
+                                        <legend class="legend" th:text="'('+${hotelList.get(iterStat.index).getIataCodeObj().getCountryKo()}+')'+ ${hotelList.get(iterStat.index).getIataCodeObj().getCityKo()}"></legend>
                                         <legend class="legend hotelKey" th:id="'hotelKey_'+${iterStat.index}"
-                                                th:value="${airInfo.getOrigin()}" th:text="${segDep.get(0).getDepartureIata()}+ ' -> ' +${segDep.get(0).getArrivalIata()}"></legend>
-                                        <legend class="legend" th:text="${segDep.get(0).getDepartureAt().substring(0,10)} +' ~ '+${segComb.get(0).getArrivalAt().substring(6,10)}"></legend>
+                                                 th:text="${hotelList.get(iterStat.index).getOfferObj().getCheckIn()}+ ' ~ ' +${hotelList.get(iterStat.index).getOfferObj().getCheckOut()}"></legend>
                                     </div>
                                 </div>
-                                <div class="contents-checkset d-flex justify-content-start">
-                                    <div class="checkset-wrap">
-                                        <div class="checkset lightmode"><input id="checkset-b-1" class="checkset-input input-round" type="button" value="">
-                                            <label class="checkset-label" for="checkset-b-1"></label><span class="checkset-text">
-                                            결제하기
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
+                                    <span>결제하기</span>
+                                </button>
                                 <img th:src="@{/common/images/xButton.png}" class="top-right-image" style="height: 40px; width: 40px;"
-                                     th:onclick="'deleteItem(' + ${iterStat.index} + ')'">
+                                     th:onclick="'deleteHotel(' + ${iterStat.index} + ')'">
                             </div>
                         </th:block>
                     </div>
 
                 </section>
-                <!--  <div class="form-footer btn-box">
-                    <input type="submit" class="tedu-btn tedu-btn-light" value="결제하기">
-                    <a class="tedu-btn tedu-btn-light btn-mono" href="javascript:void(0)">취소</a>
-                    -->
                 </div>
             </div>
         </div>
