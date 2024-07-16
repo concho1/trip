@@ -27,11 +27,6 @@ public class FlightController {
     @Autowired
     private FlightService service;
 
-    @Scheduled(cron = "0 0 0 1 * ?")
-    public void resetSerCount() {
-        this.service.resetSerCount();
-    }
-
     @RequestMapping("search_flight")
     public ModelAndView searchFlight() { return new ModelAndView("jhm/search_flight"); }
 
@@ -106,10 +101,7 @@ public class FlightController {
             ffvCount ++;
         }
 
-        int serCount = this.service.getSerCount();
-
         System.out.println("총 " + ffvCount + "개의 검색결과");
-        System.out.println("serCount : " + serCount);
 
         mav.addObject("flight", flight)
                 .addObject("ffvList", ffvList)
@@ -420,7 +412,10 @@ public class FlightController {
                                         cd.setAirlineKor(fins[1]);
                                         break;
                                     case "airlineImg" :
-                                        cd.setAirlineImg(fins[1]);
+                                        System.out.println("url : "+fins[1]);
+                                        String imgKey = this.service.findKeyByUrl(fins[1]);
+                                        System.out.println("imgKey : "+imgKey);
+                                        cd.setAirlineImg(imgKey);
                                         break;
                                 }
                             }

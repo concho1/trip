@@ -24,6 +24,6 @@ public interface QNAMapper {
     public void changeStatus(int no);
     public String getAnswer(int no);
     public int getQNACountForAdmin();
-    public List<QNA> getQNAListForAdmin(Page pdto);
+    public List<QNA> getQNAListForAdmin();
 
 }
