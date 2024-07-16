@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="ko">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
@@ -137,8 +137,10 @@
                 <div class="text-warp">
                     <div class="cate-area">
                         <div class="tbox-list">
-                            <span class="tbox" >최저가</span>
+                            <span class="tbox">최저가</span>
                             <span style="margin-left: 1.3rem; background-color: #009EFF; color: white; cursor: pointer" class="tbox" id="back-my">뒤로가기</span>
+
+
                         </div>
                         <button type="button" class="ico-bookmark">
                             <em></em>
@@ -159,9 +161,13 @@
                         </p>
                         <div class="price-box">
                             <div class="price-text my-price-box">
-                                <strong class="per currency" th:text="|${allHotelInfo.getHotelOfferList().get(0).getCurrency()}|"></strong>
-                                <strong class="price" th:text="${allHotelInfo.getHotelOfferList().get(0).getTotalCost()}"></strong>
+                                <button type="button" id="exchange-btn" style="display: none">환전</button>
+                                <strong class="per-currency" th:text="|${allHotelInfo.getHotelOfferList().get(0).getCurrency()}|"></strong>
+
+                                <strong class="main-price" th:text="${allHotelInfo.getHotelOfferList().get(0).getTotalCost()}"></strong>
+                                <!---------------------------------------------------->
                             </div>
+                            <span id="converted-price" style="display: none;">환전된 가격: </span>
                             <p class="price-info">* 12개월 무이자 할부 시 할인 불가</p>
                         </div>
                     </div>
@@ -245,6 +251,8 @@
                             &nbsp;&nbsp;
                             <strong style="font-size: x-large; color: #4B00FF" class="currency"
                                     th:text="${hotelOffer.getCurrency()}"></strong>
+                            <!---------------------------------------------------->
+                            <!--<p id="converted-price" style="display: none;">환전된 가격: </p>-->
                         </div>
                     </div>
                     <div class="my-btn-box" style="display: flex">
@@ -612,6 +620,7 @@
     //let $reply = $('#reply');
 
     $(document).ready(function () {
+        const $orBtn = $('#exchange-btn');
         $('#offer-btn').click(function () {
             showOfferList();
         });
@@ -642,18 +651,39 @@
             focusOnSelect: true
         });
 
-        const $myPriceBoxList = $('.my-price-box');
-        $myPriceBoxList.each(function(index, priceBox) {
-            let price = $(priceBox).find('.price');
-            let currency = $(priceBox).find('.currency');
-            console.log(price.text());
-            console.log(currency.text());
-            // ajax 환전 정보 가져옴
+        $('#ex').click(function () {
+            if($(this).find('#now-cu').val() !== 'first'){
+                location.reload();
+                return false;
+            }
+            $(this).find('#now-cu').val('no');
+            let fromCurrency = $orBtn.closest('.price-text').find('.per-currency').text();
+            let cp = $orBtn.closest('.price-box').find('#converted-price');
 
+            $.ajax({
+                type: 'post',
+                url: '/user/esh/convert-currency',
+                data: {
+                    'fromCurrency' : fromCurrency,
+                },
+                success: function(res) {
+                    $('.price').each(function() {
+                        let price = $(this).text() * res;
+                        $(this).text(price);
+                        $(this).closest('.price-text').find('.currency').text('KRW');
+                    })
 
+                    let mainPrice = $('.main-price').text() * res;
 
-            price.text('200000');
-            currency.text('원화');
+                    let txt = 'KRW   ' + mainPrice;
+
+                    cp.text(txt);
+                    cp.show();
+                },
+                error: function() {
+                    alert('에러');
+                }
+            });
         });
     });
 
@@ -681,7 +711,5 @@
             $inquiry.fadeIn('slow');
         });
     }
-
-
 </script>
 </html>
