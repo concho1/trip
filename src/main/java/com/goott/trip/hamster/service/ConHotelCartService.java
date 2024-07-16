@@ -20,7 +20,11 @@ public class ConHotelCartService {
     public boolean saveConHotelCart(ConHotelCart conHotelCart){
         return (conHotelCartMapper.saveConHotelCart(conHotelCart) > 0);
     }
-    public List<ConHotelCartAll> getConHotelCartAllByMemberId(String memberId){
-        return conHotelCartMapper.getConHotelCartAllByMemberId(memberId);
+    public List<ConHotelCartAll> getConHotelCartAllListByMemberId(String memberId){
+        return conHotelCartMapper.getConHotelCartAllListByMemberId(memberId);
+    }
+
+    public ConHotelCartAll getConHotelContListByUuid(String uuid){
+        return conHotelCartMapper.getConHotelContListByUuid(uuid);
     }
 }

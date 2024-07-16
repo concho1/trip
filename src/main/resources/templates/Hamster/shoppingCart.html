@@ -4,13 +4,30 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <style>
+    .my-form button {
+        position: relative; /* 부모 요소의 위치 지정 */
+        z-index: 10; /* 다른 요소보다 높은 z-index 지정 */
+    }
+    .my-form img {
+        z-index: 10; /* 다른 요소보다 높은 z-index 지정 */
+    }
+
+    .my-form .myedu-area{
+        z-index: 10;
+    }
     .top-right-image {
         position: absolute;
         top: 0;
         right: 0;
         margin: 10px;
         cursor: pointer;
+    }
+    .cart{
 
+        margin-right: 100px;
+    }
+    .my-form{
+        width: calc(100% - 540px);
     }
 </style>
 <body>
@@ -18,8 +35,7 @@
 <!-- [E]tedu-N3 -->
 <main class="th-layout-main ">
     <!-- [S]tedu-N47 -->
-    <form method="post" action="/member/hamster/airplane/ticketing">
-    <div class="tedu-N47" data-bid="RSlXeE3jI3" id="">
+    <div class="tedu-N47 my-form" data-bid="RSlXeE3jI3" id="">
         <div class="content-inner">
             <div class="content-container">
                 <section class="myedu-wrap">
@@ -47,6 +63,7 @@
                     <div class="myedu-cont-wrap" id="airList">
                     <th:block th:if="${airInfo != null}" th:each="airInfo, iterStat : ${airInfo}">
                         <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${airInfo.getOrigin() != null}">
+
                             <div class="myedu-cont">
                                 <img th:src="${DepDur.get(iterStat.index).getAirlineImg()}" style="width: 150px;" alt="이미지">
                                 <div class="text-area">
@@ -58,7 +75,7 @@
                                 </div>
                             </div>
                             <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
-                                <span th:onclick="|location.href='@{/member/hamster/airplane/ticketing(key=${airInfo.getFfvId()})}'|">결제하기</span>
+                                <span th:onclick="|location.href='@{/member/hamster/airplane/ticketing(key=${airInfo.getFfvId()})}'|">따로 결제하기</span>
                             </button>
                                 <img th:src="@{/common/images/xButton.png}" class="top-right-image" style="height: 40px; width: 40px;"
                                      th:onclick="'deleteAir(' + ${iterStat.index} + ')'">
@@ -70,21 +87,28 @@
 
                     <div class="myedu-cont-wrap" id="hotelList">
                         <th:block th:if="${hotelList != null}" th:each="hotel, iterStat : ${hotelList}">
-                            <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${hotelList.get(iterStat.index).getUuid() != null}">
-                                <div class="myedu-cont" style="width: 507px; height: 124px;">
-                                    <img th:src="${hotelList.get(iterStat.index).getHotelObj().getSampleImage()}" style="width: 150px; height: 120px;" alt="이미지">
-                                    <div class="text-area">
+                            <div class="myedu-area hotel-box" style="position: relative; border: 1px solid lightgray;" th:if="${hotelList.get(iterStat.index).getUuid() != null}">
+                                <input type="hidden" class="hotelName" th:value="${hotel.getHotelObj().getHotelName()}">
+                                <input type="hidden" class="uuid" th:value="${hotel.getUuid()}">
+                                <input type="hidden" class="color" value="0">
+                                <div class="myedu-cont " style="width: 507px; height: 124px;">
+                                    <img th:src="${hotelList.get(iterStat.index).getHotelObj().getSampleImage()}" style="width: 150px; height: 120px; object-fit: fill;" alt="이미지">
+                                    <div class="text-area" style="width: 337px;">
                                         <input type="hidden" th:value="${hotelList.get(iterStat.index).getUuid()}" th:id="'hotelKey_'+${iterStat.index}">
                                         <legend class="legend" th:text="${hotelList.get(iterStat.index).getHotelObj().getHotelName()}"></legend>
                                         <legend class="legend" th:text="'('+${hotelList.get(iterStat.index).getIataCodeObj().getCountryKo()}+')'+ ${hotelList.get(iterStat.index).getIataCodeObj().getCityKo()}"></legend>
                                         <legend class="legend hotelKey" th:id="'hotelKey_'+${iterStat.index}"
                                                  th:text="${hotelList.get(iterStat.index).getOfferObj().getCheckIn()}+ ' ~ ' +${hotelList.get(iterStat.index).getOfferObj().getCheckOut()}"></legend>
-                                        <legend class="legend" th:text="${#numbers.formatInteger(hotelList.get(iterStat.index).getOfferObj().getTotalCost(), 3, 'COMMA') + '원'}"></legend>
+                                        <legend class="legend price"
+                                                th:id="'hotelPrice'+${iterStat.index}"
+                                                th:attr="data-value=${hotelList.get(iterStat.index).getOfferObj().getTotalCost()}"
+                                                th:text="${#numbers.formatInteger(hotelList.get(iterStat.index).getOfferObj().getTotalCost(), 3, 'COMMA') + '원'}"></legend>
                                     </div>
                                 </div>
                                 <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
-                                    <span>결제하기</span>
+                                    <span th:onclick="|location.href='@{/member/hamster/hotel/ticketing(uuid=${hotel.getUuid()})}'|">따로 결제하기</span>
                                 </button>
+
                                 <img th:src="@{/common/images/xButton.png}" class="top-right-image" style="height: 40px; width: 40px;"
                                      th:onclick="'deleteHotel(' + ${iterStat.index} + ')'">
                             </div>
@@ -97,15 +121,81 @@
         </div>
     </div>
     <!-- [E]tedu-N47 -->
+    <form method="post" action="/member/hamster/hotel/ticketing">
+        <div class="tedu-N20 cart" data-bid="nflxmnn4ye" style="z-index: 0; margin-top: 1px" id="sidebar">
+            <div class="content-container">
+                <div class="sidebar">
+                    <div class="text-warp">
+                        <div class="cate-area" style="display: flex; font-size: 2rem;">
+                            <p class="price-info"><b>총 요금</b></p>
+                            <p class="total-price" style="color: red"><b id="price-box">₩ 0 원</b></p>
+                        </div>
+                        <div class="price-area" id="hotelArea" style="display: block">
+                            <p class="price-info" id="hotelItem">선택된 상품이 없습니다.</p>
+                        </div>
+                        <input type="submit" class="tedu-btn tedu-btn-light add-cart" value="결제하기">
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
+
 </main>
 <script type="text/javascript" th:src="@{/ham.js/DeleteButton.js}"></script>
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
 </div>
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+<script th:href="@{/ham.js/CheckShoppingCart.js}"></script>
 <script>
+
+    function formatNumberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    let totalCost = 0;
     $(document).ready(function () {
+        const $sidebar = $('#sidebar');
+        const $priceBox = $('#price-box');
+        $('.hotel-box').on('click', function() {
+            let num = $(this).index('.myedu-area');
+            let $price = $(this).find('.price');
+            let $uuid = $(this).find('.uuid');
+            let $color = $(this).find('.color');
+            let $hotelName = $(this).find('.hotelName');
+            let $hotelArea = $sidebar.find('#hotelArea');
+            let uuidVal = $uuid.val(); // UUID 값 저장
+
+            $hotelArea.find('#hotelItem').remove();
+            if ($color.val() === '0') {
+                $(this).css('background-color', 'lightgray');
+                $color.val('1');
+
+                if ($hotelArea.find(`#${uuidVal}`).length === 0) {
+                    console.log($price.text().replaceAll('원', ''));
+                    totalCost += Number($price.text().replaceAll('원', '').replaceAll(',',''));
+                    // 해당 ID의 요소가 없으면 추가
+                    $hotelArea.append(
+                        `
+                        <div id='${uuidVal}' class="hotel-uuid">
+                            <p>가격 : ${$price.text()}</p>
+                            <input class="uuid" name="uuid" type="hidden" value='${uuidVal}'></input>
+                        </div>
+                        `
+                    );
+                }
+            } else {
+                $(this).css('background-color', 'white');
+                $color.val('0');
+                $hotelArea.find(`#${uuidVal}`).remove(); // UUID 값으로 요소 제거
+                totalCost -= Number($price.text().replaceAll('원', '').replaceAll(',',''));
+                if($hotelArea.find('#hotelItem').length === 0 && $hotelArea.find('.hotel-uuid').length === 0){
+                    $hotelArea.append(`<p class="price-info" id="hotelItem">선택된 상품이 없습니다.</p>`);
+                }
+            }
+            console.log('총 금액  : '+totalCost);
+            $priceBox.text(`₩ ${formatNumberWithCommas(totalCost)} 원`);
+        });
 
         let $hotelList = $('#hotelList');
         let $airList = $('#airList');
