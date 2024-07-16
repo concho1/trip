@@ -87,9 +87,6 @@ public class Hamcontroller {
         List<CartSegment> segComb = this.airservice.getComb(Key);
         List<CartPricing> price = this.airservice.getPricing(Key);
 
-        System.out.println(DurationInfo.size());
-        System.out.println(DepDur.get(0).getAirlineImg());
-
         // DepDur 리스트 처리 Optional 이용 null 처리했습니당
         for (CartDuration depDur : DepDur) {
             depDur.setAirlineImg(
@@ -123,18 +120,22 @@ public class Hamcontroller {
 
     }
 
-    @RequestMapping("hotel/shoppingCart-put")
-    public Map<String, String> hotelShoppingCart(
-            @ModelAttribute HotelShoppingCartDTO hotelShoppingCart){
-        System.out.println(hotelShoppingCart.toString());
-        // DB 저장하는 코드 작성
+    @RequestMapping("hotel/ticketing")
+    public ModelAndView hotelTicketing(@RequestParam("uuid")List<String> uuid,Principal principal){
+
+        System.out.println(uuid);
+
+        List<ConHotelCartAll> hotelAllCont = new ArrayList<>();
+        List<String> country = this.airservice.getCountry();
+
+        for(int i = 0; i < uuid.size(); i ++){
+            hotelAllCont.add(hotelCartService.getConHotelContListByUuid(uuid.get(i)));
+        }
 
 
-        // 호텔 쇼핑카트 url 넘겨주기
-
-        return new HashMap<>(Map.of(
-                "result", "ok",
-                "url", "/member/hamster/ 넘겨줄 url 작성"));
+        return new ModelAndView("Hamster/hotelReservation")
+                .addObject("hotelAllCont",hotelAllCont)
+                .addObject("country",country);
     }
 
     @GetMapping("/shoppingCart")
@@ -158,8 +159,7 @@ public class Hamcontroller {
             DepDur.addAll(this.airservice.getDepDur(airKey.get(i)));
             CombDur.addAll(this.airservice.getCombDur(airKey.get(i)));
         }
-        System.out.println(DepDur);
-        System.out.println(CombDur);
+
         // DepDur 리스트 처리 Optional 이용 null 처리했습니당
         for (CartDuration depDur : DepDur) {
             depDur.setAirlineImg(
@@ -178,14 +178,8 @@ public class Hamcontroller {
         }
         // 여기서 호텔 리스트 받아오는거 추가
         List<ConHotelCartAll> hotelCartAllList
-                = hotelCartService.getConHotelCartAllByMemberId(memberId);
+                = hotelCartService.getConHotelCartAllListByMemberId(memberId);
         // 테스트용 offer 가 방, hotel 은 호텔
-        if(!hotelCartAllList.isEmpty()){
-            for(ConHotelCartAll hotelCartAll : hotelCartAllList){
-                System.out.println(hotelCartAll.getHotelObj().getHotelName());
-                System.out.println(hotelCartAll.getOfferObj().getCategory());
-            }
-        }
 
         return new ModelAndView("Hamster/shoppingCart")
                 .addObject("airInfo",airInfo)

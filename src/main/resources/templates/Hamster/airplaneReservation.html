@@ -5,8 +5,9 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <style>
-    .tedu-N45 .sidebar {
+    .reservation {
         width: 55rem;
+        margin-right: 80px;
     }
 </style>
 <body>
@@ -21,7 +22,7 @@
                     <div class="title-wrap">
                         <h3 class="cont-title">결제하기</h3>
                     </div>
-                    <div class="payment-wrap">
+                    <div class="payment-wrap" style="position: relative; border: 1px solid lightgray;">
                         <form method="post" action="/member/hamster/airplane/payment">
                             <input type="hidden" th:value="${AirKey}" name="key">
                         <div class="payment-area">
@@ -178,7 +179,7 @@
     </div>
     <!-- [E]tedu-N44 -->
     <!-- [S]tedu-N45 -->
-    <div class="tedu-N45" data-bid="WmLXi9pyUS">
+    <div class="tedu-N45 reservation" data-bid="WmLXi9pyUS">
         <div class="content-container">
             <div class="sidebar">
                 <div class="title-wrap">

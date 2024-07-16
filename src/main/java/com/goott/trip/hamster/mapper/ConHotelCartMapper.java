@@ -10,7 +10,7 @@ import java.util.Optional;
 @Mapper
 public interface ConHotelCartMapper {
     int saveConHotelCart(ConHotelCart conHotelCart);
-    List<ConHotelCartAll> getConHotelCartAllByMemberId(String memberId);
-
+    List<ConHotelCartAll> getConHotelCartAllListByMemberId(String memberId);
+    ConHotelCartAll getConHotelContListByUuid(String uuid);
     Optional<ConHotelCart> findConHotelCartByMemberIdAndOfferUuid(String memberId, String offerUuid);
 }
