@@ -38,8 +38,8 @@
                     <div class="vip-container" id="myVIP">
 
                         <div class="vip-tier">
-                            <h3>내 등급: <span th:text="${vipLevel}"></span></h3>
-                            <p>현재 결제 완료 금액: <span th:text="${totalSpent}"></span></p>
+                            <h3>내 등급: <span id="vip-level" th:text="${vipLevel}"></span></h3>
+                            <p>현재 결제 완료 금액: <span id="totalSpent" th:text="${totalSpent}"></span></p>
                             <div class="vip-bar-container">
                                 <div class="vip-bar" id="vip-bar"></div>
                                 <div class="vip-star-marker" style="left: 1%;" title="Bronze">&#9733;</div>
@@ -102,7 +102,7 @@
                             <ul class="explain-benefits">
                                 <li>베스트 요금 보장</li>
                                 <li>회원 특가 혜택</li>
-                                <li>VIP 특가 혜택 - 최대 12% 할인</li>
+                                <li>Silver 특가 혜택 - 최대 12% 할인</li>
                             </ul>
                         </div>
 

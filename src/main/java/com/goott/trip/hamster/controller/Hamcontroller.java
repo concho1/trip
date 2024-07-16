@@ -99,7 +99,7 @@ public class Hamcontroller {
         ModelAndView modelAndView = new ModelAndView("Hamster/airplaneReservation");
         String memId = principal.getName();
 
-        String AirKey = "ffv/4d7e127f-7452-44d7-9386-25522abe8f00";
+        String AirKey = "ffv/422ea369-3eb7-4c5d-b32e-a513b8c25488";
         List<CartDuration> DurationInfo = this.airservice.getDurationInfo(AirKey);
         List<CartDuration> DepDur = this.airservice.getDepDur(AirKey);
         List<CartDuration> CombDur = this.airservice.getCombDur(AirKey);
