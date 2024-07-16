@@ -260,7 +260,7 @@ body, html {
 }
 
 .card-qna {
-    width: 100%;
+    width: 1000px;
     max-width: 1000px;
     height : 50%;
     background-color: #fff;
@@ -273,6 +273,10 @@ body, html {
 
 .card-body {
     padding: 20px;
+}
+
+.chart-card-body {
+    display: flex;
 }
 
 .card-title {
@@ -543,7 +547,7 @@ input[type="checkbox"]:checked + label:after {
     align-items: stretch;
     width: 100%;
     max-width: 1500px;
-    max-height: 100%;
+    max-height: 90%;
     overflow: auto;
 }
 
@@ -682,9 +686,8 @@ input[type="checkbox"]:checked + label:after {
 }
 
 .page-wrapper {
-    align-self: center;
-    align-items: center;
     display: flex;
+    margin: auto;
 }
 
 .pagingImg {
@@ -727,7 +730,7 @@ input[type="checkbox"]:checked + label:after {
     transition: background-color 0.3s;
 }
 
-.qna-button:hover {
+.qna-button:hover, .qnaBtn:hover {
     border: 2px solid royalblue;
     background-color: rgba(0, 86, 179, 0.5);
     color: white;
@@ -754,4 +757,44 @@ input[type="checkbox"]:checked + label:after {
     font-size: 13px;
     padding: 10px;
     border-radius: 10px;
+}
+
+.qnaBtn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: white;
+    border: 1px solid dimgray;
+    border-radius: 20px;
+    font-size: 13px;
+    transition: background-color 0.3s;
+}
+
+.qnaBtn-disable {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: gray;
+    border: 1px solid dimgray;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: default;
+}
+
+.memberBtn {
+    display: inline-block;
+    width: 100px;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: white;
+    border: 1px solid dimgray;
+    border-radius: 20px;
+    font-size: 13px;
+    transition: background-color 0.3s;
+}
+
+.memberBtn:hover {
+    border: 2px solid gray;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
 }

@@ -130,11 +130,19 @@
                                             #{arrivalAt}, #{duration}, #{carrierCode}, #{carrierNum}, #{airlineKor})
     </insert>
 
+    <select id="findKeyByUrl" parameterType="String" resultType="String">
+        select img_key from trip.image where url like concat('%', #{url}, '%')
+    </select>
+
     <insert id="insertCartDuration" parameterType="CartDuration">
         insert into trip.cartDuration values(#{id}, #{ffvId}, #{depOrComb}, #{duration}, #{airline}, #{airlineKor}, #{airlineImg})
     </insert>
 
     <insert id="insertCartFlight" parameterType="CartFlight">
         insert into trip.cartFlight values(#{ffvId}, #{origin}, #{destination}, #{departure}, #{comeback}, #{adults}, #{children}, #{infants}, #{totalBase}, #{totalPrice}, now())
+    </insert>
+
+    <insert id="updateUsages">
+        insert into trip.flight_api_usages values(curdate(), 1) on duplicate key update cnt = cnt + 1
     </insert>
 </mapper>

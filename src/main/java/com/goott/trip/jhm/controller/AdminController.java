@@ -1,6 +1,8 @@
 package com.goott.trip.jhm.controller;
 
+import com.goott.trip.concho.model.api.ConApiUsage;
 import com.goott.trip.jhm.model.Page;
+import com.goott.trip.jhm.model.PeopleCnt;
 import com.goott.trip.jhm.model.QNA;
 import com.goott.trip.jhm.service.AdminService;
 import com.goott.trip.jhm.service.QNAService;
@@ -12,9 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 @RestController
@@ -34,49 +40,46 @@ public class AdminController {
 
         ModelAndView mav = new ModelAndView("jhm/admin_main");
 
-        int qnaPage;
-        int memPage;
+        // 접속자
+        int count = 9;
+        List<PeopleCnt> peopleCntList = this.service.getPeopleCnt(count);
 
-        if(request.getParameter("qnaPage") != null) {
-            qnaPage = Integer.parseInt(request.getParameter("qnaPage"));
-        }else {
-            qnaPage = 1;
+        // API 이용률
+        LocalDate today = LocalDate.now();
+        String[] hotel_category = {"HOTEL_LIST_IATA", "HOTEL_LIST_GPS", "HOTEL_OFFER", "HOTEL_LEVEL"};
+        Map<String, Integer> usages = new HashMap<>();
+
+        String year_month = today.toString().substring(0, 7);
+
+        for(int i=0; i<hotel_category.length; i++) {
+            Map<String, String> serMap = new HashMap<>();
+            serMap.put("category", hotel_category[i]);
+            serMap.put("month", year_month);
+            int cnt = this.service.countHotelAPI(serMap);
+            if(cnt == 0) {
+                cnt = 1;
+            }
+            usages.put(hotel_category[i], cnt);
         }
 
-        if(request.getParameter("memPage") != null) {
-            memPage = Integer.parseInt(request.getParameter("memPage"));
-        }else {
-            memPage = 1;
-        }
+        int fCnt = this.service.countFlightAPI(year_month);
+
+        usages.put("FLIGHT", fCnt);
+
+        System.out.println(usages);
+
 
         // Q&A
-
-        int qnaTotalRecord = this.qnaService.getQNACountForAdmin();
-
-        Page qnaPdto = new Page(qnaPage, rowsize, qnaTotalRecord);
-
-        List<Integer> qnaPagList = IntStream.rangeClosed(qnaPdto.getStartBlock(), qnaPdto.getEndBlock()).boxed().toList();
-
-        List<QNA> qnaList = this.qnaService.getQNAListForAdmin(qnaPdto);
+        List<QNA> qnaList = this.qnaService.getQNAListForAdmin();
 
         // 회원관리
+        List<Member> members = this.service.getMembers();
 
-        int memTotalRecord = this.service.getMemberCount();
-
-        Page memdto = new Page(memPage, rowsize, memTotalRecord);
-
-        List<Member> members = this.service.getMembers(memdto);
-
-        List<Integer> memPagList = IntStream.rangeClosed(memdto.getStartBlock(), memdto.getEndBlock()).boxed().toList();
-
+        mav.addObject("people", peopleCntList);
+        mav.addObject("APIUsage", usages);
         mav.addObject("qnaList", qnaList);
-        mav.addObject("qnaPagList", qnaPagList);
-        mav.addObject("qnaPaging", qnaPdto);
         mav.addObject("members", members);
-        mav.addObject("memPagList", memPagList);
-        mav.addObject("memPaging", memdto);
 
         return mav;
     }
-
 }

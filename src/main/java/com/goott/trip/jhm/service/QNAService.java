@@ -29,6 +29,6 @@ public class QNAService {
     public void changeStatus(int no) { this.mapper.changeStatus(no); }
     public String getAnswer(int no) { return this.mapper.getAnswer(no); }
     public int getQNACountForAdmin() { return this.mapper.getQNACountForAdmin(); }
-    public List<QNA> getQNAListForAdmin(Page pdto) { return this.mapper.getQNAListForAdmin(pdto); }
+    public List<QNA> getQNAListForAdmin() { return this.mapper.getQNAListForAdmin(); }
 
 }

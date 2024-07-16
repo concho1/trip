@@ -20,10 +20,20 @@
         select count(*) from trip.member where role = 'MEMBER'
     </select>
 
-    <select id="getMembers" parameterType="Page" resultType="Member">
-        <![CDATA[
-        select * from (select row_number() over (order by created_at desc) rnum, m.* from trip.member m where role = 'MEMBER' order by created_at desc) as `rm.*` where rnum >= #{startNo} and rnum <= #{endNo}
-        ]]>
+    <select id="getMembers" resultType="Member">
+        select * from trip.member where role = 'MEMBER' order by created_at desc
+    </select>
+
+    <select id="getPeopleCnt" parameterType="int" resultType="PeopleCnt">
+        select * from trip.peopleCnt order by created_at desc limit #{n}
+    </select>
+
+    <select id="countHotelAPI" parameterType="map" resultType="int">
+        select coalesce(sum(cnt), 0) from trip.con_api_usage where use_date like concat('%', #{month}, '%') and category = #{category}
+    </select>
+
+    <select id="countFlightAPI" parameterType="String" resultType="int">
+        select coalesce(sum(cnt), 0) from trip.flight_api_usages where use_date like concat('%', #{month}, '%')
     </select>
 
 </mapper>
