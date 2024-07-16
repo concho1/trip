@@ -70,46 +70,24 @@ public class Hamcontroller {
         return new ModelAndView("Hamster/airplaneInfoList").addObject("list",list);
     }
 
-    @PostMapping("airplane/ticketing")
-    public ModelAndView airticketing(@RequestParam(name = "key", required = false)List<String> key,Principal principal){
-
-        List<String> country = this.airservice.getCountry();
-
-        if(key.size() == 1){
-            Testproduct cont = this.airservice.airplaneCont(key.get(0));
-            System.out.println(cont);
-            return new ModelAndView("Hamster/airplaneReservation").addObject("cont",cont).
-                    addObject("country",country);
-        }else {
-            ModelAndView modelAndView = new ModelAndView("Hamster/airplaneReservation");
-            for(int i = 0; i < key.size(); i++){
-
-                Testproduct cont = this.airservice.airplaneCont(key.get(i));
-                modelAndView.addObject("cont",cont).addObject("country",country);
-            }
-            return modelAndView;
-        }
-
-    }
-
     @GetMapping("airplane/ticketing")
-    public ModelAndView airticketingaa(@RequestParam("key")String Key,Principal principal){
+    public ModelAndView airTicketing(@RequestParam("key")String Key,Principal principal){
 
         ModelAndView modelAndView = new ModelAndView("Hamster/airplaneReservation");
         String memId = principal.getName();
 
-        String AirKey = "ffv/422ea369-3eb7-4c5d-b32e-a513b8c25488";
-        List<CartDuration> DurationInfo = this.airservice.getDurationInfo(AirKey);
-        List<CartDuration> DepDur = this.airservice.getDepDur(AirKey);
-        List<CartDuration> CombDur = this.airservice.getCombDur(AirKey);
-        List<CartSegment> airSeg = this.airservice.getSegment(AirKey);
-        List<CartFlight> airInfo = this.airservice.getAirInfo(AirKey);
+        List<CartDuration> DurationInfo = this.airservice.getDurationInfo(Key);
+        List<CartDuration> DepDur = this.airservice.getDepDur(Key);
+        List<CartDuration> CombDur = this.airservice.getCombDur(Key);
+        List<CartSegment> airSeg = this.airservice.getSegment(Key);
+        List<CartFlight> airInfo = this.airservice.getAirInfo(Key);
         List<String> country = this.airservice.getCountry();
         List<String> OnlyCountry = this.airservice.getOnlyCountry();
-        List<CartSegment> segDep = this.airservice.getDep(AirKey);
-        List<CartSegment> segComb = this.airservice.getComb(AirKey);
-        List<CartPricing> price = this.airservice.getPricing(AirKey);
+        List<CartSegment> segDep = this.airservice.getDep(Key);
+        List<CartSegment> segComb = this.airservice.getComb(Key);
+        List<CartPricing> price = this.airservice.getPricing(Key);
 
+        System.out.println(DurationInfo.size());
         System.out.println(DepDur.get(0).getAirlineImg());
 
         // DepDur 리스트 처리 Optional 이용 null 처리했습니당
@@ -131,7 +109,7 @@ public class Hamcontroller {
 
             return modelAndView
                     .addObject("country",country)
-                    .addObject("AirKey",AirKey)
+                    .addObject("AirKey",Key)
                     .addObject("airInfo",airInfo)
                     .addObject("airSeg",airSeg)
                     .addObject("segDep",segDep)
@@ -220,7 +198,7 @@ public class Hamcontroller {
 
     @PostMapping("airplane/cartHotelDelete")
     @ResponseBody
-    public Map<String,Object> categoryDelete(@RequestParam("hotelKeyVal")String hotelKeyVal, Principal principal){
+    public Map<String,Object> HotelDelete(@RequestParam("hotelKeyVal")String hotelKeyVal, Principal principal){
 
         System.out.println(hotelKeyVal);
 
@@ -228,6 +206,24 @@ public class Hamcontroller {
         try{
             String memberId = principal.getName();
             int check = this.shoppingCartService.deleteHotel(hotelKeyVal,memberId);
+            response.put("success", check);
+        }catch (Exception e) {
+            response.put("success", -1);
+            response.put("message", e.getMessage());
+        }
+        return response;
+    }
+
+    @PostMapping("airplane/cartAirDelete")
+    @ResponseBody
+    public Map<String,Object> AirDelete(@RequestParam("AirKeyVal")String AirKeyVal, Principal principal){
+
+        System.out.println(AirKeyVal);
+
+        Map<String, Object> response = new HashMap<>();
+        try{
+            String memberId = principal.getName();
+            int check = this.shoppingCartService.deleteAir(AirKeyVal,memberId);
             response.put("success", check);
         }catch (Exception e) {
             response.put("success", -1);

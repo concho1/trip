@@ -9,7 +9,12 @@ import java.util.List;
 public interface paymentMapper {
 
     int airplanePay(Payment payment);
+
+    /*VIP*/
     List<Payment> findByMemberIdAndStatus(String memberId, String status);
     void updateTicketStatus(String airKey, String status);
-
+    List<Payment> findByStatus(String status);
+    /*예약*/
+    List<Payment> findByMemberId(String memberId);
 }
+

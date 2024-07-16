@@ -23,6 +23,7 @@ public interface MemberMapper {
     // VIP
     void updateVIP(Member member);
     void updateTotalSpentByMember(Member member);
-    void updateTicketStatus(String airKey);
+
+    /*void updateTicketStatus(String airKey);*/
 
 }

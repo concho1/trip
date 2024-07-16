@@ -11,6 +11,7 @@
                 #{rideLastNameStr},#{rideBirthStr},#{rideCountryStr},#{ridePassportStr},#{ridePassportCountryStr},#{ridePassportExdateStr},Now(),#{status},#{paymentKey})
     </insert>
 
+    <!--VIP-->
     <select id="findByMemberIdAndStatus" parameterType="map" resultType="Payment">
         SELECT * FROM payment
         WHERE member_id = #{memberId} AND status = #{status}
@@ -22,12 +23,15 @@
         WHERE air_key = #{airKey}
     </update>
 
+    <select id="findByStatus" parameterType="String" resultType="Payment">
+        SELECT * FROM payment
+        WHERE status = #{status}
+    </select>
 
-    <!--<select id="getTotalSpentByMember" resultType="double" parameterType="String">
-        SELECT SUM(cf.total_price) AS total_spent
-        FROM payment p
-                 JOIN cartFlight cf ON p.air_key = cf.ffvId
-        WHERE p.member_id = #{memberId} AND p.status = 'completed'
-    </select>-->
+    <!--예약-->
+    <select id="findByMemberId" parameterType="String" resultType="Payment">
+        SELECT * FROM payment
+        WHERE member_id = #{memberId}
+    </select>
 
 </mapper>
