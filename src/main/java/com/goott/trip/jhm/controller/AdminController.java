@@ -1,30 +1,30 @@
 package com.goott.trip.jhm.controller;
 
-import com.goott.trip.concho.model.api.ConApiUsage;
-import com.goott.trip.jhm.model.Page;
+import com.goott.trip.common.model.Alarm;
 import com.goott.trip.jhm.model.PeopleCnt;
 import com.goott.trip.jhm.model.QNA;
 import com.goott.trip.jhm.service.AdminService;
 import com.goott.trip.jhm.service.QNAService;
 import com.goott.trip.security.model.Member;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("admin")
+@RequiredArgsConstructor
 public class AdminController {
 
     private final int rowsize = 5;
@@ -79,6 +79,25 @@ public class AdminController {
         mav.addObject("APIUsage", usages);
         mav.addObject("qnaList", qnaList);
         mav.addObject("members", members);
+
+        return mav;
+    }
+
+    @PostMapping("delete_user")
+    public ModelAndView deleteUser(@RequestParam("id") String id, Model model) {
+        ModelAndView mav = new ModelAndView();
+        Alarm alarm = new Alarm(model);
+
+
+        int res = this.service.deleteUser(id);
+
+        if(res > 0) {
+            alarm.setMessageAndRedirect("회원이 강퇴되었습니다.", "");
+            mav.setViewName(alarm.getMessagePage());
+        }else {
+            alarm.setMessageAndRedirect("회원 강퇴에 실패했습니다.", "");
+            mav.setViewName(alarm.getMessagePage());
+        }
 
         return mav;
     }

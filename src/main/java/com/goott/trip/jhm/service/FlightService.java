@@ -93,10 +93,12 @@ public class FlightService {
                 ddto.setAirline(airIATA);
                 ddto.setAirlineKor(this.mapper.findAirlineKor(airIATA));
                 String logo = this.mapper.findImgByIata(airIATA);
-                System.out.println("logo : "+logo);
                 String imgKey = null;
                 if(logo != null){
                     imgKey = this.img.findImageByKey(logo).get().getUrl();
+                }
+                if(imgKey == null) {
+                    imgKey = "/common/images/air.png";
                 }
                 ddto.setAirlineImg(imgKey);
                 this.insertAPIDuration(ddto);

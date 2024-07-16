@@ -78,8 +78,37 @@
                                             <span th:if="${qna.status == 1}" th:text="답변완료" class="finAnswer"></span>
                                         </td>
                                         <td>
-                                            <button th:if="${qna.status == 0}" type="button" class="qnaBtn" th:onclick="|location.href='qna_content'|">답변하기</button>
+                                            <button th:if="${qna.status == 0}" type="button" class="qnaBtn" onclick="answerModal()">답변하기</button>
                                             <span th:if="${qna.status == 1}" class="qnaBtn-disable">답변완료</span>
+                                            <div id="qnaModal" class="modal">
+                                                <div class="modal-content">
+                                                    <span class="close" id="qnaClose">&times;</span>
+                                                    <br>
+                                                    <hr>
+                                                    <form method="post" action="../customer/qna_answer">
+                                                        <input type="hidden" name="memberId" th:value="${qna.memberId}">
+                                                        <input type="hidden" name="qnaGroup" th:value="${qna.num}">
+                                                        <input type="hidden" name="page" value="0">
+                                                        <div>
+                                                            <div>
+                                                                <label for="adminQNATitle">제목</label> <br>
+                                                                <input type="text" id="adminQNATitle" th:value="${qna.title}" readonly>
+                                                            </div>
+                                                            <br>
+                                                            <div>
+                                                                <label for="adminQNACont">내용</label> <br>
+                                                                <textarea id="adminQNACont" class="adminAnswerCont" rows="6">[[${qna.cont}]]</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div id="faqModalBody">
+                                                            <label for="answer_cont">답변</label> <br>
+                                                            <textarea id="answer_cont" class="adminAnswerCont" name="cont" rows="6"></textarea>
+                                                        </div>
+                                                        <button type="submit" class="button-style">답변</button>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -102,9 +131,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="member : ${members}">
+                                    <tr th:each="member : ${members}" class="memTbody">
                                         <td><span th:text="${member.createdAt.toString().substring(0, 10)}"></span></td>
-                                        <td><span th:text="${member.id}"></span></td>
+                                        <td><span class="memId" th:text="${member.id}"></span></td>
                                         <td><span th:text="${member.name}"></span></td>
                                         <td><span th:text="${member.vip}"></span></td>
                                         <td><span th:text="${#numbers.formatCurrency(member.total)} + ' 원'"></span></td>
@@ -143,6 +172,11 @@
             guestValues.push(guest);
             userValues.push(user);
         })
+    }
+
+    function answerModal() {
+        $('#answer_cont').val('');
+        $('#qnaModal').show();
     }
 
     $('#qnaTab').DataTable({
@@ -263,6 +297,38 @@
         peopleChart.render();
         hotelChart.render();
         flightChart.render();
+
+        $('#qnaClose').click(function() {
+            $('#qnaModal').hide();
+        })
+
+        $(window).on('click', function(event) {
+            if ($(event.target).is('#qnaModal')) {
+                $('#qnaModal').hide();
+            }
+        })
+
+        $('.memberBtn').click(function() {
+            let id = $(this).closest('.memTbody').find('.memId').text();
+
+            if(confirm('정말로 회원을 강퇴시키겠습니까?')) {
+                let form = $('<form>', {
+                    'method' : 'POST',
+                    'action' : 'delete_user'
+                });
+
+                let key = $('<input>', {
+                    'type' : 'hidden',
+                    'name' : 'id',
+                    'value' : id
+                })
+
+                form.append(key);
+
+                $(document.body).append(form);
+                form.submit();
+            }
+        })
 
     });
 </script>
