@@ -41,7 +41,7 @@ public class UserRestController {
     public ModelAndView getSignInPage(){
         ModelAndView modelAndView = new ModelAndView("security/user/user_signIn_page");
 
-        String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
+        String baseImgKey = "trip/b9bb4aa5-475e-44ce-adce-7aba575d26a6";
         Optional<Image> imageOp = imageService.findImageByKey(baseImgKey);
 
         if(imageOp.isPresent()){
@@ -55,7 +55,7 @@ public class UserRestController {
 
         Optional<Image> imageOp = imageService.insertFile(file);
         if (imageOp.isEmpty()) {
-            String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
+            String baseImgKey = "trip/b9bb4aa5-475e-44ce-adce-7aba575d26a6";
             member.setImgKey(baseImgKey);
         } else {
             member.setImgKey(imageOp.get().getImgKey());
@@ -64,8 +64,6 @@ public class UserRestController {
         String pwTm = member.getPw();
         memberService.saveMember(member);
 
-        // 로그인 요청 자동
-        /*ModelAndView modelAndView = new ModelAndView("security/user/user_auto_login");*/
         ModelAndView modelAndView = new ModelAndView("security/user/user_signInOk_page");
         modelAndView.addObject("id", member.getId());
         modelAndView.addObject("pw", pwTm);
@@ -78,12 +76,6 @@ public class UserRestController {
         Boolean result = this.memberService.checkDupId(id);
         return result;
     }
-    /*// 비밀번호 중복 체크
-    @PostMapping("pwdDupPwd")
-    public Boolean checkDupPwd(@RequestParam("pw") String pw) {
-        Boolean result = this.memberService.checkDupPwd(pw);
-        return result;
-    }*/
 
     // 이메일 인증
     @PostMapping("sendEmail")

@@ -33,6 +33,8 @@ public interface FlightMapper {
     public void insertShoppingCart(ShoppingCart cart);
     public void insertCartPricing(CartPricing cp);
     public void insertCartSegment(CartSegment cs);
+    public String findKeyByUrl(String url);
     public void insertCartDuration(CartDuration cd);
     public void insertCartFlight(CartFlight cf);
+    public void updateUsages();
 }

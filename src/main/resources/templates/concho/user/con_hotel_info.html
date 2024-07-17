@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
@@ -56,6 +56,7 @@
     }
     .tedu-N18 .add-cart {
         width: 45%;
+        z-index: 999;
     }
     .tedu-N18 .text-wrap-1 {
         display: flex;
@@ -92,8 +93,9 @@
             flex: 1 1 100%; /* 1 column on mobile */
         }
     }
-    .tedu-N18 button {
-        z-index: 10;
+    .tedu-N23 .my-btn-box button {
+        position: relative; /* 부모 요소의 위치 지정 */
+        z-index: 10; /* 다른 요소보다 높은 z-index 지정 */
     }
 </style>
 
@@ -165,11 +167,10 @@
                                 <strong class="main-price" th:text="${allHotelInfo.getHotelOfferList().get(0).getTotalCost()}"></strong>
                                 <!---------------------------------------------------->
                             </div>
-                            <span id="converted-price" style="display: none;">환전된 가격: </span>
                             <p class="price-info">* 12개월 무이자 할부 시 할인 불가</p>
                         </div>
                     </div>
-                    <button type="button" class="tedu-btn tedu-btn-light add-cart" onclick="alert('클릭')">예약하기</button>
+                    <button type="button" class="tedu-btn tedu-btn-light add-cart">장바구니</button>
                 </div>
             </div>
         </div>
@@ -249,16 +250,17 @@
                             &nbsp;&nbsp;
                             <strong style="font-size: x-large; color: #4B00FF" class="currency"
                                     th:text="${hotelOffer.getCurrency()}"></strong>
-                            <!---------------------------------------------------->
-                            <!--<p id="converted-price" style="display: none;">환전된 가격: </p>-->
                         </div>
                     </div>
                     <div class="my-btn-box" style="display: flex">
                         <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; background-color: #4a8557; display: flex;"
                                 class="tedu-btn tedu-btn-light add-cart">예약하기</button>
                         <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; display: flex"
-                                class="tedu-btn tedu-btn-light add-cart">장바구니
-                        </button>
+                                class="tedu-btn tedu-btn-light add-cart"
+                                th:data-hotel-uuid="${allHotelInfo.getHotel().getUuid()}"
+                                th:data-iata-code="${allHotelInfo.getHotel().getIataFk()}"
+                                th:data-offer-uuid="${hotelOffer.getUuid()}">
+                            장바구니</button>
                     </div>
                 </section>
             </div>
@@ -618,7 +620,6 @@
     //let $reply = $('#reply');
 
     $(document).ready(function () {
-        const $orBtn = $('#exchange-btn');
         $('#offer-btn').click(function () {
             showOfferList();
         });
@@ -631,6 +632,21 @@
         $('#back-my').click(function () {
             history.back();
         });
+        $('.add-cart').click(function () {
+            let formData = new FormData();
+            formData.append('hotelUuid', $(this).data('hotel-uuid'));
+            formData.append('iataCode', $(this).data('iata-code'));
+            formData.append('offerUuid', $(this).data('offer-uuid'));
+            ajaxGo('/con/save-hotel-cart', formData, function (result) {
+                if(result.isOk === 'ok'){
+                    alert(result.message);
+                    console.log('성공');
+                }else{
+                    alert(result.message);
+                    console.log('실패');
+                }
+            });
+        })
 
         $('.slider-for').slick({
             slidesToShow: 1,
@@ -708,6 +724,28 @@
         hideAllSections(function() {
             $inquiry.fadeIn('slow');
         });
+    }
+
+    function ajaxGo(url, formData, callback){
+        let responseResult = null;
+        let baseUrl = window.location.origin;
+        $.ajax({
+            url: baseUrl + url,
+            type: 'POST',
+            data: formData,
+            async: true,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (callback) {
+                    callback(response);
+                }
+            },
+            error: function(error) {
+                //alert('통신 오류: ' + error);
+            }
+        });
+        return responseResult;
     }
 </script>
 </html>

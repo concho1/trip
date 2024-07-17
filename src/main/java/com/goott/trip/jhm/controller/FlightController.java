@@ -2,6 +2,7 @@ package com.goott.trip.jhm.controller;
 
 
 import com.amadeus.exceptions.ResponseException;
+import com.goott.trip.common.service.ImageService;
 import com.goott.trip.hamster.model.ShoppingCart;
 import com.goott.trip.jhm.model.*;
 import com.goott.trip.jhm.service.FlightService;
@@ -25,11 +26,6 @@ public class FlightController {
 
     @Autowired
     private FlightService service;
-
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void resetSerCount() {
-        this.service.resetSerCount();
-    }
 
     @RequestMapping("search_flight")
     public ModelAndView searchFlight() { return new ModelAndView("jhm/search_flight"); }
@@ -101,16 +97,11 @@ public class FlightController {
             ffv.setApiSegments(this.service.findSegmentForView(iCode));
             ffv.setApiDurations(this.service.findDurationForView(iCode));
             ffvList.add(ffv);
-            for(int j=0; j<ffv.getApiDurations().size(); j++) {
-                System.out.println("img : "+ffv.getApiDurations().get(j).getAirlineImg());
-            }
+
             ffvCount ++;
         }
 
-        int serCount = this.service.getSerCount();
-
         System.out.println("총 " + ffvCount + "개의 검색결과");
-        System.out.println("serCount : " + serCount);
 
         mav.addObject("flight", flight)
                 .addObject("ffvList", ffvList)
@@ -421,7 +412,8 @@ public class FlightController {
                                         cd.setAirlineKor(fins[1]);
                                         break;
                                     case "airlineImg" :
-                                        cd.setAirlineImg(fins[1]);
+                                        String imgKey = this.service.findKeyByUrl(fins[1]);
+                                        cd.setAirlineImg(imgKey);
                                         break;
                                 }
                             }

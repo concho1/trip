@@ -9,17 +9,6 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* VIP 배지 스타일 */
-/*.vip-badge {
-    display: inline-block;
-    padding: 10px 20px;
-    margin-bottom: 20px;
-    background-color: #ffcc00;
-    color: #fff;
-    font-weight: bold;
-    border-radius: 4px;
-}*/
-
 /* VIP 등급 스타일 */
 .vip-tier {
     padding: 35px 40px;
@@ -30,9 +19,6 @@
     transition: background-color 0.3s ease;
 }
 
-/*.vip-tier:hover {
-    background-color: #f1f1f1;
-}*/
 
 /* VIP 등급의 텍스트 스타일 */
 .vip-tier h3 {
@@ -64,13 +50,20 @@
     background-color: #ffd700; /* 노란색 */
 }
 
-.vip-star-marker {
+/*.vip-star-marker {
     position: absolute;
-    top: 50%;
+    top: 40%;
     transform: translate(-50%, -50%);
-    font-size: 1.5em;
+    font-size: 1.8em;
     color: #ccc;
+}*/
+.vip-star-marker {
+    position: relative;
+    font-size: 1.8em;
+    BOTTOM: 8%;
+    color: rgba(229, 229, 229, 0.82);
 }
+
 
 .vip-star-marker.filled {
     color: #ffd700;
@@ -92,18 +85,37 @@
 
 /* VIP 별 스타일 */
 .vip-stars {
-    display: flex;
+    /*display: flex;*/
     justify-content: space-between;
-    margin-top: 10px;
 }
 
 .vip-star {
-    font-size: 1.5em;
+    font-size: 1.8em;
     color: #ccc;
 }
 
 .vip-star.filled {
     color: #ffd700;
+}
+
+/* Bronze 별표 색상 설정 */
+.vip-star-marker.bronze.active {
+    color: #cf7d4e;
+}
+
+/* Silver 별표 색상 설정 */
+.vip-star-marker.silver.active {
+    color: #bec2c9;
+}
+
+/* Gold 별표 색상 설정 */
+.vip-star-marker.gold.active {
+    color: #ecc43a;
+}
+
+/* Platinum 별표 색상 설정 */
+.vip-star-marker.platinum.active {
+    color: #0a577c;
 }
 
 /* VIP 혜택 목록 스타일 */
@@ -139,3 +151,32 @@
 .vip-button:hover {
     background-color: #454e63;
 }
+
+.step-b, .step-s, .step-g, .step-p {
+    position: absolute;
+    width: 33px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 1.5px solid;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-b {
+    border-color: #cf7d4e;
+}
+
+.step-s {
+    border-color: #bec2c9;
+}
+
+.step-g {
+    border-color: #ecc43a;
+}
+
+.step-p {
+    border-color: #0a577c;
+}
+

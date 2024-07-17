@@ -156,7 +156,7 @@
             </label>
           </div>
           <!-- 호텔 -->
-          <form class="search-form" action="/user/concho/service/hotel-list-iata" method="get" id="hotelList">
+          <form class="search-form" action="/con/hotel-list" method="get" id="hotelList">
             <input name="iataCode" id="location" type="text" placeholder="어디로 떠나시나요?" class="destination" value="" autocomplete="off">
             <div class="destination-list" id="search-list">
               <div class="destination-item">
@@ -690,7 +690,7 @@
 
       $(document).click(function(event) {
         if (!$(event.target).closest('#location').length) {
-          if(!$(event.target).closest('.destination-item').length) {
+          if(!$(event.target).closest('.destination-item').length){
             $searchListDiv.hide();
           }
         }
@@ -746,16 +746,18 @@
           console.log(str);
           let formData = new FormData();
           formData.append("searchStr", str);
-          ajaxGo('/user/concho/search-iatacode', formData, function (response) {
+          ajaxGo('/con/search-iatacode', formData, function (response) {
             $searchListDiv.empty();
             let iataCodeList = response.result;
             iataCodeList.forEach(function (iataCode, index) {
               $searchListDiv.append(
-                      `<div class="destination-item">
+                      `
+                            <div class="destination-item">
                                 <span class="iata">${iataCode.iataCode}</span><span> / </span>
                                 <span class="contry-ko">${iataCode.countryKo}</span><span> / </span>
                                 <span class="city">${iataCode.cityKo}</span>
-                            </div>`
+                            </div>
+                            `
               );
             });
           });

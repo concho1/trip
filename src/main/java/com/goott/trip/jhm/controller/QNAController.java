@@ -25,7 +25,7 @@ import java.util.stream.IntStream;
 @RequestMapping("customer")
 public class QNAController {
 
-    private final int rowsize =5;
+    private final int rowsize =6;
 
     private int totalRecord = 0;
 
@@ -156,6 +156,7 @@ public class QNAController {
                                    Principal principal, Model model) {
         ModelAndView mav = new ModelAndView("jhm/QNAContent");
         Alarm alarm = new Alarm(model);
+        System.out.println(page);
 
         QNA cont = this.service.getQNAContent(num);
 
@@ -236,8 +237,13 @@ public class QNAController {
 
         if(res > 0) {
             this.service.changeStatus(qdto.getQnaGroup());
-            alarm.setMessageAndRedirect("답변이 등록되었습니다.", "qna?page="+page);
-            mav.setViewName(alarm.getMessagePage());
+            if(page != 0) {
+                alarm.setMessageAndRedirect("답변이 등록되었습니다.", "qna?page=" + page);
+                mav.setViewName(alarm.getMessagePage());
+            }else {
+                alarm.setMessageAndRedirect("답변이 등록되었습니다.", "");
+                mav.setViewName(alarm.getMessagePage());
+            }
         }else {
             alarm.setMessageAndRedirect("답변 등록에 실패하였습니다.", "");
             mav.setViewName(alarm.getMessagePage());

@@ -63,4 +63,12 @@
         select cont from trip.qna where qna_group = #{no} and status = 2
     </select>
 
+    <select id="getQNACountForAdmin" resultType="int">
+        select count(*) from trip.qna where step = 0
+    </select>
+
+    <select id="getQNAListForAdmin" resultType="QNA">
+        select * from trip.qna where step = 0 order by qna_group desc
+    </select>
+
 </mapper>

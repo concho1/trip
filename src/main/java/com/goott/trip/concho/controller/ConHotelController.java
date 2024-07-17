@@ -8,7 +8,10 @@ import com.goott.trip.concho.model.param.SearchParam;
 import com.goott.trip.concho.service.con_main.HotelListService;
 import com.goott.trip.concho.service.con_main.HotelOfferService;
 import com.goott.trip.concho.service.con_main.IataService;
+import com.goott.trip.hamster.model.ConHotelCart;
+import com.goott.trip.hamster.service.ConHotelCartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +28,7 @@ public class ConHotelController {
     private final IataService iataService;
     private final HotelListService hotelListService;
     private final HotelOfferService hotelOfferService;
+    private final ConHotelCartService hotelCartService;
     @PostMapping("search-iatacode")
     public Map<String, Object> findIataCodeBySearchApi(@RequestParam Map<String, String> paramMap){
         var resultMap = new HashMap<String, Object>();
@@ -76,5 +80,34 @@ public class ConHotelController {
             modelAndView.setViewName(alarm.getMessagePage());
         }
         return modelAndView;
+    }
+    @PostMapping("save-hotel-cart")
+    public Map<String, String> saveHotelCart(
+            Principal principal, ConHotelCart hotelCart){
+        var resultMap = new HashMap<String, String>();
+        Optional<String> memberIdOp = Optional.ofNullable(principal).map(Principal::getName);
+        if(memberIdOp.isEmpty()){
+            resultMap.put("message", "회원만 이용할 수 있는 서비스입니다.");
+            resultMap.put("isOk", "no");
+            return resultMap;
+        }else{
+            hotelCart.setMemberId(memberIdOp.get());
+            if(hotelCartService.findConHotelCartByMemberIdAndOfferUuid(
+                    memberIdOp.get(), hotelCart.getOfferUuid()).isEmpty()){
+                if(hotelCartService.saveConHotelCart(hotelCart)){
+                    resultMap.put("message", "카트담기 성공");
+                    resultMap.put("isOk", "ok");
+                    // 가져오는거 테스트
+                    // System.out.println(hotelCartService.getConHotelCartAllByMemberId(memberIdOp.get()).toString());
+                }else{
+                    resultMap.put("message", "카트담기 실패");
+                    resultMap.put("isOk", "no");
+                }
+            }else{
+                resultMap.put("message", "이미 장바구니에 있는 정보입니다.");
+                resultMap.put("isOk", "no");
+            }
+            return resultMap;
+        }
     }
 }

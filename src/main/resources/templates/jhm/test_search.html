@@ -17,7 +17,7 @@
                 <input type="hidden" id="children" th:value="${flight.children}">
                 <input type="hidden" id="infants" th:value="${flight.infants}">
                 <input type="hidden" id="memberId" th:value="${memberId}">
-                <img class="airlineImg" th:src="${ffv.getApiDurations().get(0).airlineImg}" style="width: 100px; height: 50px;">
+                <img class="airlineImg" th:src="${ffv.getApiDurations().get(0).airlineImg}" onerror="this.onerror=null; this.src='/common/images/air.png'" style="width: 100px; height: 50px;">
                 <span th:text="${orgKor}"></span>
                 <div class="separator">
                     <span th:text="${#strings.replace(#strings.replace(#strings.substring(ffv.apiDurations.get(0).duration, 2), 'H', '시간'), 'M', '분')}"></span>

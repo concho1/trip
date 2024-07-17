@@ -16,9 +16,13 @@
         insert into shoppingCart values (#{memId},#{key},"d","d")
     </insert>
 
-    <update id="deleteHotel" parameterType="String">
-        update shoppingCart set hotel_key = NULL where hotel_key = #{hotelKey} and member_id = #{memId}
-    </update>
+    <delete id="deleteAir" parameterType="String">
+        delete from shoppingCart where air_key = #{airKey} and member_id = #{memId}
+    </delete>
+
+    <delete id="deleteHotel" parameterType="String">
+        delete from con_hotel_cart where uuid = #{uuid} and member_id = #{memId}
+    </delete>
 
     <select id="getAirKey" resultType="String" parameterType="String">
         select air_key from shoppingCart where member_id = #{memId}
