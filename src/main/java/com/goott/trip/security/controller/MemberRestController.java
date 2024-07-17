@@ -254,13 +254,12 @@ public class MemberRestController {
 
     @GetMapping("reservation")
     public ModelAndView getReservation(Principal principal, Member member) {
+        String memberId = principal.getName();
         /*ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");
         setCommonAttributes(principal, modelAndView);
         return modelAndView;*/
-        /*String memberId = principal.getName();          //getName 이 member Id 임
-        System.out.println("memberId : " + memberId);*/
         ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");
-        /*modelAndView.addObject("memberId",memberId);*/
+        modelAndView.addObject("memberId",memberId);
         return modelAndView;
     }
 
