@@ -141,13 +141,13 @@ public class UserRestController {
             return new ModelAndView(alarm.getMessagePage());
         }
 
-        // 비밀번호 변경 시도
+        /*// 비밀번호 변경 시도
         int check = memberService.changePwd(id, pw);
         if (check > 0) {
             alarm.setMessageAndRedirect("비밀번호가 변경되었습니다.", "log-in");
         } else {
             alarm.setMessageAndRedirect("비밀번호 변경 실패", "");
-        }
+        }*/
 
         return new ModelAndView(alarm.getMessagePage());
     }
