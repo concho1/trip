@@ -17,6 +17,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 @Configuration
 @EnableWebSecurity
@@ -33,6 +37,8 @@ public class SecurityConfig {
             AuthenticationFailureHandler authenticationFailureHandler,
             OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService
     ) throws Exception {
+        String serverIp = getServerIp();
+        System.out.println(serverIp);
         httpSc
                 .authorizeHttpRequests(
                         (requests) -> requests
@@ -68,9 +74,23 @@ public class SecurityConfig {
                                 )
                                 .successHandler(customAuthenticationSuccessHandler)
                                 .failureHandler(authenticationFailureHandler)
+                ).headers(headers -> headers
+                        .addHeaderWriter(new StaticHeadersWriter(
+                                "Content-Security-Policy", "frame-ancestors 'self' " + serverIp)
+                        )
                 );
 
         return httpSc.build();
+    }
+
+    private String getServerIp() {
+        try {
+            InetAddress localHost = InetAddress.getLocalHost();
+            return "http://" + localHost.getHostAddress();
+        } catch (UnknownHostException e) {
+            System.out.println(e.getMessage());
+            return "http://localhost"; // 기본값
+        }
     }
 
     @Bean
