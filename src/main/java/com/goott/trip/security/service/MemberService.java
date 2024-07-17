@@ -47,7 +47,17 @@ public class MemberService {
     public boolean checkDupId(String id){return memberMapper.checkDupId(id);}
 
     // 비밀번호 변경(비밀번호 찾기)
-    public int changePwd(HashMap<String,String> map){return this.memberMapper.changePwd(map);}
+    public int changePwd(String id, String newPw) {
+        // 기존 비밀번호 확인
+        if (!checkPwd(id, newPw)) {
+            return 0; // 새 비밀번호가 기존 비밀번호와 동일하면 변경하지 않음
+        }
+        // 새 비밀번호 암호화
+        String encodedPwd = passwordEncoder.encode(newPw);
+
+        // 비밀번호 업데이트
+        return memberMapper.updatePwd(id, encodedPwd); // 업데이트 결과 반환
+    }
 
     // 수정
     public int updateMem(Member member) { return this.memberMapper.updateMem(member); }
