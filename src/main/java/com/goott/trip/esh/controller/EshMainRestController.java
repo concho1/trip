@@ -32,6 +32,5 @@ public class EshMainRestController {
             return Math.round(Double.parseDouble(this.exchangeService.getExchageRate(fromCurrency))/100.0);
         }
         return Math.round(Double.parseDouble(this.exchangeService.getExchageRate(fromCurrency)));
-
     }
 }
