@@ -122,8 +122,8 @@
         </association>
 
         <association property="paymentObj" javaType="ConPayment">
-            <result property="memberId" column="payment_member_id" />
             <result property="orderUuid" column="order_uuid" />
+            <result property="memberId" column="member_id" />
             <result property="airKey" column="air_key" />
             <result property="hotelIdKey" column="hotel_id_key" />
             <result property="hotelContKey" column="hotel_cont_key" />
@@ -131,8 +131,8 @@
             <result property="callFirstName" column="call_first_name" />
             <result property="callLastName" column="call_last_name" />
             <result property="callCountry" column="call_country" />
-            <result property="callNumber" column="call_number" />
             <result property="callEmail" column="call_email" />
+            <result property="callNumber" column="call_number" />
             <result property="rideFirstName" column="ride_first_name" />
             <result property="rideLastName" column="ride_last_name" />
             <result property="rideBirth" column="ride_birth" />
@@ -146,13 +146,6 @@
             <result property="orderTime" column="order_time" />
             <result property="status" column="status" />
             <result property="paymentKey" column="payment_key" />
-            <result property="rideFirstNameStr" column="ride_first_name_str" />
-            <result property="rideLastNameStr" column="ride_last_name_str" />
-            <result property="rideBirthStr" column="ride_birth_str" />
-            <result property="rideCountryStr" column="ride_country_str" />
-            <result property="ridePassportStr" column="ride_passport_str" />
-            <result property="ridePassportCountryStr" column="ride_passport_country_str" />
-            <result property="ridePassportExdateStr" column="ride_passport_exdate_str" />
         </association>
     </resultMap>
 </mapper>

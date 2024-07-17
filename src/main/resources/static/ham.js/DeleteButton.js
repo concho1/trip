@@ -2,8 +2,6 @@ function deleteAir(num) {
 
     var AirKeyVal = $('#airKey_'+num).val();
 
-    alert(AirKeyVal);
-
     $.ajax({
         url: '/member/hamster/airplane/cartAirDelete',
         method: 'POST',
@@ -27,7 +25,6 @@ function deleteHotel(num) {
 
     var hotelKeyVal = $('#hotelKey_'+num).val();
 
-    alert(hotelKeyVal)
 
     $.ajax({
         url: '/member/hamster/airplane/cartHotelDelete',

@@ -17,4 +17,14 @@ public class paymentService {
         return this.mapper.airplanePay(payment);
     }
 
+    public int hotelPay(String UUID,String memId,String firstName,String lastName,String country,String email,String paymentKey){
+
+        return this.mapper.hotelPay(UUID,memId, firstName,lastName,country,email,paymentKey);
+    }
+
+    public int insertHotel(String UUID,String memId,String cartUUID){
+
+        return this.mapper.insertHotel(UUID,memId,cartUUID);
+    }
+
 }
