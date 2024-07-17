@@ -6,7 +6,10 @@
 <link rel="stylesheet" th:href="@{/security/css/vip.css}">
 <link rel="stylesheet" th:href="@{/security/css/vipInfo.css}">
 
-<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<head th:replace="~{common/head-top :: head-top-fragment}">
+    <title>감자팀</title>
+
+</head>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
 
@@ -39,19 +42,28 @@
 
                         <div class="vip-tier">
                             <h3>내 등급: <span id="vip-level" th:text="${vipLevel}"></span></h3>
-                            <p>현재 결제 완료 금액: <span id="totalSpent" th:text="${totalSpent}"></span></p>
+                            <p>현재 결제 완료 금액: <span id="totalSpent" th:text="${#numbers.formatInteger(totalSpent, 3, 'COMMA') + '원'}"></span></p>
                             <div class="vip-bar-container">
                                 <div class="vip-bar" id="vip-bar"></div>
-                                <div class="vip-star-marker" style="left: 1%;" title="Bronze">&#9733;</div>
-                                <div class="vip-star-marker" style="left: 20%;" title="Silver">&#9733;</div>
-                                <div class="vip-star-marker" style="left: 50%;" title="Gold">&#9733;</div>
-                                <div class="vip-star-marker" style="left: 99%;" title="Platinum">&#9733;</div>
+                                <div class="step-b">
+                                    <div class="vip-star-marker bronze" title="Bronze">&#9733;</div>
+                                </div>
+                                <div class="step-s" style="left: 19.4%;">
+                                    <div class="vip-star-marker silver" title="Silver">&#9733;</div>
+                                </div>
+                                <div class="step-g" style="left: 48%;">
+                                    <div class="vip-star-marker gold" title="Gold">&#9733;</div>
+                                </div>
+                                <div class="step-p" style="left: 97%;">
+                                    <div class="vip-star-marker platinum" title="Platinum">&#9733;</div>
+                                </div>
                             </div>
+
                             <div class="vip-tier-labels">
-                                <span class="vip-tier-label" style="left: 1%;">Bronze</span>
-                                <span class="vip-tier-label" style="left: 20%;">Silver</span>
-                                <span class="vip-tier-label" style="left: 50%;">Gold</span>
-                                <span class="vip-tier-label" style="left: 99%;">Platinum</span>
+                                <span class="vip-tier-label" style="left: 1.4%;">Bronze</span>
+                                <span class="vip-tier-label" style="left: 20.8%;">Silver</span>
+                                <span class="vip-tier-label" style="left: 49.4%;">Gold</span>
+                                <span class="vip-tier-label" style="left: 98.6%;">Platinum</span>
                             </div>
                         </div>
                         <ul class="vip-benefits" th:if="${vipLevel}=='Bronze'">
@@ -66,12 +78,12 @@
                         <ul class="vip-benefits" th:if="${vipLevel}=='Gold'">
                             <li>베스트 요금 보장</li>
                             <li>회원 특가 혜택</li>
-                            <li>Gold 특가 혜택 - 최대 12% 할인</li>
+                            <li>Gold 특가 혜택 - 최대 18% 할인</li>
                         </ul>
                         <ul class="vip-benefits" th:if="${vipLevel}=='Platinum'">
                             <li>베스트 요금 보장</li>
                             <li>회원 특가 혜택</li>
-                            <li>Platinum 특가 혜택 - 최대 12% 할인</li>
+                            <li>Platinum 특가 혜택 - 최대 25% 할인</li>
                             <li>일부 숙소 이용 시 무료 조식 및 기타 혜택 제공</li>
                         </ul>
 
@@ -115,8 +127,7 @@
                             <ul class="explain-benefits">
                                 <li>베스트 요금 보장</li>
                                 <li>회원 특가 혜택</li>
-                                <li>VIP 특가 혜택 - 최대 12% 할인</li>
-                                <li>VIP 특가 혜택 - 최대 18% 할인</li>
+                                <li>Gold 특가 혜택 - 최대 18% 할인</li>
                             </ul>
                         </div>
 
@@ -129,9 +140,7 @@
                             <ul class="explain-benefits">
                                 <li>베스트 요금 보장</li>
                                 <li>회원 특가 혜택</li>
-                                <li>VIP 특가 혜택 - 최대 12% 할인</li>
-                                <li>VIP 특가 혜택 - 최대 18% 할인</li>
-                                <li>VIP 특가 혜택 - 최대 25% 할인</li>
+                                <li>Platinum 특가 혜택 - 최대 25% 할인</li>
                                 <li>일부 숙소 이용 시 무료 조식 및 기타 혜택 제공</li>
                             </ul>
                         </div>
@@ -142,15 +151,13 @@
         </div>
     </div>
 </main>
-
+<script th:inline="javascript">
+    const vipLevel = [[${vipLevel}]]; // Thymeleaf에서 VIP 등급 가져오기
+</script>
 <script type="text/javascript" th:src="@{/security/js/vip.js}"></script>
 <script type="text/javascript" th:src="@{/security/js/vipInfo.js}"></script>
 <script type="text/javascript" th:src="@{/security/js/myInfo.js}"></script>
-<!--
-<script th:inline="javascript">
 
-</script>
--->
 
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
