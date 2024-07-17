@@ -319,16 +319,20 @@ public class Hamcontroller {
                                             @RequestParam String paymentKey,Principal principal) throws UnsupportedEncodingException, MessagingException {
 
 
+        List<ConHotelCartAll> hotelList = new ArrayList<>();
         String memId = principal.getName();
+        double totalPrice = 0;
+
 
            int check = this.paymentservice.hotelPay(UUID,memId,firstName,lastName,country,email,paymentKey);
 
            if(check >0 ){
                for(int i =0; i < cartUUID.size(); i++){
-
+                   hotelList.add(this.hotelCartService.getConHotelContListByUuid(cartUUID.get(i).replaceAll("\\[","").replaceAll("\\]","")));
                    this.paymentservice.insertHotel(UUID,memId,cartUUID.get(i).replaceAll("\\[","").replaceAll("\\]",""));
-               System.out.println('완');
+                   totalPrice += hotelList.get(i).getOfferObj().getTotalCost();
            }
+               this.emailService.sendHotelEmail(UUID,firstName,lastName,email,hotelList,totalPrice);
         }
 
         System.out.println(UUID);
