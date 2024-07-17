@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <style>
+
   body, html {
     margin: 0;
     padding: 0;
@@ -822,7 +823,7 @@
     border: 1px solid #ccc;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     border-radius: 4px;
-    margin-top: 55px;
+    margin-top: 65px;
     width: 45%;
     z-index: 1000;
     max-height: 200px;
@@ -955,8 +956,8 @@
     border: 1px solid #ccc;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     border-radius: 4px;
-    margin-top: 55px;
-    width: 45%;
+    margin-top: 121px;
+    width: 70%;
     z-index: 1000;
     max-height: 200px;
     overflow-y: auto;
@@ -1029,30 +1030,76 @@
     z-index: 10;
   }
   .my-btn {
+    width: 56px;
+    height: 35px;
     position: absolute;
-    top: -40px; /* 폼 위로 이동할 거리 */
-    left: 0;
-    margin-right: 10px; /* 버튼과 폼 사이의 간격 조정 */
-    background-color: #009EFF;
+    top: -35px; /* 폼 위로 이동할 거리 */
+    left: 15px;
+    margin-right: 10px; /* 버튼과 폼 사이의 간격 조정 dodgerblue lightskyblue */
+    background-color: lightskyblue;
     padding: 10px;
-    color: #000000;
+    color: white;
     cursor: pointer;
+    border-radius: 30px 30px 0 0;
+  }
+  #air-btn{
+    background-color: dodgerblue;
+    left: 74px;
   }
   .form-container {
     position: relative;
   }
+
+  .background {
+    padding: 20px;
+    background-size: cover;
+    position: relative;
+    width: 100%; /* 부모 요소의 너비를 100%로 설정 */
+    display: flex;
+    justify-content: center; /* 자식 요소를 가로로 중앙 정렬 */
+  }
+
+  .background{
+    width: 100%;
+  }
+  /* 기본 스타일 설정 */
+  #search-form-hotel {
+    width: 793px;
+    height: 392px;
+    margin: 0 auto; /* 가운데 정렬 */
+  }
+  #location{
+    margin-top: 10px;
+  }
+  #title-hotel{
+    margin-top: 10px;
+    height: 30px;
+  }
+  /* 아주 작은 화면용 미디어 쿼리 */
+  @media (max-width: 768px) {
+    #search-form-hotel {
+      width: 100%;
+    }
+    .search-form{
+      width: 100%;
+    }
+  }
 </style>
-<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
 
 <div th:replace="~{common/head :: head-fragment}"></div>
 <body>
   <main class="th-layout-main ">
     <div class="background" style="background-image: url('/common/images/back_home.jpg');">
-      <button class="my-btn" id="hotel-btn">호텔</button>
-      <button class="my-btn" id="air-btn">항공</button>
+      <div class="form-container">
+        <div class="my-btn" id="air-btn">항공</div>
+        <div class="my-btn" id="hotel-btn">호텔</div>
       <!-- 호텔 검색 -->
       <form class="search-form" action="/con/hotel-list" method="get" id="search-form-hotel" style="display: none">
+        <div id="title-hotel">
+          <h2 class="cont-title">호텔 검색</h2>
+        </div>
         <input name="iataCode" id="location" type="text" placeholder="어디로 떠나시나요?" class="destination" value="" autocomplete="off">
+
         <div class="destination-list" id="search-list">
           <div class="destination-item">
             <span>검색어를 입력해주세요!</span>
@@ -1280,6 +1327,7 @@
         <button type="submit">검색하기</button>
       </form>
       </div>
+    </div>
 
 
 
@@ -1595,15 +1643,19 @@
       let $airForm = $('#search-form-air');
       let $airBtn = $('#air-btn');
 
-      // 초기 로드시 호텔 폼을 보이게 설정
+      // 초기 로드시 호텔 폼을 보이게 설정 dodgerblue lightskyblue
       $airForm.show();
 
       $hotelBtn.click(function () {
+        $hotelBtn.css('background-color', 'dodgerblue');
+        $airBtn.css('background-color', 'lightskyblue');
         $hotelForm.show();
         $airForm.hide();
       });
 
       $airBtn.click(function () {
+        $hotelBtn.css('background-color', 'lightskyblue');
+        $airBtn.css('background-color', 'dodgerblue');
         $airForm.show();
         $hotelForm.hide();
       });
