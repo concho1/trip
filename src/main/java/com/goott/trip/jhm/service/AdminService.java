@@ -23,5 +23,6 @@ public class AdminService {
     public List<PeopleCnt> getPeopleCnt(int n) { return this.mapper.getPeopleCnt(n); }
     public int countHotelAPI(Map<String, String> map) { return this.mapper.countHotelAPI(map); }
     public int countFlightAPI(String month) { return this.mapper.countFlightAPI(month); }
+    public int deleteUser(String id) { return this.mapper.deleteUser(id); }
 
 }

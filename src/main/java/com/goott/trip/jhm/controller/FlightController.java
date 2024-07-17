@@ -412,9 +412,7 @@ public class FlightController {
                                         cd.setAirlineKor(fins[1]);
                                         break;
                                     case "airlineImg" :
-                                        System.out.println("url : "+fins[1]);
                                         String imgKey = this.service.findKeyByUrl(fins[1]);
-                                        System.out.println("imgKey : "+imgKey);
                                         cd.setAirlineImg(imgKey);
                                         break;
                                 }

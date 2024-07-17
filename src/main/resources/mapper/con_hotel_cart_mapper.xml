@@ -14,7 +14,7 @@
         VALUES (#{uuid}, NOW(), #{memberId}, #{hotelUuid}, #{iataCode}, #{offerUuid}, #{orderUuid})
     </insert>
     <!-- member_id로 ConHotelCart List 를 조회하는 쿼리 -->
-    <select id="getConHotelCartAllByMemberId" resultMap="ConHotelCartMap" parameterType="String">
+    <select id="getConHotelCartAllListByMemberId" resultMap="ConHotelCartMap" parameterType="String">
         SELECT
             con_hotel_cart.uuid, con_hotel_cart.created_at,
             member.*,
@@ -31,6 +31,25 @@
                 LEFT JOIN payment ON con_hotel_cart.order_uuid = payment.order_uuid
         WHERE
             con_hotel_cart.member_id = #{memberId}
+    </select>
+
+    <select id="getConHotelContListByUuid" resultMap="ConHotelCartMap" parameterType="String">
+        SELECT
+            con_hotel_cart.uuid, con_hotel_cart.created_at,
+            member.*,
+            con_hotel.*,
+            con_iata_code.*,
+            con_hotel_offer.*,
+            payment.*
+        FROM
+            con_hotel_cart
+                LEFT JOIN member ON con_hotel_cart.member_id = member.id
+                LEFT JOIN con_hotel ON con_hotel_cart.hotel_uuid = con_hotel.uuid
+                LEFT JOIN con_iata_code ON con_hotel_cart.iata_code = con_iata_code.iata_code
+                LEFT JOIN con_hotel_offer ON con_hotel_cart.offer_uuid = con_hotel_offer.uuid
+                LEFT JOIN payment ON con_hotel_cart.order_uuid = payment.order_uuid
+        WHERE
+            con_hotel_cart.uuid = #{uuid}
     </select>
 
 
