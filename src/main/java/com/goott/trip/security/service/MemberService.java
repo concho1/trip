@@ -46,7 +46,7 @@ public class MemberService {
     // 아이디 중복 확인
     public boolean checkDupId(String id){return memberMapper.checkDupId(id);}
 
-    // 비밀번호 변경(비밀번호 찾기)
+    // 비밀번호 변경(새 비밀번호로 변경)
     public int changePwd(String id, String newPw) {
         // 기존 비밀번호 확인
         if (!checkPwd(id, newPw)) {
