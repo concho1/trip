@@ -78,7 +78,7 @@
                                 <span th:onclick="|location.href='@{/member/hamster/airplane/ticketing(key=${airInfo.getFfvId()})}'|">따로 결제하기</span>
                             </button>
                                 <img th:src="@{/common/images/xButton.png}" class="top-right-image" style="height: 40px; width: 40px;"
-                                     th:onclick="'deleteAir(' + ${iterStat.index} + ')'">
+                                     th:onclick="'deleteAir(' + ${iterStat.index} + '); event.stopPropagation();'">
                         </div>
                     </th:block>
                     </div>
@@ -86,7 +86,8 @@
                     <div>&nbsp;&nbsp;</div>
 
                     <div class="myedu-cont-wrap" id="hotelList">
-                        <th:block th:if="${hotelList != null}" th:each="hotel, iterStat : ${hotelList}">
+                        <th:block  th:each="hotel, iterStat : ${hotelList}">
+                            <th:block th:if="${hotel.getPaymentObj() == null}">
                             <div class="myedu-area hotel-box" style="position: relative; border: 1px solid lightgray;" th:if="${hotelList.get(iterStat.index).getUuid() != null}">
                                 <input type="hidden" class="hotelName" th:value="${hotel.getHotelObj().getHotelName()}">
                                 <input type="hidden" class="uuid" th:value="${hotel.getUuid()}">
@@ -105,13 +106,22 @@
                                                 th:text="${#numbers.formatInteger(hotelList.get(iterStat.index).getOfferObj().getTotalCost(), 3, 'COMMA') + '원'}"></legend>
                                     </div>
                                 </div>
+
+                                <div style="width: 325px; display: flex">
+                                <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px; margin-right: 20px; background-color: #2f639a">
+                                    <span th:onclick="|location.href='@{/con/hotel-info(hotelUuid=${hotel.getHotelObj().getUuid()},hotelAdId=${hotel.getHotelObj().getHotelAdId()},iataCode=${hotel.getIataCodeObj().getIataCode()},checkIn=${hotel.getOfferObj().getCheckIn()},checkOut=${hotel.getOfferObj().getCheckOut()},personCnt=${hotel.getOfferObj().getAdultCnt()})}'|">숙소 상세정보</span>
+                                </button>
+
                                 <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
                                     <span th:onclick="|location.href='@{/member/hamster/hotel/ticketing(uuid=${hotel.getUuid()})}'|">따로 결제하기</span>
                                 </button>
+                                </div>
 
                                 <img th:src="@{/common/images/xButton.png}" class="top-right-image" style="height: 40px; width: 40px;"
-                                     th:onclick="'deleteHotel(' + ${iterStat.index} + ')'">
+                                     th:onclick="'deleteHotel(' + ${iterStat.index} + '); event.stopPropagation();'">
+
                             </div>
+                            </th:block>
                         </th:block>
                     </div>
 
@@ -126,6 +136,7 @@
             <div class="content-container">
                 <div class="sidebar">
                     <div class="text-warp">
+                        <p class="price-info" style="font-size: 2rem; color: gray"><b>복수 결제는 숙소만 가능합니다.</b></p>
                         <div class="cate-area" style="display: flex; font-size: 2rem;">
                             <p class="price-info"><b>총 요금</b></p>
                             <p class="total-price" style="color: red"><b id="price-box">₩ 0 원</b></p>

@@ -3,6 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://js.tosspayments.com/v1/payment-widget"></script>
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <style>
     .reservation {
@@ -16,17 +17,21 @@
 <main class="th-layout-main ">
     <!-- [S]tedu-N44 -->
     <div class="tedu-N44" data-bid="GALxi9PyR7">
+        <input type="hidden" th:value="${totalPrice}" id="totalPrice">
+        <input type="hidden" th:value="${hotelAllCont.size()}" id="count">
+        <input type="hidden" th:value="${uuid}" id="UUID">
+        <input type="hidden" th:value="${CartUuid}" id="cartuuid">
+        <input type="hidden" th:value="${memberId}" id="memId">
+
         <div class="content-inner">
             <div class="content-container">
                 <section class="">
                     <div class="title-wrap">
                         <h3 class="cont-title">결제하기</h3>
                     </div>
-                    <div class="payment-wrap" style="position: relative; border: 1px solid lightgray;">
-                        <form method="post" action="/member/hamster/airplane/payment">
+                    <div class="payment-wrap" style="position: relative; border: 1px solid lightgray; margin-bottom: 30px;">
                             <div class="payment-area">
                                 <div class="title">연락처 정보</div>
-                                <div class="stitle">전자 항공권(e-티켓)을 받으실 연락처 정보를 입력해주세요</div>
                                 <div class="payment-cont payment-cont-type2">
 
                                     <fieldset class="fieldset">
@@ -47,19 +52,6 @@
                                         </div>
                                     </fieldset>
                                 </div>
-                                <fieldset class="fieldset" style="margin-top: 30px;">
-                                    <legend class="legend">국가/전화번호</legend>
-                                    <div class="input-group">
-                                        <select class="form-select form-select-lg mb-3" name="callCountry">
-                                            <th:block th:each="country : ${country}">
-                                                <option th:text="${country}" th:value="${country}" ></option>
-                                            </th:block>
-                                        </select>
-                                        <input type="text" id="callNumber" name="callNumber" class="tedu-input lightmode" placeholder="'-'을 제외한 숫자만 입력해주세요." aria-label="내용">
-                                        <div id="phoneError" style="color: red; display: none;">휴대폰 번호를 입력해주세요.</div>
-                                        <div id="phoneNumError" style="color: red; display: none;">'-'을 제외한 숫자만 입력해주세요.</div>
-                                    </div>
-                                </fieldset>
 
                                 <fieldset class="fieldset" style="margin-top: 30px;">
                                     <legend class="legend">이메일</legend>
@@ -70,14 +62,42 @@
                                     </div>
                                 </fieldset>
 
+                                <div class="payment-cont payment-cont-type2">
 
-                            <div class="form-footer btn-box">
-                                <input type="submit" value="결제하기" class="tedu-btn tedu-btn-light" onclick="return PlaneReservationCheck()">
-                                <input type="button" value="취소" class="tedu-btn tedu-btn-light btn-mono">
+                                    <fieldset class="fieldset" style="margin-top: 30px;">
+                                        <legend class="legend">전화번호 (선택사항)</legend>
+                                        <div class="input-group flex-style">
+                                            <div class="tedu-inputset">
+                                                <input id="phone"  name="phone" class="tedu-input lightmode">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset class="fieldset" style="margin-top: 30px;">
+                                        <legend class="legend">거주 국가 / 지역</legend>
+                                        <div class="input-group">
+                                            <select class="form-select form-select-lg mb-3" id="country" name="country">
+                                                <th:block th:each="country : ${country}">
+                                                    <option th:text="${country}" th:value="${country}" ></option>
+                                                </th:block>
+                                            </select>
+                                        </div>
+                                    </fieldset>
+                                </div>
                             </div>
-                        </form>
                     </div>
 
+
+                    <div class="payment-wrap" style="position: relative; border: 1px solid lightgray;">
+                            <div class="payment-area">
+                                <div class="payment-cont payment-cont-type2">
+                                    <!-- 결제 UI, 이용약관 UI 영역 -->
+                                    <div id="payment-method" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div id="agreement"></div>
+                            <button type="button" class="tedu-btn tedu-btn-light add-cart" id="payment-button">결제하기</button>
+                    </div>
                 </section>
             </div>
         </div>
@@ -90,29 +110,22 @@
                 <div class="title-wrap">
                     <h3 class="title">결제 상품 정보</h3>
                 </div>
-                <div class="pay-info-warp" th:each="hotel : ${hotelAllCont}">
-                    <div class="text-area">
-                        <div class="title" th:text="${hotel.getHotelObj().getHotelName()}"></div>
-                        <img th:src="${hotel.getHotelObj().getSampleImage()}" alt="이미지" style="width: 150px; height: 120px;">
+                <div class="pay-info-warp" th:each="hotel : ${hotelAllCont}" style="display: contents" align="center">
+                    <div class="text-area" style="padding:30px 30px 30px 30px; margin-bottom: 20px; border: lightgray solid 1px; border-radius: 15px;" align="center">
+                        <div class="title" id="hotelName" th:text="${hotel.getHotelObj().getHotelName()}"></div>
+                        <hr width="90%">
+                        <p class="text" th:text="'투숙인원 : '+${hotel.getOfferObj().getAdultCnt()}+' 명'"></p>
                         <p class="text" th:text="${hotel.getOfferObj().getCheckIn()}+'~'+${hotel.getOfferObj().getCheckOut()}"></p>
+                        <img th:src="${hotel.getHotelObj().getSampleImage()}" alt="이미지" style="width: 150px; height: 120px;">
+                        <div class="title" th:text="${#numbers.formatInteger(hotel.getOfferObj().getTotalCost(), 3, 'COMMA') + '원'}"></div>
+                        <hr width="70%">
                     </div>
                 </div>
 
-                <div class="card-wrapper">
-                    <div class="card" th:each="hotel : ${hotelAllCont}">
-                        <div class="card-body">
-                            <img th:src="${hotel.getHotelObj().getSampleImage()}" alt="이미지" style="width: 100px; height: 50px;">
-                            <p th:text="'가는편 여정 상세보기'"></p>
-                            <img th:src="@{/asset/images/downarrow.webp}" class="toggleBtn" value="토글" style="width: 20px; height: 20px; cursor: pointer;">
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="price-info-wrap" th:each="hotel : ${hotelAllCont}">
+                <div class="price-info-wrap">
                     <div class="price-area price-total">
                         <span th:text="'총계'">결제 금액</span>
-                        <strong th:text="${#numbers.formatInteger(hotel.getOfferObj().getTotalCost(), 3, 'COMMA') + '원'}"></strong>
+                        <strong th:text="${#numbers.formatInteger(totalPrice, 3, 'COMMA') + '원'}"></strong>
                     </div>
                 </div>
             </div>
@@ -123,6 +136,55 @@
 <link rel="stylesheet" th:href="@{/jhm/jhm.css}">
 <script th:src="@{/jhm/jhm.js}"></script>
 <script th:src="@{/ham.js/PlaneReservationCheck.js}"></script>
+<script th:inline="javascript">
+
+    const count = document.getElementById("count").value;
+    const hotelName = document.getElementById("hotelName").textContent;
+    const hotelItem = hotelName + ' 외 ' + (count-1) + ' 건';
+
+    const UUID = document.getElementById("UUID").value;
+    const cartUUID = document.getElementById("cartuuid").value;
+
+    const button = document.getElementById("payment-button");
+    const totalPrice = document.getElementById("totalPrice");
+    const amount = parseFloat(totalPrice.value);
+    const customerName = document.getElementById("memId").value;
+
+    const widgetClientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+    const customerKey = "5JSIE9Ck2bINa_In__32e";
+    const paymentWidget = PaymentWidget(widgetClientKey, customerKey); // 회원 결제
+
+    let paymentMethodWidget = paymentWidget.renderPaymentMethods(
+        "#payment-method",
+        { value: amount },
+        { variantKey: "DEFAULT" }
+    );
+
+    paymentWidget.renderAgreement(
+        "#agreement",
+        { variantKey: "AGREEMENT" }
+    );
+
+        button.addEventListener("click", function () {
+
+            const firstName = document.getElementById('callFirstName').value;
+            const lastName = document.getElementById("callLastName").value;
+            const email = document.getElementById('callEmail').value;
+            const country = document.getElementById("country").value;
+
+            const successUrl = `${window.location.origin}/member/hamster/hotel/success?UUID=${UUID}&firstName=${firstName}&lastName=${lastName}&email=${email}&country=${country}&cartUUID=${cartUUID}`;
+            const failUrl = `${window.location.origin}/member/hamster/fail`;
+
+            paymentWidget.requestPayment({
+                orderId: UUID,
+                orderName: hotelItem,
+                successUrl: successUrl,
+                failUrl: failUrl,
+                customerEmail: email,
+                customerName: customerName,
+            });
+        });
+</script>
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
 </div>

@@ -20,5 +20,5 @@ public class ConHotelCartAll {
     private ConHotel hotelObj;
     private ConIataCode iataCodeObj;
     private ConHotelOffer offerObj;
-    private Payment paymentObj;
+    private ConPayment paymentObj;
 }

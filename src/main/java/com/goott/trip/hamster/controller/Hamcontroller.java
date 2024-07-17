@@ -121,21 +121,30 @@ public class Hamcontroller {
     }
 
     @RequestMapping("hotel/ticketing")
-    public ModelAndView hotelTicketing(@RequestParam("uuid")List<String> uuid,Principal principal){
+    public ModelAndView hotelTicketing(@RequestParam("uuid")List<String> CartUuid,Principal principal){
 
-        System.out.println(uuid);
+        System.out.println(CartUuid);
+
+        String memberId = principal.getName();
+        UUID uuid = UUID.randomUUID();
 
         List<ConHotelCartAll> hotelAllCont = new ArrayList<>();
         List<String> country = this.airservice.getCountry();
+        double totalPrice = 0;
 
-        for(int i = 0; i < uuid.size(); i ++){
-            hotelAllCont.add(hotelCartService.getConHotelContListByUuid(uuid.get(i)));
+        for(int i = 0; i < CartUuid.size(); i ++){
+            hotelAllCont.add(hotelCartService.getConHotelContListByUuid(CartUuid.get(i)));
+            totalPrice += hotelAllCont.get(i).getOfferObj().getTotalCost();
         }
 
 
         return new ModelAndView("Hamster/hotelReservation")
                 .addObject("hotelAllCont",hotelAllCont)
-                .addObject("country",country);
+                .addObject("totalPrice",totalPrice)
+                .addObject("country",country)
+                .addObject("uuid",uuid)
+                .addObject("CartUuid",CartUuid)
+                .addObject("memberId",memberId);
     }
 
     @GetMapping("/shoppingCart")
@@ -176,6 +185,7 @@ public class Hamcontroller {
                             .orElse("/common/images/air.png")
             );
         }
+        System.out.println("memberId : " + memberId);
         // 여기서 호텔 리스트 받아오는거 추가
         List<ConHotelCartAll> hotelCartAllList
                 = hotelCartService.getConHotelCartAllListByMemberId(memberId);
@@ -301,4 +311,36 @@ public class Hamcontroller {
 
     }
 
+    @GetMapping("hotel/success")
+    public ModelAndView HotelPaymentSuccess(@RequestParam String UUID, @RequestParam String firstName,
+                                            @RequestParam String lastName, @RequestParam String email,
+                                            @RequestParam String country,@RequestParam List<String> cartUUID,
+                                            @RequestParam String paymentType, @RequestParam String orderId,
+                                            @RequestParam String paymentKey,Principal principal) throws UnsupportedEncodingException, MessagingException {
+
+
+        String memId = principal.getName();
+
+           int check = this.paymentservice.hotelPay(UUID,memId,firstName,lastName,country,email,paymentKey);
+
+           if(check >0 ){
+               for(int i =0; i < cartUUID.size(); i++){
+
+                   this.paymentservice.insertHotel(UUID,memId,cartUUID.get(i).replaceAll("\\[","").replaceAll("\\]",""));
+               System.out.println('완');
+           }
+        }
+
+        System.out.println(UUID);
+        System.out.println(firstName);
+        System.out.println(lastName);
+        System.out.println(email);
+        System.out.println(country);
+
+
+
+
+        return null;
+
+    }
 }
