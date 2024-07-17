@@ -1,12 +1,9 @@
 package com.goott.trip.security.mapper;
 
-import com.goott.trip.jhm.model.CartFlight;
 import com.goott.trip.security.model.Member;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface MemberMapper {
