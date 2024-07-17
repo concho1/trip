@@ -97,6 +97,10 @@
         position: relative; /* 부모 요소의 위치 지정 */
         z-index: 10; /* 다른 요소보다 높은 z-index 지정 */
     }
+    #back-my-main{
+        position: relative; /* 부모 요소의 위치 지정 */
+        z-index: 10; /* 다른 요소보다 높은 z-index 지정 */
+    }
 </style>
 
 <body>
@@ -111,7 +115,7 @@
                     <div class="text-wrap-1">
                         <h1 style="margin-bottom: 2rem; margin-left: 1rem" class="title" th:text="${allHotelInfo.getHotel().getHotelName()}">
                         </h1>
-                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; width: 80px; height: 40px; background-color: #009EFF"
+                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; width: 80px; height: 40px; background-color: #009EFF" id="back-my-main"
                                 class="tedu-btn tedu-btn-light" onclick="history.back()">뒤로가기</button>
                     </div>
                     <div class="profile-box">
