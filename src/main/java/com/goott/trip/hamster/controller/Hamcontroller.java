@@ -70,102 +70,23 @@ public class Hamcontroller {
         return new ModelAndView("Hamster/airplaneInfoList").addObject("list",list);
     }
 
-    @PostMapping("airplane/ticketing")
-    public ModelAndView airticketing(@RequestParam(name = "key", required = false)List<String> key,Principal principal){
-
-        List<String> country = this.airservice.getCountry();
-
-        if(key.size() == 1){
-            Testproduct cont = this.airservice.airplaneCont(key.get(0));
-            return new ModelAndView("Hamster/airplaneReservation").addObject("cont",cont).
-                    addObject("country",country);
-        }else {
-            ModelAndView modelAndView = new ModelAndView("Hamster/airplaneReservation");
-            for(int i = 0; i < key.size(); i++){
-
-                Testproduct cont = this.airservice.airplaneCont(key.get(i));
-                modelAndView.addObject("cont",cont).addObject("country",country);
-            }
-            return modelAndView;
-        }
-
-    }
-
     @GetMapping("airplane/ticketing")
-    public ModelAndView airticketingaa(@RequestParam("key")String Key,Principal principal){
+    public ModelAndView airTicketing(@RequestParam("key")String Key,Principal principal){
 
         ModelAndView modelAndView = new ModelAndView("Hamster/airplaneReservation");
         String memId = principal.getName();
 
-        String AirKey = "ffv/4d7e127f-7452-44d7-9386-25522abe8f00";
-        List<CartDuration> DurationInfo = this.airservice.getDurationInfo(AirKey);
-        List<CartDuration> DepDur = this.airservice.getDepDur(AirKey);
-        List<CartDuration> CombDur = this.airservice.getCombDur(AirKey);
-        List<CartSegment> airSeg = this.airservice.getSegment(AirKey);
-        List<CartFlight> airInfo = this.airservice.getAirInfo(AirKey);
+        List<CartDuration> DurationInfo = this.airservice.getDurationInfo(Key);
+        List<CartDuration> DepDur = this.airservice.getDepDur(Key);
+        List<CartDuration> CombDur = this.airservice.getCombDur(Key);
+        List<CartSegment> airSeg = this.airservice.getSegment(Key);
+        List<CartFlight> airInfo = this.airservice.getAirInfo(Key);
         List<String> country = this.airservice.getCountry();
         List<String> OnlyCountry = this.airservice.getOnlyCountry();
-        List<CartSegment> segDep = this.airservice.getDep(AirKey);
-        List<CartSegment> segComb = this.airservice.getComb(AirKey);
-        List<CartPricing> price = this.airservice.getPricing(AirKey);
+        List<CartSegment> segDep = this.airservice.getDep(Key);
+        List<CartSegment> segComb = this.airservice.getComb(Key);
+        List<CartPricing> price = this.airservice.getPricing(Key);
 
-        for(int i = 0; i < DepDur.size(); i ++){
-            DepDur.get(i).setAirlineImg(imageService.findImageByKey(DepDur.get(i).getAirlineImg()).get().getUrl());
-            CombDur.get(i).setAirlineImg(imageService.findImageByKey(CombDur.get(i).getAirlineImg()).get().getUrl());
-        }
-
-            return modelAndView
-                    .addObject("country",country)
-                    .addObject("AirKey",AirKey)
-                    .addObject("airInfo",airInfo)
-                    .addObject("airSeg",airSeg)
-                    .addObject("segDep",segDep)
-                    .addObject("segComb",segComb)
-                    .addObject("duration", DurationInfo)
-                    .addObject("DepDur",DepDur)
-                    .addObject("CombDur",CombDur)
-                    .addObject("price",price)
-                    .addObject("OnlyCountry",OnlyCountry);
-
-
-    }
-
-    @RequestMapping("hotel/shoppingCart-put")
-    public Map<String, String> hotelShoppingCart(
-            @ModelAttribute HotelShoppingCartDTO hotelShoppingCart){
-        System.out.println(hotelShoppingCart.toString());
-        // DB 저장하는 코드 작성
-
-
-        // 호텔 쇼핑카트 url 넘겨주기
-
-        return new HashMap<>(Map.of(
-                "result", "ok",
-                "url", "/member/hamster/ 넘겨줄 url 작성"));
-    }
-
-    @GetMapping("/shoppingCart")
-    public ModelAndView airShoppingCart(Principal principal, Model model){
-
-        Alarm alarm = new Alarm(model);
-        String memberId = principal.getName();
-
-        List<String> airKey = this.shoppingCartService.shoppingCartAirplane(memberId);
-        List<CartFlight> airInfo = new ArrayList<>();
-        List<CartSegment> segDep = new ArrayList<>();
-        List<CartSegment> segComb = new ArrayList<>();
-        List<CartDuration> DepDur = new ArrayList<>();
-        List<CartDuration> CombDur = new ArrayList<>();
-
-        for(int i = 0; i < airKey.size(); i ++){
-            airInfo.addAll(this.airservice.getAirInfo(airKey.get(i)));
-            segDep.addAll(this.airservice.getDep(airKey.get(i)));
-            segComb.addAll(this.airservice.getComb(airKey.get(i)));
-            DepDur.addAll(this.airservice.getDepDur(airKey.get(i)));
-            CombDur.addAll(this.airservice.getCombDur(airKey.get(i)));
-        }
-        System.out.println(DepDur);
-        System.out.println(CombDur);
         // DepDur 리스트 처리 Optional 이용 null 처리했습니당
         for (CartDuration depDur : DepDur) {
             depDur.setAirlineImg(
@@ -182,33 +103,131 @@ public class Hamcontroller {
                             .orElse("/common/images/air.png")
             );
         }
+
+            return modelAndView
+                    .addObject("country",country)
+                    .addObject("AirKey",Key)
+                    .addObject("airInfo",airInfo)
+                    .addObject("airSeg",airSeg)
+                    .addObject("segDep",segDep)
+                    .addObject("segComb",segComb)
+                    .addObject("duration", DurationInfo)
+                    .addObject("DepDur",DepDur)
+                    .addObject("CombDur",CombDur)
+                    .addObject("price",price)
+                    .addObject("OnlyCountry",OnlyCountry);
+
+
+    }
+
+    @RequestMapping("hotel/ticketing")
+    public ModelAndView hotelTicketing(@RequestParam("uuid")List<String> CartUuid,Principal principal){
+
+        System.out.println(CartUuid);
+
+        String memberId = principal.getName();
+        UUID uuid = UUID.randomUUID();
+
+        List<ConHotelCartAll> hotelAllCont = new ArrayList<>();
+        List<String> country = this.airservice.getCountry();
+        double totalPrice = 0;
+
+        for(int i = 0; i < CartUuid.size(); i ++){
+            hotelAllCont.add(hotelCartService.getConHotelContListByUuid(CartUuid.get(i)));
+            totalPrice += hotelAllCont.get(i).getOfferObj().getTotalCost();
+        }
+
+
+        return new ModelAndView("Hamster/hotelReservation")
+                .addObject("hotelAllCont",hotelAllCont)
+                .addObject("totalPrice",totalPrice)
+                .addObject("country",country)
+                .addObject("uuid",uuid)
+                .addObject("CartUuid",CartUuid)
+                .addObject("memberId",memberId);
+    }
+
+    @GetMapping("/shoppingCart")
+    public ModelAndView ShoppingCart(Principal principal, Model model){
+
+        String memberId = principal.getName();
+
+        List<String> airKey = this.shoppingCartService.shoppingCartAirplane(memberId);
+
+
+        List<CartFlight> airInfo = new ArrayList<>();
+        List<CartSegment> segDep = new ArrayList<>();
+        List<CartSegment> segComb = new ArrayList<>();
+        List<CartDuration> DepDur = new ArrayList<>();
+        List<CartDuration> CombDur = new ArrayList<>();
+
+        for(int i = 0; i < airKey.size(); i ++){
+            airInfo.addAll(this.airservice.getAirInfo(airKey.get(i)));
+            segDep.addAll(this.airservice.getDep(airKey.get(i)));
+            segComb.addAll(this.airservice.getComb(airKey.get(i)));
+            DepDur.addAll(this.airservice.getDepDur(airKey.get(i)));
+            CombDur.addAll(this.airservice.getCombDur(airKey.get(i)));
+        }
+
+        // DepDur 리스트 처리 Optional 이용 null 처리했습니당
+        for (CartDuration depDur : DepDur) {
+            depDur.setAirlineImg(
+                    imageService.findImageByKey(depDur.getAirlineImg())
+                            .map(Image::getUrl)
+                            .orElse("/common/images/air.png")
+            );
+        }
+        // CombDur 리스트 처리
+        for (CartDuration combDur : CombDur) {
+            combDur.setAirlineImg(
+                    imageService.findImageByKey(combDur.getAirlineImg())
+                            .map(Image::getUrl)
+                            .orElse("/common/images/air.png")
+            );
+        }
+        System.out.println("memberId : " + memberId);
         // 여기서 호텔 리스트 받아오는거 추가
         List<ConHotelCartAll> hotelCartAllList
-                = hotelCartService.getConHotelCartAllByMemberId(memberId);
+                = hotelCartService.getConHotelCartAllListByMemberId(memberId);
         // 테스트용 offer 가 방, hotel 은 호텔
-        if(!hotelCartAllList.isEmpty()){
-            for(ConHotelCartAll hotelCartAll : hotelCartAllList){
-                System.out.println(hotelCartAll.getHotelObj().getHotelName());
-                System.out.println(hotelCartAll.getOfferObj().getCategory());
-            }
-        }
 
         return new ModelAndView("Hamster/shoppingCart")
                 .addObject("airInfo",airInfo)
                 .addObject("segDep",segDep)
                 .addObject("segComb",segComb)
                 .addObject("DepDur",DepDur)
-                .addObject("CombDur",CombDur);
+                .addObject("CombDur",CombDur)
+                .addObject("hotelList",hotelCartAllList);
     }
 
-    @PostMapping("airplane/categoryDelete")
+    @PostMapping("airplane/cartHotelDelete")
     @ResponseBody
-    public Map<String,Object> categoryDelete(@RequestParam("hotelKeyVal")String hotelKeyVal, Principal principal){
+    public Map<String,Object> HotelDelete(@RequestParam("hotelKeyVal")String hotelKeyVal, Principal principal){
+
+        System.out.println(hotelKeyVal);
 
         Map<String, Object> response = new HashMap<>();
         try{
             String memberId = principal.getName();
             int check = this.shoppingCartService.deleteHotel(hotelKeyVal,memberId);
+            response.put("success", check);
+        }catch (Exception e) {
+            response.put("success", -1);
+            response.put("message", e.getMessage());
+        }
+        return response;
+    }
+
+    @PostMapping("airplane/cartAirDelete")
+    @ResponseBody
+    public Map<String,Object> AirDelete(@RequestParam("AirKeyVal")String AirKeyVal, Principal principal){
+
+        System.out.println(AirKeyVal);
+
+        Map<String, Object> response = new HashMap<>();
+        try{
+            String memberId = principal.getName();
+            int check = this.shoppingCartService.deleteAir(AirKeyVal,memberId);
             response.put("success", check);
         }catch (Exception e) {
             response.put("success", -1);
@@ -292,4 +311,36 @@ public class Hamcontroller {
 
     }
 
+    @GetMapping("hotel/success")
+    public ModelAndView HotelPaymentSuccess(@RequestParam String UUID, @RequestParam String firstName,
+                                            @RequestParam String lastName, @RequestParam String email,
+                                            @RequestParam String country,@RequestParam List<String> cartUUID,
+                                            @RequestParam String paymentType, @RequestParam String orderId,
+                                            @RequestParam String paymentKey,Principal principal) throws UnsupportedEncodingException, MessagingException {
+
+
+        String memId = principal.getName();
+
+           int check = this.paymentservice.hotelPay(UUID,memId,firstName,lastName,country,email,paymentKey);
+
+           if(check >0 ){
+               for(int i =0; i < cartUUID.size(); i++){
+
+                   this.paymentservice.insertHotel(UUID,memId,cartUUID.get(i).replaceAll("\\[","").replaceAll("\\]",""));
+               System.out.println('완');
+           }
+        }
+
+        System.out.println(UUID);
+        System.out.println(firstName);
+        System.out.println(lastName);
+        System.out.println(email);
+        System.out.println(country);
+
+
+
+
+        return null;
+
+    }
 }

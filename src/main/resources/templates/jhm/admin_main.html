@@ -4,6 +4,8 @@
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <link rel="stylesheet" th:href="@{/jhm/jhm.css}">
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
 
@@ -16,23 +18,41 @@
             </div>
 
             <div class="card-wrapper">
-                <div class="chart-container">
-                    <div class="card-admin">
+                <div>
+                    <div class="card-qna">
 
                         <div class="card-title">
                             <span>접속자 현황</span>
+                            <span th:each="cnt : ${people}" class="peopleCnt">
+                                <input type="hidden" class="date" th:value="${cnt.createdAt.toString().substring(0, 10)}">
+                                <input type="hidden" class="guest" th:value="${cnt.guest}">
+                                <input type="hidden" class="user" th:value="${cnt.user}">
+                            </span>
                         </div>
                         <div class="card-body" id="peopleChart"></div>
                     </div>
+                </div>
 
-                    <div class="card-admin">
+                <div>
+                    <div class="card-qna">
 
                         <div class="card-title">
                             <span>API 이용 현황</span>
                         </div>
-                        <div class="card-body">
-                            <div class="card-body" id="hotelChart"></div>
-                            <div class="card-body" id="flightChart"></div>
+                        <div class="chart-card-body">
+                            <div>
+                                <span>호텔 API 사용률</span>
+                                <input type="hidden" class="level" th:value="${APIUsage.get('HOTEL_LEVEL')}">
+                                <input type="hidden" class="offer" th:value="${APIUsage.get('HOTEL_OFFER')}">
+                                <input type="hidden" class="iata" th:value="${APIUsage.get('HOTEL_LIST_IATA')}">
+                                <input type="hidden" class="gps" th:value="${APIUsage.get('HOTEL_LIST_GPS')}">
+                                <div class="card-body" id="hotelChart"></div>
+                            </div>
+                            <div>
+                                <span>항공 API 사용률</span>
+                                <input type="hidden" class="flight" th:value="${APIUsage.get('FLIGHT')}">
+                                <div class="card-body" id="flightChart"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -42,41 +62,57 @@
                             <span>Q&A 관리</span>
                         </div>
                         <div class="card-body">
-                            <table style="width: 600px;">
-                                <tr>
-                                    <th>작성자</th> <th>제목</th>
-                                    <th>상태</th> <th>답변하기</th>
-                                </tr>
-                                <tr th:each="qna : ${qnaList}">
-                                    <td><span th:text="${qna.memberId}"></span></td>
-                                    <td><span th:text="${qna.title}"></span></td>
-                                    <td>
-                                        <span th:if="${qna.status == 0}" th:text="답변대기" class="waitAnswer"></span>
-                                        <span th:if="${qna.status == 1}" th:text="답변완료" class="finAnswer"></span>
-                                    </td>
-                                    <td><span><button type="button">답변하기</button> </span></td>
-                                </tr>
+                            <table id="qnaTab">
+                                <thead>
+                                    <tr>
+                                        <th>작성자</th> <th>제목</th>
+                                        <th>상태</th> <th>답변하기</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="qna : ${qnaList}">
+                                        <td><span th:text="${qna.memberId}"></span></td>
+                                        <td><span th:text="${qna.title}"></span></td>
+                                        <td>
+                                            <span th:if="${qna.status == 0}" th:text="답변대기" class="waitAnswer"></span>
+                                            <span th:if="${qna.status == 1}" th:text="답변완료" class="finAnswer"></span>
+                                        </td>
+                                        <td>
+                                            <button th:if="${qna.status == 0}" type="button" class="qnaBtn" onclick="answerModal()">답변하기</button>
+                                            <span th:if="${qna.status == 1}" class="qnaBtn-disable">답변완료</span>
+                                            <div id="qnaModal" class="modal">
+                                                <div class="modal-content">
+                                                    <span class="close" id="qnaClose">&times;</span>
+                                                    <br>
+                                                    <hr>
+                                                    <form method="post" action="../customer/qna_answer">
+                                                        <input type="hidden" name="memberId" th:value="${qna.memberId}">
+                                                        <input type="hidden" name="qnaGroup" th:value="${qna.num}">
+                                                        <input type="hidden" name="page" value="0">
+                                                        <div>
+                                                            <div>
+                                                                <label for="adminQNATitle">제목</label> <br>
+                                                                <input type="text" id="adminQNATitle" th:value="${qna.title}" readonly>
+                                                            </div>
+                                                            <br>
+                                                            <div>
+                                                                <label for="adminQNACont">내용</label> <br>
+                                                                <textarea id="adminQNACont" class="adminAnswerCont" rows="6">[[${qna.cont}]]</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div id="faqModalBody">
+                                                            <label for="answer_cont">답변</label> <br>
+                                                            <textarea id="answer_cont" class="adminAnswerCont" name="cont" rows="6"></textarea>
+                                                        </div>
+                                                        <button type="submit" class="button-style">답변</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
-                            <!-- 페이징 처리 -->
-                            <div class="page-wrapper">
-                                <div th:if="${qnaPaging.page > qnaPaging.block}">
-                                    <a th:href="|dashboard?qnaPage=1|"><span><b>[처음으로]</b></span></a>
-                                    <a th:href="|dashboard?qnaPage=${qnaPaging.startBlock -1}|"><img th:src="@{/asset/icons/preBlock.svg}" alt="이전 블록" class="pagingImg"></a>
-                                </div>
-
-                                <div>
-                                    <a th:if="${qnaPaging.page > 1}" th:href="|dashboard?qnaPage=${qnaPaging.page - 1}|"><img th:src="@{/asset/icons/prePage.svg}" alt="이전 페이지" class="pagingImg"></a>
-                                    <a th:each="qnaPag : ${qnaPagList}" th:href="|dashboard?qnaPage=${qnaPag}|" class="pag-list">
-                                        <span th:text="${qnaPag}" th:classappend="${qnaPag == qnaPaging.page} ? 'pag-now' : ''"></span>
-                                    </a>
-                                    <a th:if="${qnaPaging.page < qnaPaging.allPage}" th:href="|dashboard?qnaPage=${qnaPaging.page + 1}|"><img th:src="@{/asset/icons/nextPage.svg}" alt="다음 페이지" class="pagingImg"></a>
-                                </div>
-
-                                <div th:if="${qnaPaging.endBlock < qnaPaging.allPage}">
-                                    <a th:href="|dashboard?qnaPage=${qnaPaging.endBlock +1}|"><img th:src="@{/asset/icons/nextBlock.svg}" alt="다음 블록" class="pagingImg"></a>
-                                    <a th:href="|dashboard?qnaPage=${qnaPaging.allPage}|"><span><b>[끝으로]</b></span></a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -86,18 +122,24 @@
                             <span>회원 관리</span>
                         </div>
                         <div class="card-body">
-                            <table>
-                                <tr>
-                                    <th>가입일</th> <th>아이디</th>
-                                    <th>이름</th> <th>회원등급</th>
-                                    <th>총 결제금액</th> <th>회원강퇴</th>
-                                </tr>
-                                <tr th:each="member : ${members}">
-                                    <td><span th:text="${member.createdAt.toString().substring(0, 10)}"></span></td>
-                                    <td><span th:text="${member.id}"></span></td>
-                                    <td><span th:text="${member.name}"></span></td>
-                                    <td><span th:text="${member.role}"></span></td>
-                                </tr>
+                            <table id="memTab">
+                                <thead>
+                                    <tr>
+                                        <th>가입일</th> <th>아이디</th>
+                                        <th>이름</th> <th>회원등급</th>
+                                        <th>총 결제금액</th> <th>회원강퇴</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="member : ${members}" class="memTbody">
+                                        <td><span th:text="${member.createdAt.toString().substring(0, 10)}"></span></td>
+                                        <td><span class="memId" th:text="${member.id}"></span></td>
+                                        <td><span th:text="${member.name}"></span></td>
+                                        <td><span th:text="${member.vip}"></span></td>
+                                        <td><span th:text="${#numbers.formatCurrency(member.total)} + ' 원'"></span></td>
+                                        <td><span><button type="button" class="memberBtn">회원강퇴</button></span></td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -110,7 +152,185 @@
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
 </div>
-<script th:src="@{/jhm/jhm.js}"></script>
-<script th:src="@{/jhm/chart.js}"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css" />
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+<script>
+
+    let dateValues = [];
+    let guestValues = [];
+    let userValues = [];
+
+    function collectValues() {
+        let hiddenInput = document.querySelectorAll('.peopleCnt');
+
+        hiddenInput.forEach(function(input) {
+            let date = input.querySelector('.date').value;
+            let guest = input.querySelector('.guest').value;
+            let user = input.querySelector('.user').value;
+
+            dateValues.push(date);
+            guestValues.push(guest);
+            userValues.push(user);
+        })
+    }
+
+    function answerModal() {
+        $('#answer_cont').val('');
+        $('#qnaModal').show();
+    }
+
+    $('#qnaTab').DataTable({
+        aaSorting: []
+    });
+    $('#memTab').DataTable({
+        aaSorting: []
+    });
+
+    $(document).ready(function() {
+        collectValues();
+
+        let offer = Math.ceil($('.offer').val() / 20);
+        let iata = Math.ceil($('.iata').val() / 20);
+        let gps = Math.ceil($('.gps').val() / 20);
+        let level = Math.ceil($('.level').val() / 20);
+        let flight = Math.ceil($('.flight').val()/ 20);
+
+        console.log(gps);
+
+        let peopleChartOptions = {
+            chart : {
+                type: 'line',
+                animations: {
+                    enabled: true,
+                    easing: 'liner',
+                    speed: 800,
+                    animateGradually: {
+                        enabled: true,
+                        delay: 150
+                    },
+                    dynamicAnimation: {
+                        enabled: true,
+                        speed: 350
+                    }
+                },
+                width: '900px'
+            },
+            series: [{
+                name: '비회원',
+                data: [guestValues[8], guestValues[7], guestValues[6], guestValues[5], guestValues[4], guestValues[3], guestValues[2], guestValues[1], guestValues[0]]
+            },
+                {
+                    name: '회원',
+                    data: [userValues[8], userValues[7], userValues[6], userValues[5], userValues[4], userValues[3], userValues[2], userValues[1], userValues[0]]
+                }],
+            xaxis: {
+                categories: [dateValues[8], dateValues[7], dateValues[6], dateValues[5], dateValues[4], dateValues[3], dateValues[2], dateValues[1], dateValues[0]]
+            }
+        }
+
+        let hotelAPICountChartOptions = {
+            chart: {
+                width: '500px',
+                height: '300px',
+                type: 'radialBar',
+            },
+            series: [level, iata, offer, gps],
+            plotOptions: {
+                radialBar: {
+                    hollow: {
+                        size: '60%',
+                        background: '#293450'
+                    },
+                    dataLabels: {
+                        total: {
+                            show: true,
+                            label: 'HOTEL',
+                            color: '#fff'
+                        },
+                        value: {
+                            color: "#fff",
+                            show: true
+                        }
+                    }
+                }
+            },
+            stroke: {
+                lineCap: "round"
+            },
+            labels: ['HOTEL_LEVEL', 'HOTEL_LIST_IATA', 'HOTEL_OFFER', 'HOTEL_LIST_GPS']
+        }
+
+        let flightAPICountChartOptions = {
+            chart: {
+                width: '500px',
+                height: '300px',
+                type: 'radialBar',
+            },
+            series: [flight],
+            plotOptions: {
+                radialBar: {
+                    hollow: {
+                        size: '70%',
+                        background: '#293450'
+                    },
+                    dataLabels: {
+                        name: {
+                            color: '#fff'
+                        },
+                        value: {
+                            color: "#fff",
+                            show: true
+                        }
+                    }
+                }
+            },
+            stroke: {
+                lineCap: "round"
+            },
+            labels: ['FLIGHT']
+        }
+
+        let peopleChart = new ApexCharts(document.querySelector("#peopleChart"), peopleChartOptions);
+        let hotelChart = new ApexCharts(document.querySelector("#hotelChart"), hotelAPICountChartOptions);
+        let flightChart = new ApexCharts(document.querySelector("#flightChart"), flightAPICountChartOptions);
+
+        peopleChart.render();
+        hotelChart.render();
+        flightChart.render();
+
+        $('#qnaClose').click(function() {
+            $('#qnaModal').hide();
+        })
+
+        $(window).on('click', function(event) {
+            if ($(event.target).is('#qnaModal')) {
+                $('#qnaModal').hide();
+            }
+        })
+
+        $('.memberBtn').click(function() {
+            let id = $(this).closest('.memTbody').find('.memId').text();
+
+            if(confirm('정말로 회원을 강퇴시키겠습니까?')) {
+                let form = $('<form>', {
+                    'method' : 'POST',
+                    'action' : 'delete_user'
+                });
+
+                let key = $('<input>', {
+                    'type' : 'hidden',
+                    'name' : 'id',
+                    'value' : id
+                })
+
+                form.append(key);
+
+                $(document.body).append(form);
+                form.submit();
+            }
+        })
+
+    });
+</script>
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
 </body>

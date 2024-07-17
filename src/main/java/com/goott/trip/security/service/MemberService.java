@@ -8,8 +8,10 @@ import com.goott.trip.security.mapper.MemberMapper;
 import com.goott.trip.security.model.Member;
 import com.goott.trip.security.model.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -77,51 +79,6 @@ public class MemberService {
     }
 
     // VIP
-    /*public void updateVIPStatus(String memberId) {
-        Member member = memberMapper.findById(memberId);
-        if (member == null) {
-            throw new RuntimeException("Member not found");
-        }
-
-        double totalSpent = member.getTotal(); // 이미 DB에 저장된 총 소비 금액을 가져옴
-
-        if (totalSpent >= 5000000) {
-            member.setVip("Platinum");
-        } else if (totalSpent >= 3000000) {
-            member.setVip("Gold");
-        } else if (totalSpent >= 1000000) {
-            member.setVip("Silver");
-        } else {
-            member.setVip("Bronze");
-        }
-
-        memberMapper.updateVIP(member);
-    }
-
-    public void updateTotalSpentByMember(String memberId) {
-        List<Payment> completedPayments = paymentMapper.findByMemberIdAndStatus(memberId, "completed");
-
-        double totalSpent = 0.0;
-
-        // Iterate through completed payments
-        for (Payment payment : completedPayments) {
-            List<CartFlight> cartFlights = airplaneMapper.getAirInfo(payment.getAirKey());
-            if (cartFlights != null && !cartFlights.isEmpty()) {
-                CartFlight cartFlight = cartFlights.get(0);
-                // Example: comeback date stored as "yyyy-MM-dd"
-                LocalDate comebackDate = LocalDate.parse(cartFlight.getComeback(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                // Check if comeback date is before today
-                if (comebackDate.isBefore(LocalDate.now())) {
-                    totalSpent += cartFlight.getTotalPrice();
-                }
-            }
-        }
-
-        // Update total spent in member table
-        Member member = memberMapper.findById(memberId);
-        member.setTotal(totalSpent);
-        memberMapper.updateTotalSpentByMember(member);
-    }*/
     // VIP 등급 업데이트
     public void updateVIPStatus(String memberId) {
         Member member = memberMapper.findById(memberId);
@@ -150,7 +107,6 @@ public class MemberService {
 
         double totalSpent = 0.0;
 
-        // Iterate through completed payments
         for (Payment payment : completedPayments) {
             List<CartFlight> cartFlights = airplaneMapper.getAirInfo(payment.getAirKey());
             if (cartFlights != null && !cartFlights.isEmpty()) {
@@ -167,10 +123,30 @@ public class MemberService {
             }
         }
 
-        // Update total spent in member table
         Member member = memberMapper.findById(memberId);
+
         member.setTotal(totalSpent);
         memberMapper.updateTotalSpentByMember(member);
+    }
+
+    // 예약 티켓 상태 업데이트 스케줄링 메서드
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 실행 (cron 표현식)
+    public void updateReservationStatus() {
+        List<Payment> readyPayments = paymentMapper.findByStatus("ready");
+
+        for (Payment payment : readyPayments) {
+            List<CartFlight> cartFlights = airplaneMapper.getAirInfo(payment.getAirKey());
+            if (cartFlights != null && !cartFlights.isEmpty()) {
+                CartFlight cartFlight = cartFlights.get(0);
+                LocalDate comebackDate = LocalDate.parse(cartFlight.getComeback(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                // 티켓의 예약 날짜가 오늘 날짜보다 이전일 경우 상태를 completed로 변경
+                if (comebackDate.isBefore(LocalDate.now())) {
+                    paymentMapper.updateTicketStatus(payment.getAirKey(), "completed");
+                }
+            }
+        }
     }
 
 }

@@ -67,10 +67,8 @@
         select count(*) from trip.qna where step = 0
     </select>
 
-    <select id="getQNAListForAdmin" parameterType="Page" resultType="QNA">
-        <![CDATA[
-        select * from (select row_number() over (order by num desc) rnum, q.* from trip.qna q where step = 0 order by qna_group desc) as `rq.*` where rnum >= #{startNo} and rnum <= #{endNo}
-        ]]>
+    <select id="getQNAListForAdmin" resultType="QNA">
+        select * from trip.qna where step = 0 order by qna_group desc
     </select>
 
 </mapper>

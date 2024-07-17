@@ -1,8 +1,7 @@
 package com.goott.trip.jhm.service;
 
 import com.goott.trip.jhm.mapper.AdminMapper;
-import com.goott.trip.jhm.model.Page;
-import com.goott.trip.jhm.model.QNA;
+import com.goott.trip.jhm.model.PeopleCnt;
 import com.goott.trip.security.model.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,10 @@ public class AdminService {
     public void countGuest(String today) { this.mapper.countGuest(today); }
     public void countUser(String str) { this.mapper.countUser(str); }
     public int getMemberCount() { return this.mapper.getMemberCount(); }
-    public List<Member> getMembers(Page pdto) { return this.mapper.getMembers(pdto); }
+    public List<Member> getMembers() { return this.mapper.getMembers(); }
+    public List<PeopleCnt> getPeopleCnt(int n) { return this.mapper.getPeopleCnt(n); }
+    public int countHotelAPI(Map<String, String> map) { return this.mapper.countHotelAPI(map); }
+    public int countFlightAPI(String month) { return this.mapper.countFlightAPI(month); }
+    public int deleteUser(String id) { return this.mapper.deleteUser(id); }
 
 }

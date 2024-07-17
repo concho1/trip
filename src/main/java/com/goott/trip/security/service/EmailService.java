@@ -31,7 +31,7 @@ public class EmailService {
     public String sendEmail(String email, HttpSession session) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         message.addRecipients(Message.RecipientType.TO,email);
-        message.setSubject("[tripHamsic] 본인확인 인증 코드입니다.");
+        message.setSubject("[놀러감] 본인확인 인증 코드입니다.");
 
         String msgg="";
         msgg+= "<div style='margin:100px;'>";
@@ -56,7 +56,7 @@ public class EmailService {
         System.out.println(email);
         MimeMessage message = javaMailSender.createMimeMessage();
         message.addRecipients(Message.RecipientType.TO,email);
-        message.setSubject("[tripHamsic] 비밀번호 찾기 인증 코드입니다.");
+        message.setSubject("[놀러감] 비밀번호 찾기 인증 코드입니다.");
 
         String msgg="";
         msgg+= "<div style='margin:100px;'>";
@@ -99,7 +99,7 @@ public class EmailService {
 
 
         message.addRecipients(Message.RecipientType.TO,email);
-        message.setSubject("[tripHamsic]"+email+"고객님 전자 영수증입니다.");
+        message.setSubject("[놀러감]"+email+"고객님 전자 영수증입니다.");
 
 
         String msgg = "";

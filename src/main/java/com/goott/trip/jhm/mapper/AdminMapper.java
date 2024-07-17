@@ -1,7 +1,6 @@
 package com.goott.trip.jhm.mapper;
 
-import com.goott.trip.jhm.model.Page;
-import com.goott.trip.jhm.model.QNA;
+import com.goott.trip.jhm.model.PeopleCnt;
 import com.goott.trip.security.model.Member;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,5 +13,9 @@ public interface AdminMapper {
     void countGuest(String str);
     void countUser(String str);
     int getMemberCount();
-    List<Member> getMembers(Page pdto);
+    List<Member> getMembers();
+    List<PeopleCnt> getPeopleCnt(int n);
+    int countHotelAPI(Map<String, String> map);
+    int countFlightAPI(String month);
+    int deleteUser(String id);
 }

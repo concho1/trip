@@ -11,6 +11,17 @@
                 #{rideLastNameStr},#{rideBirthStr},#{rideCountryStr},#{ridePassportStr},#{ridePassportCountryStr},#{ridePassportExdateStr},Now(),#{status},#{paymentKey})
     </insert>
 
+    <insert id="hotelPay" parameterType="String">
+        INSERT INTO payment (order_uuid, member_id, call_first_name, call_last_name, call_country, call_email, order_time,status,payment_key)
+        VALUES (#{UUID}, #{memId}, #{firstName}, #{lastName}, #{country}, #{email}, Now(),'ready',#{paymentKey})
+    </insert>
+
+    <insert id="insertHotel" parameterType="String">
+        UPDATE con_hotel_cart
+        SET order_uuid = #{UUID}
+        WHERE uuid = #{cartUUID} AND member_id = #{memId}
+    </insert>
+    <!--VIP-->
     <select id="findByMemberIdAndStatus" parameterType="map" resultType="Payment">
         SELECT * FROM payment
         WHERE member_id = #{memberId} AND status = #{status}
@@ -22,12 +33,15 @@
         WHERE air_key = #{airKey}
     </update>
 
+    <select id="findByStatus" parameterType="String" resultType="Payment">
+        SELECT * FROM payment
+        WHERE status = #{status}
+    </select>
 
-    <!--<select id="getTotalSpentByMember" resultType="double" parameterType="String">
-        SELECT SUM(cf.total_price) AS total_spent
-        FROM payment p
-                 JOIN cartFlight cf ON p.air_key = cf.ffvId
-        WHERE p.member_id = #{memberId} AND p.status = 'completed'
-    </select>-->
+    <!--예약-->
+    <select id="findByMemberId" parameterType="String" resultType="Payment">
+        SELECT * FROM payment
+        WHERE member_id = #{memberId}
+    </select>
 
 </mapper>
