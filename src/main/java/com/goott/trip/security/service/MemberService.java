@@ -79,57 +79,6 @@ public class MemberService {
     }
 
     // VIP
-    /*// VIP 등급 업데이트
-    public void updateVIPStatus(String memberId) {
-        Member member = memberMapper.findById(memberId);
-        if (member == null) {
-            throw new RuntimeException("Member not found");
-        }
-
-        double totalSpent = member.getTotal(); // 이미 DB에 저장된 총 소비 금액을 가져옴
-
-        if (totalSpent >= 5000000) {
-            member.setVip("Platinum");
-        } else if (totalSpent >= 3000000) {
-            member.setVip("Gold");
-        } else if (totalSpent >= 1000000) {
-            member.setVip("Silver");
-        } else {
-            member.setVip("Bronze");
-        }
-
-        memberMapper.updateVIP(member);
-    }
-
-    // 총 소비 금액 업데이트 및 티켓 상태 업데이트
-    public void updateTotalSpentByMember(String memberId) {
-        List<Payment> completedPayments = paymentMapper.findByMemberIdAndStatus(memberId, "completed");
-
-        double totalSpent = 0.0;
-
-        // Iterate through completed payments
-        for (Payment payment : completedPayments) {
-            List<CartFlight> cartFlights = airplaneMapper.getAirInfo(payment.getAirKey());
-            if (cartFlights != null && !cartFlights.isEmpty()) {
-                CartFlight cartFlight = cartFlights.get(0);
-                LocalDate comebackDate = LocalDate.parse(cartFlight.getComeback(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-                // 티켓의 예약 날짜가 오늘 날짜보다 이전일 경우 상태를 completed로 변경
-                if (comebackDate.isBefore(LocalDate.now())) {
-                    totalSpent += cartFlight.getTotalPrice();
-
-                    // 티켓 상태를 completed로 업데이트
-                    paymentMapper.updateTicketStatus(payment.getAirKey(), "completed");
-                }
-            }
-        }
-
-        // Update total spent in member table
-        Member member = memberMapper.findById(memberId);
-        member.setTotal(totalSpent);
-        memberMapper.updateTotalSpentByMember(member);
-    }*/
-
     // VIP 등급 업데이트
     public void updateVIPStatus(String memberId) {
         Member member = memberMapper.findById(memberId);
@@ -174,7 +123,6 @@ public class MemberService {
             }
         }
 
-        // Update total spent in member table
         Member member = memberMapper.findById(memberId);
 
         member.setTotal(totalSpent);
