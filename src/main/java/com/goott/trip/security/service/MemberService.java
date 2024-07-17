@@ -2,7 +2,10 @@ package com.goott.trip.security.service;
 
 import com.goott.trip.hamster.mapper.AirplaneMapper;
 import com.goott.trip.hamster.mapper.paymentMapper;
+import com.goott.trip.hamster.model.ConHotelCartAll;
+import com.goott.trip.hamster.model.ConPayment;
 import com.goott.trip.hamster.model.Payment;
+import com.goott.trip.hamster.service.ConHotelCartService;
 import com.goott.trip.jhm.model.CartFlight;
 import com.goott.trip.security.mapper.MemberMapper;
 import com.goott.trip.security.model.Member;
@@ -16,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +30,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final paymentMapper paymentMapper;
     private final AirplaneMapper airplaneMapper;
+    private final ConHotelCartService hotelCartService;
 
     public void saveMember(Member member){
         member.setRole(Role.MEMBER); //MEMBER 역할 부여
@@ -106,6 +112,18 @@ public class MemberService {
         List<Payment> completedPayments = paymentMapper.findByMemberIdAndStatus(memberId, "completed");
 
         double totalSpent = 0.0;
+        // 여기서 호텔 이용 완료 목록 금액 업데이트
+        List<ConHotelCartAll> cartAllList = hotelCartService.getConHotelCartAllListByMemberId(memberId);
+        for(ConHotelCartAll hotelCartAll : cartAllList){
+            Optional<ConPayment> paymentOp = Optional.ofNullable(hotelCartAll.getPaymentObj());
+            // 결제 한거 중에 => 체크아웃 날짜가 오늘을 넘었으면
+            if(paymentOp.isPresent() 
+                    && hotelCartAll.getOfferObj().getCheckOut().toLocalDate().isAfter(LocalDate.now())){
+                totalSpent += hotelCartAll.getOfferObj().getTotalCost();
+                // 티켓 상태를 completed로 업데이트
+                paymentMapper.updateTicketStatusByOrderUuid(paymentOp.get().getOrderUuid(), "completed");
+            }
+        }
 
         for (Payment payment : completedPayments) {
             List<CartFlight> cartFlights = airplaneMapper.getAirInfo(payment.getAirKey());

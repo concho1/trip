@@ -2,6 +2,877 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <style>
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .changeImg {
+    cursor:pointer;
+    width: 30px;
+    height: 30px;
+    margin-top: 10px;
+  }
+
+  #origin {
+    background-image: url("/asset/icons/origin.svg");
+    background-position: 13px center;
+    background-size: 30px;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    padding: 5px 5px;
+    text-indent: 50px;
+    height: 60px;
+  }
+
+  #destination {
+    background-image: url("/asset/icons/destination.svg");
+    background-position: 13px center;
+    background-size: 30px;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    padding: 5px 5px;
+    text-indent: 50px;
+    height: 60px;
+  }
+
+  #depDate {
+    background-image: url("/asset/icons/dep.svg");
+    background-position: 13px center;
+    background-size: 30px;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    padding: 5px 5px;
+    text-indent: 50px;
+    height: 60px;
+    cursor: pointer;
+  }
+
+  #combDate {
+    background-image: url("/asset/icons/comb.svg");
+    background-position: 13px center;
+    background-size: 30px;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    padding: 5px 5px;
+    text-indent: 50px;
+    height: 60px;
+    cursor: pointer;
+  }
+
+  #peopleAndClass {
+    background-image: url("/asset/icons/airplanec.svg");
+    background-position: 13px center;
+    background-size: 30px;
+    background-repeat: no-repeat;
+    border: 1px solid #ccc;
+    padding: 5px 5px;
+    text-indent: 50px;
+    height: 60px;
+    cursor: pointer;
+  }
+
+  .search-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .search-form .input-group {
+    display: flex;
+    gap: 20px;
+  }
+
+  .search-form input[type="text"], .search-form input[type="date"], .search-form select {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 100%;
+  }
+
+  .date-picker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .date-picker span {
+    font-size: 14px;
+    color: #777;
+    margin-top: 5px;
+  }
+
+  .search-form button {
+    width: 20%;
+    padding: 15px 30px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: flex-end;
+  }
+
+  .search-form button:hover {
+    background-color: #0056b3;
+  }
+
+  @media (max-width: 768px) {
+    .search-form {
+      width: 90%;
+      padding: 20px;
+    }
+
+    .search-form .input-group {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .search-form input[type="text"], .search-form input[type="date"], .search-form select {
+      font-size: 16px;
+    }
+
+    .search-form button {
+      width: 100%;
+      font-size: 16px;
+    }
+    #footer{
+      display: none;
+    }
+  }
+
+  .changeOrgDes {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 130%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 700px;
+    height: 30%;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  #peopleSubmitBtn, .faq-submit {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: auto;
+    padding: 15px 30px;
+    border: none;
+    background-color: black;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .card-wrapper {
+    display: flex;
+    flex-wrap: wrap; /* 줄 바꿈 설정 */
+    justify-content: center;
+    align-items: flex-start; /* 상단 정렬 */
+    gap: 20px; /* 간격 설정 */
+    padding: 20px; /* 바깥 여백 설정 */
+  }
+  .card {
+    width: 100%; /* 카드의 너비 설정 */
+    max-width: 1000px; /* 최대 너비 설정 */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px; /* 아래쪽 여백 설정 */
+  }
+
+  .chart-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .card-admin {
+    width: 500px;
+    max-width: 1000px;
+    height : 50%;
+    background-color: #fff;
+    border: 2px solid rgba(195, 9, 9, 0.6);
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 20px;
+  }
+
+  .card-qna {
+    width: 100%;
+    max-width: 1000px;
+    height : 50%;
+    background-color: #fff;
+    border: 2px solid rgba(195, 9, 9, 0.6);
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 20px;
+  }
+
+  .card-body {
+    padding: 20px;
+  }
+
+  .card-title {
+    font-weight: bold;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .tog-body {
+    display: none;
+  }
+
+  #dep-shang, #dep-xia, #comb-shang, #comb-xia {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  #dep-wrapper, #comb-wrapper {
+    background: #fff;
+    width: 450px;
+    border-radius: 10px;
+    padding: 25px;
+    border: 1px solid black;
+  }
+
+  #dep-wrapper #dep-nav, #comb-wrapper #comb-nav {
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+
+  #dep-wrapper #dep-nav #dep-currentDate, #comb-wrapper #comb-nav #comb-currentDate {
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  #dep-wrapper #dep-nav button, #comb-wrapper #comb-nav button {
+    width: 38px;
+    height: 38px;
+    font-size: 30px;
+    color: #878787
+  }
+
+  #dep-calendar ul, #comb-calendar ul {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  #dep-calendar #dep-weeks li, #comb-calendar #comb-weeks li {
+    font-weight: 500;
+  }
+
+  #dep-calendar #dep-days, #comb-calendar #comb-days {
+    margin-bottom: 20px;
+  }
+
+  #dep-calendar ul li, #comb-calendar ul li {
+    width: calc(100% / 7);
+    position: relative;
+  }
+
+  #dep-calendar #dep-days li, #comb-calendar #comb-days li {
+    z-index: 1;
+    margin-top: 30px;
+    cursor: pointer;
+  }
+
+  .inactive {
+    color: #aaa;
+  }
+
+  #dep-active, #comb-active {
+    background: skyblue;
+    color: white;
+    font-weight: 600;
+    border-radius: 40%;
+  }
+
+  #dep-calendar #dep-days li::before, #comb-calendar #comb-days li::before {
+    position: absolute;
+    content: '';
+    height: 40px;
+    width: 40px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: -1;
+  }
+
+  .radio-group {
+    display: flex;
+    gap: 15px;
+  }
+
+  .custom-radio {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .custom-radio input[type="radio"] {
+    position: absolute;
+    opacity: 0; /* 기본 라디오 버튼 숨기기 */
+    cursor: pointer;
+  }
+
+  .button-style {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: white;
+    border: 1px solid dimgray;
+    border-radius: 20px;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+
+  .custom-radio input[type="radio"]:checked + .button-style {
+    background-color: rgba(0, 86, 179, 0.2);
+    border: 2px solid #0056b3;
+    color: #0056b3;
+    font-weight: bold;
+    box-shadow: 1px 1px 3px #4e5968;
+  }
+
+  .custom-radio input[type="radio"]:not(:checked) + .button-style:hover {
+    background-color: rgba(0, 86, 179, 0.2);
+  }
+
+  input[type="checkbox"] {
+    /* 기본 체크박스 숨기기 */
+    display: none;
+  }
+
+  input[type="checkbox"] + label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  input[type="checkbox"] + label:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 25px;
+    height: 25px;
+    border: 2px solid #ccc;
+    background-color: #fff;
+    border-radius: 3px;
+  }
+
+  input[type="checkbox"]:checked + label:before {
+    background-color: white;
+    border-color: #007bff;
+  }
+
+  input[type="checkbox"]:checked + label {
+    color: #007bff;
+  }
+
+  input[type="checkbox"]:checked + label:after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 2px;
+    width: 10px;
+    height: 15px;
+    border: solid #007bff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .separator {
+    display: inline-block;
+    width: 100px; /* 가로줄의 길이를 조정 */
+    border: none; /* 기본 테두리 제거 */
+    border-top: 3px solid red; /* 상단 테두리로 가로줄을 만듦 */
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    vertical-align: middle; /* 텍스트와 세로로 가운데 정렬 */
+  }
+
+  .durContainer {
+    display: flex;
+    align-items: center;
+    margin: 30px 0;
+    background-color: rgba(35, 133, 63, 0.1);
+    border-radius: 5px;
+  }
+
+  .segContainer {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+  }
+
+  .flight-price {
+    padding-left: 20px;
+    padding-right: 30px;
+    font-weight: bold;
+    font-size: 20px;
+    color: red;
+  }
+
+  .airlineImg {
+    padding-right: 20px;
+  }
+
+  .seg1 {
+    margin: 10px 20px;
+    padding-left: 0;
+    width: 200px;
+    height: 100%;
+    max-height: 250px;
+    border-right: 5px solid gray;
+  }
+
+  .seg2 {
+    width: 200px;
+    height: 100%;
+    max-height: 250px;
+  }
+
+  .sg2 {
+    margin: 10px 0;
+  }
+
+  .sgTime {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .sgDay {
+    font-size: 13px;
+  }
+
+  .dv1 {
+    padding-right: 30px;
+  }
+
+  .dv2 {
+    padding-left: 30px;
+    border-left: 5px solid royalblue;
+  }
+
+  .tog-body {
+    font-size: 13px;
+  }
+
+  .faq-list, .qna-list, .admin-main {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1500px;
+    max-height: 100%;
+    overflow: auto;
+  }
+
+  .faq-list input[type="text"] {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 100%;
+  }
+
+  .faq-list textarea {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 100%;
+    resize: none;
+  }
+
+  .acc {
+    border: 1px solid black;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    max-height: 300px;
+  }
+
+  .acc:hover {
+    border: 1px solid rgba(36, 90, 249, 0.5);
+    box-shadow: 3px 3px 1px gray;
+  }
+
+  .faq-acc {
+    position: relative;
+    padding-right: 30px;
+    padding-top: 10px;
+    cursor: pointer;
+    height: 50px;
+  }
+
+  .faq-acc-panel {
+    display: none;
+    padding-left: 10px;
+    padding-bottom: 10px;
+  }
+
+  .faq-acc-rotate {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+  }
+
+  .accBtn {
+    transition: transform 0.3s ease;
+    position: absolute;
+    right: 10px;
+    top: 4px;
+    cursor: pointer;
+  }
+
+  .faq-title {
+    padding-left: 10px;
+  }
+
+  .faq-title-open {
+    font-weight: bold;
+    color: rgba(36, 65, 249, 0.8);
+  }
+
+  .qna-insert-list {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1000px;
+    max-height: 700px;
+    overflow: auto;
+  }
+
+  .qna-insert-btn {
+    width: 10%;
+    padding: 15px 30px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: center;
+  }
+
+  .qna-insert-btn:hover {
+    background-color: #0056b3;
+  }
+
+  .qna-insert-list textarea {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 100%;
+    resize: none;
+  }
+
+  .qna-label {
+    margin-bottom: 10px;
+  }
+
+  .qna-list table tbody tr:hover {
+    background-color: rgba(78, 78, 193, 0.1);
+  }
+
+  .th1 {
+    width: 50%;
+  }
+
+  .th2 {
+    width: 20%;
+  }
+
+  .th3 {
+    width: 15%;
+  }
+
+  .go-qna-cont {
+    color: blue;
+    font-style: italic;
+  }
+
+  .go-qna-cont:hover {
+    text-decoration: underline;
+  }
+
+  .page-wrapper {
+    align-self: center;
+    align-items: center;
+    display: flex;
+  }
+
+  .pagingImg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .page-wrapper a {
+    margin: 0 10px;
+  }
+
+  .pag-now {
+    font-weight: bold;
+  }
+
+  .qna-cont-label {
+    margin-bottom: 10px;
+    cursor: default;
+  }
+
+  .qna-ta {
+    cursor: default;
+  }
+
+  .button-wrapper {
+    align-self: center;
+    width: 100%;
+    display: flex;
+  }
+
+  .qna-button {
+    display: inline-block;
+    width: 150px;
+    max-width: 4000px;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: white;
+    border: 1px solid dimgray;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+  }
+
+  .qna-button:hover {
+    border: 2px solid royalblue;
+    background-color: rgba(0, 86, 179, 0.5);
+    color: white;
+  }
+
+  .titleImg {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+
+  .waitAnswer {
+    background-color: black;
+    color: white;
+    font-size: 13px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .finAnswer {
+    background-color: green;
+    color: white;
+    font-size: 13px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .search-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .search-form .input-group {
+    display: flex;
+    gap: 20px;
+  }
+
+  .search-form input[type="text"], .search-form input[type="date"], .search-form select {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+    width: 100%;
+  }
+
+  .date-picker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  .date-picker span {
+    font-size: 14px;
+    color: #777;
+    margin-top: 5px;
+  }
+
+  .search-form button {
+    width: 20%;
+    padding: 15px 30px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: flex-end;
+  }
+
+  .search-form button:hover {
+    background-color: #0056b3;
+  }
+
+  .destination {
+    position: relative;
+    display: inline-block;
+  }
+
+  .destination-list {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    margin-top: 65px;
+    width: 45%;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .destination input:focus + .destination-list {
+    display: block;
+  }
+  .destination-item {
+    padding: 10px;
+    cursor: pointer;
+  }
+  .destination-item:hover {
+    background-color: #f0f0f0;
+  }
+  @media (max-width: 1300px) {
+    .destination-list {
+      width: 60%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .destination-list {
+      width: 80%;
+    }
+    .search-form {
+      width: 90%;
+      padding: 20px;
+    }
+
+    .search-form .input-group {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .search-form input[type="text"], .search-form input[type="date"], .search-form select {
+      font-size: 16px;
+    }
+
+    .search-form button {
+      width: 100%;
+      font-size: 16px;
+    }
+    #footer{
+      display: none;
+    }
+  }
+</style>
+<style>
   body, html {
     margin: 0;
     padding: 0;
@@ -9,7 +880,7 @@
   }
 
   .background {
-    background-image: url('/common/images/back_img.jpg');
+    background-image: url('/common/images/back_home.jpg');
     background-size: cover;
     background-position: center;
     height: 90vh;
@@ -85,8 +956,8 @@
     border: 1px solid #ccc;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     border-radius: 4px;
-    margin-top: 55px;
-    width: 45%;
+    margin-top: 121px;
+    width: 70%;
     z-index: 1000;
     max-height: 200px;
     overflow-y: auto;
@@ -132,382 +1003,335 @@
     #footer{
       display: none;
     }
+
+  }
+  /* 상위 요소에 relative 위치를 설정 */
+  .date-picker {
+    position: relative;
+  }
+
+  /* 달력 컨테이너에 absolute 위치를 설정 */
+  #depCalendarContainer {
+    position: absolute;
+    top: 100%; /* 입력 필드 바로 아래에 위치 */
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 10;
+  }
+  #combCalendarContainer{
+    position: absolute;
+    top: 100%; /* 입력 필드 바로 아래에 위치 */
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 10;
+  }
+  .my-btn {
+    width: 56px;
+    height: 35px;
+    position: absolute;
+    top: -35px; /* 폼 위로 이동할 거리 */
+    left: 15px;
+    margin-right: 10px; /* 버튼과 폼 사이의 간격 조정 dodgerblue lightskyblue */
+    background-color: lightskyblue;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 30px 30px 0 0;
+  }
+  #air-btn{
+    background-color: dodgerblue;
+    left: 74px;
+  }
+  .form-container {
+    position: relative;
+  }
+
+  .background {
+    padding: 20px;
+    background-size: cover;
+    position: relative;
+    width: 100%; /* 부모 요소의 너비를 100%로 설정 */
+    display: flex;
+    justify-content: center; /* 자식 요소를 가로로 중앙 정렬 */
+  }
+
+  .background{
+    width: 100%;
+  }
+  /* 기본 스타일 설정 */
+  #search-form-hotel {
+    width: 793px;
+    height: 392px;
+    margin: 0 auto; /* 가운데 정렬 */
+  }
+  #location{
+    margin-top: 10px;
+  }
+  #title-hotel{
+    margin-top: 10px;
+    height: 30px;
+  }
+  /* 아주 작은 화면용 미디어 쿼리 */
+  @media (max-width: 768px) {
+    #search-form-hotel {
+      width: 100%;
+    }
+    .search-form{
+      width: 100%;
+    }
   }
 </style>
-<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
+
+<div th:replace="~{common/head :: head-fragment}"></div>
 <body>
-  <div th:replace="~{common/head :: head-fragment}"></div>
-
-  <!-- [E]tedu-N3 -->
   <main class="th-layout-main ">
-    <!-- [S]tedu-N7 -->
-    <div class="tedu-N7" data-bid="LRlXiC74YQ">
-      <div class="visual-inner">
-        <div class="background">
-          <div class="title-wrap">
+    <div class="background" style="background-image: url('/common/images/back_home.jpg');">
+      <div class="form-container">
+        <div class="my-btn" id="air-btn">항공</div>
+        <div class="my-btn" id="hotel-btn">호텔</div>
+      <!-- 호텔 검색 -->
+      <form class="search-form" action="/con/hotel-list" method="get" id="search-form-hotel" style="display: none">
+        <div id="title-hotel">
+          <h2 class="cont-title">호텔 검색</h2>
+        </div>
+        <input name="iataCode" id="location" type="text" placeholder="어디로 떠나시나요?" class="destination" value="" autocomplete="off">
+
+        <div class="destination-list" id="search-list">
+          <div class="destination-item">
+            <span>검색어를 입력해주세요!</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="date-picker" id="start-date-picker">
+            <label for="start-date"></label>
+            <input name="checkIn" id="start-date" type="date" placeholder="연도-월-일">
+            <span>체크인 날짜</span>
+          </div>
+          <div id="end-date" class="date-picker">
+            <label for="end-date-input"></label>
+            <input name="checkOut" id="end-date-input" type="date" placeholder="연도-월-일">
+            <span>체크아웃 날짜</span>
+          </div>
+          <div id="person-cnt-hotel" class="date-picker">
+            <select name="personCnt">
+              <option value="1">성인 1명</option>
+              <option value="2">성인 2명</option>
+              <option value="3">성인 3명</option>
+              <option value="4">성인 4명</option>
+              <option value="5">성인 5명</option>
+              <option value="-1">단체</option>
+            </select>
+            <span>인원 선택</span>
+          </div>
+        </div>
+        <div style="display: flex;">
+          <button id="search-btn-map" type="button" style="margin-right: 2rem; margin-left: auto">지도 검색</button>
+          <button id="search-btn" type="button">검색하기</button>
+        </div>
+      </form>
+      <!-- 호텔 검색 끝 -->
+
+
+
+      <!-- 항공 검색 -->
+      <form class="search-form" action="test" method="post" id="search-form-air" style="display: none">
+        <div class="title-wrap">
+          <h3 class="cont-title">항공권 검색</h3>
+        </div>
+        <div class="input-group">
+          <div class="radio-group" style="display: flex; align-items: center; justify-content: space-between;">
             <label class="custom-radio">
-              <input name="radioset-a" type="radio" id="hotel-btn" checked>
-              <span class="button-style">숙소 검색</span>
+              <input name="radioset-a" type="radio" value="true" checked>
+              <span class="button-style">편도</span>
             </label>
 
             <label class="custom-radio">
-              <input name="radioset-a" type="radio" id="air-btn">
-              <span class="button-style">항공권 검색</span>
+              <input name="radioset-a" type="radio" value="false">
+              <span class="button-style">왕복</span>
             </label>
           </div>
-          <!-- 호텔 -->
-          <form class="search-form" action="/con/hotel-list" method="get" id="hotelList">
-            <input name="iataCode" id="location" type="text" placeholder="어디로 떠나시나요?" class="destination" value="" autocomplete="off">
-            <div class="destination-list" id="search-list">
-              <div class="destination-item">
-                <span>검색어를 입력해주세요!</span>
-              </div>
-            </div>
-            <div class="input-group">
-              <div class="date-picker" id="start-date-picker">
-                <input name="startDate" id="start-date" type="date" placeholder="연도-월-일">
-                <span>체크인 날짜</span>
-              </div>
-              <div id="end-date" class="date-picker">
-                <input name="endDate" id="end-date-input" type="date" placeholder="연도-월-일">
-                <span>체크아웃 날짜</span>
-              </div>
-              <div id="person-cnt" class="date-picker">
-                <select name="personCnt">
-                  <option value="1">성인 1명</option>
-                  <option value="2">성인 2명</option>
-                  <option value="3">성인 3명</option>
-                  <option value="4">성인 4명</option>
-                  <option value="5">성인 5명</option>
-                  <option value="-1">단체</option>
-                </select>
-                <span>인원 선택</span>
-              </div>
-            </div>
-            <button id="search-btn" type="button">검색하기</button>
-          </form>
-          <!-- 호텔 END -->
-
-          <!-- 항공권 -->
-          <form class="search-form" action="test" method="post" id="airList">
-            <div class="input-group">
-              <div class="radio-group" style="display: flex; align-items: center; justify-content: space-between;">
-                <label class="custom-radio">
-                  <input name="radioset-a" type="radio" value="true" checked>
-                  <span class="button-style">편도</span>
-                </label>
-
-                <label class="custom-radio">
-                  <input name="radioset-a" type="radio" value="false">
-                  <span class="button-style">왕복</span>
-                </label>
-              </div>
-              <div style="margin-left: auto;">
-                <input id="checkbox1" type="checkbox" name="nonStop" value="true">
-                <label for="checkbox1" style="font-weight: bold;">직항만 검색</label>
-              </div>
-            </div>
-
-            <div class="input-group">
-              <input type="text" placeholder="출발지 입력" id="origin" name="origin" aria-label="출발" autocomplete="off">
-              <div id="originModal" class="modal">
-                <div class="modal-content">
-                  <span class="close" id="orgClose">&times;</span>
-                  <input name="org" id="modalOrigin">
-                  <hr>
-                  <div id="originModalBody"></div>
-                </div>
-              </div>
-              <img src="/asset/icons/changed.svg" class="changeImg" th:onclick="changeTo()">
-              <input type="text" placeholder="도착지 입력" id="destination" name="destination" aria-label="도착" autocomplete="off">
-              <div id="desModal" class="modal">
-                <div class="modal-content">
-                  <span class="close" id="desClose">&times;</span>
-                  <input name="des" id="modalDes">
-                  <hr>
-                  <div id="desModalBody"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="input-group">
-              <div class="date-picker">
-                <input type="text" name="departure" id="depDate" placeholder="가는 날" autocomplete="off">
-                <div id="depCalendarContainer" class="hidden">
-                  <div id="dep-wrapper">
-                    <header>
-                      <div id="dep-nav">
-                        <button type="button" id="dep-shang">◀</button>
-                        <p id="dep-currentDate"></p>
-                        <button type="button" id="dep-xia">▶</button>
-                      </div>
-                    </header>
-                    <div id="dep-calendar">
-                      <ul id="dep-weeks">
-                        <li>Sun</li>
-                        <li>Mon</li>
-                        <li>Tue</li>
-                        <li>Wed</li>
-                        <li>Thu</li>
-                        <li>Fri</li>
-                        <li>Sat</li>
-                      </ul>
-                      <ul id="dep-days">
-
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="comb-field" class="date-picker hidden">
-                <input type="text" name="comeback" id="combDate" placeholder="오는 날" autocomplete="off">
-                <div id="combCalendarContainer" class="hidden">
-                  <div id="comb-wrapper">
-                    <header>
-                      <div id="comb-nav">
-                        <button type="button" id="comb-shang">◀</button>
-                        <p id="comb-currentDate"></p>
-                        <button type="button" id="comb-xia">▶</button>
-                      </div>
-                    </header>
-                    <div id="comb-calendar">
-                      <ul id="comb-weeks">
-                        <li>Sun</li>
-                        <li>Mon</li>
-                        <li>Tue</li>
-                        <li>Wed</li>
-                        <li>Thu</li>
-                        <li>Fri</li>
-                        <li>Sat</li>
-                      </ul>
-                      <ul id="comb-days">
-
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="person-cnt" class="date-picker">
-                <input type="text" id="peopleAndClass" placeholder="인원 & 좌석" readonly>
-                <div id="peopleModal" class="modal">
-                  <div class="modal-content">
-                    <span class="close" id="peopleClose">&times;</span>
-                    <p>인원</p>
-                    <div class="input-group">
-                      <div>
-                        <span>성인</span>
-                        <select name="adults">
-                          <option value="0">0</option>
-                          <option value="1" selected>1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <span>아동</span>
-                        <select name="children">
-                          <option value="0">0</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <span>유아</span>
-                        <select name="infants">
-                          <option value="0">0</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                        </select>
-                      </div>
-                    </div>
-                    <hr>
-                    <p>좌석</p>
-                    <br>
-                    <div class="input-group">
-                      <div class="radio-group">
-                        <label class="custom-radio">
-                          <input name="airplaneClass" type="radio" value="" checked>
-                          <span class="button-style">선택 안 함</span>
-                        </label>
-                        <label class="custom-radio">
-                          <input type="radio" name="airplaneClass" value="ECONOMY">
-                          <span class="button-style">이코노미</span>
-                        </label>
-                        <label class="custom-radio">
-                          <input type="radio" name="airplaneClass" value="PREMIUM_ECONOMY">
-                          <span class="button-style">프리미엄 이코노미</span>
-                        </label>
-                        <label class="custom-radio">
-                          <input type="radio" name="airplaneClass" value="BUSINESS">
-                          <span class="button-style">비지니스</span>
-                        </label>
-                        <label class="custom-radio">
-                          <input type="radio" name="airplaneClass" value="FIRST">
-                          <span class="button-style">퍼스트</span>
-                        </label>
-                      </div>
-                    </div>
-                    <br> <br>
-                    <button type="button" id="peopleSubmitBtn">완료</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button type="submit">검색하기</button>
-          </form>
-          <!-- 항공권 END -->
-          <button type="button" th:href>외않되?</button>
+          <div style="margin-left: auto;">
+            <input id="checkbox1" type="checkbox" name="nonStop" value="true">
+            <label for="checkbox1" style="font-weight: bold;">직항만 검색</label>
+          </div>
         </div>
-      </div>
-    </div>
-    <!-- [E]tedu-N7 -->
-    <!-- [S]tedu-N8 -->
-    <div class="tedu-N8 darkmode" data-bid="dTLxic754f">
-      <div class="content-inner">
-        <div class="content-container">
-          <div class="main-content">
-            <div class="title-wrap">
-              <h3 class="cont-title">신규 런칭 교육</h3>
+
+        <div class="input-group">
+          <input type="text" placeholder="출발지 입력" id="origin" name="origin" aria-label="출발" autocomplete="off">
+          <div id="originModal" class="modal">
+            <div class="modal-content">
+              <span class="close" id="orgClose">&times;</span>
+              <input name="org" id="modalOrigin">
+              <hr>
+              <div id="originModalBody"></div>
             </div>
-            <div class="content-swiper">
-              <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                  <div class="card-wrap tedu-card-type01 color-type01">
-                    <a href="javascript:void(0)">
-                      <div class="card-area">
-                        <div class="card-text-area">
-                          <h2 class="title">디자이너와 개발자를 위한 피그마 초격차 패키지</h2>
-                          <p class="text">초보자와 실무자 모두 쉽게 배울 수 있는 노하우를 전수해드립니다!</p>
-                        </div>
-                        <div class="card-img-area">
-                          <div class="profile-box">
-                            <img th:src="@{/asset/images/img_profile_01.png}" alt="이미지">
-                          </div>
-                          <div class="profile-box">
-                            <img th:src="@{/asset/images/img_profile_02.png}" alt="이미지">
-                          </div>
-                          <div class="profile-box profile-num">
-                            <span>+1</span>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                    <button type="button" class="ico-bookmark">
-                      <em></em>
-                      <span>북마크</span>
-                    </button>
+          </div>
+          <img src="/asset/icons/changed.svg" class="changeImg" th:onclick="changeTo()">
+          <input type="text" placeholder="도착지 입력" id="destination" name="destination" aria-label="도착" autocomplete="off">
+          <div id="desModal" class="modal">
+            <div class="modal-content">
+              <span class="close" id="desClose">&times;</span>
+              <input name="des" id="modalDes">
+              <hr>
+              <div id="desModalBody"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="date-picker">
+            <input type="text" name="departure" id="depDate" placeholder="가는 날" autocomplete="off">
+            <div id="depCalendarContainer" class="hidden">
+              <div id="dep-wrapper">
+                <header>
+                  <div id="dep-nav">
+                    <button type="button" id="dep-shang">◀</button>
+                    <p id="dep-currentDate"></p>
+                    <button type="button" id="dep-xia">▶</button>
                   </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="card-wrap tedu-card-type01 color-type02 badge">
-                    <a href="javascript:void(0)">
-                      <div class="card-area">
-                        <div class="card-text-area">
-                          <h2 class="title">한번에 배우는 Adobe Photoshop 기술서 </h2>
-                          <p class="text">초보자와 실무자 모두 쉽게 배울 수 있는 노하우를 전수해드립니다!</p>
-                        </div>
-                        <div class="card-img-area">
-                          <div class="profile-box">
-                            <img th:src="@{/asset/images/img_profile_03.png}" alt="이미지">
-                          </div>
-                          <div class="profile-box">
-                            <img th:src="@{/asset/images/img_profile_04.png}" alt="이미지">
-                          </div>
-                          <div class="profile-box profile-num">
-                            <span>+6</span>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                    <button type="button" class="ico-bookmark">
-                      <em></em>
-                      <span>북마크</span>
-                    </button>
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="card-wrap tedu-card-type01 color-type03">
-                    <a href="javascript:void(0)">
-                      <div class="card-area">
-                        <div class="card-text-area">
-                          <h2 class="title">콘텐츠 판매자를 위한 마케팅 전략 노하우</h2>
-                          <p class="text">초보자와 실무자 모두 쉽게 배울 수 있는 노하우를 전수해드립니다!</p>
-                        </div>
-                        <div class="card-img-area">
-                          <div class="profile-box">
-                            <img th:src="@{/asset/images/img_profile_05.png}" alt="이미지">
-                          </div>
-                          <div class="profile-box">
-                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지">
-                          </div>
-                          <div class="profile-box profile-num">
-                            <span>+3</span>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                    <button type="button" class="ico-bookmark">
-                      <em></em>
-                      <span>북마크</span>
-                    </button>
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="card-wrap tedu-card-type01 color-type03 badge">
-                    <a href="javascript:void(0)">
-                      <div class="card-area">
-                        <div class="card-text-area">
-                          <h2 class="title">콘텐츠 판매자를 위한 마케팅 전략 노하우</h2>
-                          <p class="text">초보자와 실무자 모두 쉽게 배울 수 있는 노하우를 전수해드립니다!</p>
-                        </div>
-                        <div class="card-img-area">
-                          <div class="profile-box">
-                            <img th:src="@{/asset/images/img_profile_05.png}" alt="이미지">
-                          </div>
-                          <div class="profile-box">
-                            <img th:src="@{/asset/images/img_profile_06.png}" alt="이미지">
-                          </div>
-                          <div class="profile-box profile-num">
-                            <span>+3</span>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                    <button type="button" class="ico-bookmark">
-                      <em></em>
-                      <span>북마크</span>
-                    </button>
-                  </div>
+                </header>
+                <div id="dep-calendar">
+                  <ul id="dep-weeks">
+                    <li>Sun</li>
+                    <li>Mon</li>
+                    <li>Tue</li>
+                    <li>Wed</li>
+                    <li>Thu</li>
+                    <li>Fri</li>
+                    <li>Sat</li>
+                  </ul>
+                  <ul id="dep-days">
+
+                  </ul>
                 </div>
               </div>
-              <div class="control-wrap">
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
+            </div>
+          </div>
+          <div id="comb-field" class="date-picker hidden">
+            <input type="text" name="comeback" id="combDate" placeholder="오는 날" autocomplete="off">
+            <div id="combCalendarContainer" class="hidden">
+              <div id="comb-wrapper">
+                <header>
+                  <div id="comb-nav">
+                    <button type="button" id="comb-shang">◀</button>
+                    <p id="comb-currentDate"></p>
+                    <button type="button" id="comb-xia">▶</button>
+                  </div>
+                </header>
+                <div id="comb-calendar">
+                  <ul id="comb-weeks">
+                    <li>Sun</li>
+                    <li>Mon</li>
+                    <li>Tue</li>
+                    <li>Wed</li>
+                    <li>Thu</li>
+                    <li>Fri</li>
+                    <li>Sat</li>
+                  </ul>
+                  <ul id="comb-days">
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="person-cnt" class="date-picker">
+            <input type="text" id="peopleAndClass" placeholder="인원 & 좌석" readonly>
+            <div id="peopleModal" class="modal">
+              <div class="modal-content">
+                <span class="close" id="peopleClose">&times;</span>
+                <p>인원</p>
+                <div class="input-group">
+                  <div>
+                    <span>성인</span>
+                    <select name="adults">
+                      <option value="0">0</option>
+                      <option value="1" selected>1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <span>아동</span>
+                    <select name="children">
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <span>유아</span>
+                    <select name="infants">
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                    </select>
+                  </div>
+                </div>
+                <hr>
+                <p>좌석</p>
+                <br>
+                <div class="input-group">
+                  <div class="radio-group">
+                    <label class="custom-radio">
+                      <input name="airplaneClass" type="radio" value="" checked>
+                      <span class="button-style">선택 안 함</span>
+                    </label>
+                    <label class="custom-radio">
+                      <input type="radio" name="airplaneClass" value="ECONOMY">
+                      <span class="button-style">이코노미</span>
+                    </label>
+                    <label class="custom-radio">
+                      <input type="radio" name="airplaneClass" value="PREMIUM_ECONOMY">
+                      <span class="button-style">프리미엄 이코노미</span>
+                    </label>
+                    <label class="custom-radio">
+                      <input type="radio" name="airplaneClass" value="BUSINESS">
+                      <span class="button-style">비지니스</span>
+                    </label>
+                    <label class="custom-radio">
+                      <input type="radio" name="airplaneClass" value="FIRST">
+                      <span class="button-style">퍼스트</span>
+                    </label>
+                  </div>
+                </div>
+                <br> <br>
+                <button type="button" id="peopleSubmitBtn">완료</button>
               </div>
             </div>
           </div>
         </div>
+        <button type="submit">검색하기</button>
+      </form>
       </div>
     </div>
+
+
+
+
     <!-- [E]tedu-N8 -->
     <!-- [S]tedu-N10 -->
     <div class="tedu-N10" data-bid="solxic759o">
@@ -675,17 +1499,28 @@
       let $searchListDiv = $('#search-list');
       let $location = $('#location');
       let $beforeSelect = null;
-
-      $('#search-btn').click(function(){
+      let $searchForm = $('#search-form');
+      const $loading = $('#loading'); function loadingOut (){$loading.css('display', 'block');}
+      function mySubnit(){
         // 영어 문자인지 확인하는 정규 표현식
         let isEnglish = /^[A-Za-z\s]+$/.test($location.val());
         if (!isEnglish || $location.val().length !== 3) {
           alert('검색창 아래의 지역 코드를 선택해 주세요.');
           return false;
         }else{
-          $('.search-form').submit();
+          loadingOut();
+          $('#search-form-hotel').submit();
         }
 
+      }
+
+      $('#search-btn-map').click(function() {
+        $searchForm.attr('action', '/map');
+        mySubnit();
+      })
+
+      $('#search-btn').click(function(){
+        mySubnit();
       });
 
       $(document).click(function(event) {
@@ -733,7 +1568,8 @@
             alert('검색창 아래의 지역 코드를 선택해 주세요.');
             return false;
           }else{
-            $('.search-form').submit();
+            loadingOut();
+            $('#search-form-hotel').submit();
           }
         }
 
@@ -798,40 +1634,32 @@
       });
       return responseResult;
     }
-
+  </script>
+  <script th:inline="javascript">
     $(document).ready(function () {
+      let $hotelForm = $('#search-form-hotel');
+      let $hotelBtn = $('#hotel-btn');
 
-      let $hotelList = $('#hotelList');
-      let $airList = $('#airList');
+      let $airForm = $('#search-form-air');
+      let $airBtn = $('#air-btn');
 
-      $airList.hide();
+      // 초기 로드시 호텔 폼을 보이게 설정 dodgerblue lightskyblue
+      $airForm.show();
 
-      function hideAllSections(callback) {
-        $airList.fadeOut('slow');
-        $hotelList.fadeOut('slow', callback);
-      }
-
-      function showAirList() {
-        hideAllSections(function() {
-          $airList.fadeIn('slow');
-        });
-      }
-
-      function showHotelList() {
-        hideAllSections(function() {
-          $hotelList.fadeIn('slow');
-        });
-      }
-
-      $('#air-btn').click(function () {
-        showAirList();
+      $hotelBtn.click(function () {
+        $hotelBtn.css('background-color', 'dodgerblue');
+        $airBtn.css('background-color', 'lightskyblue');
+        $hotelForm.show();
+        $airForm.hide();
       });
 
-      $('#hotel-btn').click(function () {
-        showHotelList();
+      $airBtn.click(function () {
+        $hotelBtn.css('background-color', 'lightskyblue');
+        $airBtn.css('background-color', 'dodgerblue');
+        $airForm.show();
+        $hotelForm.hide();
       });
-
     });
   </script>
-  <script th:src="@{/jhm/jhm.js}"></script>
+  <script th:src="@{/common/js/main_air.js}"></script>
 </body>

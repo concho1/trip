@@ -232,7 +232,7 @@
                 console.log(str);
                 let formData = new FormData();
                 formData.append("searchStr", str);
-                ajaxGo('/user/concho/search-iatacode', formData, function (response) {
+                ajaxGo('/con/search-iatacode', formData, function (response) {
                     $searchListDiv.empty();
                     let iataCodeList = response.result;
                     iataCodeList.forEach(function (iataCode, index) {
@@ -266,6 +266,7 @@
                 }
             },
             error: function(error) {
+                console.log(error)
                 //alert('통신 오류: ' + error);
             }
         });

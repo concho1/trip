@@ -33,6 +33,12 @@
         WHERE air_key = #{airKey}
     </update>
 
+    <update id="updateTicketStatusByOrderUuid">
+        UPDATE payment
+        SET status = #{status}
+        WHERE order_uuid = #{orderUuid}
+    </update>
+
     <select id="findByStatus" parameterType="String" resultType="Payment">
         SELECT * FROM payment
         WHERE status = #{status}

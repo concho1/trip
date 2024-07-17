@@ -21,7 +21,7 @@
                             <h3 class="cont-title" th:text="|검색된 숙박 목록 없음|"></h3>
                         </th:block>
                         <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; width: 80px; height: 40px; background-color: #009EFF"
-                                class="tedu-btn tedu-btn-light add-cart" onclick="location.href='/con/hotel-search'">뒤로가기</button>
+                                class="tedu-btn tedu-btn-light add-cart" onclick="history.back()">뒤로가기</button>
                     </div>
 
                     <form method="get" action="/con/hotel-info" id="hidden-form" style="display: none;">
@@ -61,31 +61,36 @@
                                 </button>
                             </div>
                         </th:block>
-                        <button type="button" class="tedu-btn" id="more" style="width: 50%;" th:align="center">
-                            <span class="my-text">더보기</span>
-                        </button>
                     </div>
                 </section>
             </div>
         </div>
     </div>
 </main>
-<div id="loading">
-    <img th:src="@{/asset/videos/grey-9026.gif}" alt=".">
+<div id="loading" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; overflow: hidden; background: rgba(0, 0, 0, 0.5); z-index: 9999;">
+    <img th:src="@{/asset/videos/grey-9026.gif}" alt="." style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.3);">
 </div>
+
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
 </div>
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
 <script>
-    const $hiddenForm = $('#hidden-form');
-    const $hotelListBlock = $('#hotel-list-block');
-    const $loading = $('#loading');
-    $hotelListBlock.on('click', '.btn-link', function () {
-        $hiddenForm.find('#hotel-uuid').val($(this).data('uuid'));
-        $hiddenForm.find('#hotel-ad-id').val($(this).data('ad-id'));
-        $loading.css('display', 'block');
-        $hiddenForm.submit();
+    $(document).ready(function () {
+        // 로딩 모달창 띄우기
+        const $loading = $('#loading'); function loadingOut (){$loading.css('display', 'block');}
+
+
+        const $hiddenForm = $('#hidden-form');
+        const $hotelListBlock = $('#hotel-list-block');
+
+        $hotelListBlock.on('click', '.btn-link', function () {
+            $hiddenForm.find('#hotel-uuid').val($(this).data('uuid'));
+            $hiddenForm.find('#hotel-ad-id').val($(this).data('ad-id'));
+            loadingOut();
+            $hiddenForm.submit();
+        });
     });
+
 
 </script>
