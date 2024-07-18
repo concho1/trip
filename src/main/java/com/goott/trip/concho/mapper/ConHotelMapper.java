@@ -27,6 +27,7 @@ public interface ConHotelMapper {
 
     // searchParam 으로 offerSearch 검색
     Optional<ConOfferSearch> findOfferSearchBySearchParam(SearchParam searchParam);
+    Optional<ConOfferSearch> findOfferSearchBySearchParamAndCart(SearchParam searchParam);
     // 호텔 아이디로 검색
     ConHotel findHotelByHotelUuid(String hotelUuid);
     ConHotelLevel findHotelLevelByHotelUuid(String hotelUuid);

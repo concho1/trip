@@ -16,4 +16,5 @@ public class SearchParam {
     private Date checkOut;
     private Integer personCnt;
     private String memberId;
+    private Boolean isCart;
 }
