@@ -29,6 +29,7 @@ $(document).ready(function() {
     const des = $("#destination");
     const peo = $("#peopleAndClass");
 
+
     $('#faqClose').click(function() {
         $('#faqModal').hide();
     })

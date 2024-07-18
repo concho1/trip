@@ -37,15 +37,23 @@ public class HotelOfferService {
                 searchParam.getPersonCnt(),
                 searchParam.getMemberId());
         try {
-            // DB 에 1시간 이내 데이터 있는지 확인
-            Optional<ConOfferSearch> offerSearchOp = conHotelMapper.findOfferSearchBySearchParam(searchParam);
-            // 있으면 DB 에 있는 데이터 꺼내서 주기
-            if (offerSearchOp.isPresent()) {
-                return getAllHotelInfoFromDB(offerSearchOp.get());
-            }
-            // 없으면 아마데우스에서 받아서 주기
-            else {
-                return getAllHotelInfoFromAmadeus(searchParam, offerSearchForSave);
+            if(searchParam.getIsCart()){
+                Optional<ConOfferSearch> offerSearchOp = conHotelMapper.findOfferSearchBySearchParamAndCart(searchParam);
+                // 있으면 DB 에 있는 데이터 꺼내서 주기
+                if (offerSearchOp.isPresent()) {
+                    return getAllHotelInfoFromDB(offerSearchOp.get());
+                }
+            }else{
+                // DB 에 1시간 이내 데이터 있는지 확인
+                Optional<ConOfferSearch> offerSearchOp = conHotelMapper.findOfferSearchBySearchParam(searchParam);
+                // 있으면 DB 에 있는 데이터 꺼내서 주기
+                if (offerSearchOp.isPresent()) {
+                    return getAllHotelInfoFromDB(offerSearchOp.get());
+                }
+                // 없으면 아마데우스에서 받아서 주기
+                else {
+                    return getAllHotelInfoFromAmadeus(searchParam, offerSearchForSave);
+                }
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
