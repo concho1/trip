@@ -4,6 +4,7 @@ import com.goott.trip.common.model.Alarm;
 import com.goott.trip.common.model.Image;
 import com.goott.trip.common.service.ImageService;
 import com.goott.trip.hamster.model.ConHotelCartAll;
+import com.goott.trip.hamster.model.Payment;
 import com.goott.trip.hamster.service.ConHotelCartService;
 import com.goott.trip.hamster.service.airplaneService;
 import com.goott.trip.jhm.model.CartDuration;
@@ -223,6 +224,9 @@ public class MemberRestController {
     public ModelAndView getReservation(Principal principal) {
         String memberId = principal.getName();
         List<String> airKey = this.memberService.getPaymentAirKey(memberId);
+        List<Payment> allPayment = this.memberService.getPayment(memberId);
+        List<Payment> air = this.memberService.payAir(memberId);
+        List<Payment> hotel = this.memberService.payHotel(memberId);
 
         List<CartFlight> airInfo = new ArrayList<>();
         List<CartSegment> segDep = new ArrayList<>();
@@ -238,7 +242,7 @@ public class MemberRestController {
             CombDur.addAll(this.airService.getCombDur(airKey.get(i)));
         }
 
-        // DepDur 리스트 처리 Optional 이용 null 처리했습니당
+        // DepDur 리스트 처리 Optional 이용 null 처리
         for (CartDuration depDur : DepDur) {
             depDur.setAirlineImg(
                     imageService.findImageByKey(depDur.getAirlineImg())
@@ -261,7 +265,11 @@ public class MemberRestController {
         List<ConHotelCartAll> hotelCartAllList
                 = hotelCartService.getConHotelCartAllListByMemberId(memberId);
         // 테스트용 offer 가 방, hotel 은 호텔
-
+        for(int j = 0; j < hotelCartAllList.size(); j++){
+            if(hotelCartAllList.get(j).getPaymentObj() == null){
+                hotelCartAllList.remove(j);
+            }
+        }
         ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");
         modelAndView.addObject("memberId",memberId)
                 .addObject("airInfo",airInfo)
@@ -269,7 +277,10 @@ public class MemberRestController {
                 .addObject("segComb",segComb)
                 .addObject("DepDur",DepDur)
                 .addObject("CombDur",CombDur)
-                .addObject("hotelList",hotelCartAllList);
+                .addObject("hotelList",hotelCartAllList)
+                .addObject("payment", allPayment)
+                .addObject("airStatus", air)
+                .addObject("hotelStatus",hotel);
         return modelAndView;
     }
 
