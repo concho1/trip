@@ -29,6 +29,7 @@
     .my-form{
         width: calc(100% - 540px);
     }
+
 </style>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
@@ -124,6 +125,28 @@
                             </th:block>
                         </th:block>
                     </div>
+
+
+                        <th:block>
+                            <div class="myedu-cont-wrap" th:if="${hotelCheck == 0 && airInfo.size() == 0}" align="center">
+
+                                <div class="myedu-cont">
+                                    <img th:src="@{/asset/images/emptyCart.png}" style="width: 150px;">
+                                    <div class="title-wrap" style="margin-bottom: 40px;">
+                                        <h1 style="font-size: 50px;">장바구니가 비어있습니다.​<br></h1>
+                                    </div>
+                                </div>
+
+                                <div class="form-footer btn-box">
+                                    <p>어디론가 떠나고싶지 않으신가요?</p>
+                                    <button type="button" class="tedu-btn tedu-btn-light" style="width: 200px; background-color: #2f639a" >
+                                        <a th:href="@{/home}" style="color: white">항공, 숙박 통합 검색하기</a>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </th:block>
+
 
                 </section>
                 </div>
