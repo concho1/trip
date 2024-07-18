@@ -3,6 +3,10 @@ package com.goott.trip.security.controller;
 import com.goott.trip.common.model.Alarm;
 import com.goott.trip.common.model.Image;
 import com.goott.trip.common.service.ImageService;
+import com.goott.trip.hamster.model.ConHotelCartAll;
+import com.goott.trip.jhm.model.CartDuration;
+import com.goott.trip.jhm.model.CartFlight;
+import com.goott.trip.jhm.model.CartSegment;
 import com.goott.trip.security.model.Member;
 import com.goott.trip.security.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -216,45 +222,11 @@ public class MemberRestController {
 
         return modelAndView;
     }
-    /*
-    public ModelAndView getVip(Principal principal) {
-        String memberId = principal.getName();
-        LocalDate today = LocalDate.now();
-        List<String> airKeyList = this.memberService.getAirKeyList(memberId);
-
-        for (String airKey : airKeyList) {
-            String dep = this.memberService.getDeparture(airKey);
-            LocalDate depDate = LocalDate.parse(dep, DateTimeFormatter.ISO_DATE);
-            boolean d = today.isAfter(depDate);
-            if (!d) {
-                this.memberService.updatePaymentStatus(airKey);  // 결제 상태 업데이트
-                this.memberService.assignVipRank(memberId);  // VIP 등급 부여
-            }
-
-            String comb = this.memberService.getComeback(airKey);
-            if (comb != null && !comb.isEmpty()) {
-                LocalDate combDate = LocalDate.parse(comb, DateTimeFormatter.ISO_DATE);
-                boolean c = today.isAfter(combDate);
-                if (!c) {
-                    this.memberService.updatePaymentStatus(airKey);  // 결제 상태 업데이트
-                    this.memberService.assignVipRank(memberId);  // VIP 등급 부여
-                }
-            }
-        }
-
-        // 회원의 정보를 뷰로 전달
-        Member member = memberService.getMemberById(memberId);
-        ModelAndView modelAndView = new ModelAndView("security/member/member_vip");
-        modelAndView.addObject("memberId", memberId);
-        modelAndView.addObject("completedBookings", memberService.countCompletedPayments(memberId));
-        modelAndView.addObject("vipLevel", member.getRank());
-
-        return modelAndView;
-    }*/
 
     @GetMapping("reservation")
     public ModelAndView getReservation(Principal principal, Member member) {
         String memberId = principal.getName();
+        /*List<String> airkey = this.memberService.*/
         /*ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");
         setCommonAttributes(principal, modelAndView);
         return modelAndView;*/
@@ -262,6 +234,57 @@ public class MemberRestController {
         modelAndView.addObject("memberId",memberId);
         return modelAndView;
     }
+    /*public ModelAndView ShoppingCart(Principal principal, Model model){
+
+        String memberId = principal.getName();
+
+        List<String> airKey = this.shoppingCartService.shoppingCartAirplane(memberId);
+
+
+        List<CartFlight> airInfo = new ArrayList<>();
+        List<CartSegment> segDep = new ArrayList<>();
+        List<CartSegment> segComb = new ArrayList<>();
+        List<CartDuration> DepDur = new ArrayList<>();
+        List<CartDuration> CombDur = new ArrayList<>();
+
+        for(int i = 0; i < airKey.size(); i ++){
+            airInfo.addAll(this.airservice.getAirInfo(airKey.get(i)));
+            segDep.addAll(this.airservice.getDep(airKey.get(i)));
+            segComb.addAll(this.airservice.getComb(airKey.get(i)));
+            DepDur.addAll(this.airservice.getDepDur(airKey.get(i)));
+            CombDur.addAll(this.airservice.getCombDur(airKey.get(i)));
+        }
+
+        // DepDur 리스트 처리 Optional 이용 null 처리했습니당
+        for (CartDuration depDur : DepDur) {
+            depDur.setAirlineImg(
+                    imageService.findImageByKey(depDur.getAirlineImg())
+                            .map(Image::getUrl)
+                            .orElse("/common/images/air.png")
+            );
+        }
+        // CombDur 리스트 처리
+        for (CartDuration combDur : CombDur) {
+            combDur.setAirlineImg(
+                    imageService.findImageByKey(combDur.getAirlineImg())
+                            .map(Image::getUrl)
+                            .orElse("/common/images/air.png")
+            );
+        }
+        System.out.println("memberId : " + memberId);
+        // 여기서 호텔 리스트 받아오는거 추가
+        List<ConHotelCartAll> hotelCartAllList
+                = hotelCartService.getConHotelCartAllListByMemberId(memberId);
+        // 테스트용 offer 가 방, hotel 은 호텔
+
+        return new ModelAndView("Hamster/shoppingCart")
+                .addObject("airInfo",airInfo)
+                .addObject("segDep",segDep)
+                .addObject("segComb",segComb)
+                .addObject("DepDur",DepDur)
+                .addObject("CombDur",CombDur)
+                .addObject("hotelList",hotelCartAllList);
+    }*/
 
     // 로그아웃
     @GetMapping("log-out")
