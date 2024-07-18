@@ -13,11 +13,12 @@ public interface paymentMapper {
     int insertHotel(String UUID,String memId,String cartUUID);
 
     /*VIP*/
-    List<Payment> findByMemberIdAndStatus(String memberId, String status);
     void updateTicketStatus(String airKey, String status);
     void updateTicketStatusByOrderUuid(String orderUuid, String status);
-    List<Payment> findByStatus(String status);
-    /*예약*/
+    List<Payment> findAllPayments();
     List<Payment> findByMemberId(String memberId);
+
+    /*예약*/
+
 }
 

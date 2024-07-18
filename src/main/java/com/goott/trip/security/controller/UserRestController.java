@@ -29,11 +29,6 @@ public class UserRestController {
     private final ImageService imageService;
     private final EmailService emailService;
 
-    /*@GetMapping("test")
-    public ModelAndView getTest(){
-        return new ModelAndView("security/user/user_page");
-    }
-*/
     // 회원가입
     @GetMapping("check")
     public ModelAndView getSingInCheck(){
@@ -152,9 +147,7 @@ public class UserRestController {
         return new ModelAndView(alarm.getMessagePage());
     }
 
-
     /*// 로그아웃
     @GetMapping("log-out")
     public ModelAndView logOut(){return new ModelAndView("security/user/user_login_page");}*/
-
 }
