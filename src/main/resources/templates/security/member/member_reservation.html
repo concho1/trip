@@ -103,22 +103,25 @@
                         </div>
                     </div>
                     <div class="myedu-cont-wrap" id="airline" style="display: none;">
-                        <div class="myedu-area">
+                        <th:block th:if="${airInfo != null}" th:each="airInfo, iterStat : ${airInfo}">
+                        <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${airInfo.getOrigin() != null}">
                             <div class="myedu-cont">
-                                <div class="img-area">
-                                    <img src="../resources/images/img_edu_01.png" alt="이미지">
-                                </div>
+                                    <img th:src="${DepDur.get(iterStat.index).getAirlineImg()}" style="width: 150px;" alt="이미지">
                                 <div class="text-area">
                                     <strong class="cate">수강중</strong>
                                     <span>40% 진행</span>
-                                    <div class="title">역대급 가성비 온라인 교육 디자인 툴 마스터 클래스</div>
+                                    <input type="hidden" th:value="${airInfo.getFfvId()}" th:id="'airKey_'+${iterStat.index}">
+                                    <legend class="legend" th:text="${segDep.get(iterStat.index).getAirlineKor()}"></legend>
+                                    <legend class="legend airKey" th:id="'airKey_'+${iterStat.index}" th:text="${segDep.get(iterStat.index).getDepartureIata()}+ ' -> ' +${segDep.get(iterStat.index).getArrivalIata()}"></legend>
+                                    <legend class="legend" th:text="${segDep.get(iterStat.index).getDepartureAt().substring(0,10)} +' ~ '+${segComb.get(iterStat.index).getArrivalAt().substring(6,10)}"></legend>
+                                    <legend class="legend" th:text="${#numbers.formatInteger(airInfo.getTotalPrice(), 3, 'COMMA') + '원'}"></legend>
                                 </div>
                             </div>
-                            <button type="button" class="tedu-btn tedu-btn-dark btn-link">
-                                <i></i>
-                                <span>교육 시청하기</span>
+                            <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
+                                <span th:onclick="|location.href=''|">상세정보</span>
                             </button>
                         </div>
+                        </th:block>
                         <!--<div class="myedu-area">
                             <div class="myedu-cont">
                                 <div class="img-area">
@@ -153,54 +156,41 @@
                         </div>-->
                     </div>
                     <div class="myedu-cont-wrap" id="hotel" style="display: none;">
-                        <div class="myedu-area">
-                            <div class="myedu-cont">
-                                <div class="img-area">
-                                    <img src="../resources/images/img_edu_01.png" alt="이미지">
+                        <th:block  th:each="hotel, iterStat : ${hotelList}">
+                            <th:block>
+                                <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${hotelList.get(iterStat.index).getUuid() != null}">
+                                    <input type="hidden" class="hotelName" th:value="${hotel.getHotelObj().getHotelName()}">
+                                    <input type="hidden" class="uuid" th:value="${hotel.getUuid()}">
+                                    <input type="hidden" class="color" value="0">
+                                <div class="myedu-cont" style="width: 507px; height: 124px;">
+                                    <img th:src="${hotelList.get(iterStat.index).getHotelObj().getSampleImage()}" style="width: 150px; height: 120px; object-fit: fill;" alt="이미지">
+                                    <div class="text-area" style="width: 337px;">
+                                        <strong class="cate">수강중</strong>
+                                        <span>40% 진행</span>
+                                        <input type="hidden" th:value="${hotelList.get(iterStat.index).getUuid()}" th:id="'hotelKey_'+${iterStat.index}">
+                                        <legend class="legend" th:text="${hotelList.get(iterStat.index).getHotelObj().getHotelName()}"></legend>
+                                        <legend class="legend" th:text="'('+${hotelList.get(iterStat.index).getIataCodeObj().getCountryKo()}+')'+ ${hotelList.get(iterStat.index).getIataCodeObj().getCityKo()}"></legend>
+                                        <legend class="legend hotelKey" th:id="'hotelKey_'+${iterStat.index}"
+                                            th:text="${hotelList.get(iterStat.index).getOfferObj().getCheckIn()}+ ' ~ ' +${hotelList.get(iterStat.index).getOfferObj().getCheckOut()}"></legend>
+                                        <legend class="legend price"
+                                            th:id="'hotelPrice'+${iterStat.index}"
+                                            th:attr="data-value=${hotelList.get(iterStat.index).getOfferObj().getTotalCost()}"
+                                            th:text="${#numbers.formatInteger(hotelList.get(iterStat.index).getOfferObj().getTotalCost(), 3, 'COMMA') + '원'}"></legend>
+
+                                    </div>
                                 </div>
-                                <div class="text-area">
-                                    <strong class="cate">수강중</strong>
-                                    <span>40% 진행</span>
-                                    <div class="title">역대급 가성비 온라인 교육 디자인 툴 마스터 클래스</div>
+                                    <div style="width: 325px; display: flex">
+                                        <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px; margin-right: 20px; background-color: #2f639a">
+                                            <span th:onclick="|location.href='@{/con/hotel-info(hotelUuid=${hotel.getHotelObj().getUuid()},hotelAdId=${hotel.getHotelObj().getHotelAdId()},iataCode=${hotel.getIataCodeObj().getIataCode()},checkIn=${hotel.getOfferObj().getCheckIn()},checkOut=${hotel.getOfferObj().getCheckOut()},personCnt=${hotel.getOfferObj().getAdultCnt()})}'|">숙소 상세정보</span>
+                                        </button>
+
+                                        <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
+                                            <span th:onclick="|location.href=''|">따로 결제하기</span>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <button type="button" class="tedu-btn tedu-btn-dark btn-link">
-                                <i></i>
-                                <span>교육 시청하기</span>
-                            </button>
-                        </div>
-                        <div class="myedu-area">
-                            <div class="myedu-cont">
-                                <div class="img-area">
-                                    <img src="../resources/images/img_edu_02.png" alt="이미지">
-                                </div>
-                                <div class="text-area">
-                                    <strong class="cate">수강중</strong>
-                                    <span>68% 진행</span>
-                                    <div class="title">한 번에 끝내는 UX / UI 디자인 실무 디자인 패키지 제공</div>
-                                </div>
-                            </div>
-                            <button type="button" class="tedu-btn tedu-btn-dark btn-link">
-                                <i></i>
-                                <span>교육 시청하기</span>
-                            </button>
-                        </div>
-                        <div class="myedu-area">
-                            <div class="myedu-cont">
-                                <div class="img-area">
-                                    <img src="../resources/images/img_edu_03.png" alt="이미지">
-                                </div>
-                                <div class="text-area">
-                                    <strong class="cate">수강예정</strong>
-                                    <span>0% 진행</span>
-                                    <div class="title">쉽게 배우는 웹 퍼블리싱</div>
-                                </div>
-                            </div>
-                            <button type="button" class="tedu-btn tedu-btn-dark btn-link">
-                                <i></i>
-                                <span>교육 시청하기</span>
-                            </button>
-                        </div>
+                            </th:block>
+                        </th:block>
                     </div>
                 </section>
             </div>

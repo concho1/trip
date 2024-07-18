@@ -19,6 +19,7 @@ public interface paymentMapper {
     List<Payment> findByMemberId(String memberId);
 
     /*예약*/
+    List<String> getPaymentAirKey(String memberId);
 
 }
 
