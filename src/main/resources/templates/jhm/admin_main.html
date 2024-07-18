@@ -70,7 +70,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="qna : ${qnaList}">
+                                    <tr th:each="qna : ${qnaList}" class="qnaTr">
                                         <td><span th:text="${qna.memberId}"></span></td>
                                         <td><span th:text="${qna.title}"></span></td>
                                         <td>
@@ -78,9 +78,9 @@
                                             <span th:if="${qna.status == 1}" th:text="답변완료" class="finAnswer"></span>
                                         </td>
                                         <td>
-                                            <button th:if="${qna.status == 0}" type="button" class="qnaBtn" onclick="answerModal()">답변하기</button>
+                                            <button th:if="${qna.status == 0}" type="button" class="qnaBtn">답변하기</button>
                                             <span th:if="${qna.status == 1}" class="qnaBtn-disable">답변완료</span>
-                                            <div id="qnaModal" class="modal">
+                                            <div id="qnaModal" class="modal qnaModal">
                                                 <div class="modal-content">
                                                     <span class="close" id="qnaClose">&times;</span>
                                                     <br>
@@ -91,19 +91,19 @@
                                                         <input type="hidden" name="page" value="0">
                                                         <div>
                                                             <div>
-                                                                <label for="adminQNATitle">제목</label> <br>
-                                                                <input type="text" id="adminQNATitle" th:value="${qna.title}" readonly>
+                                                                <label th:for="adminQNATitle + ${qnaStat.index + 1}">제목</label> <br>
+                                                                <input type="text" th:id="adminQNATitle + ${qnaStat.index + 1}" class="adminQNATitle" th:value="${qna.title}" readonly>
                                                             </div>
                                                             <br>
                                                             <div>
-                                                                <label for="adminQNACont">내용</label> <br>
-                                                                <textarea id="adminQNACont" class="adminAnswerCont" rows="6">[[${qna.cont}]]</textarea>
+                                                                <label th:for="adminQNACont + ${qnaStat.index + 1}">내용</label> <br>
+                                                                <textarea th:id="adminQNACont + ${qnaStat.index + 1}" class="adminQNACont" rows="6">[[${qna.cont}]]</textarea>
                                                             </div>
                                                         </div>
                                                         <hr>
                                                         <div id="faqModalBody">
-                                                            <label for="answer_cont">답변</label> <br>
-                                                            <textarea id="answer_cont" class="adminAnswerCont" name="cont" rows="6"></textarea>
+                                                            <label th:for="answer_cont + ${qnaStat.index + 1}">답변</label> <br>
+                                                            <textarea th:id="answer_cont + ${qnaStat.index + 1}" class="adminAnswerCont" name="cont" rows="6"></textarea>
                                                         </div>
                                                         <button type="submit" class="button-style">답변</button>
                                                     </form>
@@ -174,10 +174,10 @@
         })
     }
 
-    function answerModal() {
-        $('#answer_cont').val('');
-        $('#qnaModal').show();
-    }
+    $('.qnaBtn').click(function() {
+        $(this).closest('.qnaTr').find('.adminAnswerCont').val('');
+        $(this).closest('.qnaTr').find('.qnaModal').show();
+    });
 
     $('#qnaTab').DataTable({
         aaSorting: []
@@ -194,8 +194,6 @@
         let gps = Math.ceil($('.gps').val() / 20);
         let level = Math.ceil($('.level').val() / 20);
         let flight = Math.ceil($('.flight').val()/ 20);
-
-        console.log(gps);
 
         let peopleChartOptions = {
             chart : {
@@ -298,13 +296,13 @@
         hotelChart.render();
         flightChart.render();
 
-        $('#qnaClose').click(function() {
-            $('#qnaModal').hide();
+        $('.close').click(function() {
+            $(this).closest('.qnaModal').hide();
         })
 
         $(window).on('click', function(event) {
-            if ($(event.target).is('#qnaModal')) {
-                $('#qnaModal').hide();
+            if ($(event.target).hasClass('qnaModal')) {
+                $(event.target).hide();
             }
         })
 

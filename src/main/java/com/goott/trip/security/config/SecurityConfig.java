@@ -51,6 +51,7 @@ public class SecurityConfig {
                                 .defaultSuccessUrl("/home", true)
                                 .usernameParameter("id")
                                 .passwordParameter("pw")
+                                .successHandler(customAuthenticationSuccessHandler)
                 )
                 .logout(
                         (logout) -> logout
