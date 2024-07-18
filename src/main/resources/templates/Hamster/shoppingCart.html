@@ -23,13 +23,15 @@
         cursor: pointer;
     }
     .cart{
-
-        margin-right: 100px;
+        margin-right: 30px;
     }
     .my-form{
         width: calc(100% - 540px);
+        margin-left: 20px;
     }
-
+    .sidebar{
+        width: 400px;
+    }
 </style>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
@@ -110,7 +112,7 @@
 
                                 <div style="width: 325px; display: flex">
                                 <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px; margin-right: 20px; background-color: #2f639a">
-                                    <span th:onclick="|location.href='@{/con/hotel-info(hotelUuid=${hotel.getHotelObj().getUuid()},hotelAdId=${hotel.getHotelObj().getHotelAdId()},iataCode=${hotel.getIataCodeObj().getIataCode()},checkIn=${hotel.getOfferObj().getCheckIn()},checkOut=${hotel.getOfferObj().getCheckOut()},personCnt=${hotel.getOfferObj().getAdultCnt()})}'|">숙소 상세정보</span>
+                                    <span th:onclick="|location.href='@{/con/hotel-info(isCart=${true},hotelUuid=${hotel.getHotelObj().getUuid()},hotelAdId=${hotel.getHotelObj().getHotelAdId()},iataCode=${hotel.getIataCodeObj().getIataCode()},checkIn=${hotel.getOfferObj().getCheckIn()},checkOut=${hotel.getOfferObj().getCheckOut()},personCnt=${hotel.getOfferObj().getAdultCnt()})}'|">숙소 상세정보</span>
                                 </button>
 
                                 <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">

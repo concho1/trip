@@ -105,6 +105,17 @@
         LIMIT 1
     </select>
 
+    <!-- con_offer_search => searchParam 으로 검색 -->
+    <select id="findOfferSearchBySearchParamAndCart" parameterType="SearchParam" resultType="ConOfferSearch">
+        SELECT * FROM con_offer_search
+        WHERE hotel_ad_id = #{hotelAdId}
+          AND check_in = #{checkIn}
+          AND check_out = #{checkOut}
+          AND guest_cnt = #{personCnt}
+        ORDER BY search_at DESC
+        LIMIT 1
+    </select>
+
     <!-- 호텔 정보 꺼내기 -->
     <select id="findHotelByHotelUuid" parameterType="String" resultType="ConHotel">
         SELECT * FROM con_hotel WHERE uuid = #{hotelUuid}
