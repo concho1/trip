@@ -16,30 +16,20 @@
                             <span> 감사합니다 !</span>
                             <span>성공적으로 결제가 완료 되었습니다.</span>
                         </h2>
-                            <div class="con-img-box">
-                                <img class="con-img" th:src="@{/asset/images/paymentOk.png}" alt="signup" style="height: 150px;">
-                            </div>
-                        <p class="textset-desc">전자 영수증은 email 로 발송되었습니다.</p>
+                        <div class="con-img-box">
+                            <img class="con-img" th:src="@{/asset/images/paymentOk.png}" alt="signup" style="height: 150px;">
+                        </div>
+                        <p class="textset-desc" th:text="'전자 영수증은 '+ ${email} +' 로 발송되었습니다.'"></p>
                         <p class="textset-desc">상세 예약 정보는 이메일과 마이페이지에서 조회 가능합니다.</p>
                     </div>
                     <div class="btn-box">
-                        <a class="tedu-btn tedu-btn-dark btn-link">메인 페이지로 이동</a>
+                        <a class="tedu-btn tedu-btn-dark btn-link" th:href="@{/home}">메인 페이지로 이동</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $(document).click(function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-            $('#loginForm').submit();
-        });
-    });
-</script>
 
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
