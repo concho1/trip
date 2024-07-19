@@ -9,6 +9,7 @@ import com.goott.trip.hamster.service.ConHotelCartService;
 import com.goott.trip.hamster.service.airplaneService;
 import com.goott.trip.jhm.model.CartDuration;
 import com.goott.trip.jhm.model.CartFlight;
+import com.goott.trip.jhm.model.CartPricing;
 import com.goott.trip.jhm.model.CartSegment;
 import com.goott.trip.security.model.Member;
 import com.goott.trip.security.service.MemberService;
@@ -21,9 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -223,8 +222,8 @@ public class MemberRestController {
     @GetMapping("reservation")
     public ModelAndView getReservation(Principal principal) {
         String memberId = principal.getName();
+
         List<String> airKey = this.memberService.getPaymentAirKey(memberId);
-        List<Payment> allPayment = this.memberService.getPayment(memberId);
         List<Payment> air = this.memberService.payAir(memberId);
         List<Payment> hotel = this.memberService.payHotel(memberId);
 
@@ -278,10 +277,85 @@ public class MemberRestController {
                 .addObject("DepDur",DepDur)
                 .addObject("CombDur",CombDur)
                 .addObject("hotelList",hotelCartAllList)
-                .addObject("payment", allPayment)
                 .addObject("airStatus", air)
                 .addObject("hotelStatus",hotel);
         return modelAndView;
+    }
+    @GetMapping("airplane")
+    public ModelAndView airRes(@RequestParam("key")String Key){
+
+        ModelAndView modelAndView = new ModelAndView("security/member/member_airResInfo");
+
+        List<CartDuration> DurationInfo = this.airService.getDurationInfo(Key);
+        List<CartDuration> DepDur = this.airService.getDepDur(Key);
+        List<CartDuration> CombDur = this.airService.getCombDur(Key);
+        List<CartSegment> airSeg = this.airService.getSegment(Key);
+        List<CartFlight> airInfo = this.airService.getAirInfo(Key);
+        List<String> country = this.airService.getCountry();
+        List<String> OnlyCountry = this.airService.getOnlyCountry();
+        List<CartSegment> segDep = this.airService.getDep(Key);
+        List<CartSegment> segComb = this.airService.getComb(Key);
+        List<CartPricing> price = this.airService.getPricing(Key);
+        List<Payment> allPayment = this.memberService.getPayment(Key);
+
+        // DepDur 리스트 처리 Optional 이용 null 처리했습니당
+        for (CartDuration depDur : DepDur) {
+            depDur.setAirlineImg(
+                    imageService.findImageByKey(depDur.getAirlineImg())
+                            .map(Image::getUrl)
+                            .orElse("/common/images/air.png")
+            );
+        }
+        // CombDur 리스트 처리
+        for (CartDuration combDur : CombDur) {
+            combDur.setAirlineImg(
+                    imageService.findImageByKey(combDur.getAirlineImg())
+                            .map(Image::getUrl)
+                            .orElse("/common/images/air.png")
+            );
+        }
+
+        return modelAndView
+                .addObject("country",country)
+                .addObject("AirKey",Key)
+                .addObject("airInfo",airInfo)
+                .addObject("airSeg",airSeg)
+                .addObject("segDep",segDep)
+                .addObject("segComb",segComb)
+                .addObject("duration", DurationInfo)
+                .addObject("DepDur",DepDur)
+                .addObject("CombDur",CombDur)
+                .addObject("price",price)
+                .addObject("OnlyCountry",OnlyCountry)
+                .addObject("allPayment",allPayment);
+
+    }
+
+    @RequestMapping("hotel")
+    public ModelAndView hotelRes(@RequestParam("uuid")List<String> HotelUuid,Principal principal){
+
+        System.out.println(HotelUuid);
+
+        String memberId = principal.getName();
+        UUID uuid = UUID.randomUUID();
+
+        List<ConHotelCartAll> hotelAllCont = new ArrayList<>();
+        List<String> country = this.airService.getCountry();
+        double totalPrice = 0;
+
+        for(int i = 0; i < HotelUuid.size(); i ++){
+            hotelAllCont.add(hotelCartService.getConHotelContListByUuid(HotelUuid.get(i)));
+            totalPrice += hotelAllCont.get(i).getOfferObj().getTotalCost();
+        }
+
+
+        return new ModelAndView("security/member/member_hotelResInfo")
+                .addObject("hotelAllCont",hotelAllCont)
+                .addObject("totalPrice",totalPrice)
+                .addObject("country",country)
+                .addObject("uuid",uuid)
+                .addObject("CartUuid",HotelUuid)
+                .addObject("memberId",memberId);
     }
 
     // 로그아웃
