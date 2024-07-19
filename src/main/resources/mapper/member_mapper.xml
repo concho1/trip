@@ -20,12 +20,6 @@
         WHERE id = #{id}
     </select>
 
-    <update id="changePwd" parameterType="map">
-        update trip.member
-        set pw = #{pw}
-        where id = #{id}
-    </update>
-
     <update id="updateMem" parameterType="Member">
         UPDATE trip.member
         SET name=#{name}, img_key=#{imgKey}

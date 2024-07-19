@@ -253,7 +253,7 @@
                         </div>
                     </div>
                     <div class="my-btn-box" style="display: flex">
-                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; background-color: #4a8557; display: flex;"
+                        <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; background-color: #4a8557; display: flex; margin-right: 1.3rem;"
                                 class="tedu-btn tedu-btn-light add-cart">예약하기</button>
                         <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; display: flex"
                                 class="tedu-btn tedu-btn-light add-cart"
@@ -614,7 +614,6 @@
 </body>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script th:inline="javascript">
-
     let $offerList = $('#offer-list');
     let $commentList = $('#comment-list');
     let $inquiry = $('#inquiry');
@@ -622,8 +621,6 @@
     //let $reply = $('#reply');
 
     $(document).ready(function () {
-
-
         $('#offer-btn').click(function () {
             showOfferList();
         });

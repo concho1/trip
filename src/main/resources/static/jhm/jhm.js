@@ -29,6 +29,7 @@ $(document).ready(function() {
     const des = $("#destination");
     const peo = $("#peopleAndClass");
 
+
     $('#faqClose').click(function() {
         $('#faqModal').hide();
     })
@@ -258,6 +259,13 @@ $(document).ready(function() {
 
     $('#comb-calendar').attr('tabindex', '-1');
 
+    $('#search-button').on('click', function() {
+        $('#search-span').hide();
+        $(this).css('background-color', 'white');
+        $('#spinner').show();
+    });
+
+
     $('.toggleBtn').click(function() {
         $(this).closest('.card-body').find('.tog-body').toggle();
         let imgSrc = $(this).closest('.card-body').find('img').attr('src');
@@ -339,7 +347,7 @@ $(document).ready(function() {
                 },
                 success: function () {
                     let form = $('<form>', {
-                        'method' : 'POST',
+                        'method' : 'GET',
                         'action' : '../member/hamster/airplane/ticketing'
                     });
 

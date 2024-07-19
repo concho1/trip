@@ -23,11 +23,14 @@
         cursor: pointer;
     }
     .cart{
-
-        margin-right: 100px;
+        margin-right: 30px;
     }
     .my-form{
         width: calc(100% - 540px);
+        margin-left: 20px;
+    }
+    .sidebar{
+        width: 400px;
     }
 </style>
 <body>
@@ -109,7 +112,7 @@
 
                                 <div style="width: 325px; display: flex">
                                 <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px; margin-right: 20px; background-color: #2f639a">
-                                    <span th:onclick="|location.href='@{/con/hotel-info(hotelUuid=${hotel.getHotelObj().getUuid()},hotelAdId=${hotel.getHotelObj().getHotelAdId()},iataCode=${hotel.getIataCodeObj().getIataCode()},checkIn=${hotel.getOfferObj().getCheckIn()},checkOut=${hotel.getOfferObj().getCheckOut()},personCnt=${hotel.getOfferObj().getAdultCnt()})}'|">숙소 상세정보</span>
+                                    <span th:onclick="|location.href='@{/con/hotel-info(isCart=${true},hotelUuid=${hotel.getHotelObj().getUuid()},hotelAdId=${hotel.getHotelObj().getHotelAdId()},iataCode=${hotel.getIataCodeObj().getIataCode()},checkIn=${hotel.getOfferObj().getCheckIn()},checkOut=${hotel.getOfferObj().getCheckOut()},personCnt=${hotel.getOfferObj().getAdultCnt()})}'|">숙소 상세정보</span>
                                 </button>
 
                                 <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
@@ -124,6 +127,28 @@
                             </th:block>
                         </th:block>
                     </div>
+
+
+                        <th:block>
+                            <div class="myedu-cont-wrap" th:if="${hotelCheck == 0 && airInfo.size() == 0}" align="center">
+
+                                <div class="myedu-cont">
+                                    <img th:src="@{/asset/images/emptyCart.png}" style="width: 150px;">
+                                    <div class="title-wrap" style="margin-bottom: 40px;">
+                                        <h1 style="font-size: 50px;">장바구니가 비어있습니다.​<br></h1>
+                                    </div>
+                                </div>
+
+                                <div class="form-footer btn-box">
+                                    <p>어디론가 떠나고싶지 않으신가요?</p>
+                                    <button type="button" class="tedu-btn tedu-btn-light" style="width: 200px; background-color: #2f639a" >
+                                        <a th:href="@{/home}" style="color: white">항공, 숙박 통합 검색하기</a>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </th:block>
+
 
                 </section>
                 </div>

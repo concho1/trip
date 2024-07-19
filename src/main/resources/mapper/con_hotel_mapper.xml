@@ -25,6 +25,18 @@
     </resultMap>
 
 
+    <!-- con_iata_code 중에 exist가 0인 항목 하나를 랜덤으로 선택 -->
+    <select id="findRandomIataCodeWithExistZero" resultType="ConIataCode">
+        SELECT
+            iata_code, city, city_ko, country, country_ko, exist
+        FROM
+            trip.con_iata_code
+        WHERE
+            exist = 0
+        ORDER BY
+            RAND()
+        LIMIT 1
+    </select>
 
     <!-- 호텔 정보 IATA 코드로 조회 iata_table 과 조인 -->
     <select id="findHotelAndIataListByIataCode" resultMap="ConHotelAndIataMap">
@@ -74,9 +86,11 @@
 
     <select id="findIataCodeBySearchStr" parameterType="String" resultType="ConIataCode">
         SELECT * FROM con_iata_code
-        WHERE city_ko LIKE CONCAT('%', #{searchStr}, '%')
-           OR country_ko LIKE CONCAT('%', #{searchStr}, '%')
-           OR iata_code LIKE CONCAT('%', #{searchStr}, '%')
+        WHERE (
+                city_ko LIKE CONCAT('%', #{searchStr}, '%')
+                OR country_ko LIKE CONCAT('%', #{searchStr}, '%')
+                OR iata_code LIKE CONCAT('%', #{searchStr}, '%')
+            ) AND exist = 1
     </select>
 
     <!-- con_offer_search => searchParam 으로 검색 (1시간 이내, 가장 최근 하나만) -->
@@ -87,6 +101,17 @@
           AND check_out = #{checkOut}
           AND guest_cnt = #{personCnt}
           AND search_at >= NOW() - INTERVAL 1 HOUR
+        ORDER BY search_at DESC
+        LIMIT 1
+    </select>
+
+    <!-- con_offer_search => searchParam 으로 검색 -->
+    <select id="findOfferSearchBySearchParamAndCart" parameterType="SearchParam" resultType="ConOfferSearch">
+        SELECT * FROM con_offer_search
+        WHERE hotel_ad_id = #{hotelAdId}
+          AND check_in = #{checkIn}
+          AND check_out = #{checkOut}
+          AND guest_cnt = #{personCnt}
         ORDER BY search_at DESC
         LIMIT 1
     </select>

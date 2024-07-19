@@ -7,11 +7,7 @@ function updatePwd() {
         alert("비밀번호 확인이 일치하지않습니다.");
         $("#rePwd").focus();
         return false;
-    }/*else if($('#pwdDupError').is(':visible')){
-        alert("기존 비밀번호와 동일한 비밀번호로는 변경할 수 없습니다.");
-        $("#newPw").focus();
-        return false;
-    }*/else if(newPw.length != rePwd.length){
+    }else if(newPw.length != rePwd.length){
         alert("비밀번호 확인이 비밀번호와 일치하지 않습니다.");
         $("#rePwd").focus();
         return false;

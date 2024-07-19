@@ -21,21 +21,22 @@
         SET order_uuid = #{UUID}
         WHERE uuid = #{cartUUID} AND member_id = #{memId}
     </insert>
-    <!--VIP-->
-    <select id="findByMemberIdAndStatus" parameterType="map" resultType="Payment">
-        SELECT * FROM payment
-        WHERE member_id = #{memberId} AND status = #{status}
-    </select>
 
+    <!--VIP-->
     <update id="updateTicketStatus">
         UPDATE payment
         SET status = #{status}
         WHERE air_key = #{airKey}
     </update>
 
-    <select id="findByStatus" parameterType="String" resultType="Payment">
+    <update id="updateTicketStatusByOrderUuid">
+        UPDATE payment
+        SET status = #{status}
+        WHERE order_uuid = #{orderUuid}
+    </update>
+
+    <select id="findAllPayments" resultType="Payment">
         SELECT * FROM payment
-        WHERE status = #{status}
     </select>
 
     <!--예약-->

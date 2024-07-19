@@ -68,11 +68,14 @@
         <div class="header-nav">
             <div class="inner">
                 <div class="header-logo">
-                    <a href="javascript:void(0)">
-                        <img th:src="@{/asset/images/logo_black.png}" alt="로고">
+                    <a th:href="@{/home}">
+                        <img th:src="@{/asset/images/logo2.png}" alt="로고" style="width: 190px; height: 60px; margin-top: -12px;">
                     </a>
                 </div>
                 <div class="header-gnb">
+                    <div class="gnb-list">
+                        <a th:href="@{/home}"><img th:src="@{/asset/icons/home.svg}" style="width: 20px; height: 20px; margin-right: 5px; margin-bottom: 3px;" alt="홈">홈</a>
+                    </div>
                     <div class="gnb-list">
                         <a th:href="@{/flight/search_flight}"><img th:src="@{/asset/icons/head_flight.svg}" style="width: 20px; height: 20px; margin-right: 5px; margin-bottom: 3px;" alt="항공">항공</a>
                     </div>
@@ -81,12 +84,6 @@
                     </div>
                     <div class="gnb-list">
                         <a th:href="@{/customer/faq}"><img th:src="@{/asset/icons/head_qna.png}" style="width: 20px; height: 20px; margin-right: 5px; margin-bottom: 3px;" alt="고센">고객센터</a>
-                    </div>
-                    <div class="gnb-list">
-                        <a href="javascript:void(0)">공개예정</a>
-                    </div>
-                    <div class="gnb-list">
-                        <a href="javascript:void(0)">이벤트</a>
                     </div>
                 </div>
                 <div class="header-btn">
@@ -107,30 +104,21 @@
             <div class="inner">
                 <div class="menu-wrap">
                     <div class="menu-box">
+                        <span class="menu-title">홈</span>
+                        <a th:href="@{/home}">홈</a>
+                    </div>
+                    <div class="menu-box">
                         <span class="menu-title">항공</span>
                         <a th:href="@{/flight/search_flight}">항공권 검색</a>
                     </div>
                     <div class="menu-box">
                         <span class="menu-title">숙소</span>
-                        <a href="javascript:void(0)">숙소 검색</a>
+                        <a th:href="@{con/hotel-search}">숙소 검색</a>
                     </div>
                     <div class="menu-box">
                         <span class="menu-title">고객센터</span>
                         <a th:href="@{/customer/faq}">자주 묻는 질문</a>
                         <a th:href="@{/customer/qna}">Q&A</a>
-                    </div>
-                    <div class="menu-box">
-                        <span class="menu-title">언어</span>
-                        <a href="javascript:void(0)">영어</a>
-                        <a href="javascript:void(0)">외국어시험</a>
-                        <a href="javascript:void(0)">제2 외국어</a>
-                    </div>
-                    <div class="menu-box">
-                        <span class="menu-title">라이프스타일</span>
-                        <a href="javascript:void(0)">취미 드로잉</a>
-                        <a href="javascript:void(0)">요리</a>
-                        <a href="javascript:void(0)">사진/영상</a>
-                        <a href="javascript:void(0)">공예</a>
                     </div>
                 </div>
             </div>

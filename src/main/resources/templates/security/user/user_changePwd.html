@@ -17,12 +17,11 @@
                     </div>
                     <div class="form-body">
                         <form th:action="@{/user/ming/changePwdOk}" method="post">
+                            <input type="hidden" id="id" name="id" th:value="${id}" />
                             <div class="tedu-inputset">
                                 <label for="pw" style="font-size: 13px; color: #828A8F;">새 비밀번호</label>
                                 <input type="password" class="tedu-input lightmode" placeholder="영문, 숫자, 특수문자 포함 8자 이상" aria-label="password" id="pw" name="pw" required>
-                                <!--<div id="pwdError" style="color: red; display: none;">이메일 형식으로 입력해주세요.</div>-->
                                 <div id="pwdError" style="color: red; display: none;">영문/숫자/특수문자 포함, 8자리이상 20자리 이하로 입력해주세요.</div>
-                                <div id="pwdDupError" style="color: red; display: none;">기존과 같은 비밀번호로는 변경이 불가능합니다.</div>
                             </div>
                             <div class="tedu-inputset">
                                 <label for="repwd" style="font-size: 13px; color: #828A8F;">새 비밀번호 확인</label>

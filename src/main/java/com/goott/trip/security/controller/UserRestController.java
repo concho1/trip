@@ -10,10 +10,12 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -27,11 +29,6 @@ public class UserRestController {
     private final ImageService imageService;
     private final EmailService emailService;
 
-    /*@GetMapping("test")
-    public ModelAndView getTest(){
-        return new ModelAndView("security/user/user_page");
-    }
-*/
     // 회원가입
     @GetMapping("check")
     public ModelAndView getSingInCheck(){
@@ -102,7 +99,7 @@ public class UserRestController {
     @GetMapping("log-in")
     public ModelAndView getLogIn(){return new ModelAndView("security/user/user_login_page");}
 
-    // 비밀번호 찾기
+    // 비밀번호 찾기 - 이메일 인증
     @GetMapping("searchPw")
     public ModelAndView searchPw(){return new ModelAndView("security/user/user_searchPwd"); }
     @PostMapping("sendPwdEmail")
@@ -120,49 +117,37 @@ public class UserRestController {
         modelAndView.setViewName("security/user/user_changePwd");
         return modelAndView;
     }
-    /*@PostMapping("changePwdOk")
-    public ModelAndView changePwdOk(@RequestParam("id")String id,
-                                    @RequestParam("pw")String pwd,
-                                    Model model){
+    @PostMapping("changePwdOk")
+    public ModelAndView changePwd(@RequestParam("id") String id,
+                                  @RequestParam("pw") String pw,
+                                  @RequestParam("rePwd") String rePwd,
+                                  Model model) {
         Alarm alarm = new Alarm(model);
-        HashMap<String,String> map = new HashMap<>();
-        map.put("id",id);
-        map.put("pwd",pwd);
-        int check = this.memberService.changePwd(map);
 
-        if(check > 0){
-            alarm.setMessageAndRedirect("비밀번호가 변경되었습니다","user/con/log-in");
-        }else{
-            alarm.setMessageAndRedirect("비밀번호가 변경 실패","");
+        // 새 비밀번호와 비밀번호 확인이 일치하는지 확인
+        if (!pw.equals(rePwd)) {
+            alarm.setMessageAndRedirect("입력한 비밀번호가 일치하지 않습니다.", "");
+            return new ModelAndView(alarm.getMessagePage());
+        }
+
+        // 새 비밀번호가 기존 비밀번호와 동일한지 확인
+        if (!memberService.checkPwd(id, pw)) {
+            alarm.setMessageAndRedirect("새 비밀번호가 기존 비밀번호와 동일합니다. 다른 비밀번호를 입력해주세요.", "");
+            return new ModelAndView(alarm.getMessagePage());
+        }
+
+        // 비밀번호 변경 시도
+        int check = memberService.changePwd(id, pw);
+        if (check > 0) {
+            alarm.setMessageAndRedirect("비밀번호가 변경되었습니다.", "log-in");
+        } else {
+            alarm.setMessageAndRedirect("비밀번호 변경 실패", "");
         }
 
         return new ModelAndView(alarm.getMessagePage());
-    }*/
-    /*public String changePassword(@RequestParam("pw") String newPassword,
-                                 @RequestParam("rePwd") String retypePassword,
-                                 Principal principal,
-                                 Model model) {
-        if (!newPassword.equals(retypePassword)) {
-            model.addAttribute("error", "입력한 비밀번호가 일치하지 않습니다.");
-            return "redirect:/user/con/changePwd";
-        }
-
-        Authentication authentication = (Authentication) principal;
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String id = userDetails.getUsername();
-
-        boolean success = memberService.changePwd(map);
-
-        if (!success) {
-            model.addAttribute("error", "비밀번호 변경에 실패했습니다.");
-            return "redirect:/user/con/changePwd";
-        }
-
-        return "redirect:user/con/log-in";
-    }*/
+    }
 
     /*// 로그아웃
     @GetMapping("log-out")
     public ModelAndView logOut(){return new ModelAndView("security/user/user_login_page");}*/
-
 }

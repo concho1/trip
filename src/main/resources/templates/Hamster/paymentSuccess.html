@@ -1,0 +1,39 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<body>
+<div th:replace="~{common/head :: head-fragment}"></div>
+
+<main class="th-layout-main ">
+    <div class="tedu-N41" data-bid="TtlXIK0896">
+        <div class="content-inner">
+            <div class="content-container">
+                <div class="member-wrap-04">
+                    <div class="textset">
+                        <h2 class="textset-tit">
+                            <span> 감사합니다 !</span>
+                            <span>성공적으로 결제가 완료 되었습니다.</span>
+                        </h2>
+                        <div class="con-img-box">
+                            <img class="con-img" th:src="@{/asset/images/paymentOk.png}" alt="signup" style="height: 150px;">
+                        </div>
+                        <p class="textset-desc" th:text="'전자 영수증은 '+ ${email} +' 로 발송되었습니다.'"></p>
+                        <p class="textset-desc">상세 예약 정보는 이메일과 마이페이지에서 조회 가능합니다.</p>
+                    </div>
+                    <div class="btn-box">
+                        <a class="tedu-btn tedu-btn-dark btn-link" th:href="@{/home}">메인 페이지로 이동</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
+</body>
+</html>

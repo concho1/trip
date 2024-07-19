@@ -151,6 +151,7 @@ public class Hamcontroller {
     public ModelAndView ShoppingCart(Principal principal, Model model){
 
         String memberId = principal.getName();
+        int check = 0;
 
         List<String> airKey = this.shoppingCartService.shoppingCartAirplane(memberId);
 
@@ -191,13 +192,22 @@ public class Hamcontroller {
                 = hotelCartService.getConHotelCartAllListByMemberId(memberId);
         // 테스트용 offer 가 방, hotel 은 호텔
 
+        for(int i = 0; i < hotelCartAllList.size(); i++){
+            if(hotelCartAllList.get(i).getPaymentObj() == null){
+                check += 1;
+            }
+        }
+
+        System.out.println("에어키 사이즈 : "+airKey.size());
+
         return new ModelAndView("Hamster/shoppingCart")
                 .addObject("airInfo",airInfo)
                 .addObject("segDep",segDep)
                 .addObject("segComb",segComb)
                 .addObject("DepDur",DepDur)
                 .addObject("CombDur",CombDur)
-                .addObject("hotelList",hotelCartAllList);
+                .addObject("hotelList",hotelCartAllList)
+                .addObject("hotelCheck",check);
     }
 
     @PostMapping("airplane/cartHotelDelete")
@@ -297,9 +307,10 @@ public class Hamcontroller {
         int check = this.paymentservice.airplanePay(payment);
 
 
-        ModelAndView modelAndView = new ModelAndView("Hamster/airplanePaymentSuccess");
+        ModelAndView modelAndView = new ModelAndView("Hamster/paymentSuccess");
 
         if(check > 0){
+            this.shoppingCartService.deleteAir(newAirKey,memberId);
             modelAndView.addObject("paymentKey", paymentKey)
                     .addObject("orderId", orderId)
                     .addObject("email", newEmail);
@@ -319,16 +330,20 @@ public class Hamcontroller {
                                             @RequestParam String paymentKey,Principal principal) throws UnsupportedEncodingException, MessagingException {
 
 
+        List<ConHotelCartAll> hotelList = new ArrayList<>();
         String memId = principal.getName();
+        double totalPrice = 0;
+
 
            int check = this.paymentservice.hotelPay(UUID,memId,firstName,lastName,country,email,paymentKey);
 
            if(check >0 ){
                for(int i =0; i < cartUUID.size(); i++){
-
+                   hotelList.add(this.hotelCartService.getConHotelContListByUuid(cartUUID.get(i).replaceAll("\\[","").replaceAll("\\]","")));
                    this.paymentservice.insertHotel(UUID,memId,cartUUID.get(i).replaceAll("\\[","").replaceAll("\\]",""));
-               System.out.println('완');
+                   totalPrice += hotelList.get(i).getOfferObj().getTotalCost();
            }
+               this.emailService.sendHotelEmail(UUID,firstName,lastName,email,hotelList,totalPrice);
         }
 
         System.out.println(UUID);
@@ -340,7 +355,7 @@ public class Hamcontroller {
 
 
 
-        return null;
+        return new ModelAndView("Hamster/paymentSuccess").addObject("email",email);
 
     }
 }

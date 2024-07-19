@@ -1,137 +1,17 @@
+<!-- 이 코드를 복붙해서 사용해주세요 -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
 <body>
+<div th:replace="~{common/head :: head-fragment}"></div>
 
-<table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%;font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;line-height:1.5;color:#444;">
-    <tbody><tr><td align="center">
-
-
-
-        <div style="max-width:600px; margin:0 auto;">
-            <table cellpadding="0" cellspacing="0" style="width:100%;margin:0;padding:0;border:1px solid #ddd;">
-                <tbody><tr><td height="38" style="vertical-align:top;text-align:left;">
-                </td></tr><tr><td style="padding:0 30px">
-                    <table cellpadding="0" cellspacing="0" style="width:100%;margin:0;padding:0;">
-                        <tbody><tr><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;"></td></tr><tr><td height="40"></td></tr><tr><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-                            <p style="margin:0;font-size:23px;line-height:33px;color:#444;font-weight:bold;">
-                                항공권 구매가 완료되었습니다.
-                            </p>
-                        </td></tr><tr><td height="50"></td></tr><tr><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-                            <table cellpadding="0" cellspacing="0" style="width:100%;margin:0;border-top:2px solid #666;border-bottom:1px solid #ddd;text-align:left;">
-                                <colgroup><col style="width:30%"><col style="width:auto"></colgroup>
-                                <tbody><tr><td colspan="2" height="20">
-                                </td></tr><tr><th align="left" colspan="1" rowspan="1" scope="row" height="30" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">예약번호</th><td align="left" height="30" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;"><span style="font-weight:bold;color:#ab7d55;">9076-3138 / VZIXGR</span></td></tr><tr><th align="left" colspan="1" rowspan="1" scope="row" height="30" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">예약일자(GMT)</th><td align="left" height="30" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">2020-01-22</td></tr><tr><td colspan="2" height="20">
-                                </td></tr></tbody>
-                            </table>
-                        </td></tr><tr><td height="30"></td></tr><tr><td align="center" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-
-                        </td></tr><tr><td height="30" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;"></td></tr><tr><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-
-
-                        </td></tr><tr><td height="20"></td></tr><tr></tr><tr><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-                            <p style="margin:0;font-size:18px;">
-                                <strong>탑승객 정보</strong>
-                            </p>
-                            <table cellpadding="0" cellspacing="0" style="width:100%;border-top:2px solid #666;text-align:left;">
-                                <colgroup><col style="width:35%"><col style="width:auto"></colgroup>
-                                <tbody><tr><td align="left" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;vertical-align:middle;padding:25px 15px;border-right:1px solid #ddd;word-break:break-all;">
-                                    <p style="margin:0;padding:0;color:#555;">성인, MR</p>
-                                    <p style="margin:0;padding:0;color:#555;font-weight:bold;font-size:15px;">YOON/TAEGEUN</p>
-                                </td><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;padding:15px 0 15px 15px;">
-                                    <p style="margin:0;padding:0;">항공권 번호</p>
-                                    <p style="margin:0;padding-bottom:5px;color:#d60815;font-weight:bold;font-size:15px;">9882480107273</p>
-                                </td></tr><tr><td colspan="2" height="1" style="background-color:#ddd;">
-                                </td></tr></tbody>
-                            </table>
-                        </td></tr><tr><td height="20"></td></tr><tr><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-                        </td></tr><tr><td height="60"></td></tr><tr><td valign="top" height="40" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-
-                            <p style="margin:0;font-size:18px;">
-                                <strong>예약 여정</strong>
-                            </p>
-
-                            <p style="margin:10px 0 0 0;font-size:16px;">
-                                첫 번째 여정
-                            </p>
-                        </td></tr><tr><td height="10">
-                        </td></tr><tr></tr><tr><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-                            <table cellpadding="0" cellspacing="0" style="width:100%;border-top:2px solid #666;text-align:left;">
-                                <colgroup><col style="width:35%"><col style="width:auto"></colgroup>
-                                <tbody><tr><td align="left" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;vertical-align:middle;padding:15px;border-right:1px solid #ddd;font-size:13px;">
-                                    <p style="margin:0;padding:0;">출발</p>
-                                </td><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;padding:15px;font-size:13px;">
-                                    <p style="margin:0;padding:0;font-weight:bold;">서울 / 김포(GMP)</p>
-                                    <p style="margin:0;padding:0;">2020.03.02 (월) 08:25</p>
-                                </td></tr><tr><td colspan="2" height="1" style="background-color:#ddd;">
-                                </td></tr><tr><td align="left" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;vertical-align:middle;padding:15px;border-right:1px solid #ddd;font-size:13px;">
-                                    <p style="margin:0;padding:0;">도착</p>
-                                </td><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;padding:15px;font-size:13px;">
-                                    <p style="margin:0;padding:0;font-weight:bold;">오사카 / 간사이(KIX)</p>
-                                    <p style="margin:0;padding:0;">2020.03.02 (월) 10:10</p>
-                                </td></tr><tr><td colspan="2" height="1" style="background-color:#ddd;">
-                                </td></tr><tr><td align="left" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;vertical-align:middle;padding:15px;border-right:1px solid #ddd;font-size:13px;">
-                                    <p style="margin:0;padding:0;">경유/환승</p>
-                                </td><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;padding:15px;font-size:13px;">
-                                    <p style="margin:0;padding:0;">직항</p>
-                                </td></tr><tr><td colspan="2" height="1" style="background-color:#ddd;">
-                                </td></tr></tbody>
-                            </table>
-                        </td></tr><tr><td height="30" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;"></td></tr><tr><td valign="top" height="40" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-
-                            <p style="margin:10px 0 0 0;font-size:16px;">
-                                두 번째 여정
-                            </p>
-                        </td></tr><tr><td height="10">
-                        </td></tr><tr></tr><tr><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-                            <table cellpadding="0" cellspacing="0" style="width:100%;border-top:2px solid #666;text-align:left;">
-                                <colgroup><col style="width:35%"><col style="width:auto"></colgroup>
-                                <tbody><tr><td align="left" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;vertical-align:middle;padding:15px;border-right:1px solid #ddd;font-size:13px;">
-                                    <p style="margin:0;padding:0;">출발</p>
-                                </td><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;padding:15px;font-size:13px;">
-                                    <p style="margin:0;padding:0;font-weight:bold;">오사카 / 간사이(KIX)</p>
-                                    <p style="margin:0;padding:0;">2020.03.09 (월) 20:35</p>
-                                </td></tr><tr><td colspan="2" height="1" style="background-color:#ddd;">
-                                </td></tr><tr><td align="left" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;vertical-align:middle;padding:15px;border-right:1px solid #ddd;font-size:13px;">
-                                    <p style="margin:0;padding:0;">도착</p>
-                                </td><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;padding:15px;font-size:13px;">
-                                    <p style="margin:0;padding:0;font-weight:bold;">서울 / 김포(GMP)</p>
-                                    <p style="margin:0;padding:0;">2020.03.09 (월) 22:25</p>
-                                </td></tr><tr><td colspan="2" height="1" style="background-color:#ddd;">
-                                </td></tr><tr><td align="left" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;vertical-align:middle;padding:15px;border-right:1px solid #ddd;font-size:13px;">
-                                    <p style="margin:0;padding:0;">경유/환승</p>
-                                </td><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;padding:15px;font-size:13px;">
-                                    <p style="margin:0;padding:0;">직항</p>
-                                </td></tr><tr><td colspan="2" height="1" style="background-color:#ddd;">
-                                </td></tr></tbody>
-                            </table>
-                        </td></tr><tr><td height="60"></td></tr><tr><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-                            <p style="margin:0;font-size:18px;">
-                                <strong>결제 내역</strong>
-                            </p>
-                        </td></tr><tr><td height="10"></td></tr><tr><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;background:#f0f0f0;padding:20px;">
-                            <table cellpadding="0" cellspacing="0" style="width:100%;margin:0;padding:0;">
-                                <colgroup><col style="width:40%"><col style="width:auto"></colgroup>
-                                <tbody><tr><th align="left" colspan="1" rowspan="1" scope="row" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">총 지불금액 (결제완료)</th><td align="right" style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:right;">
-                                    <p style="padding:0;margin:0;color:#d60815;">
-                                        <strong>KRW <span style="font-size:23px;"> 165,900</span></strong>
-                                    </p>
-                                </td></tr></tbody>
-                            </table>
-                        </td></tr><tr><td height="20"></td></tr><tr><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-                            본 예약은 항공권 구입이 완료된 건으로, 구매한 항공권에 대한 예약 변경 및 환불 시 운임규정에 따른 예약 변경 수수료 (재발행 수수료) 및 환불 위약금 또는 환불 수수료가 징수될 수 있습니다. 자세한 내용은 운임 규정을 확인하시기 바랍니다.
-                        </td></tr><tr><td height="60"></td></tr><tr><td style="font-family:'AppeGothic','Malgun Gothic','맑은 고딕','돋음','Dotum','Apple SD Gothic Neo',Arial,Helvetica,sans-serif;word-break:keep-all;font-size:13px;text-align:left;">
-
-                    </table>
-                </td></tr></tbody>
-            </table>
-        </div>
-
-    </td></tr></tbody>
-</table>
-
+<main class="th-layout-main ">
+    <input type="button" value="햄냥갱">
+</main>
+<div class="tedu-N17" data-bid="fjlxiC75U0">
+    <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
+</div>
+<th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
 </body>
 </html>
