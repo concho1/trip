@@ -138,7 +138,7 @@ $(document).ready(function() {
     }
     // input 요소를 클릭할 때 isSelectedOption 변수를 0으로 설정
     input.on('click', function() {
-        orgModal.show();
+        //orgModal.show();
         //$("#modalOrigin").focus();
         isSelectedOption = 0;
     });
@@ -194,7 +194,7 @@ $(document).ready(function() {
     }
 // input 요소를 클릭할 때 isSelectedOption 변수를 0으로 설정
     des.on('click', function() {
-        desModal.show();
+        //desModal.show();
         //$("#modalOrigin").focus();
         isSelectedOptionDest = 0;
     });

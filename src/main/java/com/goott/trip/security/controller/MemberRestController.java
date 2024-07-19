@@ -3,6 +3,7 @@ package com.goott.trip.security.controller;
 import com.goott.trip.common.model.Alarm;
 import com.goott.trip.common.model.Image;
 import com.goott.trip.common.service.ImageService;
+import com.goott.trip.esh.service.ExchangeService;
 import com.goott.trip.hamster.model.ConHotelCartAll;
 import com.goott.trip.hamster.model.Payment;
 import com.goott.trip.hamster.service.ConHotelCartService;
@@ -32,6 +33,7 @@ public class MemberRestController {
     private final MemberService memberService;
     private final airplaneService airService;
     private final ConHotelCartService hotelCartService;
+    private final ExchangeService exchangeService;
 
     // 이미지 갱신
     public void refreshImgUrl(HttpServletRequest request, String k){
@@ -266,12 +268,32 @@ public class MemberRestController {
         // 여기서 호텔 리스트 받아오는거 추가
         List<ConHotelCartAll> hotelCartAllList
                 = hotelCartService.getConHotelCartAllListByMemberId(memberId);
-        // 테스트용 offer 가 방, hotel 은 호텔
-        for(int j = 0; j < hotelCartAllList.size(); j++){
-            if(hotelCartAllList.get(j).getPaymentObj() == null){
-                hotelCartAllList.remove(j);
+        // 호텔 가격 원화로 환전하기
+        hotelCartAllList.forEach(hotelCartAll -> {
+            hotelCartAll.getOfferObj().setTotalCost(
+                    exchangeService.convertCurrency(
+                            hotelCartAll.getOfferObj().getCurrency(),
+                            "KRW",
+                            hotelCartAll.getOfferObj().getTotalCost()
+                    )
+            );
+            hotelCartAll.getOfferObj().setCurrency("KRW");
+        });
+        // hotel 인덱스 오류 remove 하면 인덱스 한칸씩 땅겨지는거 고려 안해서 에러 => removeIf 로 수정 완료
+        hotelCartAllList.removeIf(hotelCartAll -> hotelCartAll.getPaymentObj() == null);
+
+        // 같은 hotelCartAll 의 payment 가 같은 orderUuid 를 가지고 있으면 묶인 예약
+        // map 으로 묶어주자
+        var CartMapByPayment = new HashMap<String, List<ConHotelCartAll>>();
+        for(ConHotelCartAll conHotelCartAll : hotelCartAllList){
+            String orderUuid = conHotelCartAll.getPaymentObj().getOrderUuid();
+            if(CartMapByPayment.containsKey(orderUuid)){
+                CartMapByPayment.get(orderUuid).add(conHotelCartAll);
+            }else{
+                CartMapByPayment.put(orderUuid, new ArrayList<>(List.of(conHotelCartAll)));
             }
         }
+
         ModelAndView modelAndView = new ModelAndView("security/member/member_reservation");
         modelAndView.addObject("memberId",memberId)
                 .addObject("airInfo",airInfo)
@@ -279,7 +301,7 @@ public class MemberRestController {
                 .addObject("segComb",segComb)
                 .addObject("DepDur",DepDur)
                 .addObject("CombDur",CombDur)
-                .addObject("hotelList",hotelCartAllList)
+                .addObject("CartMapByPayment", CartMapByPayment)
                 .addObject("airStatus", air)
                 .addObject("hotelStatus",hotel);
         return modelAndView;
