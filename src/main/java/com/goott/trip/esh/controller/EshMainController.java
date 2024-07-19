@@ -8,6 +8,7 @@ import com.goott.trip.concho.service.con_main.HotelListService;
 import com.goott.trip.esh.service.ExchangeService;
 import com.goott.trip.esh.service.GlobeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,13 +26,6 @@ public class EshMainController {
     private ExchangeService exchangeService;
     @Autowired
     private HotelListService hotelListService;
-
-    @GetMapping("/exchange-rate")
-    public String exchangeData(Model model) {
-        List<Map<String, Object>> exchangeRates = exchangeService.getExchangeData();
-        model.addAttribute("exchangeRates", exchangeRates);
-        return "esh/test";
-    }
 
     @GetMapping("/map")
     public String showMap(

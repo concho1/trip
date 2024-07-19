@@ -127,6 +127,8 @@ public class ExchangeService {
 
         return result;
     }
+
+    public String getExchageRate(String str) { return this.mapper.getExchageRate(str); }
 }
 
 

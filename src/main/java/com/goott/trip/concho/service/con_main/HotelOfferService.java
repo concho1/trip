@@ -37,7 +37,7 @@ public class HotelOfferService {
                 searchParam.getPersonCnt(),
                 searchParam.getMemberId());
         try {
-            if(searchParam.getIsCart()){
+            if(searchParam.getIsCart() != null && searchParam.getIsCart()){
                 Optional<ConOfferSearch> offerSearchOp = conHotelMapper.findOfferSearchBySearchParamAndCart(searchParam);
                 // 있으면 DB 에 있는 데이터 꺼내서 주기
                 if (offerSearchOp.isPresent()) {

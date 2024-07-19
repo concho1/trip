@@ -9,5 +9,6 @@ public interface ExchangeMapper {
     void insertExchangeData(Exchange exchange);
     Exchange selectExchangeDataByCurrencyCode(@Param("currencyCode") String currencyCode);
     void updateExchangeData(Exchange exchange);
+    String getExchageRate(String str);
 
 }
