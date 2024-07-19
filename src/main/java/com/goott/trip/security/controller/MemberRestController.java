@@ -70,14 +70,17 @@ public class MemberRestController {
         String memberId = principal.getName();
         System.out.println("memberId : " + memberId);
 
-        String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
-        imageService.findImageByKey(baseImgKey).ifPresent(image ->
-                modelAndView.addObject("baseImgUrl", image.getUrl())
-        );
+
         /*String baseImgKey = "trip/4c4a3bf6-615b-414a-8273-c91f42334fdc";
         Optional<Image> imageOp = imageService.findImageByKey(baseImgKey);*/
-
         Member member = memberService.getMemberById(memberId);
+        // 회원 이미지 있으면 쓰고 없으면 기본 이미지로 바꾸기
+        imageService.findImageByKey(member.getImgKey()).ifPresentOrElse(
+                image -> modelAndView.addObject(
+                        "baseImgUrl", image.getUrl()),
+                () -> modelAndView.addObject(
+                        "baseImgUrl", "/common/images/member_base.png")
+        );
         modelAndView.addObject("dto", member);
         modelAndView.addObject("memberId", memberId);
         /*session.setAttribute("userImgUrl", member.getImgKey());*/
