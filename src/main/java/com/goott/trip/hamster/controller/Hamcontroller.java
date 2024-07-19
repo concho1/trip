@@ -133,7 +133,7 @@ public class Hamcontroller {
 
         List<ConHotelCartAll> hotelAllCont = new ArrayList<>();
         List<String> country = this.airservice.getCountry();
-        double totalPrice = 0;
+        double totalPrice = 0.0;
 
         for(int i = 0; i < CartUuid.size(); i ++){
             ConHotelCartAll hotelCartAll = hotelCartService.getConHotelContListByUuid(CartUuid.get(i));
@@ -149,11 +149,11 @@ public class Hamcontroller {
 
             totalPrice += hotelAllCont.get(i).getOfferObj().getTotalCost();
         }
-
-
+        totalPrice = Math.round(totalPrice);
+        System.out.println("totalPrice : " + totalPrice);
         return new ModelAndView("Hamster/hotelReservation")
                 .addObject("hotelAllCont",hotelAllCont)
-                .addObject("totalPrice",totalPrice)
+                .addObject("totalPrice", totalPrice)
                 .addObject("country",country)
                 .addObject("uuid",uuid)
                 .addObject("CartUuid",CartUuid)

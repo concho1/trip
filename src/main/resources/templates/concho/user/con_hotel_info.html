@@ -170,7 +170,12 @@
                             <p class="price-info">* 12개월 무이자 할부 시 할인 불가</p>
                         </div>
                     </div>
-                    <button type="button" class="tedu-btn tedu-btn-light add-cart">장바구니</button>
+                    <button type="button" style="border-radius: 3rem 3rem 3rem 3rem; display: flex"
+                            class="tedu-btn tedu-btn-light add-cart"
+                            th:data-hotel-uuid="${allHotelInfo.getHotel().getUuid()}"
+                            th:data-iata-code="${allHotelInfo.getHotel().getIataFk()}"
+                            th:data-offer-uuid="${allHotelInfo.getHotelOfferList().get(0).getUuid()}">
+                        장바구니</button>
                 </div>
             </div>
         </div>

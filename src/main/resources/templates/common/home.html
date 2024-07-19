@@ -1084,6 +1084,10 @@
       width: 100%;
     }
   }
+  .search-form{
+    width: 793px;
+    margin: 0 auto; /* 가운데 정렬 */
+  }
 </style>
 
 <div th:replace="~{common/head :: head-fragment}"></div>
@@ -1500,6 +1504,7 @@
       let $location = $('#location');
       let $beforeSelect = null;
       let $searchForm = $('#search-form');
+      $('#comb-field').hide();
       const $loading = $('#loading'); function loadingOut (){$loading.css('display', 'block');}
       function mySubnit(){
         // 영어 문자인지 확인하는 정규 표현식

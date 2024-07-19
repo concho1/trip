@@ -153,8 +153,10 @@
     const widgetClientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
     const customerKey = "5JSIE9Ck2bINa_In__32e";
     const paymentWidget = PaymentWidget(widgetClientKey, customerKey); // 회원 결제
-
+    console.log(totalPrice)
+    console.log(amount)
     let paymentMethodWidget = paymentWidget.renderPaymentMethods(
+
         "#payment-method",
         { value: amount },
         { variantKey: "DEFAULT" }
