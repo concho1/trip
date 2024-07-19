@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="card" th:each="dep : ${DepDur}">
                                     <div class="card-body">
-                                        <img th:src="${dep.getAirlineImg()}" alt="이미지" style="width: 100px; height: 50px;">
+                                        <img th:src="${dep.getAirlineImg()}" alt="이미지" style="width: 250px; height: 60px;">
                                         <p th:text="'가는편 여정 상세보기'"></p>
                                         <img th:src="@{/asset/images/downarrow.webp}" class="toggleBtn" value="토글" style="width: 20px; height: 20px; cursor: pointer;">
 
@@ -52,7 +52,7 @@
 
                                 <div class="card" th:each="comb : ${CombDur}">
                                     <div class="card-body">
-                                        <img th:src="${comb.getAirlineImg()}" alt="이미지" style="width: 100px; height: 50px;">
+                                        <img th:src="${comb.getAirlineImg()}" alt="이미지" style="width: 250px; height: 60px;">
                                         <p th:text="'오는편 여정 상세보기'"></p>
                                         <img th:src="@{/asset/images/downarrow.webp}" class="toggleBtn" value="토글" style="width: 20px; height: 20px; cursor: pointer;">
 
