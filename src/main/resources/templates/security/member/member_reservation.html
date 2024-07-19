@@ -1,9 +1,11 @@
-<!-- 이 코드를 복붙해서 사용해주세요 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-<link rel="stylesheet" th:href="@{/security/css/member.css}">
-<head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/security/css/member.css}">
+    <title>감자팀</title>
+    <th:block th:replace="~{common/head-top :: head-top-fragment}"></th:block>
+</head>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
 
@@ -21,171 +23,152 @@
                     </div>
                     <div class="tab-menu-wrap">
                         <div class="tab-menu active" id="tab-all">
-                            <a href="#all">
-                                <span>모든 예약</span>
-                            </a>
+                            <a href="#all"><span>모든 예약</span></a>
                         </div>
                         <div class="tab-menu" id="tab-airline">
-                            <a href="#airline">
-                                <span>항공</span>
-                            </a>
+                            <a href="#airline"><span>항공</span></a>
                         </div>
                         <div class="tab-menu" id="tab-hotel">
-                            <a href="#hotel">
-                                <span>호텔</span>
-                            </a>
+                            <a href="#hotel"><span>호텔</span></a>
                         </div>
                     </div>
-                    <!-- <div class="sub-tab-menu-wrap">
-                            <div class="sub-tab-menu active" id="sub-tab-upcoming">
-                                <a href="#upcoming">
-                                    <span>다가오는 예약</span>
-                                </a>
-                            </div>
-                            <div class="sub-tab-menu" id="sub-tab-completed">
-                                <a href="#completed">
-                                    <span>완료된 예약</span>
-                                </a>
-                            </div>
-                            <div class="sub-tab-menu" id="sub-tab-canceled">
-                                <a href="#canceled">
-                                    <span>취소된 예약</span>
-                                </a>
-                            </div>
-                        </div>-->
                     <div class="myedu-cont-wrap" id="all">
-                        <th:block th:if="${airInfo != null}" th:each="airInfo, iterStat : ${airInfo}">
-                            <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${airInfo.getOrigin() != null}">
-                                <div class="myedu-cont">
-                                    <img th:src="${DepDur.get(iterStat.index).getAirlineImg()}" style="width: 150px;" alt="이미지">
-                                    <div class="text-area">
-                                        <th:block th:if="${airStatus != null and airStatus.size() > iterStat.index and airStatus.get(iterStat.index).getStatus() == 'completed'}">
-                                            <strong class="cate">예약 완료</strong>
-                                        </th:block>
-                                        <th:block th:if="${airStatus != null and airStatus.size() > iterStat.index and airStatus.get(iterStat.index).getStatus() == 'ready'}">
-                                            <strong class="cate">결제 완료</strong>
-                                        </th:block>
-                                        <span>예약 번호 :<span th:text="${airStatus.size() > iterStat.index ? airStatus.get(iterStat.index).getOrderUuid(): ''}"></span></span>
-                                        <input type="hidden" th:value="${airInfo.getFfvId()}" th:id="'airKey_'+${iterStat.index}">
-                                        <legend class="legend" th:text="${segDep.get(iterStat.index).getAirlineKor()}"></legend>
-                                        <legend class="legend airKey" th:id="'airKey_'+${iterStat.index}" th:text="${segDep.get(iterStat.index).getDepartureIata()}+ ' -> ' +${segDep.get(iterStat.index).getArrivalIata()}"></legend>
-                                        <legend class="legend" th:text="${segDep.get(iterStat.index).getDepartureAt().substring(0,10)} +' ~ '+${segComb.get(iterStat.index).getArrivalAt().substring(6,10)}"></legend>
-                                        <legend class="legend" th:text="${#numbers.formatInteger(airInfo.getTotalPrice(), 3, 'COMMA') + '원'}"></legend>
-                                    </div>
-                                </div>
-                                <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
-                                    <span th:onclick="|location.href='@{/member/ming/airplane(key=${airInfo.getFfvId()})}'|">상세정보</span>
-                                </button>
-                            </div>
-                        </th:block>
-                        <th:block  th:each="hotel, iterStat : ${hotelList}">
-                            <th:block>
-                                <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${hotelList.get(iterStat.index).getUuid() != null}">
-                                    <input type="hidden" class="hotelName" th:value="${hotel.getHotelObj().getHotelName()}">
-                                    <input type="hidden" class="uuid" th:value="${hotel.getUuid()}">
-                                    <input type="hidden" class="color" value="0">
+                        <th:block th:if="${airInfo != null}">
+                            <th:block th:each="airInfo, iterStat : ${airInfo}">
+                                <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${airInfo.getOrigin() != null}">
                                     <div class="myedu-cont">
-                                        <img th:src="${hotelList.get(iterStat.index).getHotelObj().getSampleImage()}" style="width: 150px; height: 120px; object-fit: fill;" alt="이미지">
+                                        <img th:src="${DepDur != null && DepDur.size() > iterStat.index ? DepDur.get(iterStat.index).getAirlineImg() : ''}" style="width: 150px;" alt="이미지">
                                         <div class="text-area">
-                                            <th:block th:if="${hotelStatus != null and hotelStatus.size() > iterStat.index and hotelStatus.get(iterStat.index).getStatus() == 'completed'}">
-                                                <strong class="cate">예약 완료</strong>
+                                            <th:block th:if="${airStatus != null and airStatus.size() > iterStat.index}">
+                                                <th:block th:if="${airStatus.get(iterStat.index).getStatus() == 'completed'}">
+                                                    <strong class="cate">예약 완료</strong>
+                                                </th:block>
+                                                <th:block th:if="${airStatus.get(iterStat.index).getStatus() == 'ready'}">
+                                                    <strong class="cate">결제 완료</strong>
+                                                </th:block>
                                             </th:block>
-                                            <th:block th:if="${hotelStatus != null and hotelStatus.size() > iterStat.index and hotelStatus.get(iterStat.index).getStatus() == 'ready'}">
-                                                <strong class="cate">결제 완료</strong>
-                                            </th:block>
-                                            <span>예약 번호 :<span th:text="${hotelStatus.size() > iterStat.index ? hotelStatus.get(iterStat.index).getOrderUuid(): ''}"></span></span>
-                                            <input type="hidden" th:value="${hotelList.get(iterStat.index).getUuid()}" th:id="'hotelKey_'+${iterStat.index}">
-                                            <legend class="legend" th:text="${hotelList.get(iterStat.index).getHotelObj().getHotelName()}"></legend>
-                                            <legend class="legend" th:text="'('+${hotelList.get(iterStat.index).getIataCodeObj().getCountryKo()}+')'+ ${hotelList.get(iterStat.index).getIataCodeObj().getCityKo()}"></legend>
-                                            <legend class="legend hotelKey" th:id="'hotelKey_'+${iterStat.index}"
-                                                    th:text="${hotelList.get(iterStat.index).getOfferObj().getCheckIn()}+ ' ~ ' +${hotelList.get(iterStat.index).getOfferObj().getCheckOut()}"></legend>
-                                            <legend class="legend price"
-                                                    th:id="'hotelPrice'+${iterStat.index}"
-                                                    th:attr="data-value=${hotelList.get(iterStat.index).getOfferObj().getTotalCost()}"
-                                                    th:text="${#numbers.formatInteger(hotelList.get(iterStat.index).getOfferObj().getTotalCost(), 3, 'COMMA') + '원'}"></legend>
-
+                                            <span>예약 번호 :<span th:text="${airStatus != null && airStatus.size() > iterStat.index ? airStatus.get(iterStat.index).getOrderUuid() : ''}"></span></span>
+                                            <input type="hidden" th:value="${airInfo.getFfvId()}" th:id="'airKey_'+${iterStat.index}">
+                                            <legend class="legend" th:text="${segDep != null && segDep.size() > iterStat.index ? segDep.get(iterStat.index).getAirlineKor() : ''}"></legend>
+                                            <legend class="legend airKey" th:id="'airKey_'+${iterStat.index}" th:text="${segDep != null && segDep.size() > iterStat.index ? segDep.get(iterStat.index).getDepartureIata() + ' -> ' + segDep.get(iterStat.index).getArrivalIata() : ''}"></legend>
+                                            <legend class="legend" th:text="${segDep != null && segDep.size() > iterStat.index ? segDep.get(iterStat.index).getDepartureAt().substring(0,10) + ' ~ ' + (segComb != null && segComb.size() > iterStat.index ? segComb.get(iterStat.index).getArrivalAt().substring(6,10) : '') : ''}"></legend>
+                                            <legend class="legend" th:text="${airInfo != null ? #numbers.formatInteger(airInfo.getTotalPrice(), 3, 'COMMA') + '원' : ''}"></legend>
                                         </div>
                                     </div>
-                                    <div style="width: 325px; display: flex">
-                                        <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px; margin-right: 20px; background-color: #2f639a">
-                                            <span th:onclick="|location.href='@{/con/hotel-info(isCart=${true},hotelUuid=${hotel.getHotelObj().getUuid()},hotelAdId=${hotel.getHotelObj().getHotelAdId()},iataCode=${hotel.getIataCodeObj().getIataCode()},checkIn=${hotel.getOfferObj().getCheckIn()},checkOut=${hotel.getOfferObj().getCheckOut()},personCnt=${hotel.getOfferObj().getAdultCnt()})}'|">숙소 상세정보</span>
-                                        </button>
-
-                                        <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
-                                            <span th:onclick="|location.href='@{/member/ming/hotel(uuid=${hotel.getUuid()})}'|">예약 상세내역</span>
-                                        </button>
-                                    </div>
+                                    <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
+                                        <span th:onclick="|location.href='@{/member/ming/airplane(key=${airInfo.getFfvId()})}'|">상세정보</span>
+                                    </button>
                                 </div>
                             </th:block>
+                        </th:block>
+                        <th:block th:each="hotel, iterStat : ${hotelList}">
+                            <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${hotelList.get(iterStat.index).getUuid() != null}">
+                                <input type="hidden" class="hotelName" th:value="${hotel.getHotelObj().getHotelName()}">
+                                <input type="hidden" class="uuid" th:value="${hotel.getUuid()}">
+                                <input type="hidden" class="color" value="0">
+                                <div class="myedu-cont">
+                                    <img th:src="${hotelList != null && hotelList.size() > iterStat.index ? hotelList.get(iterStat.index).getHotelObj().getSampleImage() : ''}" style="width: 150px; height: 120px; object-fit: fill;" alt="이미지">
+                                    <div class="text-area">
+                                        <th:block th:if="${hotelStatus != null and hotelStatus.size() > iterStat.index}">
+                                            <th:block th:if="${hotelStatus.get(iterStat.index).getStatus() == 'completed'}">
+                                                <strong class="cate">예약 완료</strong>
+                                            </th:block>
+                                            <th:block th:if="${hotelStatus.get(iterStat.index).getStatus() == 'ready'}">
+                                                <strong class="cate">결제 완료</strong>
+                                            </th:block>
+                                        </th:block>
+                                        <span>예약 번호 :<span th:text="${hotelStatus != null && hotelStatus.size() > iterStat.index ? hotelStatus.get(iterStat.index).getOrderUuid() : ''}"></span></span>
+                                        <input type="hidden" th:value="${hotelList.get(iterStat.index).getUuid()}" th:id="'hotelKey_'+${iterStat.index}">
+                                        <legend class="legend" th:text="${hotelList != null && hotelList.size() > iterStat.index ? hotelList.get(iterStat.index).getHotelObj().getHotelName() : ''}"></legend>
+                                        <legend class="legend" th:text="${hotelList != null && hotelList.size() > iterStat.index ? '(' + hotelList.get(iterStat.index).getIataCodeObj().getCountryKo() + ')' + hotelList.get(iterStat.index).getIataCodeObj().getCityKo() : ''}"></legend>
+                                        <legend class="legend hotelKey" th:id="'hotelKey_'+${iterStat.index}"
+                                                th:text="${hotelList != null && hotelList.size() > iterStat.index ? hotelList.get(iterStat.index).getOfferObj().getCheckIn() + ' ~ ' + hotelList.get(iterStat.index).getOfferObj().getCheckOut() : ''}"></legend>
+                                        <legend class="legend price"
+                                                th:id="'hotelPrice'+${iterStat.index}"
+                                                th:attr="data-value=${hotelList != null && hotelList.size() > iterStat.index ? hotelList.get(iterStat.index).getOfferObj().getTotalCost() : 0}"
+                                                th:text="${hotelList != null && hotelList.size() > iterStat.index ? #numbers.formatInteger(hotelList.get(iterStat.index).getOfferObj().getTotalCost(), 3, 'COMMA') + '원' : ''}"></legend>
+                                    </div>
+                                </div>
+                                <div style="width: 325px; display: flex">
+                                    <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px; margin-right: 20px; background-color: #2f639a">
+                                        <span th:onclick="|location.href='@{/con/hotel-info(isCart=${true},hotelUuid=${hotel.getHotelObj().getUuid()},hotelAdId=${hotel.getHotelObj().getHotelAdId()},iataCode=${hotel.getIataCodeObj().getIataCode()},checkIn=${hotel.getOfferObj().getCheckIn()},checkOut=${hotel.getOfferObj().getCheckOut()},personCnt=${hotel.getOfferObj().getAdultCnt()})}'|">숙소 상세정보</span>
+                                    </button>
+                                    <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
+                                        <span th:onclick="|location.href='@{/member/ming/hotel(uuid=${hotel.getUuid()})}'|">예약 상세내역</span>
+                                    </button>
+                                </div>
+                            </div>
                         </th:block>
                     </div>
 
                     <div class="myedu-cont-wrap" id="airline" style="display: none;">
-                        <th:block th:if="${airInfo != null}" th:each="airInfo, iterStat : ${airInfo}">
-                        <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${airInfo.getOrigin() != null}">
-                            <div class="myedu-cont">
-                                    <img th:src="${DepDur.get(iterStat.index).getAirlineImg()}" style="width: 150px;" alt="이미지">
-                                <div class="text-area">
-                                    <th:block th:if="${airStatus != null and airStatus.size() > iterStat.index and airStatus.get(iterStat.index).getStatus() == 'completed'}">
-                                        <strong class="cate">예약 완료</strong>
-                                    </th:block>
-                                    <th:block th:if="${airStatus != null and airStatus.size() > iterStat.index and airStatus.get(iterStat.index).getStatus() == 'ready'}">
-                                        <strong class="cate">결제 완료</strong>
-                                    </th:block>
-                                    <span>예약 번호 :<span th:text="${airStatus.size() > iterStat.index ? airStatus.get(iterStat.index).getOrderUuid(): ''}"></span></span>
-                                    <input type="hidden" th:value="${airInfo.getFfvId()}" th:id="'airKey_'+${iterStat.index}">
-                                    <legend class="legend" th:text="${segDep.get(iterStat.index).getAirlineKor()}"></legend>
-                                    <legend class="legend airKey" th:id="'airKey_'+${iterStat.index}" th:text="${segDep.get(iterStat.index).getDepartureIata()}+ ' -> ' +${segDep.get(iterStat.index).getArrivalIata()}"></legend>
-                                    <legend class="legend" th:text="${segDep.get(iterStat.index).getDepartureAt().substring(0,10)} +' ~ '+${segComb.get(iterStat.index).getArrivalAt().substring(6,10)}"></legend>
-                                    <legend class="legend" th:text="${#numbers.formatInteger(airInfo.getTotalPrice(), 3, 'COMMA') + '원'}"></legend>
+                        <th:block th:if="${airInfo != null}">
+                            <th:block th:each="airInfo, iterStat : ${airInfo}">
+                                <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${airInfo.getOrigin() != null}">
+                                    <div class="myedu-cont">
+                                        <img th:src="${DepDur != null && DepDur.size() > iterStat.index ? DepDur.get(iterStat.index).getAirlineImg() : ''}" style="width: 150px;" alt="이미지">
+                                        <div class="text-area">
+                                            <th:block th:if="${airStatus != null and airStatus.size() > iterStat.index}">
+                                                <th:block th:if="${airStatus.get(iterStat.index).getStatus() == 'completed'}">
+                                                    <strong class="cate">예약 완료</strong>
+                                                </th:block>
+                                                <th:block th:if="${airStatus.get(iterStat.index).getStatus() == 'ready'}">
+                                                    <strong class="cate">결제 완료</strong>
+                                                </th:block>
+                                            </th:block>
+                                            <span>예약 번호 :<span th:text="${airStatus != null && airStatus.size() > iterStat.index ? airStatus.get(iterStat.index).getOrderUuid() : ''}"></span></span>
+                                            <input type="hidden" th:value="${airInfo.getFfvId()}" th:id="'airKey_'+${iterStat.index}">
+                                            <legend class="legend" th:text="${segDep != null && segDep.size() > iterStat.index ? segDep.get(iterStat.index).getAirlineKor() : ''}"></legend>
+                                            <legend class="legend airKey" th:id="'airKey_'+${iterStat.index}" th:text="${segDep != null && segDep.size() > iterStat.index ? segDep.get(iterStat.index).getDepartureIata() + ' -> ' + segDep.get(iterStat.index).getArrivalIata() : ''}"></legend>
+                                            <legend class="legend" th:text="${segDep != null && segDep.size() > iterStat.index ? segDep.get(iterStat.index).getDepartureAt().substring(0,10) + ' ~ ' + (segComb != null && segComb.size() > iterStat.index ? segComb.get(iterStat.index).getArrivalAt().substring(6,10) : '') : ''}"></legend>
+                                            <legend class="legend" th:text="${airInfo != null ? #numbers.formatInteger(airInfo.getTotalPrice(), 3, 'COMMA') + '원' : ''}"></legend>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
+                                        <span th:onclick="|location.href='@{/member/ming/airplane(key=${airInfo.getFfvId()})}'|">상세정보</span>
+                                    </button>
                                 </div>
-                            </div>
-                            <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
-                                <span th:onclick="|location.href='@{/member/ming/airplane(key=${airInfo.getFfvId()})}'|">상세정보</span>
-                            </button>
-                        </div>
+                            </th:block>
                         </th:block>
                     </div>
                     <div class="myedu-cont-wrap" id="hotel" style="display: none;">
-                        <th:block  th:each="hotel, iterStat : ${hotelList}">
-                            <th:block>
-                                <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${hotelList.get(iterStat.index).getUuid() != null}">
-                                    <input type="hidden" class="hotelName" th:value="${hotel.getHotelObj().getHotelName()}">
-                                    <input type="hidden" class="uuid" th:value="${hotel.getUuid()}">
-                                    <input type="hidden" class="color" value="0">
+                        <th:block th:each="hotel, iterStat : ${hotelList}">
+                            <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${hotelList.get(iterStat.index).getUuid() != null}">
+                                <input type="hidden" class="hotelName" th:value="${hotel.getHotelObj().getHotelName()}">
+                                <input type="hidden" class="uuid" th:value="${hotel.getUuid()}">
+                                <input type="hidden" class="color" value="0">
                                 <div class="myedu-cont">
-                                    <img th:src="${hotelList.get(iterStat.index).getHotelObj().getSampleImage()}" style="width: 150px; height: 120px; object-fit: fill;" alt="이미지">
+                                    <img th:src="${hotelList != null && hotelList.size() > iterStat.index ? hotelList.get(iterStat.index).getHotelObj().getSampleImage() : ''}" style="width: 150px; height: 120px; object-fit: fill;" alt="이미지">
                                     <div class="text-area">
-                                        <th:block th:if="${hotelStatus != null and hotelStatus.size() > iterStat.index and hotelStatus.get(iterStat.index).getStatus() == 'completed'}">
-                                            <strong class="cate">예약 완료</strong>
+                                        <th:block th:if="${hotelStatus != null and hotelStatus.size() > iterStat.index}">
+                                            <th:block th:if="${hotelStatus.get(iterStat.index).getStatus() == 'completed'}">
+                                                <strong class="cate">예약 완료</strong>
+                                            </th:block>
+                                            <th:block th:if="${hotelStatus.get(iterStat.index).getStatus() == 'ready'}">
+                                                <strong class="cate">결제 완료</strong>
+                                            </th:block>
                                         </th:block>
-                                        <th:block th:if="${hotelStatus != null and hotelStatus.size() > iterStat.index and hotelStatus.get(iterStat.index).getStatus() == 'ready'}">
-                                            <strong class="cate">결제 완료</strong>
-                                        </th:block>
-                                        <span>예약 번호 :<span th:text="${hotelStatus.size() > iterStat.index ? hotelStatus.get(iterStat.index).getOrderUuid(): ''}"></span></span>
+                                        <span>예약 번호 :<span th:text="${hotelStatus != null && hotelStatus.size() > iterStat.index ? hotelStatus.get(iterStat.index).getOrderUuid() : ''}"></span></span>
                                         <input type="hidden" th:value="${hotelList.get(iterStat.index).getUuid()}" th:id="'hotelKey_'+${iterStat.index}">
-                                        <legend class="legend" th:text="${hotelList.get(iterStat.index).getHotelObj().getHotelName()}"></legend>
-                                        <legend class="legend" th:text="'('+${hotelList.get(iterStat.index).getIataCodeObj().getCountryKo()}+')'+ ${hotelList.get(iterStat.index).getIataCodeObj().getCityKo()}"></legend>
+                                        <legend class="legend" th:text="${hotelList != null && hotelList.size() > iterStat.index ? hotelList.get(iterStat.index).getHotelObj().getHotelName() : ''}"></legend>
+                                        <legend class="legend" th:text="${hotelList != null && hotelList.size() > iterStat.index ? '(' + hotelList.get(iterStat.index).getIataCodeObj().getCountryKo() + ')' + hotelList.get(iterStat.index).getIataCodeObj().getCityKo() : ''}"></legend>
                                         <legend class="legend hotelKey" th:id="'hotelKey_'+${iterStat.index}"
-                                            th:text="${hotelList.get(iterStat.index).getOfferObj().getCheckIn()}+ ' ~ ' +${hotelList.get(iterStat.index).getOfferObj().getCheckOut()}"></legend>
+                                                th:text="${hotelList != null && hotelList.size() > iterStat.index ? hotelList.get(iterStat.index).getOfferObj().getCheckIn() + ' ~ ' + hotelList.get(iterStat.index).getOfferObj().getCheckOut() : ''}"></legend>
                                         <legend class="legend price"
-                                            th:id="'hotelPrice'+${iterStat.index}"
-                                            th:attr="data-value=${hotelList.get(iterStat.index).getOfferObj().getTotalCost()}"
-                                            th:text="${#numbers.formatInteger(hotelList.get(iterStat.index).getOfferObj().getTotalCost(), 3, 'COMMA') + '원'}"></legend>
-
+                                                th:id="'hotelPrice'+${iterStat.index}"
+                                                th:attr="data-value=${hotelList != null && hotelList.size() > iterStat.index ? hotelList.get(iterStat.index).getOfferObj().getTotalCost() : 0}"
+                                                th:text="${hotelList != null && hotelList.size() > iterStat.index ? #numbers.formatInteger(hotelList.get(iterStat.index).getOfferObj().getTotalCost(), 3, 'COMMA') + '원' : ''}"></legend>
                                     </div>
                                 </div>
-                                    <div style="width: 325px; display: flex">
-                                        <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px; margin-right: 20px; background-color: #2f639a">
-                                            <span th:onclick="|location.href='@{/con/hotel-info(isCart=${true},hotelUuid=${hotel.getHotelObj().getUuid()},hotelAdId=${hotel.getHotelObj().getHotelAdId()},iataCode=${hotel.getIataCodeObj().getIataCode()},checkIn=${hotel.getOfferObj().getCheckIn()},checkOut=${hotel.getOfferObj().getCheckOut()},personCnt=${hotel.getOfferObj().getAdultCnt()})}'|">숙소 상세정보</span>
-                                        </button>
-
-                                        <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
-                                            <span th:onclick="|location.href='@{/member/ming/hotel(uuid=${hotel.getUuid()})}'|">예약 상세내역</span>
-                                        </button>
-                                    </div>
+                                <div style="width: 325px; display: flex">
+                                    <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px; margin-right: 20px; background-color: #2f639a">
+                                        <span th:onclick="|location.href='@{/con/hotel-info(isCart=${true},hotelUuid=${hotel.getHotelObj().getUuid()},hotelAdId=${hotel.getHotelObj().getHotelAdId()},iataCode=${hotel.getIataCodeObj().getIataCode()},checkIn=${hotel.getOfferObj().getCheckIn()},checkOut=${hotel.getOfferObj().getCheckOut()},personCnt=${hotel.getOfferObj().getAdultCnt()})}'|">숙소 상세정보</span>
+                                    </button>
+                                    <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
+                                        <span th:onclick="|location.href='@{/member/ming/hotel(uuid=${hotel.getUuid()})}'|">예약 상세내역</span>
+                                    </button>
                                 </div>
-                            </th:block>
+                            </div>
                         </th:block>
                     </div>
                 </section>
@@ -193,7 +176,6 @@
         </div>
     </div>
 </main>
-
 
 <script type="text/javascript" th:src="@{/security/js/reservation.js}"></script>
 <script type="text/javascript" th:src="@{/security/js/myInfo.js}"></script>
@@ -204,3 +186,4 @@
 </div>
 <th:block th:replace="~{common/footer-down :: footer-js-fragment}"></th:block>
 </body>
+</html>
