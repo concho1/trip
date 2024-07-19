@@ -4,13 +4,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+<link rel="stylesheet" th:href="@{/security/css/reservation.css}">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
-<style>
-    .reservation {
-        width: 55rem;
-        margin-right: 80px;
-    }
-</style>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
 
@@ -29,8 +24,43 @@
                     <div class="title-wrap">
                         <h3 class="cont-title">호텔</h3>
                     </div>
-                    <div class="payment-wrap" style="position: relative; border: 1px solid lightgray; margin-bottom: 30px;">
+                    <div class="payment-wrap-ming" style="position: relative; border: 1px solid lightgray; margin-bottom: 30px;">
                         <div class="payment-area">
+                            <div class="title">호텔 정보</div>
+
+                            <div class="payment-cont payment-cont-type2" th:each="hotel : ${hotelAllCont}" style="display: contents" align="center">
+                                <div class="group-ming">
+                                    <img th:src="${hotel.getHotelObj().getSampleImage()}" alt="이미지" style="width: 400px; height: 250px;">
+                                    <div class="info">
+                                        <div class="title" id="hotelName" th:text="${hotel.getHotelObj().getHotelName()}"></div>
+                                        <hr width="400px">
+                                        <p class="text" th:text="'투숙인원 : '+${hotel.getOfferObj().getAdultCnt()}+' 명'" style="font-weight: bold;"></p>
+                                        <p class="text" th:text="'체크인 : '+${hotel.getOfferObj().getCheckIn()}+' 15:00 '" style="font-weight: bold;"></p>
+                                        <p class="text" th:text="'체크아웃 : '+${hotel.getOfferObj().getCheckOut()}+' 11:00 '" style="font-weight: bold;"></p>
+                                    </div>
+                                </div>
+
+
+                                <div class="price-info-wrap" th:if="${hotelAllCont.size() != 1}">
+                                    <div class="price-area price-total">
+                                        <span th:text="'금액'">금액</span>
+                                        <strong th:text="${#numbers.formatInteger(hotel.getOfferObj().getTotalCost(), 3, 'COMMA') + '원'}"></strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="price-info-wrap">
+                                <div class="price-area price-total">
+                                    <span th:text="'총계'">결제 금액</span>
+                                    <strong th:text="${#numbers.formatInteger(totalPrice, 3, 'COMMA') + '원'}"></strong>
+                                </div>
+                            </div>
+
+                            <div class="price-info-wrap">
+                                <div class="price-area price-total">
+                                </div>
+                            </div>
+
                             <div class="title">연락처 정보</div>
                             <div class="payment-cont payment-cont-type2">
 
@@ -86,12 +116,9 @@
             </div>
         </div>
     </div>
-    <div class="tedu-N45 reservation" data-bid="WmLXi9pyUS">
+   <!-- <div class="tedu-N45 reservation" data-bid="WmLXi9pyUS">
         <div class="content-container">
             <div class="sidebar">
-                <div class="title-wrap">
-                    <h3 class="title">결제 상품 정보</h3>
-                </div>
                 <div class="pay-info-warp" th:each="hotel : ${hotelAllCont}" style="display: contents" align="center">
                     <div class="text-area" style="padding:30px 30px 30px 30px; margin-bottom: 20px; border: lightgray solid 1px; border-radius: 15px;" align="center">
                         <div class="title" id="hotelName" th:text="${hotel.getHotelObj().getHotelName()}"></div>
@@ -112,10 +139,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!-- [E]tedu-N45 -->
 </main>
-<link rel="stylesheet" th:href="@{/jhm/jhm.css}">
 <div class="tedu-N17" data-bid="fjlxiC75U0">
     <th:block th:replace="~{common/footer :: footer-fragment}"></th:block>
 </div>
