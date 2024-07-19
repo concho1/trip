@@ -310,33 +310,35 @@ public class Hamcontroller {
                                        @RequestParam String UUID, @RequestParam String paymentType, @RequestParam String orderId,
                                        @RequestParam String paymentKey, @RequestParam("paymentInfo") String paymentInfo,Principal principal) throws UnsupportedEncodingException, MessagingException {
 
-        String newAirKey = airKey.replaceAll("[{}]","");
-        String newEmail = email.replaceAll("[{}]","");
-        String newUUID = UUID.replaceAll("[{}]","");
+        System.out.println(airKey);
+        System.out.println(email);
+        System.out.println(UUID);
+
         String memberId = principal.getName();
+
 
         String decodedPaymentInfo = URLDecoder.decode(paymentInfo, "UTF-8");
         Gson gson = new Gson();
         Payment payment = gson.fromJson(decodedPaymentInfo, Payment.class);
 
         payment.setMemberId(memberId);
-        payment.setOrderUuid(newUUID);
+        payment.setOrderUuid(UUID);
         payment.setPaymentKey(paymentKey);
         payment.setAirKey(airKey);
 
 
-        List<CartFlight> airInfo = this.airservice.getAirInfo(newAirKey);
-        List<CartDuration> DepDur = this.airservice.getDepDur(newAirKey);
-        List<CartDuration> CombDur = this.airservice.getCombDur(newAirKey);
-        List<CartSegment> segDep = this.airservice.getDep(newAirKey);
-        List<CartSegment> segComb = this.airservice.getComb(newAirKey);
-        List<CartPricing> price = this.airservice.getPricing(newAirKey);
+        List<CartFlight> airInfo = this.airservice.getAirInfo(airKey);
+        List<CartDuration> DepDur = this.airservice.getDepDur(airKey);
+        List<CartDuration> CombDur = this.airservice.getCombDur(airKey);
+        List<CartSegment> segDep = this.airservice.getDep(airKey);
+        List<CartSegment> segComb = this.airservice.getComb(airKey);
+        List<CartPricing> price = this.airservice.getPricing(airKey);
 
 
         if(segComb.size() == 0){
-            this.emailService.sendAirplaneEmail(newEmail,newUUID,payment,airInfo,DepDur,CombDur,segDep,price);
+            this.emailService.sendAirplaneEmail(email,UUID,payment,airInfo,DepDur,CombDur,segDep,price);
         }else{
-            this.emailService.sendAirplaneEmail(newEmail,newUUID,payment,airInfo,DepDur,CombDur,segDep,segComb,price);
+            this.emailService.sendAirplaneEmail(email,UUID,payment,airInfo,DepDur,CombDur,segDep,segComb,price);
         }
 
 
@@ -346,10 +348,10 @@ public class Hamcontroller {
         ModelAndView modelAndView = new ModelAndView("Hamster/paymentSuccess");
 
         if(check > 0){
-            this.shoppingCartService.deleteAir(newAirKey,memberId);
+            this.shoppingCartService.deleteAir(airKey,memberId);
             modelAndView.addObject("paymentKey", paymentKey)
                     .addObject("orderId", orderId)
-                    .addObject("email", newEmail);
+                    .addObject("email", email);
 
             return modelAndView;
         }else{
