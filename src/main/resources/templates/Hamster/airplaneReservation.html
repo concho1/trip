@@ -189,7 +189,6 @@
                     <div class="text-area">
                         <div class="title" th:text="${info.getOrigin()} + ' -> ' + ${info.getDestination()}+
                             '/탑승객 '+${info.getAdults()+info.getChildren()+info.getInfants()}+' 명'"></div>
-                        <p class="text" id="airTime" th:text="${info.getDeparture().toString().substring(5,10)} + ' ~ ' + ${info.getComeback().toString().substring(5,10)}"></p>
                     </div>
                 </div>
 
