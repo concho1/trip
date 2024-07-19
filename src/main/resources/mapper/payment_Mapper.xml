@@ -59,10 +59,9 @@
         select air_key from payment where member_id = #{memberId}
     </select>
 
-    <select id="findByAirKey" parameterType="String" resultType="Payment">
+    <select id="findByAirKey" parameterType="String">
         SELECT * FROM payment
         WHERE air_key = #{AirKey}
     </select>
-
 
 </mapper>

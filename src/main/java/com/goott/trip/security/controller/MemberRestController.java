@@ -294,8 +294,6 @@ public class MemberRestController {
         List<CartDuration> CombDur = this.airService.getCombDur(Key);
         List<CartSegment> airSeg = this.airService.getSegment(Key);
         List<CartFlight> airInfo = this.airService.getAirInfo(Key);
-        List<String> country = this.airService.getCountry();
-        List<String> OnlyCountry = this.airService.getOnlyCountry();
         List<CartSegment> segDep = this.airService.getDep(Key);
         List<CartSegment> segComb = this.airService.getComb(Key);
         List<CartPricing> price = this.airService.getPricing(Key);
@@ -319,7 +317,6 @@ public class MemberRestController {
         }
 
         return modelAndView
-                .addObject("country",country)
                 .addObject("AirKey",Key)
                 .addObject("airInfo",airInfo)
                 .addObject("airSeg",airSeg)
@@ -329,7 +326,6 @@ public class MemberRestController {
                 .addObject("DepDur",DepDur)
                 .addObject("CombDur",CombDur)
                 .addObject("price",price)
-                .addObject("OnlyCountry",OnlyCountry)
                 .addObject("allPayment",allPayment);
 
     }
