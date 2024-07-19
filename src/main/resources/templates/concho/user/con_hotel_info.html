@@ -160,11 +160,11 @@
                             ? allHotelInfo.getHotelOfferList().get(0).getPerNightCost() : '정보 없음'}" class="discount"></span>
                         </p>
                         <div class="price-box">
-                            <div class="price-text my-price-box">
+                            <div class="price-text my-price-box" style="color: blue">
                                 <button type="button" id="exchange-btn" style="display: none">환전</button>
-                                <strong class="per-currency" th:text="|${allHotelInfo.getHotelOfferList().get(0).getCurrency()}|"></strong>
+                                <strong style="margin-right: 1rem" id="converted-price" class="main-price" th:text="${allHotelInfo.getHotelOfferList().get(0).getTotalCost()}"></strong>
 
-                                <strong class="main-price" th:text="${allHotelInfo.getHotelOfferList().get(0).getTotalCost()}"></strong>
+                                <strong class="per-currency" th:text="|${allHotelInfo.getHotelOfferList().get(0).getCurrency()}|"></strong>
                                 <!---------------------------------------------------->
                             </div>
                             <p class="price-info">* 12개월 무이자 할부 시 할인 불가</p>
@@ -614,12 +614,16 @@
 </body>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script th:inline="javascript">
+
     let $offerList = $('#offer-list');
     let $commentList = $('#comment-list');
     let $inquiry = $('#inquiry');
+    let $orBtn = $('#exchange-btn');
     //let $reply = $('#reply');
 
     $(document).ready(function () {
+
+
         $('#offer-btn').click(function () {
             showOfferList();
         });
@@ -673,7 +677,7 @@
             $(this).find('#now-cu').val('no');
             let fromCurrency = $orBtn.closest('.price-text').find('.per-currency').text();
             let cp = $orBtn.closest('.price-box').find('#converted-price');
-
+            let mcp = $orBtn.closest('.price-box').find('.per-currency');
             $.ajax({
                 type: 'post',
                 url: '/user/esh/convert-currency',
@@ -689,9 +693,8 @@
 
                     let mainPrice = $('.main-price').text() * res;
 
-                    let txt = 'KRW   ' + mainPrice;
-
-                    cp.text(txt);
+                    cp.text(mainPrice);
+                    mcp.text('KRW ')
                     cp.show();
                 },
                 error: function() {
