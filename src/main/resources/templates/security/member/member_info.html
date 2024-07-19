@@ -42,7 +42,7 @@
                                 <input type="hidden" name="name" id="name">
                                 <fieldset class="fieldset">
                                     <legend class="fileAjax">프로필 사진</legend>
-                                        <img id="preview-image" th:src="${session.userImgUrl}" alt="Profile" style="width: 240px; height: 190px;">
+                                        <img id="preview-image" th:src="${baseImgUrl}" alt="Profile" style="width: 240px; height: 190px;">
                                     <!--<img id="preview-image" th:src="${baseImgUrl}" alt="프로필" style="width: 240px; height: 190px;"><br>-->
                                     <div class="fileIn">
                                         <input id="fileAjax" type="file" name="file" accept="image/*">

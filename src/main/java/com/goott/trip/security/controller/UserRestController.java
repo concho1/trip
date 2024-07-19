@@ -131,8 +131,8 @@ public class UserRestController {
         }
 
         // 새 비밀번호가 기존 비밀번호와 동일한지 확인
-        if (!memberService.checkPwd(id, pw)) {
-            alarm.setMessageAndRedirect("새 비밀번호가 기존 비밀번호와 동일합니다. 다른 비밀번호를 입력해주세요.", "");
+        if (memberService.checkPwd(id, pw)) {
+            alarm.setMessageAndRedirect("새 비밀번호가 기존 비밀번호와 동일합니다. 다른 비밀번호를 입력해주세요.", "/user/ming/searchPw");
             return new ModelAndView(alarm.getMessagePage());
         }
 
@@ -141,7 +141,7 @@ public class UserRestController {
         if (check > 0) {
             alarm.setMessageAndRedirect("비밀번호가 변경되었습니다.", "log-in");
         } else {
-            alarm.setMessageAndRedirect("비밀번호 변경 실패", "");
+            alarm.setMessageAndRedirect("비밀번호 변경 실패", "/user/ming/searchPw");
         }
 
         return new ModelAndView(alarm.getMessagePage());
