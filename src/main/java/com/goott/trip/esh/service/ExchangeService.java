@@ -109,7 +109,6 @@ public class ExchangeService {
     public double convertCurrency(String fromCurrency, String toCurrency, double amount) {
         Exchange fromExchange = mapper.selectExchangeDataByCurrencyCode(fromCurrency);
         Exchange toExchange = mapper.selectExchangeDataByCurrencyCode(toCurrency);
-
         if (fromExchange == null) {
             logger.error("환율 정보를 찾을 수 없습니다: {}", fromCurrency);
             throw new IllegalArgumentException("환율 정보를 찾을 수 없습니다: " + fromCurrency);
@@ -124,7 +123,10 @@ public class ExchangeService {
 
         double KRW = fromRate * amount;
         double result = KRW/toExchange.getBuyingTtRate();
-
+        if(fromCurrency.equalsIgnoreCase("JPY") || fromCurrency.equalsIgnoreCase("IDR")) {
+            return result/100.0;
+        }
+        System.out.println(result+ " : " +fromRate + " : "+toExchange.getBuyingTtRate());
         return result;
     }
 
