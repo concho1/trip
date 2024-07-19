@@ -47,7 +47,7 @@ public class MemberService {
     // 비밀번호 변경(새 비밀번호로 변경)
     public int changePwd(String id, String newPw) {
         // 기존 비밀번호 확인
-        if (!checkPwd(id, newPw)) {
+        if (checkPwd(id, newPw)) {
             return 0; // 새 비밀번호가 기존 비밀번호와 동일하면 변경하지 않음
         }
         // 새 비밀번호 암호화
