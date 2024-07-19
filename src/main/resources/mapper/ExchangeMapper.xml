@@ -6,7 +6,7 @@
     <select id="selectExchangeDataByCurrencyCode" parameterType="String" resultType="com.goott.trip.esh.model.Exchange">
         SELECT country_name, currency_code, exchange_date, buying_tt_rate
         FROM exchange
-        WHERE currency_code = #{currencyCode}
+        WHERE currency_code like concat('%', #{currencyCode}, '%')
     </select>
 
     <insert id="insertExchangeData" parameterType="com.goott.trip.esh.model.Exchange">
@@ -19,4 +19,8 @@
         SET currency_code = #{currencyCode}, exchange_date = #{exchangeDate}, buying_tt_rate = #{buyingTtRate}
         WHERE country_name = #{countryName}
     </update>
+
+    <select id="getExchageRate" parameterType="String" resultType="String">
+        select buying_tt_rate from trip.exchange where currency_code like concat('%', #{str}, '%')
+    </select>
 </mapper>

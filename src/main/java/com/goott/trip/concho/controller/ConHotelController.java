@@ -92,19 +92,25 @@ public class ConHotelController {
             return resultMap;
         }else{
             hotelCart.setMemberId(memberIdOp.get());
-            if(hotelCartService.findConHotelCartByMemberIdAndOfferUuid(
-                    memberIdOp.get(), hotelCart.getOfferUuid()).isEmpty()){
+            Optional<ConHotelCart> hotelCartOp = hotelCartService.findConHotelCartByMemberIdAndOfferUuid(
+                    memberIdOp.get(), hotelCart.getOfferUuid());
+            if(hotelCartOp.isEmpty()){
                 if(hotelCartService.saveConHotelCart(hotelCart)){
                     resultMap.put("message", "카트담기 성공");
                     resultMap.put("isOk", "ok");
+                    resultMap.put("buyOk", "ok");
+                    resultMap.put("uuid", hotelCart.getUuid());
                     // 가져오는거 테스트
                     // System.out.println(hotelCartService.getConHotelCartAllByMemberId(memberIdOp.get()).toString());
                 }else{
                     resultMap.put("message", "카트담기 실패");
                     resultMap.put("isOk", "no");
+                    resultMap.put("buyOk", "no");
                 }
             }else{
                 resultMap.put("message", "이미 장바구니에 있는 정보입니다.");
+                resultMap.put("uuid", hotelCartOp.get().getUuid());
+                resultMap.put("buyOk", "ok");
                 resultMap.put("isOk", "no");
             }
             return resultMap;

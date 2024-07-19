@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.goott.trip.common.model.Alarm;
 import com.goott.trip.common.model.Image;
 import com.goott.trip.common.service.ImageService;
+import com.goott.trip.esh.service.ExchangeService;
 import com.goott.trip.hamster.model.*;
 import com.goott.trip.hamster.service.ConHotelCartService;
 import com.goott.trip.hamster.service.airplaneService;
@@ -45,6 +46,8 @@ public class Hamcontroller {
     private ImageService imageService;
     @Autowired
     private ConHotelCartService hotelCartService;
+    @Autowired
+    private ExchangeService exchangeService;
     @GetMapping("airplane/list")
     public ModelAndView list() {
 
@@ -133,7 +136,17 @@ public class Hamcontroller {
         double totalPrice = 0;
 
         for(int i = 0; i < CartUuid.size(); i ++){
-            hotelAllCont.add(hotelCartService.getConHotelContListByUuid(CartUuid.get(i)));
+            ConHotelCartAll hotelCartAll = hotelCartService.getConHotelContListByUuid(CartUuid.get(i));
+            hotelCartAll.getOfferObj().setTotalCost(
+                    exchangeService.convertCurrency(
+                            hotelCartAll.getOfferObj().getCurrency(),
+                            "KRW",
+                            hotelCartAll.getOfferObj().getTotalCost()
+                    )
+            );
+            hotelCartAll.getOfferObj().setCurrency("KRW");
+            hotelAllCont.add(hotelCartAll);
+
             totalPrice += hotelAllCont.get(i).getOfferObj().getTotalCost();
         }
 
@@ -190,8 +203,17 @@ public class Hamcontroller {
         // 여기서 호텔 리스트 받아오는거 추가
         List<ConHotelCartAll> hotelCartAllList
                 = hotelCartService.getConHotelCartAllListByMemberId(memberId);
-        // 테스트용 offer 가 방, hotel 은 호텔
-
+        // 호텔 가격 원화로 환전하기
+        hotelCartAllList.forEach(hotelCartAll -> {
+            hotelCartAll.getOfferObj().setTotalCost(
+                    exchangeService.convertCurrency(
+                            hotelCartAll.getOfferObj().getCurrency(),
+                            "KRW",
+                            hotelCartAll.getOfferObj().getTotalCost()
+                    )
+            );
+            hotelCartAll.getOfferObj().setCurrency("KRW");
+        });
         for(int i = 0; i < hotelCartAllList.size(); i++){
             if(hotelCartAllList.get(i).getPaymentObj() == null){
                 check += 1;
