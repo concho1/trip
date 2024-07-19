@@ -39,10 +39,30 @@
         SELECT * FROM payment
     </select>
 
-    <!--예약-->
     <select id="findByMemberId" parameterType="String" resultType="Payment">
         SELECT * FROM payment
         WHERE member_id = #{memberId}
     </select>
+
+    <!--예약-->
+    <select id="payAir" parameterType="String" resultType="Payment">
+        SELECT * FROM payment
+        WHERE air_key IS NOT NULL AND member_id = #{memberId}
+    </select>
+
+    <select id="payHotel" parameterType="String" resultType="Payment">
+        SELECT * FROM payment
+        WHERE air_key IS NULL AND member_id = #{memberId}
+    </select>
+
+    <select id="getPaymentAirKey" parameterType="String" resultType="String">
+        select air_key from payment where member_id = #{memberId}
+    </select>
+
+    <select id="findByAirKey" parameterType="String" resultType="Payment">
+        SELECT * FROM payment
+        WHERE air_key = #{AirKey}
+    </select>
+
 
 </mapper>

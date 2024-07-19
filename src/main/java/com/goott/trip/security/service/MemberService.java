@@ -195,7 +195,10 @@ public class MemberService {
     }
 
     // 예약
-
-
+    // payment 테이블에서 airKey 가져오기
+    public List<String> getPaymentAirKey(String memberId){return this.paymentMapper.getPaymentAirKey(memberId);}
+    public List<Payment> getPayment(String AirKey){return this.paymentMapper.findByAirKey(AirKey);}
+    public List<Payment> payAir(String memberId){return this.paymentMapper.payAir(memberId);}
+    public List<Payment> payHotel(String memberId){return this.paymentMapper.payHotel(memberId);}
 }
 

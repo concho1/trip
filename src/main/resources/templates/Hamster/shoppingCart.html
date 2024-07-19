@@ -64,27 +64,29 @@
                     </div>
 
                     <div class="myedu-cont-wrap" id="airList">
-                    <th:block th:if="${airInfo != null}" th:each="airInfo, iterStat : ${airInfo}">
-                        <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${airInfo.getOrigin() != null}">
+                        <th:block th:if="${airInfo != null}" th:each="airInfo, iterStat : ${airInfo}">
+                            <div class="myedu-area" style="position: relative; border: 1px solid lightgray;" th:if="${airInfo.getOrigin() != null}">
+                                <div class="myedu-cont">
+                                    <img th:src="${DepDur.get(iterStat.index).getAirlineImg()}" style="width: 150px;" alt="이미지">
+                                    <div class="text-area">
+                                        <input type="hidden" th:value="${airInfo.getFfvId()}" th:id="'airKey_'+${iterStat.index}">
+                                        <legend class="legend" th:text="${segDep.get(iterStat.index).getAirlineKor()}"></legend>
+                                        <legend class="legend airKey" th:id="'airKey_'+${iterStat.index}" th:text="${segDep.get(iterStat.index).getDepartureIata()}+ ' -> ' +${segDep.get(iterStat.index).getArrivalIata()}"></legend>
 
-                            <div class="myedu-cont">
-                                <img th:src="${DepDur.get(iterStat.index).getAirlineImg()}" style="width: 150px;" alt="이미지">
-                                <div class="text-area">
-                                    <input type="hidden" th:value="${airInfo.getFfvId()}" th:id="'airKey_'+${iterStat.index}">
-                                    <legend class="legend" th:text="${segDep.get(iterStat.index).getAirlineKor()}"></legend>
-                                    <legend class="legend airKey" th:id="'airKey_'+${iterStat.index}" th:text="${segDep.get(iterStat.index).getDepartureIata()}+ ' -> ' +${segDep.get(iterStat.index).getArrivalIata()}"></legend>
-                                    <legend class="legend" th:text="${segDep.get(iterStat.index).getDepartureAt().substring(0,10)} +' ~ '+${segComb.get(iterStat.index).getArrivalAt().substring(6,10)}"></legend>
-                                    <legend class="legend" th:text="${#numbers.formatInteger(airInfo.getTotalPrice(), 3, 'COMMA') + '원'}"></legend>
+                                        <legend class="legend" th:text="${segDep.get(iterStat.index).getDepartureAt().substring(0,10)}"></legend>
+
+                                        <legend class="legend" th:text="${#numbers.formatInteger(airInfo.getTotalPrice(), 3, 'COMMA') + '원'}"></legend>
+                                    </div>
                                 </div>
-                            </div>
-                            <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
-                                <span th:onclick="|location.href='@{/member/hamster/airplane/ticketing(key=${airInfo.getFfvId()})}'|">따로 결제하기</span>
-                            </button>
+                                <button type="button" class="tedu-btn tedu-btn-light" style="width: 150px;">
+                                    <span th:onclick="|location.href='@{/member/hamster/airplane/ticketing(key=${airInfo.getFfvId()})}'|">따로 결제하기</span>
+                                </button>
                                 <img th:src="@{/common/images/xButton.png}" class="top-right-image" style="height: 40px; width: 40px;"
                                      th:onclick="'deleteAir(' + ${iterStat.index} + '); event.stopPropagation();'">
-                        </div>
-                    </th:block>
+                            </div>
+                        </th:block>
                     </div>
+
 
                     <div>&nbsp;&nbsp;</div>
 

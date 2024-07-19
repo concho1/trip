@@ -170,6 +170,7 @@ public class Hamcontroller {
 
 
         List<CartFlight> airInfo = new ArrayList<>();
+        List<CartSegment> airSeg = new ArrayList<>();
         List<CartSegment> segDep = new ArrayList<>();
         List<CartSegment> segComb = new ArrayList<>();
         List<CartDuration> DepDur = new ArrayList<>();
@@ -177,11 +178,14 @@ public class Hamcontroller {
 
         for(int i = 0; i < airKey.size(); i ++){
             airInfo.addAll(this.airservice.getAirInfo(airKey.get(i)));
+            airSeg.addAll(this.airservice.getSegment(airKey.get(i)));
             segDep.addAll(this.airservice.getDep(airKey.get(i)));
             segComb.addAll(this.airservice.getComb(airKey.get(i)));
             DepDur.addAll(this.airservice.getDepDur(airKey.get(i)));
             CombDur.addAll(this.airservice.getCombDur(airKey.get(i)));
+
         }
+
 
         // DepDur 리스트 처리 Optional 이용 null 처리했습니당
         for (CartDuration depDur : DepDur) {
@@ -220,10 +224,10 @@ public class Hamcontroller {
             }
         }
 
-        System.out.println("에어키 사이즈 : "+airKey.size());
 
         return new ModelAndView("Hamster/shoppingCart")
                 .addObject("airInfo",airInfo)
+                .addObject("airSeg",airSeg)
                 .addObject("segDep",segDep)
                 .addObject("segComb",segComb)
                 .addObject("DepDur",DepDur)
@@ -280,7 +284,10 @@ public class Hamcontroller {
 
         for(int i = 0; i < DepDur.size(); i ++){
             DepDur.get(i).setAirlineImg(imageService.findImageByKey(DepDur.get(i).getAirlineImg()).get().getUrl());
-            CombDur.get(i).setAirlineImg(imageService.findImageByKey(CombDur.get(i).getAirlineImg()).get().getUrl());
+
+            if(CombDur.size() > 1){
+                CombDur.get(i).setAirlineImg(imageService.findImageByKey(CombDur.get(i).getAirlineImg()).get().getUrl());
+            }
         }
 
         UUID uuid = UUID.randomUUID();
@@ -325,7 +332,14 @@ public class Hamcontroller {
         List<CartSegment> segComb = this.airservice.getComb(newAirKey);
         List<CartPricing> price = this.airservice.getPricing(newAirKey);
 
-        this.emailService.sendAirplaneEmail(newEmail,newUUID,payment,airInfo,DepDur,CombDur,segDep,segComb,price);
+
+        if(segComb.size() == 0){
+            this.emailService.sendAirplaneEmail(newEmail,newUUID,payment,airInfo,DepDur,CombDur,segDep,price);
+        }else{
+            this.emailService.sendAirplaneEmail(newEmail,newUUID,payment,airInfo,DepDur,CombDur,segDep,segComb,price);
+        }
+
+
         int check = this.paymentservice.airplanePay(payment);
 
 
