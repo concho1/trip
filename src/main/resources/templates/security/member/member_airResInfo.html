@@ -5,10 +5,17 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <link rel="stylesheet" th:href="@{/security/css/reservation.css}">
 <head th:replace="~{common/head-top :: head-top-fragment}"><title>감자팀</title></head>
+<style>
+    .reservation {
+        width: 55rem;
+        margin-right: 80px;
+    }
+</style>
 <body>
 <div th:replace="~{common/head :: head-fragment}"></div>
 
 <main class="th-layout-main ">
+    <!-- [S]tedu-N44 -->
     <div class="tedu-N44" data-bid="GALxi9PyR7">
         <div class="content-inner">
             <div class="content-container">
@@ -111,48 +118,41 @@
                                                     <div class="payment-cont payment-cont-type2">
                                                         <fieldset class="fieldset">
                                                             <p class="stitle">영문 이름(First Name)</p>
-                                                            <input type="text" th:value="${payment.getRideFirstName()}" class="tedu-input lightmode">
-                                                            <!--<div class="tedu-input lightmode" th:text="${payment.getRideFirstName()}">[First Name]</div>-->
+                                                            <div class="tedu-input lightmode" th:text="${payment.getRideFirstName()[airStat.index]}">[First Name]</div>
                                                         </fieldset>
 
                                                         <fieldset class="fieldset">
                                                             <p class="stitle">영문 성(Last Name)</p>
-                                                            <input type="text" th:value="${payment.getRideLastName()}" class="tedu-input lightmode">
-                                                            <!--<div class="tedu-input lightmode" th:text="${payment.getRideLastName()}">[Last Name]</div>-->
+                                                            <div class="tedu-input lightmode" th:text="${payment.getRideLastName()[airStat.index]}">[Last Name]</div>
                                                         </fieldset>
                                                     </div>
 
                                                     <div class="payment-cont payment-cont-type2">
                                                         <fieldset class="fieldset" style="margin-top: 30px;">
                                                             <legend class="legend">생년월일</legend>
-                                                            <input type="text" th:value="${payment.getRideBirth()}" class="tedu-input lightmode">
-                                                            <!--<div class="tedu-input lightmode" th:text="${payment.getRideBirth()}">[Birth Date]</div>-->
+                                                            <div class="tedu-input lightmode" th:text="${payment.getRideBirth()[airStat.index]}">[Birth Date]</div>
                                                         </fieldset>
 
                                                         <fieldset class="fieldset" style="margin-top: 30px;">
                                                             <legend class="legend">국적</legend>
-                                                            <input type="text" th:value="${payment.getRideCountry()}" class="tedu-input lightmode">
-                                                            <!--<div class="tedu-input lightmode" th:text="${payment.getRideCountry()}">[Country]</div>-->
+                                                            <div class="tedu-input lightmode" th:text="${payment.getRideCountry()[airStat.index]}">[Country]</div>
                                                         </fieldset>
                                                     </div>
 
                                                     <div class="payment-cont payment-cont-type2">
                                                         <fieldset class="fieldset" style="margin-top: 30px;">
                                                             <legend class="legend">여권번호</legend>
-                                                            <input type="text" th:value="${payment.getRidePassport()}" class="tedu-input lightmode">
-                                                            <!--<div class="tedu-input lightmode" th:text="${payment.getRidePassport()}">[Passport Number]</div>-->
+                                                            <div class="tedu-input lightmode" th:text="${payment.getRidePassport()[airStat.index]}">[Passport Number]</div>
                                                         </fieldset>
 
                                                         <fieldset class="fieldset" style="margin-top: 30px;">
                                                             <legend class="legend">여권 만료일</legend>
-                                                            <input type="text" th:value="${payment.getRidePassportExdate()}" class="tedu-input lightmode">
-                                                            <!--<div class="tedu-input lightmode" th:text="${payment.getRidePassportExdate()}">[Passport Expiry Date]</div>-->
+                                                            <div class="tedu-input lightmode" th:text="${payment.getRidePassportExdate()[airStat.index]}">[Passport Expiry Date]</div>
                                                         </fieldset>
 
                                                         <fieldset class="fieldset" style="margin-top: 30px;">
                                                             <legend class="legend">여권발행 국가/지역</legend>
-                                                            <input type="text" th:value="${payment.getRidePassportCountry()}" class="tedu-input lightmode">
-                                                            <!--<div class="tedu-input lightmode" th:text="${payment.getRidePassportCountry()}">[Passport Issuing Country]</div>-->
+                                                            <div class="tedu-input lightmode" th:text="${payment.getRidePassportCountry()[airStat.index]}">[Passport Issuing Country]</div>
                                                         </fieldset>
                                                     </div>
                                                 </div>
