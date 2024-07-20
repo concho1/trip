@@ -30,24 +30,30 @@
 }
 
 .tedu-input-ming {
-    /* font-size: 1.4rem; */
-    /* color: #fff; */
-    /* background: #414758; */
+    font-size: 1.4rem;
+    color: #fff;
+    background: #414758;
     padding: 1.4rem 1.6rem;
     border: none;
-    /* border-radius: 0.4rem; */
+    border-radius: 0.4rem;
     overflow: hidden;
     width: 100%;
     height: 4.8rem;
-    /* -webkit-appearance: none; */
+    -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
 }
 
-.tedu-input-ming .light {
+.tedu-input-ming.light {
     color: #111;
     background: #fff;
     border: 1px solid #E5E5E5;
+    width: 200px;
+}
+
+.fieldming{
+    margin-left: 20px;
+    margin-right: 62px;
 }
 
 .group-ming{
