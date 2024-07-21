@@ -23,6 +23,5 @@ public interface paymentMapper {
     List<Payment> payAir(String memberId);
     List<Payment> payHotel(String memberId);
     List<Payment> findByAirKey(String AirKey);
-    List<Payment> findByAirKeyHam(String AirKey);
 }
 

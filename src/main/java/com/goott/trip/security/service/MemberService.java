@@ -272,7 +272,7 @@ public class MemberService {
     // payment 테이블에서 airKey 가져오기
     public List<String> getPaymentAirKey(String memberId){return this.paymentMapper.getPaymentAirKey(memberId);}
     public List<Payment> getPayment(String AirKey){
-        List<Payment> paymentList = this.paymentMapper.findByAirKeyHam(AirKey);
+        List<Payment> paymentList = this.paymentMapper.findByAirKey(AirKey);
         System.out.println(paymentList);
         paymentList.forEach(payment -> payment.AllStrToArray());
         System.out.println(paymentList);
