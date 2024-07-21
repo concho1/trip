@@ -68,7 +68,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             return "/admin/dashboard";
         } else {
             // 일반 사용자일 경우 로그인 후 리다이렉트할 URL 설정
-            return "/member/ming/info";
+            return "/home";
+            /*return "member/ming/info";*/
         }
     }
 }

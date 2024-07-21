@@ -60,11 +60,6 @@
     </select>
 
     <select id="findByAirKey" parameterType="String" resultType="Payment">
-        SELECT * FROM payment
-        WHERE air_key = #{AirKey}
-    </select>
-
-    <select id="findByAirKeyHam" parameterType="String" resultType="Payment">
         SELECT
             order_uuid,
             member_id,

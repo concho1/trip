@@ -67,15 +67,14 @@
                                 <fieldset class="fieldset">
                                     <p class="stitle">영문 이름(First Name)</p>
                                     <div class="input-group">
-                                        <!--<div class="tedu-input lightmode" th:if="${allPayment.size() > 0}" th:text="${.get(0).getCallFirstName()}"  id="callFirstName"></div>-->
-                                        <input type="text" id="callFirstName" name="callFirstName" class="tedu-input lightmode" placeholder="영문 이름(First Name)" aria-label="영문 이름(First Name)">
+                                        <div class="tedu-input lightmode" th:if="${payment.size() > 0}" th:text="${payment.get(0).getCallFirstName()}" id="callFirstName"></div>
                                     </div>
                                 </fieldset>
 
                                 <fieldset class="fieldset">
                                     <p class="stitle">영문 성(Last Name)</p>
                                     <div class="input-group">
-                                        <input type="text" id="callLastName" name="callLastName" class="tedu-input lightmode" placeholder="영문 성(Last Name)" aria-label="영문 성(Last Name)">
+                                        <div class="tedu-input lightmode" th:if="${payment.size() > 0}" th:text="${payment.get(0).getCallLastName()}" id="callLastName"></div>
                                     </div>
                                 </fieldset>
                             </div>
@@ -83,29 +82,25 @@
                             <fieldset class="fieldset" style="margin-top: 30px;">
                                 <legend class="legend">이메일</legend>
                                 <div class="tedu-inputset">
-                                    <input type="text" id="callEmail" name="callEmail" class="tedu-input lightmode" placeholder="your@email.com" aria-label="내용">
+                                    <div class="tedu-input lightmode" th:if="${payment.size() > 0}" th:text="${payment.get(0).getCallEmail()}" id="callEmail"></div>
                                 </div>
                             </fieldset>
 
                             <div class="payment-cont payment-cont-type2">
 
                                 <fieldset class="fieldset" style="margin-top: 30px;">
-                                    <legend class="legend">전화번호 (선택사항)</legend>
-                                    <div class="input-group flex-style">
-                                        <div class="tedu-inputset">
-                                            <input id="phone"  name="phone" class="tedu-input lightmode">
-                                        </div>
+                                    <legend class="legend">전화번호</legend>
+                                    <div class="tedu-input lightmode"
+                                         th:if="${payment.size() > 0}"
+                                         th:text="${payment.get(0).callNumber != null ? payment.get(0).callNumber : '등록되지 않았습니다.'}"
+                                         id="phone">
                                     </div>
                                 </fieldset>
 
                                 <fieldset class="fieldset" style="margin-top: 30px;">
                                     <legend class="legend">거주 국가 / 지역</legend>
                                     <div class="input-group">
-                                        <select class="form-select form-select-lg mb-3" id="country" name="country">
-                                            <th:block th:each="country : ${country}">
-                                                <option th:text="${country}" th:value="${country}" ></option>
-                                            </th:block>
-                                        </select>
+                                        <div class="tedu-input lightmode" th:if="${payment.size() > 0}" th:text="${payment.get(0).getCallCountry()}" id="country"></div>
                                     </div>
                                 </fieldset>
                             </div>
