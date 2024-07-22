@@ -62,6 +62,9 @@
                   <select class="form-select form-select-lg mb-3"  id="coupon-box" onchange="couponPrice()">
                     <option selected value="noneCoupon">선택 안함</option>
                     <option value="openCoupon">놀러감 오픈기념 5,000원 할인 쿠폰</option>
+                    <option th:if="${member.getVip() == 'Silver'}" value="Silver">[Silver 회원 혜택] 12% 할인쿠폰</option>
+                    <option th:if="${member.getVip() == 'Gold'}" value="Gold">[Gold 회원 혜택] 18% 할인쿠폰</option>
+                    <option th:if="${member.getVip() == 'Platinum'}" value="Platinum">[Platinum 회원 혜택] 25% 할인쿠폰</option>
                   </select>
                 </div>
               </fieldset>
@@ -200,6 +203,33 @@
     } else if(coupon === "openCoupon"){
       couponPrice.text("5,000원");
       const discountedPrice = price - 5000;
+      totalPrice.text(formatNumberWithCommas(discountedPrice) + '원');
+      paymentMethodWidget = paymentWidget.renderPaymentMethods(
+              "#payment-method",
+              { value: discountedPrice},
+              { variantKey: "DEFAULT" }
+      );
+    }else if(coupon === "Silver"){
+      couponPrice.text(formatNumberWithCommas(price * 0.12) + '원');
+      const discountedPrice = price - (price * 0.12);
+      totalPrice.text(formatNumberWithCommas(discountedPrice) + '원');
+      paymentMethodWidget = paymentWidget.renderPaymentMethods(
+              "#payment-method",
+              { value: discountedPrice},
+              { variantKey: "DEFAULT" }
+      );
+    }else if(coupon === "Gold"){
+      couponPrice.text(formatNumberWithCommas(price * 0.18) + '원');
+      const discountedPrice = price - (price * 0.18);
+      totalPrice.text(formatNumberWithCommas(discountedPrice) + '원');
+      paymentMethodWidget = paymentWidget.renderPaymentMethods(
+              "#payment-method",
+              { value: discountedPrice},
+              { variantKey: "DEFAULT" }
+      );
+    }else if(coupon === "Platinum"){
+      couponPrice.text(formatNumberWithCommas(price * 0.25) + '원');
+      const discountedPrice = price - (price * 0.25);
       totalPrice.text(formatNumberWithCommas(discountedPrice) + '원');
       paymentMethodWidget = paymentWidget.renderPaymentMethods(
               "#payment-method",
