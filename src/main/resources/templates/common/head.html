@@ -42,25 +42,10 @@
                         <span>장바구니</span>
                     </a>
                 </div>
-                <div class="header-lang" id="ex" style="cursor: pointer">
+                <div class="header-lang" id="ex" style="cursor: pointer; transition: all 0.2s ease;">
                     <input type="hidden" id="now-cu" value="first">
-                    <div class="current" href="javascript:void(0);">
+                    <div class="current">
                         <span>환전</span>
-                        <em class="ico">
-                            <img th:src="@{/resources/icons/ico_arrow_down.svg}" alt="화살표 아이콘">
-                        </em>
-                    </div>
-                </div>
-                <div class="header-lang">
-                    <a class="current" href="javascript:void(0);">
-                        <span>KOR</span>
-                        <em class="ico">
-                            <img th:src="@{/resources/icons/ico_arrow_down.svg}" alt="화살표 아이콘">
-                        </em>
-                    </a>
-                    <div class="lang-box">
-                        <a class="on" href="javascript:void(0);">KOR</a>
-                        <a href="javascript:void(0);">ENG</a>
                     </div>
                 </div>
             </div>
@@ -72,7 +57,7 @@
                         <img th:src="@{/asset/images/logo2.png}" alt="로고" style="width: 190px; height: 60px; margin-top: -12px;">
                     </a>
                 </div>
-                <div class="header-gnb">
+                <div class="header-gnb" style="margin-left: 110px;">
                     <div class="gnb-list">
                         <a th:href="@{/home}"><img th:src="@{/asset/icons/home.svg}" style="width: 20px; height: 20px; margin-right: 5px; margin-bottom: 3px;" alt="홈">홈</a>
                     </div>
@@ -85,6 +70,11 @@
                     <div class="gnb-list">
                         <a th:href="@{/customer/faq}"><img th:src="@{/asset/icons/head_qna.png}" style="width: 20px; height: 20px; margin-right: 5px; margin-bottom: 3px;" alt="고센">고객센터</a>
                     </div>
+                </div>
+                <div class="header-logo">
+                    <a href="https://potatoes.hamsic.link/concho/main">
+                        <img th:src="@{/asset/images/logo1.png}" alt="로고" style="width: 170px; height: 50px; margin-top: -6px;">
+                    </a>
                 </div>
                 <div class="header-btn">
                     <a href="javascript:void(0)" class="menu-open">

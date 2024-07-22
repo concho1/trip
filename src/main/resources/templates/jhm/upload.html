@@ -3,6 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .button.active {
+            background-color: #0056b3;
+            transform: scale(0.95);
+        }
+    </style>
 </head>
 <body>
 
@@ -12,6 +29,16 @@
     <button type="submit">업로드</button>
   </div>
 </form>
+
+
+<button class="button" id="myButton">Click Me</button>
+
+<script>
+    document.getElementById('myButton').addEventListener('click', function() {
+        this.classList.toggle('active');
+    });
+</script>
+
 
 </body>
 </html>

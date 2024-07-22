@@ -1,0 +1,8 @@
+.current:hover {
+    box-shadow: 1px 1px 1px;
+}
+
+.checked {
+    background-color: rgba(196, 191, 191, 0.8);
+    transform: scale(0.95);
+}
