@@ -18,7 +18,9 @@ import com.goott.trip.jhm.model.CartDuration;
 import com.goott.trip.jhm.model.CartFlight;
 import com.goott.trip.jhm.model.CartPricing;
 import com.goott.trip.jhm.model.CartSegment;
+import com.goott.trip.security.model.Member;
 import com.goott.trip.security.service.EmailService;
+import com.goott.trip.security.service.MemberService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -48,6 +50,9 @@ public class Hamcontroller {
     private ConHotelCartService hotelCartService;
     @Autowired
     private ExchangeService exchangeService;
+    @Autowired
+    private MemberService memberService;
+
     @GetMapping("airplane/list")
     public ModelAndView list() {
 
@@ -276,6 +281,7 @@ public class Hamcontroller {
     public ModelAndView airplanePayment(@ModelAttribute Payment payment, @RequestParam("key")String AirKey,Principal principal){
 
         String memberId = principal.getName();
+        Member member = this.memberService.getMemberById(memberId);
         List<CartFlight> airInfo = this.airservice.getAirInfo(AirKey);
         List<CartDuration> DepDur = this.airservice.getDepDur(AirKey);
         List<CartDuration> CombDur = this.airservice.getCombDur(AirKey);
@@ -302,6 +308,7 @@ public class Hamcontroller {
                 .addObject("segComb",segComb)
                 .addObject("payment",payment)
                 .addObject("key",AirKey)
+                .addObject("member",member)
                 .addObject("UUID",uuid);
     }
 
