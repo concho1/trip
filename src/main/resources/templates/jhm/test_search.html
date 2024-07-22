@@ -7,9 +7,12 @@
 <main>
     <div class="flight-background">
         <div class="search-list">
-            <div class="title-wrap" style="height: 30px;">
-                <h3 class="cont-title" th:text="${orgKor} + '  to  ' + ${desKor}"></h3>
-                <button type="button" class="search-value-button">검색 정보</button>
+            <div class="title-wrap">
+                <h3 class="search-cont-title">
+                    <span th:text="${orgKor}"></span><img th:src="@{/asset/icons/searchTo.png}" id="searchTo" alt="비행기"><span th:text="${desKor}"></span>
+                    <button type="button" class="search-value-button">검색 정보</button>
+                </h3>
+
                 <div id="flight-search-modal" class="modal">
                     <div class="flight-search-cont">
                         <span class="close" id="flight-close">&times;</span>
@@ -60,57 +63,53 @@
                             <div class="input-group">
                                 <div class="date-picker">
                                     <input type="text" name="departure" id="searchDepDate" placeholder="가는 날" autocomplete="off" th:value="${flight.departure}">
-                                    <div id="searchDepCalendarContainer" class="hidden">
-                                        <div id="search-dep-wrapper">
-                                            <header>
-                                                <div id="search-dep-nav">
-                                                    <button type="button" id="search-dep-shang">◀</button>
-                                                    <p id="search-dep-currentDate"></p>
-                                                    <button type="button" id="search-dep-xia">▶</button>
-                                                </div>
-                                            </header>
-                                            <div id="search-dep-calendar">
-                                                <ul id="search-dep-weeks">
-                                                    <li>Sun</li>
-                                                    <li>Mon</li>
-                                                    <li>Tue</li>
-                                                    <li>Wed</li>
-                                                    <li>Thu</li>
-                                                    <li>Fri</li>
-                                                    <li>Sat</li>
-                                                </ul>
-                                                <ul id="search-dep-days">
-
-                                                </ul>
+                                    <div id="search-dep-wrapper" class="hidden">
+                                        <header>
+                                            <div id="search-dep-nav">
+                                                <button type="button" id="search-dep-shang">◀</button>
+                                                <p id="search-dep-currentDate"></p>
+                                                <button type="button" id="search-dep-xia">▶</button>
                                             </div>
+                                        </header>
+                                        <div id="search-dep-calendar">
+                                            <ul id="search-dep-weeks">
+                                                <li>Sun</li>
+                                                <li>Mon</li>
+                                                <li>Tue</li>
+                                                <li>Wed</li>
+                                                <li>Thu</li>
+                                                <li>Fri</li>
+                                                <li>Sat</li>
+                                            </ul>
+                                            <ul id="search-dep-days">
+
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
                                 <div id="search-comb-field" class="date-picker hidden">
                                     <input type="text" name="comeback" id="searchCombDate" placeholder="오는 날" autocomplete="off" th:value="${flight.comeback}">
-                                    <div id="searchCombCalendarContainer" class="hidden">
-                                        <div id="search-comb-wrapper">
-                                            <header>
-                                                <div id="search-comb-nav">
-                                                    <button type="button" id="search-comb-shang">◀</button>
-                                                    <p id="search-comb-currentDate"></p>
-                                                    <button type="button" id="search-comb-xia">▶</button>
-                                                </div>
-                                            </header>
-                                            <div id="search-comb-calendar">
-                                                <ul id="search-comb-weeks">
-                                                    <li>Sun</li>
-                                                    <li>Mon</li>
-                                                    <li>Tue</li>
-                                                    <li>Wed</li>
-                                                    <li>Thu</li>
-                                                    <li>Fri</li>
-                                                    <li>Sat</li>
-                                                </ul>
-                                                <ul id="search-comb-days">
-
-                                                </ul>
+                                    <div id="search-comb-wrapper" class="hidden">
+                                        <header>
+                                            <div id="search-comb-nav">
+                                                <button type="button" id="search-comb-shang">◀</button>
+                                                <p id="search-comb-currentDate"></p>
+                                                <button type="button" id="search-comb-xia">▶</button>
                                             </div>
+                                        </header>
+                                        <div id="search-comb-calendar">
+                                            <ul id="search-comb-weeks">
+                                                <li>Sun</li>
+                                                <li>Mon</li>
+                                                <li>Tue</li>
+                                                <li>Wed</li>
+                                                <li>Thu</li>
+                                                <li>Fri</li>
+                                                <li>Sat</li>
+                                            </ul>
+                                            <ul id="search-comb-days">
+
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>

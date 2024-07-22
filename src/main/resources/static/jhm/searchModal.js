@@ -131,14 +131,14 @@ $(document).ready(function() {
     });
 
     $('#searchDepDate').click(function() {
-        $('#searchDepCalendarContainer').toggle();
+        $('#search-dep-wrapper').toggle();
         $('#search-dep-calendar').focus();
     });
 
     $('#search-dep-calendar').attr('tabindex', '-1');
 
     $('#searchCombDate').click(function() {
-        $('#searchCombCalendarContainer').toggle();
+        $('#search-comb-wrapper').toggle();
         $('#search-comb-calendar').focus();
     });
 
@@ -189,7 +189,7 @@ $(document).ready(function() {
                 let monVal = (searchDepCurrMonth+1).toString().padStart(2, "0")
                 let dayVal = `${searchDepCurrYear}-${monVal}-${$(this).text().padStart(2, "0")}`;
                 $('#searchDepDate').val(dayVal);
-                $('#searchDepCalendarContainer').hide();
+                $('#search-dep-wrapper').hide();
             }
         });
     }
@@ -249,7 +249,7 @@ $(document).ready(function() {
                 let monVal = (searchCombCurrMonth+1).toString().padStart(2, "0")
                 let dayVal = `${searchCombCurrYear}-${monVal}-${$(this).text().padStart(2, "0")}`;
                 $('#searchCombDate').val(dayVal);
-                $('#searchCombCalendarContainer').hide();
+                $('#search-comb-wrapper').hide();
             }
         });
     }
@@ -273,6 +273,12 @@ $(document).ready(function() {
         }
         renderSearchCombCalendar();
     });
+
+    let firstOneWay = $('input[name=search-radioset-a]:checked').val();
+
+    if(firstOneWay == 'false') {
+        $('#search-comb-field').show();
+    }
 
     $('input[name=search-radioset-a]').change(function() {
         let oneWay = $('input[name=search-radioset-a]:checked').val();
