@@ -5,6 +5,7 @@ import com.goott.trip.common.model.Image;
 import com.goott.trip.common.service.ImageService;
 import com.goott.trip.esh.service.ExchangeService;
 import com.goott.trip.hamster.model.ConHotelCartAll;
+import com.goott.trip.hamster.model.ConPayment;
 import com.goott.trip.hamster.model.Payment;
 import com.goott.trip.hamster.service.ConHotelCartService;
 import com.goott.trip.hamster.service.airplaneService;
@@ -316,8 +317,6 @@ public class MemberRestController {
         List<CartDuration> CombDur = this.airService.getCombDur(Key);
         List<CartSegment> airSeg = this.airService.getSegment(Key);
         List<CartFlight> airInfo = this.airService.getAirInfo(Key);
-        List<String> country = this.airService.getCountry();
-        List<String> OnlyCountry = this.airService.getOnlyCountry();
         List<CartSegment> segDep = this.airService.getDep(Key);
         List<CartSegment> segComb = this.airService.getComb(Key);
         List<CartPricing> price = this.airService.getPricing(Key);
@@ -341,7 +340,6 @@ public class MemberRestController {
         }
 
         return modelAndView
-                .addObject("country",country)
                 .addObject("AirKey",Key)
                 .addObject("airInfo",airInfo)
                 .addObject("airSeg",airSeg)
@@ -351,7 +349,6 @@ public class MemberRestController {
                 .addObject("DepDur",DepDur)
                 .addObject("CombDur",CombDur)
                 .addObject("price",price)
-                .addObject("OnlyCountry",OnlyCountry)
                 .addObject("allPayment",allPayment);
 
     }
@@ -366,13 +363,18 @@ public class MemberRestController {
 
         List<ConHotelCartAll> hotelAllCont = new ArrayList<>();
         List<String> country = this.airService.getCountry();
+        List<ConPayment> payments = new ArrayList<>();
         double totalPrice = 0;
 
         for(int i = 0; i < HotelUuid.size(); i ++){
             hotelAllCont.add(hotelCartService.getConHotelContListByUuid(HotelUuid.get(i)));
             totalPrice += hotelAllCont.get(i).getOfferObj().getTotalCost();
+
+            ConPayment payment = hotelAllCont.get(i).getPaymentObj();
+            payments.add(payment);
         }
 
+        /*List<Payment> allPayment = this.memberService.getPaymentHotel(orderUuid);*/
 
         return new ModelAndView("security/member/member_hotelResInfo")
                 .addObject("hotelAllCont",hotelAllCont)
@@ -380,7 +382,9 @@ public class MemberRestController {
                 .addObject("country",country)
                 .addObject("uuid",uuid)
                 .addObject("CartUuid",HotelUuid)
-                .addObject("memberId",memberId);
+                .addObject("memberId",memberId)
+                .addObject("payment", payments)
+                /*.addObject("payment", allPayment)*/;
     }
 
     // 로그아웃

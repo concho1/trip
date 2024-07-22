@@ -60,9 +60,32 @@
     </select>
 
     <select id="findByAirKey" parameterType="String" resultType="Payment">
-        SELECT * FROM payment
+        SELECT
+            order_uuid,
+            member_id,
+            air_key,
+            hotel_id_key,
+            hotel_cont_key,
+            cr_img_key,
+            call_first_name,
+            call_last_name,
+            call_country,
+            call_email,
+            call_number,
+            ride_first_name AS ride_first_name_str,
+            ride_last_name AS ride_last_name_str,
+            ride_birth AS ride_birth_str,
+            ride_country AS ride_country_str,
+            ride_passport AS ride_passport_str,
+            ride_passport_country AS ride_passport_country_str,
+            ride_passport_exdate AS ride_passport_exdate_str,
+            guest_first_name,
+            guest_last_name,
+            guest_country,
+            order_time,
+            status,
+            payment_key
+        FROM payment
         WHERE air_key = #{AirKey}
     </select>
-
-
 </mapper>

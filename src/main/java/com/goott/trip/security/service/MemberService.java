@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -117,7 +119,6 @@ public class MemberService {
 
     // 총 소비 금액 업데이트 및 티켓 상태 업데이트
     public void updateTotalSpentByMember(String memberId) {
-        /*List<Payment> completedPayments = paymentMapper.findByMemberIdAndStatus(memberId, "completed");*/
 
         double totalSpent = 0.0;
         // 여기서 호텔 이용 완료 목록 금액 업데이트
@@ -125,7 +126,7 @@ public class MemberService {
         for(ConHotelCartAll hotelCartAll : cartAllList){
             Optional<ConPayment> paymentOp = Optional.ofNullable(hotelCartAll.getPaymentObj());
             // 결제 한거 중에 => 체크아웃 날짜가 오늘을 넘었으면
-            if(paymentOp.isPresent() 
+            if(paymentOp.isPresent()
                     && !hotelCartAll.getOfferObj().getCheckOut().toLocalDate().isAfter(LocalDate.now())){
                 totalSpent += hotelCartAll.getOfferObj().getTotalCost();
                 // 티켓 상태를 completed로 업데이트
@@ -141,12 +142,27 @@ public class MemberService {
                 List<CartFlight> cartFlights = airplaneMapper.getAirInfo(payment.getAirKey());
                 if (cartFlights != null && !cartFlights.isEmpty()) {
                     CartFlight cartFlight = cartFlights.get(0);
-                    LocalDate comebackDate = LocalDate.parse(cartFlight.getComeback(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    String comeback = cartFlight.getComeback();
+                    String departure = cartFlight.getDeparture();
 
-                    // 티켓의 예약 날짜가 오늘 날짜보다 이전일 경우 상태를 completed로 변경
-                    if (comebackDate.isBefore(LocalDate.now())) {
-                        totalSpent += cartFlight.getTotalPrice();
-                        paymentMapper.updateTicketStatus(payment.getAirKey(), "completed");
+                    // comeback 필드가 빈 문자열이 아닌지 확인
+                    if (comeback != null && !comeback.isEmpty()) {
+                        LocalDate comebackDate = LocalDate.parse(comeback, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                        // 티켓의 예약 날짜가 오늘 날짜보다 이전일 경우 상태를 completed로 변경
+                        if (comebackDate.isBefore(LocalDate.now())) {
+                            totalSpent += cartFlight.getTotalPrice();
+                            paymentMapper.updateTicketStatus(payment.getAirKey(), "completed");
+                        }
+                    } else if(departure != null && !departure.isEmpty()){
+                        LocalDate departureDate = LocalDate.parse(departure, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                        // 티켓의 예약 날짜가 오늘 날짜보다 이전일 경우 상태를 completed로 변경
+                        if (departureDate.isBefore(LocalDate.now())) {
+                            totalSpent += cartFlight.getTotalPrice();
+                            paymentMapper.updateTicketStatus(payment.getAirKey(), "completed");
+                        }
+
                     }
                 }
             }
@@ -163,9 +179,57 @@ public class MemberService {
     public void updateReservationStatus() {
         List<Payment> allPayments = paymentMapper.findAllPayments();
 
+        // 사용자별로 총 소비 금액을 계산하여 업데이트
+        Map<String, Double> memberTotalSpentMap = new HashMap<>();
+
         for (Payment payment : allPayments) {
             updateAirTicketStatus(payment);
             updateHotelReservationStatus(payment);
+
+            // 총 소비 금액 업데이트
+            String memberId = payment.getMemberId();
+            if (!memberTotalSpentMap.containsKey(memberId)) {
+                memberTotalSpentMap.put(memberId, 0.0);
+            }
+
+            if (payment.getAirKey() != null) {
+                List<CartFlight> cartFlights = airplaneMapper.getAirInfo(payment.getAirKey());
+                if (cartFlights != null && !cartFlights.isEmpty()) {
+                    CartFlight cartFlight = cartFlights.get(0);
+                    String comeback = cartFlight.getComeback();
+                    String departure = cartFlight.getDeparture();
+
+                    if (comeback != null && !comeback.isEmpty()) {
+                        LocalDate comebackDate = LocalDate.parse(comeback, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        if (comebackDate.isBefore(LocalDate.now())) {
+                            memberTotalSpentMap.put(memberId, memberTotalSpentMap.get(memberId) + cartFlight.getTotalPrice());
+                        }
+                    } else if (departure != null && !departure.isEmpty()) {
+                        LocalDate departureDate = LocalDate.parse(departure, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        if (departureDate.isBefore(LocalDate.now())) {
+                            memberTotalSpentMap.put(memberId, memberTotalSpentMap.get(memberId) + cartFlight.getTotalPrice());
+                        }
+                    }
+                }
+            }
+
+            List<ConHotelCartAll> cartAllList = hotelCartService.getConHotelCartAllListByMemberId(memberId);
+            for (ConHotelCartAll hotelCartAll : cartAllList) {
+                Optional<ConPayment> paymentOp = Optional.ofNullable(hotelCartAll.getPaymentObj());
+                if (paymentOp.isPresent()
+                        && !hotelCartAll.getOfferObj().getCheckOut().toLocalDate().isAfter(LocalDate.now())) {
+                    memberTotalSpentMap.put(memberId, memberTotalSpentMap.get(memberId) + hotelCartAll.getOfferObj().getTotalCost());
+                }
+            }
+        }
+
+        // 총 소비 금액을 업데이트
+        for (Map.Entry<String, Double> entry : memberTotalSpentMap.entrySet()) {
+            String memberId = entry.getKey();
+            double totalSpent = entry.getValue();
+            Member member = memberMapper.findById(memberId);
+            member.setTotal(totalSpent);
+            memberMapper.updateTotalSpentByMember(member);
         }
     }
 
@@ -174,16 +238,25 @@ public class MemberService {
             List<CartFlight> cartFlights = airplaneMapper.getAirInfo(payment.getAirKey());
             if (cartFlights != null && !cartFlights.isEmpty()) {
                 CartFlight cartFlight = cartFlights.get(0);
-                LocalDate comebackDate = LocalDate.parse(cartFlight.getComeback(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                String comeback = cartFlight.getComeback();
+                String departure = cartFlight.getDeparture();
 
-                if (comebackDate.isBefore(LocalDate.now())) {
-                    paymentMapper.updateTicketStatus(payment.getAirKey(), "completed");
+                if (comeback != null && !comeback.isEmpty()) {
+                    LocalDate comebackDate = LocalDate.parse(comeback, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    if (comebackDate.isBefore(LocalDate.now())) {
+                        paymentMapper.updateTicketStatus(payment.getAirKey(), "completed");
+                    }
+                } else if (departure != null && !departure.isEmpty()) {
+                    LocalDate departureDate = LocalDate.parse(departure, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    if (departureDate.isBefore(LocalDate.now())) {
+                        paymentMapper.updateTicketStatus(payment.getAirKey(), "completed");
+                    }
                 }
             }
         }
     }
 
-     void updateHotelReservationStatus(Payment payment) {
+    private void updateHotelReservationStatus(Payment payment) {
         List<ConHotelCartAll> cartAllList = hotelCartService.getConHotelCartAllListByMemberId(payment.getMemberId());
         for (ConHotelCartAll hotelCartAll : cartAllList) {
             Optional<ConPayment> paymentOp = Optional.ofNullable(hotelCartAll.getPaymentObj());
@@ -194,10 +267,17 @@ public class MemberService {
         }
     }
 
+
     // 예약
     // payment 테이블에서 airKey 가져오기
     public List<String> getPaymentAirKey(String memberId){return this.paymentMapper.getPaymentAirKey(memberId);}
-    public List<Payment> getPayment(String AirKey){return this.paymentMapper.findByAirKey(AirKey);}
+    public List<Payment> getPayment(String AirKey){
+        List<Payment> paymentList = this.paymentMapper.findByAirKey(AirKey);
+        System.out.println(paymentList);
+        paymentList.forEach(payment -> payment.AllStrToArray());
+        System.out.println(paymentList);
+        return paymentList;
+    }
     public List<Payment> payAir(String memberId){return this.paymentMapper.payAir(memberId);}
     public List<Payment> payHotel(String memberId){return this.paymentMapper.payHotel(memberId);}
 }

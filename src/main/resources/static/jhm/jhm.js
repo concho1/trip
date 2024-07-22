@@ -246,14 +246,14 @@ $(document).ready(function() {
     });
 
     $('#depDate').click(function() {
-        $('#depCalendarContainer').toggle();
+        $('#dep-wrapper').toggle();
         $('#dep-calendar').focus();
     });
 
     $('#dep-calendar').attr('tabindex', '-1');
 
     $('#combDate').click(function() {
-        $('#combCalendarContainer').toggle();
+        $('#comb-wrapper').toggle();
         $('#comb-calendar').focus();
     });
 
@@ -417,7 +417,7 @@ $(document).ready(function() {
                 let monVal = (depCurrMonth+1).toString().padStart(2, "0")
                 let dayVal = `${depCurrYear}-${monVal}-${$(this).text().padStart(2, "0")}`;
                 $('#depDate').val(dayVal);
-                $('#depCalendarContainer').hide();
+                $('#dep-wrapper').hide();
             }
         });
     }
@@ -477,7 +477,7 @@ $(document).ready(function() {
                 let monVal = (combCurrMonth+1).toString().padStart(2, "0")
                 let dayVal = `${combCurrYear}-${monVal}-${$(this).text().padStart(2, "0")}`;
                 $('#combDate').val(dayVal);
-                $('#combCalendarContainer').hide();
+                $('#comb-wrapper').hide();
             }
         });
     }
