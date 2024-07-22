@@ -9,6 +9,10 @@ import java.net.UnknownHostException;
 
 @RestController
 public class MainController {
+    @GetMapping("/")
+    public ModelAndView getHome1() throws UnknownHostException {
+        return new ModelAndView("common/home");
+    }
     @GetMapping("/home")
     public ModelAndView getHome() throws UnknownHostException {
         return new ModelAndView("common/home");
