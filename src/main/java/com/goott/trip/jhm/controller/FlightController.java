@@ -33,7 +33,7 @@ public class FlightController {
     @RequestMapping("upload")
     public ModelAndView upload() { return new ModelAndView("jhm/upload"); }
 
-    @PostMapping("test")
+    @PostMapping("searchList")
     public ModelAndView search(Flight flight, Principal principal) throws ResponseException {
 
         ModelAndView mav = new ModelAndView("jhm/test_search");
