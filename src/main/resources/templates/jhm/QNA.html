@@ -8,7 +8,7 @@
 
 <main class="th-layout-main ">
 
-    <div class="background">
+    <div class="customer-background">
         <div class="qna-list">
             <div class="title-wrap">
                 <h3 class="cont-title">Q&A</h3>
@@ -29,7 +29,7 @@
                         <th class="th3">등록일</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="qnaTbody">
                     <tr th:each="qna : ${qList}">
                         <td th:attr="colspan=${(qna.memberId != ID && !Role.equals('ADMIN')) || qna.status == 2} ? 4 : 1">
                             <span th:if="${(qna.memberId == ID || Role.equals('ADMIN')) && qna.status != 2}">

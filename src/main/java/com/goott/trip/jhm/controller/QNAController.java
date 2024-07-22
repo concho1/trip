@@ -40,7 +40,11 @@ public class QNAController {
         List<FAQ> faqList;
 
         String div = "flight";
-        String role = this.service.findRole(principal.getName());
+        String role = "";
+
+        if(principal != null) {
+            role = this.service.findRole(principal.getName());
+        }
 
         faqList = this.service.getFAQByDiv(div);
 

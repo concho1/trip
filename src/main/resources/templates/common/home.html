@@ -274,7 +274,7 @@
     font-weight: bold;
   }
 
-  .hidden {
+  .hidden, #comb-field {
     display: none;
   }
 
@@ -1063,11 +1063,12 @@
     width: 100%;
   }
   /* 기본 스타일 설정 */
-  #search-form-hotel {
+  #search-form-hotel, #search-form-air {
     width: 793px;
     height: 392px;
     margin: 0 auto; /* 가운데 정렬 */
   }
+
   #location{
     margin-top: 10px;
   }
@@ -1211,7 +1212,7 @@
               </div>
             </div>
           </div>
-          <div id="comb-field" class="date-picker hidden">
+          <div id="comb-field" class="date-picker">
             <input type="text" name="comeback" id="combDate" placeholder="오는 날" autocomplete="off">
             <div id="combCalendarContainer" class="hidden">
               <div id="comb-wrapper">
